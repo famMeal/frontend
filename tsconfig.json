@@ -1,0 +1,15 @@
+{
+  "extends": "@tsconfig/react-native/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./src/",
+    "paths": {
+      "tailwindcss-classnames": ["./types/tailwind.types.ts"],
+      "components/*": ["components/*"],
+      "screens/*": ["screens/*"],
+      "constants/*": ["constants/*"],
+      "utilities/*": ["utilities/*"],
+      "hooks/*": ["hooks/*"],
+      "schema": ["graphql/types/graphql.ts"]
+    }
+  }
+}
