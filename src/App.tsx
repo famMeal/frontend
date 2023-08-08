@@ -9,7 +9,6 @@ import {
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import React from 'react';
 import { SplashScreen, HomeScreen } from './screens';
 
 const { Navigator, Screen } = createBottomTabNavigator<RootStackParamList>();
@@ -32,7 +31,6 @@ const App: FC = () => {
             name="Splash"
             component={SplashScreen}
             options={{
-              headerShown: false,
               tabBarStyle: {
                 display: 'none',
               },
@@ -42,7 +40,6 @@ const App: FC = () => {
             name="Home"
             component={HomeScreen}
             options={{
-              headerShown: false,
               tabBarStyle: {
                 display: 'none',
               },

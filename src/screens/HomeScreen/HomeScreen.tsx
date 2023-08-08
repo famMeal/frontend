@@ -25,29 +25,34 @@ const HomeScreen: FC = () => {
     }, [navigation]),
   );
 
+  const getOptions = (tabBarLabel: string, name: string, iconName: string) =>
+    createScreenOptions({
+      headerShown: activeScreen !== 'Main',
+      headerTitleStyle: {
+        color: COLOURS.white,
+        fontFamily: 'Khula-Bold',
+        fontSize: 18,
+      },
+      tabBarLabel,
+      isScreenActive: activeScreen === name,
+      iconName: iconName as keyof typeof iconMap,
+      headerBackground: () => (
+        <View className="bg-accent w-full h-full relative flex justify-end items-center" />
+      ),
+    });
+
   const renderScreen = ({
     name,
+    tabBarLabel,
     iconName,
     renderComponent,
-    tabBarLabel,
+    ...rest
   }: (typeof homeScreens)[number]) => (
     <Screen
       key={name}
       name={name}
-      options={createScreenOptions({
-        headerShown: activeScreen !== 'Main',
-        headerTitleStyle: {
-          color: COLOURS.white,
-          fontFamily: 'Khula-Bold',
-          fontSize: 18,
-        },
-        tabBarLabel,
-        isScreenActive: activeScreen === name,
-        iconName: iconName as keyof typeof iconMap,
-        headerBackground: () => (
-          <View className="bg-accent w-full h-full relative flex justify-end items-center" />
-        ),
-      })}>
+      options={getOptions(tabBarLabel, name, iconName)}
+      {...rest}>
       {renderComponent}
     </Screen>
   );
