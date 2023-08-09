@@ -1,15 +1,13 @@
-import type { ColumnProps } from "./Column";
 import classnames, {
   TArg,
-  alignItems,
   display,
   flexBox,
   flexDirection,
   flexShrink,
-  justifyContent,
   margin,
   padding,
 } from "tailwindcss-classnames";
+import type { ColumnProps } from "./Column";
 
 const negativePadding = "-px-2" as TArg;
 
@@ -26,7 +24,7 @@ export const getCSS = ({ flex, isPaddingless }: ColumnProps) => {
     padding(isPaddingless ? "p-0" : "p-4", negativePadding),
     display("flex"),
     flexDirection("flex-col"),
-    flexCSS[flex]
+    flexCSS[flex],
   );
 
   return { columnCSS };

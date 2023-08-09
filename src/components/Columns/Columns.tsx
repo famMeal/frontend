@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import type { ViewProps } from "react-native";
 import { useMemo } from "react";
+import type { ViewProps } from "react-native";
 import { View } from "react-native";
 import { getCSS } from "./Columns.styles";
 
@@ -21,7 +21,7 @@ const Columns: FC<Props> = ({
 }) => {
   const { columnsCSS } = useMemo(
     () => getCSS({ direction, isMarginless }),
-    [direction]
+    [direction],
   );
   return (
     <View className={columnsCSS} {...rest}>

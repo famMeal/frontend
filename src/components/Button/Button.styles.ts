@@ -1,21 +1,21 @@
-import type { ButtonProps } from "./Button";
 import {
-  classnames,
-  borderRadius,
-  boxShadow,
-  display,
-  padding,
-  backgroundColor,
-  width,
-  justifyContent,
   alignItems,
-  textColor,
+  backgroundColor,
   borderColor,
+  borderRadius,
   borderWidth,
+  boxShadow,
+  classnames,
+  display,
   fontFamily,
+  justifyContent,
   opacity,
+  padding,
   position,
+  textColor,
+  width,
 } from "tailwindcss-classnames";
+import type { ButtonProps } from "./Button";
 
 export const getCSS = ({
   theme,
@@ -28,16 +28,17 @@ export const getCSS = ({
   const themeButtonCSS = {
     primary: classnames(
       borderColor("border-primary"),
-      backgroundColor(isOutlined ? "bg-white" : "bg-primary")
+      backgroundColor(isOutlined ? "bg-white" : "bg-primary"),
     ),
     accent: classnames(
       borderColor("border-accent"),
-      backgroundColor(isOutlined ? "bg-white" : "bg-accent")
+      backgroundColor(isOutlined ? "bg-white" : "bg-accent"),
     ),
   };
 
   const buttonCSS = classnames(
     themeButtonCSS[theme],
+
     width(isFullWidth ? "w-full" : "w-auto"),
     position("relative"),
     justifyContent("justify-center"),
@@ -47,7 +48,7 @@ export const getCSS = ({
     width("w-full"),
     display("inline-flex"),
     padding("px-4", isFullyRounded ? "py-4" : "py-2"),
-    borderWidth(isClean ? "border-0" : "border-2")
+    borderWidth(isClean ? "border-0" : "border-2"),
   );
 
   const themeTextCSS = {
@@ -59,12 +60,12 @@ export const getCSS = ({
     themeTextCSS[theme],
     backgroundColor("bg-inherit"),
     opacity(isLoading ? "opacity-0" : "opacity-100"),
-    fontFamily("font-khulaBold")
+    fontFamily("font-khulaBold"),
   );
 
   const spinnerCSS = classnames(
     position("absolute"),
-    display(isLoading ? "inline" : "hidden")
+    display(isLoading ? "inline" : "hidden"),
   );
 
   return { buttonCSS, textCSS, spinnerCSS };

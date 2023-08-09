@@ -1,11 +1,12 @@
-import type { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
-import { COLOURS } from 'constants/colours';
+import type { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
+import { COLOURS } from "constants/colours";
+import React from "react";
 import {
-  ShoppingBagIcon,
-  CheckBadgeIcon,
-  UserCircleIcon,
   ArchiveBoxIcon,
-} from 'react-native-heroicons/solid';
+  CheckBadgeIcon,
+  ShoppingBagIcon,
+  UserCircleIcon,
+} from "react-native-heroicons/solid";
 
 export const iconMap = (isScreenActive: boolean) =>
   ({
@@ -48,11 +49,11 @@ const createScreenOptions = ({
   ...rest
 }: Props): BottomTabNavigationOptions => ({
   tabBarIcon: () => iconMap(isScreenActive)[iconName],
-  headerTitleAlign: 'center',
+  headerTitleAlign: "center",
   tabBarAllowFontScaling: true,
   tabBarLabelStyle: {
     color: isScreenActive ? COLOURS.primary : COLOURS.accent,
-    fontFamily: 'Khula-Bold',
+    fontFamily: "Khula-Bold",
     fontSize: 12,
   },
   ...rest,

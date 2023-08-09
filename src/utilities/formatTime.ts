@@ -1,9 +1,11 @@
 const formatTime = <T extends string | null | undefined>(
-  time: T
+  time: T,
 ): string | null => {
-  if (!time) return null;
+  if (!time) {
+    return null;
+  }
 
-  const [_, timePart] = time.split(" ");
+  const [unusedTime, timePart] = time.split(" ");
   const [hour, minute] = timePart.split(":");
 
   const date = new Date();

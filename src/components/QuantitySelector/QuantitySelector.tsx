@@ -1,9 +1,9 @@
-import type { Dispatch, FC, SetStateAction } from 'react';
-import { PlusIcon, MinusIcon } from 'react-native-heroicons/solid';
-import { COLOURS } from 'constants/colours';
-import { Button } from 'components/Button';
-import { Typography } from 'components/Typography';
-import { View } from 'react-native';
+import { Button } from "components/Button";
+import { Typography } from "components/Typography";
+import { COLOURS } from "constants/colours";
+import type { Dispatch, FC, SetStateAction } from "react";
+import { View } from "react-native";
+import { MinusIcon, PlusIcon } from "react-native-heroicons/solid";
 
 const operations = {
   increment: (quantity: number) => quantity + 1,
@@ -24,7 +24,7 @@ const QuantitySelector: FC<Props> = ({ quantity, setQuantity }) => {
         <Button
           theme="accent"
           disabled={quantity === 1}
-          onPress={() => handleQuantityOnPress('decrement')}
+          onPress={() => handleQuantityOnPress("decrement")}
           isFullyRounded>
           <MinusIcon color={COLOURS.white} />
         </Button>
@@ -37,7 +37,7 @@ const QuantitySelector: FC<Props> = ({ quantity, setQuantity }) => {
       <View>
         <Button
           theme="accent"
-          onPress={() => handleQuantityOnPress('increment')}
+          onPress={() => handleQuantityOnPress("increment")}
           isFullyRounded>
           <PlusIcon color={COLOURS.white} />
         </Button>

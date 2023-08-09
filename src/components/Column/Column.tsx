@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import type { ViewProps } from "react-native";
 import { useMemo } from "react";
+import type { ViewProps } from "react-native";
 import { View } from "react-native";
 import { getCSS } from "./Column.styles";
 
@@ -21,7 +21,7 @@ const Column: FC<Props> = ({
 }) => {
   const { columnCSS } = useMemo(
     () => getCSS({ flex, isPaddingless }),
-    [flex, isPaddingless]
+    [flex, isPaddingless],
   );
   return (
     <View className={columnCSS} {...rest}>

@@ -1,4 +1,3 @@
-import type { TypographyProps } from "./Typography";
 import classnames, {
   flexShrink,
   fontFamily,
@@ -9,6 +8,7 @@ import classnames, {
   padding,
   textColor,
 } from "tailwindcss-classnames";
+import type { TypographyProps } from "./Typography";
 
 export const getCSS = ({
   weigth,
@@ -27,29 +27,29 @@ export const getCSS = ({
       fontSize("text-4xl"),
       height("h-9"),
       padding("pt-2"),
-      margin(isMarginless ? "mb-0" : "mb-6")
+      margin(isMarginless ? "mb-0" : "mb-6"),
     ),
     H2: classnames(
       fontSize("text-3xl"),
       height("h-8"),
       lineHeight("leading-10"),
-      margin(isMarginless ? "mb-0" : "mb-4")
+      margin(isMarginless ? "mb-0" : "mb-4"),
     ),
     H3: classnames(
       fontSize("text-2xl"),
 
-      margin(isMarginless ? "mb-0" : "mb-2")
+      margin(isMarginless ? "mb-0" : "mb-2"),
     ),
     P: classnames(
       fontSize("text-lg"),
       height("h-6"),
-      margin(isMarginless ? "mb-0" : "mb-1")
+      margin(isMarginless ? "mb-0" : "mb-1"),
     ),
     S: classnames(
       fontSize("text-base"),
       margin("mt-1"),
       height("h-auto"),
-      margin(isMarginless ? "mb-0" : "mb-1")
+      margin(isMarginless ? "mb-0" : "mb-1"),
     ),
   };
 
@@ -57,7 +57,7 @@ export const getCSS = ({
     flexShrink("shrink"),
     css[colour],
     css[weigth],
-    css[type]
+    css[type],
   );
 
   return { typographyCSS };

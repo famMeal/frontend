@@ -1,14 +1,14 @@
-import type { FC } from 'react';
-import type { TouchableOpacityProps } from 'react-native';
-import type { ColourTheme } from 'constants/colours';
-import { useMemo } from 'react';
-import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
-import { Typography } from 'components/Typography';
-import { COLOURS } from 'constants/colours';
-import { getCSS } from './Button.styles';
+import { Typography } from "components/Typography";
+import type { ColourTheme } from "constants/colours";
+import { COLOURS } from "constants/colours";
+import type { FC } from "react";
+import { useMemo } from "react";
+import type { TouchableOpacityProps } from "react-native";
+import { ActivityIndicator, TouchableOpacity, View } from "react-native";
+import { getCSS } from "./Button.styles";
 
 type PrimaryAccentTheme<T> = T extends keyof typeof COLOURS
-  ? T extends 'primary' | 'accent'
+  ? T extends "primary" | "accent"
     ? T
     : never
   : never;
@@ -28,7 +28,7 @@ type Props = TouchableOpacityProps & Partial<ButtonProps>;
 
 const Button: FC<Props> = ({
   children,
-  theme = 'primary',
+  theme = "primary",
   isLoading = false,
   isOutlined = false,
   isFullWidth = false,
@@ -46,7 +46,7 @@ const Button: FC<Props> = ({
         isFullyRounded,
         isClean,
       }),
-    [isLoading, theme, isOutlined, isFullWidth, isFullyRounded],
+    [isLoading, theme, isOutlined, isFullWidth, isFullyRounded, isClean],
   );
 
   const renderContent = () =>

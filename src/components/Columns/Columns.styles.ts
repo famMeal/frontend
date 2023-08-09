@@ -16,7 +16,7 @@ export const getCSS = ({ direction, isMarginless }: ColumnsProps) => {
     margin(negativeMargins, isMarginless ? "mb-0" : "mb-2"),
     display("flex"),
     flexDirection("flex-row"),
-    flexDirection(direction === "column" ? "flex-col" : "flex-row")
+    flexDirection(direction === "column" ? "flex-col" : "flex-row"),
   );
   return { columnsCSS };
 };

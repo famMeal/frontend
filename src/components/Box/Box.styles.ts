@@ -22,7 +22,7 @@ export const getCSS = () => {
     borderRadius("rounded-lg"),
     width("w-full"),
     padding("p-4"),
-    margin("mb-4", "last-of-type:mb-0")
+    margin("mb-4", "last-of-type:mb-0"),
   );
 
   return { boxCSS };

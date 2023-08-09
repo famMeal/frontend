@@ -1,11 +1,11 @@
-import type { FC, ForwardedRef } from 'react';
-import { useEffect, forwardRef } from 'react';
-import { useUserLocation } from 'hooks';
-import MapView, { LatLng, MapMarkerProps, Marker } from 'react-native-maps';
-import { Dimensions } from 'react-native';
-import { COLOURS } from 'constants/colours';
-import { GOOGLE_API_KEY } from 'react-native-dotenv';
-import MapViewDirections from 'react-native-maps-directions';
+import { COLOURS } from "constants/colours";
+import { useUserLocation } from "hooks";
+import type { FC, ForwardedRef } from "react";
+import { forwardRef, useEffect } from "react";
+import { Dimensions } from "react-native";
+import { GOOGLE_API_KEY } from "react-native-dotenv";
+import MapView, { LatLng, MapMarkerProps, Marker } from "react-native-maps";
+import MapViewDirections from "react-native-maps-directions";
 
 interface Props {
   destination?: LatLng;
@@ -19,7 +19,7 @@ const GoogleMap: FC<Props> = forwardRef<MapView, Props>(
     const { coords } = useUserLocation();
 
     useEffect(() => {
-      if (typeof ref !== 'function') {
+      if (typeof ref !== "function") {
         if (coords && ref?.current && destination) {
           const coordinates: LatLng[] = [
             {
@@ -44,7 +44,7 @@ const GoogleMap: FC<Props> = forwardRef<MapView, Props>(
       const latDelta = desiredDistanceInKm / 111.32;
       const lonDelta =
         latDelta *
-        (Dimensions.get('window').width / Dimensions.get('window').height);
+        (Dimensions.get("window").width / Dimensions.get("window").height);
       return { latitudeDelta: latDelta, longitudeDelta: lonDelta };
     };
 

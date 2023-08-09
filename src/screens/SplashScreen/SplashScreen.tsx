@@ -1,8 +1,8 @@
-import type { FC } from 'react';
-import { useEffect } from 'react';
-import { View, Text } from 'react-native';
-import SplashScreenRN from 'react-native-splash-screen';
-import { SplashNavigationProps } from 'types/navigation.types';
+import type { FC } from "react";
+import { useEffect } from "react";
+import { Text, View } from "react-native";
+import SplashScreenRN from "react-native-splash-screen";
+import { SplashNavigationProps } from "types/navigation.types";
 
 type Props = {
   navigation: SplashNavigationProps;
@@ -10,13 +10,13 @@ type Props = {
 
 const SplashScreen: FC<Props> = ({ navigation }) => {
   useEffect(() => {
-    const navigateToHome = async () => {
+    const navigateToLogin = () => {
       SplashScreenRN.hide();
-      navigation.navigate('Home');
+      navigation.navigate("Login");
     };
 
-    navigateToHome();
-  }, []);
+    navigateToLogin();
+  }, [navigation]);
 
   return (
     <View className="flex-1 bg-accent items-center justify-center p-0">

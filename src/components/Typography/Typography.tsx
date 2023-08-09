@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import type { TextProps } from "react-native";
 import { useMemo } from "react";
+import type { TextProps } from "react-native";
 import { Text } from "react-native";
 import { getCSS } from "./Typography.styles";
 
@@ -27,7 +27,7 @@ const Typography: FC<Props> = ({
 }) => {
   const { typographyCSS } = useMemo(
     () => getCSS({ weigth, type, isMarginless, colour }),
-    [weigth, type, isMarginless, colour]
+    [weigth, type, isMarginless, colour],
   );
 
   return (
@@ -37,8 +37,7 @@ const Typography: FC<Props> = ({
         includeFontPadding: false,
       }}
       className={typographyCSS}
-      {...rest}
-    >
+      {...rest}>
       {children}
     </Text>
   );

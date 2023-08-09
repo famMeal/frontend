@@ -1,6 +1,6 @@
-import Geolocation from '@react-native-community/geolocation';
-import type { GeolocationResponse } from '@react-native-community/geolocation';
-import { useState, useEffect } from 'react';
+import type { GeolocationResponse } from "@react-native-community/geolocation";
+import Geolocation from "@react-native-community/geolocation";
+import { useEffect, useState } from "react";
 
 const useUserLocation = () => {
   const [coords, setCoords] = useState<GeolocationResponse | null>(null);

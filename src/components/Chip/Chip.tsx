@@ -1,6 +1,6 @@
+import { Typography } from "components/Typography";
 import { FC, useMemo } from "react";
 import { View, ViewProps } from "react-native";
-import { Typography } from "components/Typography";
 import { getCSS } from "./Chip.styles";
 
 type ChipTypes = "error" | "primary" | "success" | "accent";
@@ -21,7 +21,7 @@ const Chip: FC<Props> = ({
 }) => {
   const { ChipCSS, textCSS } = useMemo(
     () => getCSS({ type, position }),
-    [type, position]
+    [type, position],
   );
   return (
     <View className={ChipCSS} {...rest}>
