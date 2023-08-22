@@ -1,18 +1,29 @@
-import { Columns, Container, Typography } from "components";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Column, Columns, Container, Typography } from "components";
 import type { FC } from "react";
-import { useGetRestaurantQuery } from "./useGetRestaurantQuery";
+import { RootStackParamList } from "types/navigation.types";
+import { useRestaurantQuery } from "./useRestaurantQuery";
 
-const RestaurantScreen: FC = () => {
-  const { data, loading } = useGetRestaurantQuery({
+type Props = NativeStackScreenProps<RootStackParamList, "Restaurant">;
+
+const RestaurantScreen: FC<Props> = ({ route: { params } }) => {
+  const { restaurantID } = params;
+
+  const { data, loading, error } = useRestaurantQuery({
     variables: {
-      id: "1",
+      id: restaurantID,
     },
+    skip: !restaurantID,
   });
 
   return (
     <Container>
       <Columns>
-        <Typography>{data?.restaurant?.name}</Typography>
+        <Column>
+          <Typography weigth="bold" type="H1">
+            {data?.restaurant?.name}
+          </Typography>
+        </Column>
       </Columns>
     </Container>
   );

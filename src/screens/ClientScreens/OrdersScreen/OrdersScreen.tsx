@@ -1,29 +1,20 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import type { Dispatch, FC, SetStateAction } from "react";
+import { Box, Column, Columns, Container, Typography } from "components";
+import type { FC } from "react";
 import type { RootStackParamList } from "types/navigation.types";
 
-import { Columns, Container, Typography } from "components";
-import { useEffect } from "react";
+type Props = NativeStackScreenProps<RootStackParamList, "ClientOrders">;
 
-type OrdersStackProps = NativeStackScreenProps<RootStackParamList, "Orders">;
-
-interface Props extends OrdersStackProps {
-  setActiveScreen: Dispatch<SetStateAction<string>>;
-}
-
-const OrdersScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      setActiveScreen(route.name);
-    });
-    return unsubscribe;
-  }, [navigation, setActiveScreen, route.name]);
-
+const OrdersScreen: FC<Props> = () => {
   return (
     <Container>
-      <Columns>
-        <Typography>orders</Typography>
-      </Columns>
+      <Box>
+        <Columns>
+          <Column>
+            <Typography type="H2">Orders Guest</Typography>
+          </Column>
+        </Columns>
+      </Box>
     </Container>
   );
 };

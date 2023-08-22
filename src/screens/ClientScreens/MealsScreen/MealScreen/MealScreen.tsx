@@ -51,7 +51,7 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
         <RestaurantMealCard
           selectedTime={selectedTime}
           setSelectedTime={setSelectedTime}
-          meal={{ ...meal, id: mealID }}
+          meal={{ ...meal!, id: mealID! }}
         />
       ),
     [loading],

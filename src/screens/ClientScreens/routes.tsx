@@ -12,7 +12,7 @@ export interface ClientRouteProps<T extends keyof RootStackParamList> {
 }
 
 type ClientRoutes = ClientRouteProps<
-  "Main" | "Confirmation" | "Profile" | "Orders"
+  "Main" | "Confirmation" | "Profile" | "ClientOrders"
 >;
 
 const clientRoutes = (setActiveScreen: Dispatch<SetStateAction<string>>) =>
@@ -40,13 +40,13 @@ const clientRoutes = (setActiveScreen: Dispatch<SetStateAction<string>>) =>
       ),
     },
     {
-      name: "Orders",
+      name: "ClientOrders",
       iconName: "shopping",
       tabBarLabel: "Orders",
       renderComponent: (props: ClientRoutes) => (
         <OrdersScreen
           setActiveScreen={setActiveScreen}
-          {...(props as ClientRouteProps<"Orders">)}
+          {...(props as ClientRouteProps<"ClientOrders">)}
         />
       ),
     },

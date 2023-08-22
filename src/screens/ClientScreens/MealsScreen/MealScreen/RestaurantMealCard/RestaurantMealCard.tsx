@@ -22,7 +22,7 @@ import {
 } from "utilities";
 
 interface Props {
-  meal: MealSplinter;
+  meal?: MealSplinter;
   selectedTime: string[];
   setSelectedTime: Dispatch<SetStateAction<string[]>>;
 }
@@ -34,7 +34,8 @@ const RestaurantMealCard: FC<Props> = ({
 }) => {
   const [quantity, setQuantity] = useState(1);
 
-  const { name, description, pickupEndTime, pickupStartTime, price } = meal;
+  const { name, description, pickupEndTime, pickupStartTime, price } =
+    meal ?? {};
 
   const { navigate } = useNavigation<ConfirmationNavigationProps>();
 

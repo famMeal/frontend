@@ -1,12 +1,22 @@
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { Meal, Restaurant } from "schema";
+import { OrderData } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
 
 export type RootStackParamList = {
+  Login: undefined;
   TabNavigator: undefined;
-  Clients: undefined;
   Restaurants: undefined;
-  Restaurant: undefined;
+  RestaurantOrders: {
+    orders: OrderData[];
+  };
+  CreateMeal: {
+    restaurantID: Restaurant["id"];
+  };
+  Restaurant: {
+    restaurantID: Restaurant["id"];
+  };
   Splash: undefined;
+  Clients: undefined;
   Meals: undefined;
   Main: undefined;
   Meal: {
@@ -16,8 +26,7 @@ export type RootStackParamList = {
   };
   Confirmation: undefined;
   Profile: undefined;
-  Orders: undefined;
-  Login: undefined;
+  ClientOrders: undefined;
 };
 
 export type MainNavigationProps = NativeStackNavigationProp<
@@ -37,7 +46,7 @@ export type ProfileNavigationProps = NativeStackNavigationProp<
 
 export type OrdersNavigationProps = NativeStackNavigationProp<
   RootStackParamList,
-  "Orders"
+  "ClientOrders"
 >;
 
 export type LoginNavigationProps = NativeStackNavigationProp<
