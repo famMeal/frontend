@@ -8,6 +8,7 @@ export type RootStackParamList = {
   Restaurants: undefined;
   RestaurantOrders: {
     orders: OrderData[];
+    restaurantID: Restaurant["id"];
   };
   CreateMeal: {
     restaurantID: Restaurant["id"];

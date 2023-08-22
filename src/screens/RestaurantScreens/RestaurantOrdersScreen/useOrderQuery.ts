@@ -1,5 +1,5 @@
 import { LazyQueryHookOptions, gql, useLazyQuery } from "@apollo/client";
-import type { Meal, Order, User } from "schema";
+import type { Meal, Order, Restaurant, User } from "schema";
 
 const RESTAURANT_ORDER_QUERY = gql`
   query RestaurantOrder($id: ID!) {
@@ -24,6 +24,10 @@ const RESTAURANT_ORDER_QUERY = gql`
         pickupStartTime
         pickupEndTime
         price
+        restaurant {
+          id
+          __typename
+        }
       }
     }
   }
@@ -47,9 +51,15 @@ type MealSplinter = Pick<
   | "price"
 >;
 
+type RestaurantSplinter = Pick<Restaurant, "__typename" | "id">;
+
+interface MealData extends MealSplinter {
+  restaurant: RestaurantSplinter;
+}
+
 interface OrderData extends OrderSplinter {
   user: UserSplinter;
-  meal: MealSplinter;
+  meal: MealData;
 }
 
 interface Data {

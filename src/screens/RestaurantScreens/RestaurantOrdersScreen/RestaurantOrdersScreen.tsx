@@ -13,7 +13,7 @@ import { useLazyRestaurantOrderQuery } from "./useOrderQuery";
 type Props = NativeStackScreenProps<RootStackParamList, "RestaurantOrders">;
 
 const RestaurantOrdersScreen: FC<Props> = ({ route: { params } }) => {
-  const { orders } = params;
+  const { orders, restaurantID } = params;
   const [searchTerm, setSearchTerm] = useState("");
   const id = useDebounce<string>(searchTerm, 500);
   const [findOrder, { data, loading }] = useLazyRestaurantOrderQuery();
@@ -29,20 +29,35 @@ const RestaurantOrdersScreen: FC<Props> = ({ route: { params } }) => {
   }, [id]);
 
   const renderOrder = (order: OrderData) => (
-    <RestaurantOrderCard order={order} />
+    <RestaurantOrderCard key={order?.id} order={order} />
   );
 
   const renderOrders = () => orders?.map(renderOrder);
 
   const renderContent = () => {
     if (loading) return <SkeletonRestaurantOrderCard />;
-    return data?.order ? (
-      <RestaurantOrderCard order={data?.order} />
-    ) : (
-      renderOrders()
-    );
-  };
 
+    if (
+      id.length &&
+      data?.order &&
+      data?.order?.meal?.restaurant?.id === restaurantID
+    ) {
+      return <RestaurantOrderCard order={data?.order} />;
+    }
+    if (
+      id.length &&
+      !data?.order &&
+      !loading &&
+      data?.order?.meal?.restaurant?.id !== restaurantID
+    ) {
+      return (
+        <Box>
+          <Typography>Nothing found</Typography>
+        </Box>
+      );
+    }
+    return renderOrders();
+  };
   return (
     <Container>
       <Columns isMarginless>

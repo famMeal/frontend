@@ -60,7 +60,10 @@ const RestaurantScreens: FC = () => {
         }}
         name="RestaurantOrders"
         component={RestaurantOrdersScreen}
-        initialParams={{ orders: data?.restaurant?.orders }}
+        initialParams={{
+          orders: data?.restaurant?.orders,
+          restaurantID: data?.restaurant?.id,
+        }}
       />
     </Navigator>
   );

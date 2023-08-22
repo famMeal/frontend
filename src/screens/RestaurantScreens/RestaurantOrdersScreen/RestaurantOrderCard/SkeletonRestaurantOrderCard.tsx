@@ -6,13 +6,13 @@ const SkeletonRestaurantOrderCard: FC = () => {
     <Box>
       <Columns>
         <Column isPaddingless>
-          <Skeleton size="large" />
+          <Skeleton size="small" />
           <Skeleton size="medium" />
         </Column>
       </Columns>
       <Columns>
         <Column isPaddingless>
-          <Skeleton size="medium" />
+          <Skeleton width="full" size="small" />
         </Column>
       </Columns>
       <Columns>
