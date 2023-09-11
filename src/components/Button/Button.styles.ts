@@ -17,28 +17,36 @@ import {
 } from "tailwindcss-classnames";
 import type { ButtonProps } from "./Button";
 
+interface Props extends ButtonProps {
+  disabled?: boolean;
+}
+
 export const getCSS = ({
+  disabled,
   theme,
   isOutlined,
   isLoading,
   isFullWidth,
   isFullyRounded,
   isClean,
-}: ButtonProps) => {
+}: Props) => {
   const themeButtonCSS = {
     primary: classnames(
-      borderColor("border-primary"),
-      backgroundColor(isOutlined ? "bg-white" : "bg-primary"),
+      borderColor(disabled ? "border-gray-400" : "border-primary"),
+      backgroundColor(
+        disabled ? "bg-gray-400" : isOutlined ? "bg-white" : "bg-primary",
+      ),
     ),
     accent: classnames(
-      borderColor("border-accent"),
-      backgroundColor(isOutlined ? "bg-white" : "bg-accent"),
+      borderColor(disabled ? "border-gray-400" : "border-accent"),
+      backgroundColor(
+        disabled ? "bg-gray-400" : isOutlined ? "bg-white" : "bg-accent",
+      ),
     ),
   };
 
   const buttonCSS = classnames(
     themeButtonCSS[theme],
-
     width(isFullWidth ? "w-full" : "w-auto"),
     position("relative"),
     justifyContent("justify-center"),

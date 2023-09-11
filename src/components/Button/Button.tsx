@@ -2,7 +2,6 @@ import { Typography } from "components/Typography";
 import type { ColourTheme } from "constants/colours";
 import { COLOURS } from "constants/colours";
 import type { FC } from "react";
-import { useMemo } from "react";
 import type { TouchableOpacityProps } from "react-native";
 import { ActivityIndicator, TouchableOpacity, View } from "react-native";
 import { getCSS } from "./Button.styles";
@@ -17,6 +16,7 @@ type ButtonThemes = PrimaryAccentTheme<ColourTheme>;
 
 export interface ButtonProps {
   theme: ButtonThemes;
+  isIcon: boolean;
   isOutlined: boolean;
   isLoading: boolean;
   isFullWidth: boolean;
@@ -27,8 +27,10 @@ export interface ButtonProps {
 type Props = TouchableOpacityProps & Partial<ButtonProps>;
 
 const Button: FC<Props> = ({
+  disabled,
   children,
   theme = "primary",
+  isIcon = false,
   isLoading = false,
   isOutlined = false,
   isFullWidth = false,
@@ -36,28 +38,26 @@ const Button: FC<Props> = ({
   isClean = false,
   ...rest
 }) => {
-  const { buttonCSS, textCSS, spinnerCSS } = useMemo(
-    () =>
-      getCSS({
-        theme,
-        isOutlined,
-        isLoading,
-        isFullWidth,
-        isFullyRounded,
-        isClean,
-      }),
-    [isLoading, theme, isOutlined, isFullWidth, isFullyRounded, isClean],
-  );
+  const { buttonCSS, textCSS, spinnerCSS } = getCSS({
+    disabled,
+    theme,
+    isOutlined,
+    isIcon,
+    isLoading,
+    isFullWidth,
+    isFullyRounded,
+    isClean,
+  });
 
   const renderContent = () =>
-    isFullyRounded ? (
+    isFullyRounded || isIcon ? (
       children
     ) : (
       <Typography className={textCSS}>{children}</Typography>
     );
 
   return (
-    <TouchableOpacity className={buttonCSS} {...rest}>
+    <TouchableOpacity className={buttonCSS} disabled={disabled} {...rest}>
       {renderContent()}
       <View className={spinnerCSS}>
         <ActivityIndicator
