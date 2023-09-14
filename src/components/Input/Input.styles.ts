@@ -23,7 +23,7 @@ export const getCSS = ({ theme }: InputProps) => {
     fontFamily("font-khula"),
     fontSize("text-lg"),
     borderRadius("rounded-lg"),
-    padding("px-6", "py-2"),
+    padding("pl-2", "pr-6", "py-2"),
     borderWidth("border-2"),
   );
   return { inputCSS };

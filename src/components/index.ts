@@ -1,3 +1,4 @@
+export { BottomDrawer } from "./BottomDrawer";
 export { Box } from "./Box";
 export { Button } from "./Button";
 export { Chip } from "./Chip";

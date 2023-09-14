@@ -66,7 +66,7 @@ const RestaurantOrdersScreen: FC<Props> = ({ route: { params } }) => {
   );
 
   const renderSkeletons = useCallback(
-    () => createList(2).map(renderSkeleton),
+    () => createList(1).map(renderSkeleton),
     [],
   );
 

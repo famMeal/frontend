@@ -15,7 +15,7 @@ type Props = ViewProps & Partial<ColumnProps>;
 
 const Column: FC<Props> = ({
   children,
-  flex = "grow",
+  flex = "one",
   isPaddingless = false,
   ...rest
 }) => {
