@@ -3,7 +3,7 @@ import { COLOURS } from "constants/colours";
 import { useState, type FC } from "react";
 import { Switch } from "react-native";
 import type { OrderData } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
-import { formatCurrency, formatTime } from "utilities";
+import { formatTime } from "utilities";
 
 interface Props {
   order: OrderData;
@@ -15,7 +15,7 @@ const RestaurantOrderCard: FC<Props> = ({
     status,
     subtotal,
     quantity,
-    meal: { pickupEndTime, pickupStartTime, price, name },
+    meal: { pickupEndTime, pickupStartTime, price: unusedPrice, name },
     user: { firstName, lastName },
   },
 }) => {
@@ -51,7 +51,7 @@ const RestaurantOrderCard: FC<Props> = ({
       <Columns>
         <Column isPaddingless>
           <Typography weigth="semiBold">
-            Subtotal: <Typography>{formatCurrency(subtotal)}</Typography>
+            Subtotal: <Typography>{subtotal}</Typography>
           </Typography>
         </Column>
       </Columns>

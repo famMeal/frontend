@@ -1,14 +1,9 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { COLOURS } from "constants/colours";
 import type { FC } from "react";
-import { Platform, View } from "react-native";
-import {
-  DEVELOPMENT_URI_ANDROID_BACKEND,
-  DEVELOPMENT_URI_IOS_BACKEND,
-  PRODUCTION_URI_BACKEND,
-} from "react-native-dotenv";
+import { View } from "react-native";
 import {
   ClientScreens,
   LoginScreen,
@@ -16,17 +11,9 @@ import {
   SplashScreen,
 } from "screens";
 import type { RootStackParamList } from "types/navigation.types";
+import { client } from "./client";
 
 const { Navigator, Screen } = createBottomTabNavigator<RootStackParamList>();
-
-const client = new ApolloClient({
-  uri: __DEV__
-    ? Platform.OS === "ios"
-      ? DEVELOPMENT_URI_IOS_BACKEND
-      : DEVELOPMENT_URI_ANDROID_BACKEND
-    : PRODUCTION_URI_BACKEND,
-  cache: new InMemoryCache(),
-});
 
 const App: FC = () => {
   return (

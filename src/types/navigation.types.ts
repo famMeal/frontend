@@ -1,19 +1,20 @@
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { Meal, Restaurant } from "schema";
-import { OrderData } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
 
 export type RootStackParamList = {
   Login: undefined;
   TabNavigator: undefined;
   Restaurants: undefined;
   RestaurantOrders: {
-    orders: OrderData[];
     restaurantID: Restaurant["id"];
   };
   CreateMeal: {
     restaurantID: Restaurant["id"];
   };
   Restaurant: {
+    restaurantID: Restaurant["id"];
+  };
+  RestaurantMeals: {
     restaurantID: Restaurant["id"];
   };
   Splash: undefined;

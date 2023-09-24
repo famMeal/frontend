@@ -1,6 +1,8 @@
 import { Typography } from "components/Typography";
-import { FC, useMemo } from "react";
-import { View, ViewProps } from "react-native";
+import type { FC } from "react";
+import { useMemo } from "react";
+import type { ViewProps } from "react-native";
+import { View } from "react-native";
 import { getCSS } from "./Chip.styles";
 
 type ChipTypes = "error" | "primary" | "success" | "accent";

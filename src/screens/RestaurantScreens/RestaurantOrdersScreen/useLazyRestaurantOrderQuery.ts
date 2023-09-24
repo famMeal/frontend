@@ -1,4 +1,5 @@
-import { LazyQueryHookOptions, gql, useLazyQuery } from "@apollo/client";
+import type { LazyQueryHookOptions } from "@apollo/client";
+import { gql, useLazyQuery } from "@apollo/client";
 import type { Meal, Order, Restaurant, User } from "schema";
 
 export const RESTAURANT_ORDER_QUERY = gql`

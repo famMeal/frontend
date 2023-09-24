@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Box, Button, Chip, Column, Columns, Typography } from "components";
 import type { FC } from "react";
 import { Image } from "react-native";

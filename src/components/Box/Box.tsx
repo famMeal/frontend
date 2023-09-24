@@ -1,5 +1,6 @@
 import type { FC, PropsWithChildren } from "react";
-import { View, ViewProps } from "react-native";
+import type { ViewProps } from "react-native";
+import { View } from "react-native";
 import { getCSS } from "./Box.styles";
 
 type Props = PropsWithChildren & ViewProps;

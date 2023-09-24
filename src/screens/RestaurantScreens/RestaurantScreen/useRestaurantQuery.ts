@@ -1,5 +1,6 @@
-import { QueryHookOptions, gql, useQuery } from "@apollo/client";
-import { Restaurant } from "schema";
+import type { QueryHookOptions } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
+import type { Restaurant } from "schema";
 
 const RESTAURANT_QUERY = gql`
   query Restaurant($id: ID!) {

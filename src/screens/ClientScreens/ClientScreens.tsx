@@ -6,7 +6,7 @@ import { useCallback, useMemo, useState } from "react";
 import { View } from "react-native";
 import type { RootStackParamList } from "types/navigation.types";
 import { createScreenOptions } from "utilities";
-import { iconMap } from "utilities/createScreenOptions";
+import type { iconMap } from "utilities/createScreenOptions";
 import { clientRoutes } from "./routes";
 
 const { Navigator, Screen } = createBottomTabNavigator<RootStackParamList>();

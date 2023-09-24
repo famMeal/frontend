@@ -1,4 +1,5 @@
-import React, { FC, PropsWithChildren } from "react";
+import type { FC, PropsWithChildren } from "react";
+import React from "react";
 import { Modal, TouchableOpacity, View } from "react-native";
 import { getCSS } from "./BottomDrawer.styles";
 

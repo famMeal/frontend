@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 import { Text, View } from "react-native";
 import type { RootStackParamList } from "types/navigation.types";
 import { CreateMealScreen } from "./CreateMealScreen";
+import { RestaurantMeals } from "./RestaurantMeals/RestaurantMeals";
 import { RestaurantOrdersScreen } from "./RestaurantOrdersScreen";
 import { RestaurantScreen } from "./RestaurantScreen";
 import { useRestaurantOrdersQuery } from "./useRestaurantOrdersQuery";
@@ -29,12 +30,13 @@ const RestaurantScreens: FC = () => {
     }, [navigation]),
   );
 
-  if (loading)
+  if (loading) {
     return (
       <View className="flex-1 bg-accent items-center justify-center p-0">
         <Text className="text-white">Splash Screen</Text>
       </View>
     );
+  }
 
   return (
     <Navigator>
@@ -45,6 +47,16 @@ const RestaurantScreens: FC = () => {
         name="Restaurant"
         component={RestaurantScreen}
         initialParams={{ restaurantID: data?.restaurant?.id }}
+      />
+      <Screen
+        options={{
+          headerShown: false,
+        }}
+        name="RestaurantMeals"
+        component={RestaurantMeals}
+        initialParams={{
+          restaurantID: data?.restaurant?.id,
+        }}
       />
       <Screen
         options={{
@@ -61,7 +73,6 @@ const RestaurantScreens: FC = () => {
         name="RestaurantOrders"
         component={RestaurantOrdersScreen}
         initialParams={{
-          orders: data?.restaurant?.orders,
           restaurantID: data?.restaurant?.id,
         }}
       />

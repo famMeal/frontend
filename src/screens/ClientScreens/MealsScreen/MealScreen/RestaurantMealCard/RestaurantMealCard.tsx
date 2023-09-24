@@ -29,7 +29,7 @@ interface Props {
 
 const RestaurantMealCard: FC<Props> = ({
   meal,
-  selectedTime,
+  selectedTime: unusedselectedTime,
   setSelectedTime,
 }) => {
   const [quantity, setQuantity] = useState(1);
@@ -112,7 +112,7 @@ const RestaurantMealCard: FC<Props> = ({
         </Column>
         <Column className="items-center justify-center">
           <Typography type="S" weigth="bold" colour="accent">
-            {formatCurrency(price! * quantity)}
+            {formatCurrency(Number(price) * quantity)}
           </Typography>
         </Column>
       </Columns>

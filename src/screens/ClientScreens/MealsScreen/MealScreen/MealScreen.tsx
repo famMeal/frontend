@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Box, Button, Container, GoogleMap, Skeleton } from "components";
 import type { FC } from "react";
 import { useCallback, useRef, useState } from "react";

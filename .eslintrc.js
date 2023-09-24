@@ -2,6 +2,13 @@ module.exports = {
   root: true,
   extends: "@react-native",
   rules: {
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        prefer: "type-imports",
+        disallowTypeAnnotations: true,
+      },
+    ],
     quotes: ["error", "double"],
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-shadow": "off",

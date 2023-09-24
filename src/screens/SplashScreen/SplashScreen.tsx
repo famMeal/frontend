@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { useEffect } from "react";
 import { Text, View } from "react-native";
 import SplashScreenRN from "react-native-splash-screen";
-import { SplashNavigationProps } from "types/navigation.types";
+import type { SplashNavigationProps } from "types/navigation.types";
 
 type Props = {
   navigation: SplashNavigationProps;

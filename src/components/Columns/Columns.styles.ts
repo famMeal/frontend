@@ -1,12 +1,12 @@
+import type { TArg } from "tailwindcss-classnames";
 import classnames, {
-  TArg,
   display,
   flexDirection,
   margin,
   width,
 } from "tailwindcss-classnames";
 
-import { ColumnsProps } from "./Columns";
+import type { ColumnsProps } from "./Columns";
 
 const negativeMargins = "-mx-2" as TArg;
 

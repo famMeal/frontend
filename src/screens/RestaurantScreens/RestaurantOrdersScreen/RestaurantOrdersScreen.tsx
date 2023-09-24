@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
   Box,
   Button,
@@ -12,24 +12,31 @@ import { COLOURS } from "constants/colours";
 import { useCallback, useMemo, useState, type FC } from "react";
 import { View } from "react-native";
 import { MagnifyingGlassIcon, TrashIcon } from "react-native-heroicons/solid";
-import type { OrderData } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
-import { RootStackParamList } from "types/navigation.types";
+import {
+  useRestaurantOrdersQuery,
+  type OrderData,
+} from "screens/RestaurantScreens/useRestaurantOrdersQuery";
+import type { RootStackParamList } from "types/navigation.types";
 import { createList } from "utilities/createList";
 import {
   RestaurantOrderCard,
   SkeletonRestaurantOrderCard,
 } from "./RestaurantOrderCard";
-import {
-  RestaurantOrderData,
-  useLazyRestaurantOrderQuery,
-} from "./useLazyRestaurantOrderQuery";
+import type { RestaurantOrderData } from "./useLazyRestaurantOrderQuery";
+import { useLazyRestaurantOrderQuery } from "./useLazyRestaurantOrderQuery";
 
 type Props = NativeStackScreenProps<RootStackParamList, "RestaurantOrders">;
 
 const RestaurantOrdersScreen: FC<Props> = ({ route: { params } }) => {
   const [isSearching, setIsSearching] = useState(false);
-  const { orders, restaurantID } = params;
+  const { restaurantID } = params;
   const [searchTerm, setSearchTerm] = useState("");
+
+  const { data: restaurantData } = useRestaurantOrdersQuery({
+    variables: {
+      id: restaurantID,
+    },
+  });
   const [findOrder, { data, loading }] = useLazyRestaurantOrderQuery();
 
   const handleClearSearch = () => {
@@ -59,7 +66,8 @@ const RestaurantOrdersScreen: FC<Props> = ({ route: { params } }) => {
     <RestaurantOrderCard key={order?.id} order={order} />
   );
 
-  const renderOrders = () => orders?.map(renderOrder);
+  const renderOrders = () =>
+    restaurantData?.restaurant?.orders?.map(renderOrder);
 
   const renderSkeleton = (index: number) => (
     <SkeletonRestaurantOrderCard key={index} />

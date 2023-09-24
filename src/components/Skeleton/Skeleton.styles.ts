@@ -10,7 +10,7 @@ import classnames, {
   overflow,
   width,
 } from "tailwindcss-classnames";
-import { Props } from "./Skeleton";
+import type { Props } from "./Skeleton";
 
 export const getCSS = ({ size, isFullyRounded }: Omit<Props, "width">) => {
   const container = classnames(

@@ -1,5 +1,5 @@
+import type { TArg } from "tailwindcss-classnames";
 import classnames, {
-  TArg,
   display,
   flexBox,
   flexDirection,

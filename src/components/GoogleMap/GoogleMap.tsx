@@ -4,7 +4,8 @@ import type { FC, ForwardedRef } from "react";
 import { forwardRef, useEffect } from "react";
 import { Dimensions } from "react-native";
 import { GOOGLE_API_KEY } from "react-native-dotenv";
-import MapView, { LatLng, MapMarkerProps, Marker } from "react-native-maps";
+import type { LatLng, MapMarkerProps } from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 
 interface Props {

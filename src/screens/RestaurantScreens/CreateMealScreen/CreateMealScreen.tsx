@@ -1,6 +1,6 @@
-import DateTimePicker, {
-  DateTimePickerEvent,
-} from "@react-native-community/datetimepicker";
+import type { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
   BottomDrawer,
   Box,
@@ -12,9 +12,17 @@ import {
   Typography,
 } from "components";
 import { COLOURS } from "constants/colours";
-import React, { Dispatch, useState, type FC } from "react";
-import { Platform, View } from "react-native";
+import type { Dispatch } from "react";
+import React, { useState, type FC } from "react";
+import { Alert, Platform, View } from "react-native";
 import { ClockIcon } from "react-native-heroicons/solid";
+import type { RootStackParamList } from "types/navigation.types";
+import {
+  RESTAURANT_ORDERS_QUERY,
+  type RestaurantOrdersData,
+  type RestaurantOrdersVariables,
+} from "../useRestaurantOrdersQuery";
+import { useMealCreateMutation } from "./useMealCreateMutation";
 
 const formatTime = (date: Date) =>
   date.toLocaleTimeString("en-US", {
@@ -31,7 +39,11 @@ const form = {
 
 type FormValues = keyof typeof form;
 
-const CreateMealScreen: FC = () => {
+type Props = NativeStackScreenProps<RootStackParamList, "CreateMeal">;
+
+const CreateMealScreen: FC<Props> = ({ route: { params } }) => {
+  const { restaurantID } = params;
+
   const [state, setState] = useState(form);
   const [time, setTime] = useState<TypeOfTimes>("pickupStartTime");
   const [isDrawerVisible, setDrawerVisible] = useState(false);
@@ -39,8 +51,9 @@ const CreateMealScreen: FC = () => {
   const [pickupEndTime, setPickupEndTime] = useState(new Date());
   const [orderCutoffTime, setOrderCutoffTime] = useState(new Date());
   const [orderStartTime, setOrderStartTime] = useState(new Date());
+  const [createMeal, { loading }] = useMealCreateMutation();
 
-  const times = {
+  const setTimes = {
     pickupStartTime: setPickupStartTime,
     pickupEndTime: setPickupEndTime,
     orderCutoffTime: setOrderCutoffTime,
@@ -54,12 +67,12 @@ const CreateMealScreen: FC = () => {
     orderStartTime,
   };
 
-  type TypeOfTimes = keyof typeof times;
+  type TypeOfTimes = keyof typeof setTimes;
 
   const onTimeChange = (
     _: DateTimePickerEvent,
     selectedDate: Date | undefined,
-  ) => (selectedDate ? times[time](selectedDate) : null);
+  ) => (selectedDate ? setTimes[time](selectedDate) : null);
 
   const handleOpenTimeDrawer = (time: TypeOfTimes) => {
     return (onCallBackOpenDrawer: Dispatch<React.SetStateAction<boolean>>) => {
@@ -73,6 +86,66 @@ const CreateMealScreen: FC = () => {
       ...prevState,
       [name]: value,
     }));
+
+  const clearState = () =>
+    setState({
+      name: "",
+      description: "",
+      price: "",
+      quantityAvailable: "",
+    });
+
+  const showMealCreatedAlert = () => {
+    Alert.alert(
+      "Meal Created",
+      "Your meal has been successfully created!",
+      [{ text: "Close", onPress: clearState }],
+      { cancelable: false },
+    );
+  };
+
+  const handleCreateMeal = () =>
+    createMeal({
+      variables: {
+        input: {
+          name: state.name,
+          description: state.description,
+          price: Number(state.price),
+          restaurantId: restaurantID,
+        },
+      },
+      update: (cache, result) => {
+        const data = cache.readQuery<
+          RestaurantOrdersData,
+          RestaurantOrdersVariables
+        >({
+          query: RESTAURANT_ORDERS_QUERY,
+          variables: {
+            id: restaurantID,
+          },
+        });
+
+        if (data && result?.data?.mealCreate?.meal) {
+          cache.writeQuery<RestaurantOrdersData, RestaurantOrdersVariables>({
+            query: RESTAURANT_ORDERS_QUERY,
+            variables: {
+              id: restaurantID,
+            },
+            data: {
+              ...data,
+              restaurant: {
+                ...data?.restaurant,
+                meals: [
+                  ...data?.restaurant?.meals,
+                  result?.data?.mealCreate?.meal,
+                ],
+              },
+            },
+          });
+        }
+      },
+      onCompleted: () => showMealCreatedAlert(),
+    });
 
   return (
     <Container>
@@ -90,6 +163,7 @@ const CreateMealScreen: FC = () => {
                   Meal Name
                 </Typography>
                 <Input
+                  value={state.name}
                   onChangeText={value => handleInputChange("name", value)}
                 />
               </Column>
@@ -100,8 +174,10 @@ const CreateMealScreen: FC = () => {
                   Description
                 </Typography>
                 <Input
+                  value={state.description}
                   multiline
                   numberOfLines={4}
+                  maxLength={400}
                   onChangeText={value =>
                     handleInputChange("description", value)
                   }
@@ -114,6 +190,7 @@ const CreateMealScreen: FC = () => {
                   Quantity
                 </Typography>
                 <Input
+                  value={state.quantityAvailable}
                   keyboardType="numeric"
                   maxLength={3}
                   onChangeText={value =>
@@ -126,6 +203,7 @@ const CreateMealScreen: FC = () => {
                   Price
                 </Typography>
                 <Input
+                  value={state.price}
                   keyboardType="numeric"
                   maxLength={3}
                   onChangeText={value => handleInputChange("price", value)}
@@ -208,7 +286,12 @@ const CreateMealScreen: FC = () => {
           <Box>
             <Columns>
               <Column isPaddingless>
-                <Button theme="accent">Create</Button>
+                <Button
+                  onPress={handleCreateMeal}
+                  isLoading={loading}
+                  theme="accent">
+                  Create
+                </Button>
               </Column>
             </Columns>
           </Box>

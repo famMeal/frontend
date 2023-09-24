@@ -1,8 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
-import {
-  NativeStackScreenProps,
-  createNativeStackNavigator,
-} from "@react-navigation/native-stack";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import type { Dispatch, FC, SetStateAction } from "react";
 import { useEffect } from "react";
 import { MealsScreen } from "screens/ClientScreens/MealsScreen";

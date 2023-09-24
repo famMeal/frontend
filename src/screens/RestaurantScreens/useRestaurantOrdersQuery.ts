@@ -1,12 +1,21 @@
-import { QueryHookOptions, gql, useQuery } from "@apollo/client";
-import { Meal, Order, Restaurant, User } from "schema";
+import type { QueryHookOptions } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
+import type { Meal, Order, Restaurant, User } from "schema";
 
-const RESTAURANT_ORDERS_QUERY = gql`
+export const RESTAURANT_ORDERS_QUERY = gql`
   query RestaurantOrders($id: ID!) {
     restaurant(id: $id) {
       id
       __typename
       name
+      meals {
+        active
+        __typename
+        id
+        name
+        description
+        price
+      }
       orders {
         __typename
         id
@@ -15,7 +24,6 @@ const RESTAURANT_ORDERS_QUERY = gql`
         subtotal
         total
         meal {
-          __typename
           active
           id
           name
@@ -39,7 +47,7 @@ type OrderSplinter = Pick<
   "__typename" | "id" | "quantity" | "status" | "subtotal" | "total"
 >;
 
-type MealSpinter = Pick<
+type OrderMealSplinter = Pick<
   Meal,
   | "__typename"
   | "id"
@@ -50,24 +58,30 @@ type MealSpinter = Pick<
   | "price"
 >;
 
+export type RestaurantMealData = Pick<
+  Meal,
+  "id" | "name" | "active" | "price" | "description" | "__typename"
+>;
+
 type UserSplinter = Pick<User, "__typename" | "id" | "firstName" | "lastName">;
 
 export interface OrderData extends OrderSplinter {
-  meal: MealSpinter;
+  meal: OrderMealSplinter;
   user: UserSplinter;
 }
 
 type RestaurantSplinter = Pick<Restaurant, "id" | "__typename" | "name">;
 
 interface RestaurantData extends RestaurantSplinter {
+  meals: RestaurantMealData[];
   orders: OrderData[];
 }
 
-interface Data {
+export interface Data {
   restaurant: RestaurantData;
 }
 
-interface Variables {
+export interface Variables {
   id: string;
 }
 
@@ -77,3 +91,7 @@ const useRestaurantOrdersQuery = (options?: Options) =>
   useQuery(RESTAURANT_ORDERS_QUERY, options);
 
 export { useRestaurantOrdersQuery };
+export type {
+  Data as RestaurantOrdersData,
+  Variables as RestaurantOrdersVariables,
+};
