@@ -9,11 +9,10 @@ import {
 } from "components";
 import { COLOURS } from "constants/colours";
 import type { Dispatch, FC, SetStateAction } from "react";
-import { useState } from "react";
 import { View } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import { ChevronDownIcon, TrashIcon } from "react-native-heroicons/solid";
-import type { MealSplinter } from "screens/ClientScreens/MealsScreen/MealScreen/useGetRestaurantMealQuery";
+import type { MealSplinter } from "screens/ClientScreens/MealsScreen/MealScreen/useGetMealQuery";
 import type { ConfirmationNavigationProps } from "types/navigation.types";
 import {
   createTimeArray,
@@ -22,18 +21,18 @@ import {
 } from "utilities";
 
 interface Props {
-  meal?: MealSplinter;
-  selectedTime: string[];
+  quantity: number;
+  setQuantity: Dispatch<React.SetStateAction<number>>;
+  meal?: Omit<MealSplinter, "restaurant">;
   setSelectedTime: Dispatch<SetStateAction<string[]>>;
 }
 
 const RestaurantMealCard: FC<Props> = ({
+  quantity,
+  setQuantity,
   meal,
-  selectedTime: unusedselectedTime,
   setSelectedTime,
 }) => {
-  const [quantity, setQuantity] = useState(1);
-
   const { name, description, pickupEndTime, pickupStartTime, price } =
     meal ?? {};
 
@@ -76,10 +75,6 @@ const RestaurantMealCard: FC<Props> = ({
             Pickup window
           </Typography>
           <SelectList
-            defaultOption={{
-              key: "option",
-              value: formatTimeIntervals(timeIntervals)[0],
-            }}
             arrowicon={<ChevronDownIcon size={22} color={COLOURS.accent} />}
             inputStyles={{
               color: COLOURS.accent,

@@ -9,53 +9,63 @@ import type {
   ConfirmationNavigationProps,
   RootStackParamList,
 } from "types/navigation.types";
-import { createTimeArray } from "utilities";
 import {
   RestaurantMealCard,
   SkeletonRestaurantMealCard,
 } from "./RestaurantMealCard";
-import { useGetRestaurantMealQuery } from "./useGetRestaurantMealQuery";
+import { useAddToCartMutation } from "./useAddToCartMutation";
+import { useGetMealQuery } from "./useGetMealQuery";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Meal">;
 
 const MealScreen: FC<Props> = ({ route: { params } }) => {
-  const mapRef = useRef<MapView>(null);
-  const { restaurantID, mealID } = params;
-  const { data, loading } = useGetRestaurantMealQuery({
+  const { mealID } = params;
+  const { data, loading } = useGetMealQuery({
+    skip: !mealID,
     variables: {
-      id: restaurantID,
+      id: mealID,
     },
-    skip: !restaurantID,
   });
-
-  const { meals, longitude, latitude } = data?.restaurant ?? {};
-
-  const meal = meals?.find(({ id }) => id === mealID);
-
+  const [addToCart, { loading: isAddToCartLoading }] = useAddToCartMutation();
+  const mapRef = useRef<MapView>(null);
   const { navigate } = useNavigation<ConfirmationNavigationProps>();
+  const { meal } = data ?? {};
+  const { restaurant } = meal ?? {};
+  const [quantity, setQuantity] = useState(1);
+  const [[pickupStartTime, pickupEndTime], setSelectedTime] = useState<
+    string[]
+  >([]);
 
-  const handleOnPressContinue = () => navigate("Confirmation");
+  const handleOnPressContinue = () => {
+    addToCart({
+      variables: {
+        input: {
+          mealId: mealID,
+          pickupStartTime,
+          pickupEndTime,
+          quantity,
+          userId: "6",
+        },
+      },
+      onCompleted: ({ addToCart: { order } }) => {
+        navigate("Confirmation", {
+          cart: order,
+        });
+      },
+    });
+  };
 
-  const timeIntervals = createTimeArray(
-    meal?.pickupStartTime,
-    meal?.pickupEndTime,
-  );
-
-  const [selectedTime, setSelectedTime] = useState(timeIntervals[0]);
-
-  const renderMeal = useCallback(
-    () =>
-      loading ? (
-        <SkeletonRestaurantMealCard />
-      ) : (
-        <RestaurantMealCard
-          selectedTime={selectedTime}
-          setSelectedTime={setSelectedTime}
-          meal={{ ...meal!, id: mealID! }}
-        />
-      ),
-    [loading],
-  );
+  const renderMeal = () =>
+    loading ? (
+      <SkeletonRestaurantMealCard />
+    ) : (
+      <RestaurantMealCard
+        quantity={quantity}
+        setQuantity={setQuantity}
+        setSelectedTime={setSelectedTime}
+        meal={meal}
+      />
+    );
 
   const renderMap = useCallback(
     () =>
@@ -64,21 +74,26 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
       ) : (
         <GoogleMap
           ref={mapRef}
-          destination={{ latitude: latitude!, longitude: longitude! }}
+          destination={{
+            latitude: restaurant?.latitude!,
+            longitude: restaurant?.longitude!,
+          }}
         />
       ),
     [loading],
   );
 
-  const renderCTA = useCallback(
-    () =>
-      loading ? (
-        <Skeleton size="large" />
-      ) : (
-        <Button onPress={handleOnPressContinue}>Continue</Button>
-      ),
-    [loading],
-  );
+  const renderCTA = () =>
+    loading ? (
+      <Skeleton size="large" />
+    ) : (
+      <Button
+        disabled={!pickupEndTime || !pickupStartTime}
+        isLoading={isAddToCartLoading}
+        onPress={handleOnPressContinue}>
+        Continue
+      </Button>
+    );
 
   return (
     <Container className="flex flex-col justify-between">

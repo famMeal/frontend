@@ -1,5 +1,6 @@
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { Meal, Restaurant } from "schema";
+import type { AddToCartData } from "screens/ClientScreens/MealsScreen/MealScreen/useAddToCartMutation";
 
 export type RootStackParamList = {
   Login: undefined;
@@ -26,7 +27,9 @@ export type RootStackParamList = {
     restaurantName: Restaurant["name"];
     mealID: Meal["id"];
   };
-  Confirmation: undefined;
+  Confirmation: {
+    cart: AddToCartData;
+  };
   Profile: undefined;
   ClientOrders: undefined;
 };

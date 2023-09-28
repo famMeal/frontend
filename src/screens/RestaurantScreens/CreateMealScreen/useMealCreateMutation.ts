@@ -5,6 +5,7 @@ import type { CreateInput, CreatePayload, Meal } from "schema";
 const MEAL_CREATE = gql`
   mutation MealCreate($input: CreateInput!) {
     mealCreate(input: $input) {
+      __typename
       clientMutationId
       errors
       meal {
@@ -37,9 +38,9 @@ interface Data {
   mealCreate: MealCreate;
 }
 
-type Variables = {
+interface Variables {
   input: CreateInput;
-};
+}
 
 type Options = MutationHookOptions<Data, Variables>;
 

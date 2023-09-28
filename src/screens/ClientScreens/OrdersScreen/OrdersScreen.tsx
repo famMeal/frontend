@@ -1,9 +1,16 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Box, Column, Columns, Container, Typography } from "components";
-import type { FC } from "react";
+import type { Dispatch, FC, SetStateAction } from "react";
 import type { RootStackParamList } from "types/navigation.types";
 
-type Props = NativeStackScreenProps<RootStackParamList, "ClientOrders">;
+type OrderStackProps = NativeStackScreenProps<
+  RootStackParamList,
+  "ClientOrders"
+>;
+
+interface Props extends OrderStackProps {
+  setActiveScreen: Dispatch<SetStateAction<string>>;
+}
 
 const OrdersScreen: FC<Props> = () => {
   return (

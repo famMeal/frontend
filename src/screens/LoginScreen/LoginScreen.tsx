@@ -27,7 +27,7 @@ const LoginScreen: FC = () => {
 
   const { navigate } = useNavigation<LoginNavigationProps>();
 
-  const handleOnPressLogin = () => navigate(Screens.Restaurants);
+  const handleOnPressLogin = () => navigate(Screens.Clients);
 
   const toggleSecureTextEntry = () =>
     setSecureTextEntry(prevState => !prevState);

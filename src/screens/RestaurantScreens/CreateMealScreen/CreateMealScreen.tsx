@@ -144,7 +144,7 @@ const CreateMealScreen: FC<Props> = ({ route: { params } }) => {
           });
         }
       },
-      onCompleted: () => showMealCreatedAlert(),
+      onCompleted: showMealCreatedAlert,
     });
 
   return (

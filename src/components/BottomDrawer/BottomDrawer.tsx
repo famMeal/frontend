@@ -21,3 +21,4 @@ const BottomDrawer: FC<Props> = ({ children, isVisible, onClose }) => {
 };
 
 export { BottomDrawer };
+export type { Props as BottomDrawerProps };

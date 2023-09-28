@@ -5,7 +5,7 @@ import type { FC } from "react";
 import { Image } from "react-native";
 import type { MealsData } from "screens/ClientScreens/MealsScreen/Meals/useGetMealsQuery";
 import type { RootStackParamList } from "types/navigation.types";
-import { formatCurrency, formatTime } from "utilities";
+import { formatTime } from "utilities";
 
 interface Props {
   meal: MealsData;
@@ -30,7 +30,6 @@ const MealCard: FC<Props> = ({ meal }) => {
   } = meal ?? {};
 
   const { navigate } = useNavigation<MealScreenNavigationProp>();
-
   const handleOnPressReserve = () =>
     navigate("Meal", {
       restaurantID: restaurant?.id,
@@ -75,7 +74,7 @@ const MealCard: FC<Props> = ({ meal }) => {
       <Columns isMarginless>
         <Column className="items-center justify-center">
           <Typography colour="accent" weigth="semiBold">
-            {formatCurrency(price)}
+            {price}
           </Typography>
         </Column>
         <Column>
