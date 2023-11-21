@@ -1,10 +1,9 @@
 import type { ChipProps } from "./Chip";
 
 import classnames, {
+  alignSelf,
   backgroundColor,
   borderRadius,
-  display,
-  flexDirection,
   inset,
   lineHeight,
   padding,
@@ -12,11 +11,14 @@ import classnames, {
   textColor,
   textTransform,
   whitespace,
-  width,
   zIndex,
 } from "tailwindcss-classnames";
 
-export const getCSS = ({ type, position: chipPosition }: ChipProps) => {
+export const getCSS = ({
+  type,
+  position: chipPosition,
+  isStatic,
+}: ChipProps) => {
   const positionCSS = {
     topLeft: inset("left-6", "top-6"),
     topRight: inset("right-3", "top-3"),
@@ -33,13 +35,11 @@ export const getCSS = ({ type, position: chipPosition }: ChipProps) => {
   };
 
   const ChipCSS = classnames(
+    alignSelf("self-center"),
     zIndex("z-10"),
     themeCSS[type],
-    position("absolute"),
-    positionCSS[chipPosition],
-    display("flex"),
-    width("w-max"),
-    flexDirection("flex-row"),
+    position(isStatic ? "static" : "absolute"),
+    isStatic ? null : positionCSS[chipPosition],
     whitespace("whitespace-nowrap"),
     borderRadius("rounded-full"),
     padding("px-3", "py-1"),

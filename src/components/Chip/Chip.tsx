@@ -11,6 +11,7 @@ type ChipPositions = "topLeft" | "topRight" | "bottomLeft" | "bottomRight";
 export interface ChipProps {
   type: ChipTypes;
   position: ChipPositions;
+  isStatic: boolean;
 }
 
 type Props = ViewProps & Partial<ChipProps>;
@@ -19,11 +20,12 @@ const Chip: FC<Props> = ({
   children,
   type = "primary",
   position = "topLeft",
+  isStatic = false,
   ...rest
 }) => {
   const { ChipCSS, textCSS } = useMemo(
-    () => getCSS({ type, position }),
-    [type, position],
+    () => getCSS({ type, position, isStatic }),
+    [type, position, isStatic],
   );
   return (
     <View className={ChipCSS} {...rest}>

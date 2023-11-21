@@ -16,19 +16,14 @@ import type { Dispatch } from "react";
 import React, { useState, type FC } from "react";
 import { Alert, Platform, View } from "react-native";
 import { ClockIcon } from "react-native-heroicons/solid";
-import type { RootStackParamList } from "types/navigation.types";
 import {
   RESTAURANT_ORDERS_QUERY,
   type RestaurantOrdersData,
   type RestaurantOrdersVariables,
-} from "../useRestaurantOrdersQuery";
+} from "screens/RestaurantScreens/useRestaurantOrdersQuery";
+import type { RootStackParamList } from "types/navigation.types";
+import { formatTimeFromUTC } from "utilities";
 import { useMealCreateMutation } from "./useMealCreateMutation";
-
-const formatTime = (date: Date) =>
-  date.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
 
 const form = {
   name: "",
@@ -216,7 +211,10 @@ const CreateMealScreen: FC<Props> = ({ route: { params } }) => {
                   Start Pickup time
                 </Typography>
                 <View>
-                  <Input editable={false} value={formatTime(pickupStartTime)} />
+                  <Input
+                    editable={false}
+                    value={formatTimeFromUTC(pickupStartTime)}
+                  />
                   <View className="absolute right-0">
                     <Button
                       onPress={() =>
@@ -234,7 +232,10 @@ const CreateMealScreen: FC<Props> = ({ route: { params } }) => {
                   End Pickup time
                 </Typography>
                 <View>
-                  <Input editable={false} value={formatTime(pickupEndTime)} />
+                  <Input
+                    editable={false}
+                    value={formatTimeFromUTC(pickupEndTime)}
+                  />
                   <View className="absolute right-0">
                     <Button
                       onPress={() =>
@@ -252,7 +253,10 @@ const CreateMealScreen: FC<Props> = ({ route: { params } }) => {
                   Start Order time
                 </Typography>
                 <View>
-                  <Input editable={false} value={formatTime(orderStartTime)} />
+                  <Input
+                    editable={false}
+                    value={formatTimeFromUTC(orderStartTime)}
+                  />
                   <View className="absolute right-0">
                     <Button
                       onPress={() =>
@@ -268,7 +272,10 @@ const CreateMealScreen: FC<Props> = ({ route: { params } }) => {
                   Order Cutoff time
                 </Typography>
                 <View>
-                  <Input editable={false} value={formatTime(orderCutoffTime)} />
+                  <Input
+                    editable={false}
+                    value={formatTimeFromUTC(orderCutoffTime)}
+                  />
                   <View className="absolute right-0">
                     <Button
                       onPress={() =>

@@ -1,7 +1,12 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Box, Column, Columns, Container, Typography } from "components";
-import type { Dispatch, FC, SetStateAction } from "react";
+import { useEffect, type Dispatch, type FC, type SetStateAction } from "react";
+import { ScrollView } from "react-native";
 import type { RootStackParamList } from "types/navigation.types";
+import { createList } from "utilities/createList";
+import { OrderCard, SkeletonOrderCard } from "./OrderCard";
+import type { OrderData } from "./useUserOrdersScreen";
+import { useGetUserOrdersQuery } from "./useUserOrdersScreen";
 
 type OrderStackProps = NativeStackScreenProps<
   RootStackParamList,
@@ -12,16 +17,55 @@ interface Props extends OrderStackProps {
   setActiveScreen: Dispatch<SetStateAction<string>>;
 }
 
-const OrdersScreen: FC<Props> = () => {
+const OrdersScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () =>
+      setActiveScreen(route.name),
+    );
+    return unsubscribe;
+  }, [navigation, setActiveScreen]);
+
+  const { data, loading } = useGetUserOrdersQuery({
+    variables: {
+      id: "6",
+    },
+  });
+
+  const { orders } = data?.user ?? {};
+
+  const renderOrder = (order: OrderData) => (
+    <OrderCard key={order.id} order={order} />
+  );
+
+  const renderOrders = () => orders?.map(renderOrder);
+
+  const renderSkeleton = (num: number) => <SkeletonOrderCard key={num} />;
+
+  const renderOrderSkeletons = () => createList(3).map(renderSkeleton);
+
+  const renderContent = () =>
+    loading ? renderOrderSkeletons() : renderOrders();
+
   return (
     <Container>
-      <Box>
-        <Columns>
-          <Column>
-            <Typography type="H2">Orders Guest</Typography>
-          </Column>
-        </Columns>
-      </Box>
+      <Columns>
+        <Column>
+          <Box>
+            <Columns>
+              <Column isPaddingless>
+                <Typography
+                  weigth="semiBold"
+                  isMarginless
+                  className="text-center"
+                  type="H3">
+                  Orders
+                </Typography>
+              </Column>
+            </Columns>
+          </Box>
+          <ScrollView>{renderContent()}</ScrollView>
+        </Column>
+      </Columns>
     </Container>
   );
 };
