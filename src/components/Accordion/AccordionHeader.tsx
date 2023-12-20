@@ -30,7 +30,7 @@ const AccordionHeader: FC<PropsWithChildren> = ({ children }) => {
   const renderIcon = () => {
     return (
       <Animated.View style={{ transform: [{ rotate: rotation }] }}>
-        <ChevronRightIcon color={COLOURS.white} />
+        <ChevronRightIcon width={14} height={14} color={COLOURS.white} />
       </Animated.View>
     );
   };
@@ -38,7 +38,7 @@ const AccordionHeader: FC<PropsWithChildren> = ({ children }) => {
   return (
     <View onTouchEnd={toggleAccordion}>
       {children}
-      <View className="absolute top-12 right-0 p-2 bg-accent rounded-full">
+      <View className="absolute top-0 right-0 p-2 bg-accent rounded-full">
         {renderIcon()}
       </View>
     </View>

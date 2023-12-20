@@ -37,7 +37,7 @@ const RestaurantMeals: FC<Props> = ({ route: { params } }) => {
         </Column>
       </Columns>
       <Columns>
-        <Column flex="grow">{renderMeals()}</Column>
+        <Column>{renderMeals()}</Column>
       </Columns>
     </Container>
   );

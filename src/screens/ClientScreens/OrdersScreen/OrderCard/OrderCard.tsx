@@ -5,16 +5,14 @@ import {
   AccordionHeader,
   Box,
   Button,
-  Chip,
   Column,
   Columns,
   Typography,
 } from "components";
 import { type FC } from "react";
 import { Linking } from "react-native";
-
 import type { OrderData } from "screens/ClientScreens/OrdersScreen/useUserOrdersScreen";
-import { formatTime } from "utilities";
+import { formatTime } from "utilities/formatTime";
 interface Props {
   order: OrderData;
 }
@@ -30,16 +28,16 @@ const OrderCard: FC<Props> = ({ order }) => {
     total,
   } = order;
 
-  const { name, latitude, longitude, addressLine1, postalCode, city } =
-    restaurant;
+  const { latitude, longitude, addressLine1, postalCode, city } =
+    restaurant ?? {};
 
   const handleOpenGoogleMaps = () => {
     Geolocation.getCurrentPosition(
       position => {
-        const userLatitude = position.coords.latitude;
-        const userLongitude = position.coords.longitude;
+        const { latitude: userLat, longitude: userLong } =
+          position.coords ?? {};
 
-        const url = `https://www.google.com/maps/dir/?api=1&origin=${userLatitude},${userLongitude}&destination=${latitude},${longitude}&travelmode=driving`;
+        const url = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLong}&destination=${latitude},${longitude}&travelmode=driving`;
 
         Linking.openURL(url);
       },
@@ -52,59 +50,62 @@ const OrderCard: FC<Props> = ({ order }) => {
 
   return (
     <Box key={id}>
-      <Chip position="topRight">#{id}</Chip>
       <Accordion>
         <AccordionHeader>
-          <Columns>
-            <Column className="pb-0">
-              <Columns className="-ml-8">
-                <Column flex="shrink" isPaddingless className="justify-center">
-                  <Typography
-                    isMarginless
-                    weigth="semiBold"
-                    className="truncate">
-                    {quantity} {""}x {meal.name}
-                  </Typography>
-                  <Typography>{restaurant.name}</Typography>
-                  <Typography type="S">
-                    Pickup between
-                    <Typography type="S" weigth="semiBold">
-                      {" "}
-                      {formatTime(pickupStartTime)} and{" "}
-                    </Typography>
-                    <Typography type="S" weigth="semiBold">
-                      {formatTime(pickupEndTime)}
-                    </Typography>
-                  </Typography>
-                </Column>
-              </Columns>
+          <Columns isMarginless>
+            <Column columnWidth="fullWidth">
+              <Typography
+                type="S"
+                isMarginless
+                weigth="semiBold"
+                className="truncate">
+                {quantity} {""}x {meal.name}
+              </Typography>
+              <Typography isMarginless type="S">
+                Order ID:{" "}
+                <Typography isMarginless type="S">
+                  #{id}
+                </Typography>
+              </Typography>
+            </Column>
+          </Columns>
+          <Columns isMarginless>
+            <Column>
+              <Typography isMarginless type="S">
+                Total:
+              </Typography>
+            </Column>
+            <Column alignItems="flex-end">
+              <Typography isMarginless type="S" weigth="semiBold">
+                {total}
+              </Typography>
             </Column>
           </Columns>
         </AccordionHeader>
         <AccordionContent>
           <Columns>
-            <Column isPaddingless>
-              <Typography>{name}</Typography>
-              <Typography>{addressLine1}</Typography>
-              <Typography>
-                {postalCode}
-                <Typography> {city}</Typography>
+            <Column columnWidth="fullWidth">
+              <Typography isMarginless type="S" weigth="semiBold">
+                {restaurant.name}
+              </Typography>
+              <Typography isMarginless type="S">
+                {addressLine1} {postalCode} {city}
+              </Typography>
+              <Typography isMarginless type="S">
+                Pickup between:
+                <Typography isMarginless type="S" weigth="semiBold">
+                  {" "}
+                  {formatTime(pickupStartTime)} and{" "}
+                </Typography>
+                <Typography isMarginless type="S" weigth="semiBold">
+                  {formatTime(pickupEndTime)}
+                </Typography>
               </Typography>
             </Column>
           </Columns>
-          <Columns>
-            <Column isPaddingless className="justify-end">
-              <Typography weigth="semiBold">
-                Total:
-                <Typography> {total}</Typography>
-              </Typography>
-            </Column>
-            <Column isPaddingless>
-              <Button onPress={handleOpenGoogleMaps} isOutlined>
-                Directions
-              </Button>
-            </Column>
-          </Columns>
+          <Button onPress={handleOpenGoogleMaps} isOutlined>
+            Directions
+          </Button>
         </AccordionContent>
       </Accordion>
     </Box>

@@ -206,7 +206,7 @@ const CreateMealScreen: FC<Props> = ({ route: { params } }) => {
               </Column>
             </Columns>
             <Columns>
-              <Column flex="one" isPaddingless className="relative">
+              <Column isPaddingless className="relative">
                 <Typography weigth="bold" type="S">
                   Start Pickup time
                 </Typography>
@@ -227,7 +227,7 @@ const CreateMealScreen: FC<Props> = ({ route: { params } }) => {
                   </View>
                 </View>
               </Column>
-              <Column flex="one" isPaddingless>
+              <Column isPaddingless>
                 <Typography weigth="bold" type="S">
                   End Pickup time
                 </Typography>

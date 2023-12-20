@@ -1,31 +1,63 @@
-import type { TArg } from "tailwindcss-classnames";
-import classnames, {
-  display,
-  flexBox,
-  flexDirection,
-  flexShrink,
-  margin,
-  padding,
-} from "tailwindcss-classnames";
+import type { DimensionValue } from "react-native";
 import type { ColumnProps } from "./Column";
 
-const negativePadding = "-px-2" as TArg;
+export const getCSS = ({
+  alignItems,
+  justifyContent,
+  numOfColumns,
+  isLastColumn,
+  columnWidth = "fullWidth",
+  preserveFinalMargin,
+}: ColumnProps) => {
+  const remInPx = 16;
+  const gapSizePx = 1 * remInPx;
 
-export const getCSS = ({ flex, isPaddingless }: ColumnProps) => {
-  const flexCSS = {
-    grow: flexBox("grow"),
-    one: flexBox("flex-1"),
-    auto: flexBox("flex-auto"),
-    shrink: flexShrink("shrink"),
+  let widthFraction;
+  switch (columnWidth) {
+    case "oneThird":
+      widthFraction = 1 / 3;
+      break;
+    case "twoThird":
+      widthFraction = 2 / 3;
+      break;
+    case "oneQuarter":
+      widthFraction = 1 / 4;
+      break;
+    case "half":
+      widthFraction = 1 / 2;
+      break;
+    case "fullWidth":
+    default:
+      widthFraction = 1;
+      break;
+  }
+
+  const gapAdjustment = numOfColumns
+    ? ((gapSizePx / remInPx) * (numOfColumns - 1)) / numOfColumns
+    : 0;
+
+  const widthPercent = widthFraction * 100 - gapAdjustment;
+
+  const flexStyle = {
+    flex: 0,
+    width: `${widthPercent}%` as DimensionValue,
+    marginRight:
+      !preserveFinalMargin || isLastColumn
+        ? 0
+        : numOfColumns && numOfColumns > 1
+        ? gapSizePx
+        : 0,
   };
 
-  const columnCSS = classnames(
-    margin("ml-4"),
-    padding(isPaddingless ? "p-0" : "p-4", negativePadding),
-    display("flex"),
-    flexDirection("flex-col"),
-    flexCSS[flex],
-  );
+  const additionalStyles = {
+    alignItems: alignItems,
+    justifyContent: justifyContent,
+  };
+
+  const columnCSS = {
+    ...flexStyle,
+    ...additionalStyles,
+  };
 
   return { columnCSS };
 };

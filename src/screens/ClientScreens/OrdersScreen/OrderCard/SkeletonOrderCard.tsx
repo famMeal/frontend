@@ -4,15 +4,18 @@ import { type FC } from "react";
 const SkeletonOrderCard: FC = () => {
   return (
     <Box>
-      <Columns>
-        <Column className="pb-0">
-          <Columns className="-ml-8">
-            <Column isPaddingless className="justify-center">
-              <Skeleton size="medium" />
-              <Skeleton size="large" />
-              <Skeleton size="small" />
-            </Column>
-          </Columns>
+      <Columns isMarginless>
+        <Column columnWidth="fullWidth">
+          <Skeleton size="medium" />
+          <Skeleton size="large" />
+        </Column>
+      </Columns>
+      <Columns isMarginless>
+        <Column>
+          <Skeleton size="small" />
+        </Column>
+        <Column alignItems="flex-end">
+          <Skeleton size="small" />
         </Column>
       </Columns>
     </Box>

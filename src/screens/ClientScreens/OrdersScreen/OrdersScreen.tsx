@@ -1,5 +1,5 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Box, Column, Columns, Container, Typography } from "components";
+import { Column, Columns, Container } from "components";
 import { useEffect, type Dispatch, type FC, type SetStateAction } from "react";
 import { ScrollView } from "react-native";
 import type { RootStackParamList } from "types/navigation.types";
@@ -48,21 +48,8 @@ const OrdersScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
 
   return (
     <Container>
-      <Columns>
-        <Column>
-          <Box>
-            <Columns>
-              <Column isPaddingless>
-                <Typography
-                  weigth="semiBold"
-                  isMarginless
-                  className="text-center"
-                  type="H3">
-                  Orders
-                </Typography>
-              </Column>
-            </Columns>
-          </Box>
+      <Columns className="p-4">
+        <Column columnWidth="fullWidth">
           <ScrollView>{renderContent()}</ScrollView>
         </Column>
       </Columns>

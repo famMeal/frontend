@@ -91,7 +91,7 @@ const RestaurantMealCard: FC<Props> = ({ meal, restaurantID }) => {
         restaurantID={restaurantID}
       />
     ) : (
-      <Column flex="one">
+      <Column>
         <View className="absolute right-0 top-2 z-10">
           <Button onPress={toggleDrawer} isClean isOutlined>
             <TrashIcon color={COLOURS.primary} />

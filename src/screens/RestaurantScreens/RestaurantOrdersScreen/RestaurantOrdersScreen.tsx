@@ -135,7 +135,7 @@ const RestaurantOrdersScreen: FC<Props> = ({ route: { params } }) => {
                   {renderDeleteSearchButton()}
                 </View>
               </Column>
-              <Column isPaddingless flex="shrink" className="justify-end">
+              <Column isPaddingless className="justify-end">
                 <Button
                   theme="accent"
                   disabled={!searchTerm}

@@ -4,30 +4,64 @@ import type { ViewProps } from "react-native";
 import { View } from "react-native";
 import { getCSS } from "./Column.styles";
 
-type FlexTypes = "grow" | "one" | "auto" | "shrink";
+export type JustifyContent =
+  | "flex-start"
+  | "flex-end"
+  | "center"
+  | "space-between"
+  | "space-around"
+  | "space-evenly";
+
+export type AlignItems = "flex-start" | "flex-end" | "center" | "stretch";
+
+export type ColumnWidth =
+  | "fullWidth"
+  | "oneThird"
+  | "twoThird"
+  | "oneQuarter"
+  | "half";
 
 export interface ColumnProps {
-  flex: FlexTypes;
-  isPaddingless: boolean;
+  justifyContent?: JustifyContent;
+  alignItems?: AlignItems;
+  isPaddingless?: boolean;
+  numOfColumns?: number;
+  isLastColumn?: boolean;
+  preserveFinalMargin?: boolean;
+  columnWidth?: ColumnWidth;
 }
-
 type Props = ViewProps & Partial<ColumnProps>;
 
 const Column: FC<Props> = ({
   children,
-  flex = "one",
-  isPaddingless = false,
-  ...rest
+  alignItems,
+  justifyContent,
+  numOfColumns,
+  isLastColumn = false,
+  preserveFinalMargin = false,
+  columnWidth = "half",
 }) => {
   const { columnCSS } = useMemo(
-    () => getCSS({ flex, isPaddingless }),
-    [flex, isPaddingless],
+    () =>
+      getCSS({
+        alignItems,
+        justifyContent,
+        numOfColumns,
+        isLastColumn,
+        columnWidth,
+        preserveFinalMargin,
+      }),
+    [
+      alignItems,
+      justifyContent,
+      numOfColumns,
+      isLastColumn,
+      columnWidth,
+      preserveFinalMargin,
+    ],
   );
-  return (
-    <View className={columnCSS} {...rest}>
-      {children}
-    </View>
-  );
+
+  return <View style={{ ...columnCSS }}>{children}</View>;
 };
 
 export { Column };

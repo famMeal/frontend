@@ -19,25 +19,21 @@ const EmptyCart: FC<Props> = ({ onPress }) => {
   return (
     <Container>
       <Columns>
-        <Column>
+        <Column columnWidth="fullWidth">
           <Box>
             <Columns>
-              <Column>
+              <Column
+                columnWidth="fullWidth"
+                alignItems="center"
+                justifyContent="center">
                 <Typography weigth="bold" type="H3" className="text-center">
                   Your cart is empty
                 </Typography>
-              </Column>
-            </Columns>
-            <Columns>
-              <Column className="justify-center items-center">
                 <ExclamationTriangleIcon size={100} color={COLOURS.accent} />
               </Column>
             </Columns>
-            <Columns>
-              <Column isPaddingless>
-                <Button onPress={onPress}>View Meals</Button>
-              </Column>
-            </Columns>
+
+            <Button onPress={onPress}>View Meals</Button>
           </Box>
         </Column>
       </Columns>

@@ -42,15 +42,15 @@ const LoginScreen: FC = () => {
   return (
     <Container>
       <Box>
-        <Columns isMarginless>
-          <Column className="items-center justify-center">
+        <Columns>
+          <Column alignItems="center" columnWidth="fullWidth">
             <Typography colour="accent" isMarginless weigth="bold" type="H1">
               FamMeal
             </Typography>
           </Column>
         </Columns>
-        <Columns isMarginless>
-          <Column>
+        <Columns>
+          <Column columnWidth="fullWidth">
             <Typography weigth="semiBold" type="S">
               Email
             </Typography>
@@ -62,8 +62,8 @@ const LoginScreen: FC = () => {
             />
           </Column>
         </Columns>
-        <Columns isMarginless>
-          <Column>
+        <Columns>
+          <Column columnWidth="fullWidth">
             <Typography weigth="semiBold" type="S">
               Password
             </Typography>
@@ -83,8 +83,8 @@ const LoginScreen: FC = () => {
             </View>
           </Column>
         </Columns>
-        <Columns>
-          <Column>
+        <Columns className="mt-4">
+          <Column columnWidth="fullWidth">
             <Button onPress={handleOnPressLogin}>Login</Button>
           </Column>
         </Columns>

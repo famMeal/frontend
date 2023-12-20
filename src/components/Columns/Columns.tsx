@@ -1,5 +1,7 @@
+import type { ColumnProps } from "components/Column";
+import { Column } from "components/Column";
 import type { FC } from "react";
-import { useMemo } from "react";
+import { Children, cloneElement, isValidElement, useMemo } from "react";
 import type { ViewProps } from "react-native";
 import { View } from "react-native";
 import { getCSS } from "./Columns.styles";
@@ -21,11 +23,27 @@ const Columns: FC<Props> = ({
 }) => {
   const { columnsCSS } = useMemo(
     () => getCSS({ direction, isMarginless }),
-    [direction],
+    [direction, isMarginless],
   );
+
+  const numOfColumns = Children.toArray(children).filter(
+    child => isValidElement<ColumnProps>(child) && child.type === Column,
+  ).length;
+
+  const childrenWithCount = Children.map(children, (child, index) => {
+    const isLastColumn = index === numOfColumns - 1;
+
+    return isValidElement<ColumnProps>(child) && child.type === Column
+      ? cloneElement(child, {
+          numOfColumns,
+          isLastColumn,
+        })
+      : child;
+  });
+
   return (
     <View className={columnsCSS} {...rest}>
-      {children}
+      {childrenWithCount}
     </View>
   );
 };

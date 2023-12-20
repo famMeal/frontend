@@ -14,11 +14,7 @@ import { SelectList } from "react-native-dropdown-select-list";
 import { ChevronDownIcon, TrashIcon } from "react-native-heroicons/solid";
 import type { MealSplinter } from "screens/ClientScreens/MealsScreen/MealScreen/useGetMealQuery";
 import type { ConfirmationNavigationProps } from "types/navigation.types";
-import {
-  createTimeArray,
-  formatCurrency,
-  formatTimeIntervals,
-} from "utilities";
+import { createTimeArray, formatTimeIntervals } from "utilities";
 
 interface Props {
   quantity: number;
@@ -33,8 +29,7 @@ const RestaurantMealCard: FC<Props> = ({
   meal,
   setSelectedTime,
 }) => {
-  const { name, description, pickupEndTime, pickupStartTime, price } =
-    meal ?? {};
+  const { name, description, pickupEndTime, pickupStartTime } = meal ?? {};
 
   const { navigate } = useNavigation<ConfirmationNavigationProps>();
 
@@ -59,8 +54,8 @@ const RestaurantMealCard: FC<Props> = ({
           <TrashIcon color={COLOURS.primary} />
         </Button>
       </View>
-      <Columns isMarginless>
-        <Column>
+      <Columns className="mt-4">
+        <Column columnWidth="fullWidth">
           <Typography isMarginless weigth="bold" type="H3">
             {name}
           </Typography>
@@ -69,8 +64,8 @@ const RestaurantMealCard: FC<Props> = ({
           </Typography>
         </Column>
       </Columns>
-      <Columns>
-        <Column>
+      <Columns isMarginless>
+        <Column columnWidth="twoThird" justifyContent="flex-end">
           <Typography type="S" weigth="bold" colour="accent">
             Pickup window
           </Typography>
@@ -100,15 +95,15 @@ const RestaurantMealCard: FC<Props> = ({
             setSelected={handleSetSelectedTime}
           />
         </Column>
-      </Columns>
-      <Columns isMarginless>
-        <Column>
-          <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
-        </Column>
-        <Column className="items-center justify-center">
-          <Typography type="S" weigth="bold" colour="accent">
-            {formatCurrency(Number(price) * quantity)}
+        <Column
+          preserveFinalMargin
+          columnWidth="oneThird"
+          alignItems="center"
+          justifyContent="center">
+          <Typography className="mb-4" type="S" weigth="bold" colour="accent">
+            Quantity
           </Typography>
+          <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
         </Column>
       </Columns>
     </Box>

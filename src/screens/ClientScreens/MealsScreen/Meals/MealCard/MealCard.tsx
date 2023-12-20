@@ -5,7 +5,7 @@ import type { FC } from "react";
 import { Image } from "react-native";
 import type { MealsData } from "screens/ClientScreens/MealsScreen/Meals/useGetMealsQuery";
 import type { RootStackParamList } from "types/navigation.types";
-import { formatTime } from "utilities";
+import { formatTime } from "utilities/formatTime";
 
 interface Props {
   meal: MealsData;
@@ -40,8 +40,11 @@ const MealCard: FC<Props> = ({ meal }) => {
   return (
     <Box>
       <Chip type="accent">{quantityAvailable} left</Chip>
-      <Columns isMarginless>
-        <Column className="justify-center" flex="shrink">
+      <Columns>
+        <Column
+          preserveFinalMargin
+          columnWidth="oneThird"
+          justifyContent="center">
           <Image
             className="w-20 h-20 rounded-lg"
             source={{
@@ -49,7 +52,7 @@ const MealCard: FC<Props> = ({ meal }) => {
             }}
           />
         </Column>
-        <Column flex="one">
+        <Column columnWidth="twoThird">
           <Typography isMarginless type="H3" weigth="semiBold">
             {name}
           </Typography>
@@ -57,27 +60,30 @@ const MealCard: FC<Props> = ({ meal }) => {
           <Typography weigth="bold" type="P">
             {restaurant?.name}
           </Typography>
-          <Typography type="S">
+          <Typography isMarginless type="S">
             Order By:{" "}
             <Typography type="S" weigth="bold" colour="accent">
               {formatTime<MealsData["orderStartTime"]>(orderStartTime)}
             </Typography>
           </Typography>
-
           <Typography type="S">Pickup Between:</Typography>
-          <Typography type="S" weigth="bold" colour="accent">
+          <Typography isMarginless type="S" weigth="bold" colour="accent">
             {formatTime<MealsData["pickupStartTime"]>(pickupStartTime)} -{" "}
             {formatTime<MealsData["pickupEndTime"]>(pickupEndTime)}
           </Typography>
         </Column>
       </Columns>
       <Columns isMarginless>
-        <Column className="items-center justify-center">
+        <Column
+          alignItems="center"
+          justifyContent="center"
+          preserveFinalMargin
+          columnWidth="oneThird">
           <Typography colour="accent" weigth="semiBold">
             {price}
           </Typography>
         </Column>
-        <Column>
+        <Column columnWidth="twoThird" alignItems="center">
           <Button onPress={handleOnPressReserve}>Reserve</Button>
         </Column>
       </Columns>

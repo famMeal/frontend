@@ -20,7 +20,7 @@ export const getCSS = ({
   isStatic,
 }: ChipProps) => {
   const positionCSS = {
-    topLeft: inset("left-6", "top-6"),
+    topLeft: inset("left-4", "top-4"),
     topRight: inset("right-3", "top-3"),
     bottomLeft: inset("left-3", "bottom-3"),
     bottomRight: inset("right-3", "bottom-3"),

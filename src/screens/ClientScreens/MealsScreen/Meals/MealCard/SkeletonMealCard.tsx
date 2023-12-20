@@ -6,12 +6,12 @@ const SkeletonMealCard: FC = () => {
   return (
     <Box>
       <Columns isMarginless>
-        <Column className="justify-center" flex="shrink">
+        <Column className="justify-center">
           <View className="w-20 h-20 rounded-lg">
             <Skeleton size="large" />
           </View>
         </Column>
-        <Column flex="one">
+        <Column>
           <Skeleton size="medium" />
           <Skeleton size="small" />
           <Skeleton size="large" />

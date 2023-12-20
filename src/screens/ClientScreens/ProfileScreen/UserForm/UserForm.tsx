@@ -10,7 +10,7 @@ const UserForm: FC<Props> = ({ user: { firstName, lastName, email } }) => {
   return (
     <Box>
       <Columns>
-        <Column>
+        <Column preserveFinalMargin>
           <Typography weigth="semiBold" type="S">
             First name
           </Typography>

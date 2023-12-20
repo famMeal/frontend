@@ -22,6 +22,7 @@ const QuantitySelector: FC<Props> = ({ quantity, setQuantity }) => {
     <View className="flex flex-row">
       <View>
         <Button
+          className="p-1"
           theme="accent"
           disabled={quantity === 1}
           onPress={() => handleQuantityOnPress("decrement")}
@@ -29,13 +30,14 @@ const QuantitySelector: FC<Props> = ({ quantity, setQuantity }) => {
           <MinusIcon color={COLOURS.white} />
         </Button>
       </View>
-      <View className="w-10 flex  items-center justify-center">
+      <View className="w-6 flex  items-center justify-center">
         <Typography isMarginless weigth="bold">
           {quantity}
         </Typography>
       </View>
       <View>
         <Button
+          className="p-1"
           theme="accent"
           onPress={() => handleQuantityOnPress("increment")}
           isFullyRounded>

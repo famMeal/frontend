@@ -51,7 +51,7 @@ const UpdateRestaurantMeal: FC<Props> = ({
     }));
 
   return (
-    <Column isPaddingless flex="one">
+    <Column isPaddingless>
       <Columns>
         <Column isPaddingless>
           <Typography weigth="bold" type="S">
@@ -62,7 +62,7 @@ const UpdateRestaurantMeal: FC<Props> = ({
             value={state.name}
           />
         </Column>
-        <Column isPaddingless flex="shrink">
+        <Column isPaddingless>
           <Typography weigth="bold" type="S">
             Price
           </Typography>
