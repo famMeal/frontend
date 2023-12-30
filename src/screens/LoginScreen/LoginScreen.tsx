@@ -15,6 +15,7 @@ import { TouchableOpacity, View } from "react-native";
 import { EyeIcon, EyeSlashIcon } from "react-native-heroicons/solid";
 import type { LoginNavigationProps } from "types/navigation.types";
 import { useLoginMutation } from "./useLogInMutation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Screens = {
   Restaurants: "Restaurants",
@@ -25,22 +26,31 @@ const LoginScreen: FC = () => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userLogin] = useLoginMutation();
   const { navigate } = useNavigation<LoginNavigationProps>();
+  const [userLogin] = useLoginMutation({
+    onCompleted: completedData => {
+      console.log({ completedData });
+      AsyncStorage.setItem(
+        "accessToken",
+        completedData.userLogin.credentials.accessToken,
+      );
+      AsyncStorage.setItem(
+        "client",
+        completedData.userLogin.credentials.client,
+      );
+      AsyncStorage.setItem("uid", completedData.userLogin.credentials.uid);
+      navigate(Screens.Clients);
+    },
+    onError: error => {
+      console.error("Login error:", error.message);
+    },
+  });
 
   const handleOnPressLogin = () => {
     userLogin({
       variables: {
         email,
         password,
-      },
-      onCompleted: completedData => {
-        console.log({ completedData });
-        console.log(
-          completedData.userLogin.authenticatable,
-          completedData.userLogin.credentials,
-        );
-        navigate(Screens.Clients);
       },
     });
   };
