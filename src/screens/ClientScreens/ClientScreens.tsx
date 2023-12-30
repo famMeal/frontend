@@ -3,7 +3,6 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { COLOURS } from "constants/colours";
 import type { FC } from "react";
 import { useCallback, useMemo, useState } from "react";
-import { View } from "react-native";
 import type { RootStackParamList } from "types/navigation.types";
 import { createScreenOptions } from "utilities";
 import type { iconMap } from "utilities/createScreenOptions";
@@ -27,7 +26,7 @@ const ClientScreens: FC = () => {
 
   const getOptions = (tabBarLabel: string, name: string, iconName: string) =>
     createScreenOptions({
-      headerShown: activeScreen !== "Main",
+      headerShown: false,
       headerTitleStyle: {
         color: COLOURS.white,
         fontFamily: "Khula-Bold",
@@ -36,9 +35,6 @@ const ClientScreens: FC = () => {
       tabBarLabel,
       isScreenActive: activeScreen === name,
       iconName: iconName as keyof typeof iconMap,
-      headerBackground: () => (
-        <View className="bg-accent w-full h-full relative flex justify-end items-center" />
-      ),
     });
 
   const renderScreen = ({

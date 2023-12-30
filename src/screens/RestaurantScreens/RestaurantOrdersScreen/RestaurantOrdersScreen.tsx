@@ -99,54 +99,44 @@ const RestaurantOrdersScreen: FC<Props> = ({ route: { params } }) => {
 
   const renderDeleteSearchButton = () =>
     isSearching ? (
-      <View className="absolute top-0 right-0">
-        <Button theme="accent" isOutlined onPress={handleClearSearch}>
-          <TrashIcon color={COLOURS.accent} />
-        </Button>
-      </View>
-    ) : null;
+      <Button theme="accent" isOutlined onPress={handleClearSearch}>
+        <TrashIcon color={COLOURS.accent} className="absolute" />
+      </Button>
+    ) : (
+      <Button theme="accent" disabled={!searchTerm} onPress={handleSearch}>
+        <MagnifyingGlassIcon color={COLOURS.white} className="absolute" />
+      </Button>
+    );
   return (
-    <Container>
-      <Columns isMarginless>
-        <Column>
-          <Box>
-            <Typography
-              isMarginless
-              className="text-center"
-              weigth="bold"
-              type="H3">
-              Today's orders
+    <Container className="m-4">
+      <Typography
+        colour="accent"
+        isMarginless
+        className="text-center mt-4"
+        weigth="bold"
+        type="H3">
+        Today's orders
+      </Typography>
+      <Box className="mt-4">
+        <Columns>
+          <Column columnWidth="fullWidth">
+            <Typography weigth="bold" type="S">
+              Search by ID
             </Typography>
-          </Box>
-          <Box>
-            <Columns>
-              <Column isPaddingless>
-                <Typography weigth="bold" type="S">
-                  Search by ID
-                </Typography>
-                <View>
-                  <Input
-                    theme="accent"
-                    editable={!isSearching}
-                    placeholder="123"
-                    value={searchTerm}
-                    onChangeText={setSearchTerm}
-                  />
-                  {renderDeleteSearchButton()}
-                </View>
-              </Column>
-              <Column isPaddingless className="justify-end">
-                <Button
-                  theme="accent"
-                  disabled={!searchTerm}
-                  onPress={handleSearch}>
-                  <MagnifyingGlassIcon color={COLOURS.white} />
-                </Button>
-              </Column>
-            </Columns>
-          </Box>
-        </Column>
-      </Columns>
+            <Input
+              theme="accent"
+              editable={!isSearching}
+              placeholder="123"
+              value={searchTerm}
+              onChangeText={setSearchTerm}
+            />
+            <View className="absolute right-0 bottom-0">
+              {renderDeleteSearchButton()}
+            </View>
+          </Column>
+        </Columns>
+      </Box>
+
       <Columns>
         <Column>{renderContent()}</Column>
       </Columns>

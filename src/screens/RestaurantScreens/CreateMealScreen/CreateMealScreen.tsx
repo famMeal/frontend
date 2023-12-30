@@ -143,167 +143,161 @@ const CreateMealScreen: FC<Props> = ({ route: { params } }) => {
     });
 
   return (
-    <Container>
-      <Columns>
-        <Column>
-          <Box>
-            <Typography className="text-center" weigth="bold" type="H3">
-              Create Meal
+    <Container className="m-4">
+      <Typography
+        colour="accent"
+        className="text-center mt-4"
+        weigth="bold"
+        type="H3">
+        Create Meal
+      </Typography>
+      <Box className="mt-4">
+        <Columns>
+          <Column columnWidth="fullWidth" isPaddingless>
+            <Typography weigth="bold" type="S">
+              Name
             </Typography>
-          </Box>
-          <Box>
-            <Columns>
-              <Column isPaddingless>
-                <Typography weigth="bold" type="S">
-                  Meal Name
-                </Typography>
-                <Input
-                  value={state.name}
-                  onChangeText={value => handleInputChange("name", value)}
-                />
-              </Column>
-            </Columns>
-            <Columns>
-              <Column isPaddingless>
-                <Typography weigth="bold" type="S">
-                  Description
-                </Typography>
-                <Input
-                  value={state.description}
-                  multiline
-                  numberOfLines={4}
-                  maxLength={400}
-                  onChangeText={value =>
-                    handleInputChange("description", value)
-                  }
-                />
-              </Column>
-            </Columns>
-            <Columns>
-              <Column isPaddingless>
-                <Typography weigth="bold" type="S">
-                  Quantity
-                </Typography>
-                <Input
-                  value={state.quantityAvailable}
-                  keyboardType="numeric"
-                  maxLength={3}
-                  onChangeText={value =>
-                    handleInputChange("quantityAvailable", value)
-                  }
-                />
-              </Column>
-              <Column isPaddingless>
-                <Typography weigth="bold" type="S">
-                  Price
-                </Typography>
-                <Input
-                  value={state.price}
-                  keyboardType="numeric"
-                  maxLength={3}
-                  onChangeText={value => handleInputChange("price", value)}
-                />
-              </Column>
-            </Columns>
-            <Columns>
-              <Column isPaddingless className="relative">
-                <Typography weigth="bold" type="S">
-                  Start Pickup time
-                </Typography>
-                <View>
-                  <Input
-                    editable={false}
-                    value={formatTimeFromUTC(pickupStartTime)}
-                  />
-                  <View className="absolute right-0">
-                    <Button
-                      onPress={() =>
-                        handleOpenTimeDrawer("pickupStartTime")(
-                          setDrawerVisible,
-                        )
-                      }>
-                      <ClockIcon color={COLOURS.white} />
-                    </Button>
-                  </View>
-                </View>
-              </Column>
-              <Column isPaddingless>
-                <Typography weigth="bold" type="S">
-                  End Pickup time
-                </Typography>
-                <View>
-                  <Input
-                    editable={false}
-                    value={formatTimeFromUTC(pickupEndTime)}
-                  />
-                  <View className="absolute right-0">
-                    <Button
-                      onPress={() =>
-                        handleOpenTimeDrawer("pickupEndTime")(setDrawerVisible)
-                      }>
-                      <ClockIcon color={COLOURS.white} />
-                    </Button>
-                  </View>
-                </View>
-              </Column>
-            </Columns>
-            <Columns>
-              <Column isPaddingless className="relative">
-                <Typography weigth="bold" type="S">
-                  Start Order time
-                </Typography>
-                <View>
-                  <Input
-                    editable={false}
-                    value={formatTimeFromUTC(orderStartTime)}
-                  />
-                  <View className="absolute right-0">
-                    <Button
-                      onPress={() =>
-                        handleOpenTimeDrawer("orderStartTime")(setDrawerVisible)
-                      }>
-                      <ClockIcon color={COLOURS.white} />
-                    </Button>
-                  </View>
-                </View>
-              </Column>
-              <Column isPaddingless>
-                <Typography weigth="bold" type="S">
-                  Order Cutoff time
-                </Typography>
-                <View>
-                  <Input
-                    editable={false}
-                    value={formatTimeFromUTC(orderCutoffTime)}
-                  />
-                  <View className="absolute right-0">
-                    <Button
-                      onPress={() =>
-                        handleOpenTimeDrawer("orderCutoffTime")(
-                          setDrawerVisible,
-                        )
-                      }>
-                      <ClockIcon color={COLOURS.white} />
-                    </Button>
-                  </View>
-                </View>
-              </Column>
-            </Columns>
-          </Box>
-          <Box>
-            <Columns>
-              <Column isPaddingless>
+            <Input
+              value={state.name}
+              onChangeText={value => handleInputChange("name", value)}
+            />
+          </Column>
+        </Columns>
+        <Columns>
+          <Column columnWidth="fullWidth" isPaddingless>
+            <Typography weigth="bold" type="S">
+              Description
+            </Typography>
+            <Input
+              className="max-h-36 h-36"
+              value={state.description}
+              multiline
+              numberOfLines={4}
+              maxLength={200}
+              onChangeText={value => handleInputChange("description", value)}
+            />
+          </Column>
+        </Columns>
+        <Columns>
+          <Column isPaddingless>
+            <Typography weigth="bold" type="S">
+              Quantity
+            </Typography>
+            <Input
+              value={state.quantityAvailable}
+              keyboardType="numeric"
+              maxLength={3}
+              onChangeText={value =>
+                handleInputChange("quantityAvailable", value)
+              }
+            />
+          </Column>
+          <Column isPaddingless>
+            <Typography weigth="bold" type="S">
+              Price
+            </Typography>
+            <Input
+              value={state.price}
+              keyboardType="numeric"
+              maxLength={3}
+              onChangeText={value => handleInputChange("price", value)}
+            />
+          </Column>
+        </Columns>
+        <Columns>
+          <Column>
+            <Typography weigth="bold" type="S">
+              Start Pickup time
+            </Typography>
+            <View className="w-full">
+              <Input
+                editable={false}
+                value={formatTimeFromUTC(pickupStartTime)}
+              />
+              <View className="absolute right-0">
                 <Button
-                  onPress={handleCreateMeal}
-                  isLoading={loading}
-                  theme="accent">
-                  Create
+                  onPress={() =>
+                    handleOpenTimeDrawer("pickupStartTime")(setDrawerVisible)
+                  }>
+                  <ClockIcon color={COLOURS.white} />
                 </Button>
-              </Column>
-            </Columns>
-          </Box>
-        </Column>
-      </Columns>
+              </View>
+            </View>
+          </Column>
+          <Column>
+            <Typography weigth="bold" type="S">
+              End Pickup time
+            </Typography>
+            <View className="w-full">
+              <Input
+                editable={false}
+                value={formatTimeFromUTC(pickupEndTime)}
+              />
+              <View className="absolute right-0">
+                <Button
+                  onPress={() =>
+                    handleOpenTimeDrawer("pickupEndTime")(setDrawerVisible)
+                  }>
+                  <ClockIcon color={COLOURS.white} />
+                </Button>
+              </View>
+            </View>
+          </Column>
+        </Columns>
+        <Columns>
+          <Column>
+            <Typography weigth="bold" type="S">
+              Start Order time
+            </Typography>
+            <View className="w-full">
+              <Input
+                editable={false}
+                value={formatTimeFromUTC(orderStartTime)}
+              />
+              <View className="absolute right-0">
+                <Button
+                  onPress={() =>
+                    handleOpenTimeDrawer("orderStartTime")(setDrawerVisible)
+                  }>
+                  <ClockIcon color={COLOURS.white} />
+                </Button>
+              </View>
+            </View>
+          </Column>
+          <Column>
+            <Typography weigth="bold" type="S">
+              Order Cutoff time
+            </Typography>
+            <View className="w-full">
+              <Input
+                editable={false}
+                value={formatTimeFromUTC(orderCutoffTime)}
+              />
+              <View className="absolute right-0">
+                <Button
+                  onPress={() =>
+                    handleOpenTimeDrawer("orderCutoffTime")(setDrawerVisible)
+                  }>
+                  <ClockIcon color={COLOURS.white} />
+                </Button>
+              </View>
+            </View>
+          </Column>
+        </Columns>
+      </Box>
+      <Box>
+        <Columns isMarginless>
+          <Column columnWidth="fullWidth">
+            <Button
+              onPress={handleCreateMeal}
+              isLoading={loading}
+              theme="accent">
+              Create
+            </Button>
+          </Column>
+        </Columns>
+      </Box>
+
       <BottomDrawer
         isVisible={isDrawerVisible}
         onClose={() => setDrawerVisible(false)}>

@@ -9,7 +9,7 @@ export const getCSS = ({
   isLastColumn,
   parentWidth = 0,
 }: ColumnProps) => {
-  const marginRight = 16; // Margin right in pixels
+  const marginRight = 16;
   let widthFraction;
 
   switch (columnWidth) {

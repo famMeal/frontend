@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { COLOURS } from "constants/colours";
 import type { FC } from "react";
-import { View } from "react-native";
 import {
   ClientScreens,
   LoginScreen,
@@ -34,9 +33,7 @@ const App: FC = () => {
             name="Login"
             component={LoginScreen}
             options={{
-              headerBackground: () => (
-                <View className="bg-accent w-full h-full relative flex justify-end items-center" />
-              ),
+              headerBackground: () => null,
               tabBarStyle: {
                 display: "none",
               },
