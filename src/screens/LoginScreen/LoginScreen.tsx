@@ -14,6 +14,7 @@ import { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { EyeIcon, EyeSlashIcon } from "react-native-heroicons/solid";
 import type { LoginNavigationProps } from "types/navigation.types";
+import { useLoginMutation } from "./useLogInMutation";
 
 const Screens = {
   Restaurants: "Restaurants",
@@ -24,10 +25,25 @@ const LoginScreen: FC = () => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [userLogin] = useLoginMutation();
   const { navigate } = useNavigation<LoginNavigationProps>();
 
-  const handleOnPressLogin = () => navigate(Screens.Restaurants);
+  const handleOnPressLogin = () => {
+    userLogin({
+      variables: {
+        email,
+        password,
+      },
+      onCompleted: completedData => {
+        console.log({ completedData });
+        console.log(
+          completedData.userLogin.authenticatable,
+          completedData.userLogin.credentials,
+        );
+        navigate(Screens.Clients);
+      },
+    });
+  };
 
   const toggleSecureTextEntry = () =>
     setSecureTextEntry(prevState => !prevState);

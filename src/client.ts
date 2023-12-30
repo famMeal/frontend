@@ -6,7 +6,7 @@ import {
   PRODUCTION_URI_BACKEND,
 } from "react-native-dotenv";
 
-const uri = __DEV__
+const clientUri = __DEV__
   ? Platform.OS === "ios"
     ? DEVELOPMENT_URI_IOS_BACKEND
     : DEVELOPMENT_URI_ANDROID_BACKEND
@@ -27,6 +27,6 @@ const cache = new InMemoryCache({
 });
 
 export const client = new ApolloClient({
-  uri,
+  uri: clientUri,
   cache,
 });
