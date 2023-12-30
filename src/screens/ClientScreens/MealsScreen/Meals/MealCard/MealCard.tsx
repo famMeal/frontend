@@ -41,10 +41,7 @@ const MealCard: FC<Props> = ({ meal }) => {
     <Box>
       <Chip type="accent">{quantityAvailable} left</Chip>
       <Columns>
-        <Column
-          preserveFinalMargin
-          columnWidth="oneThird"
-          justifyContent="center">
+        <Column columnWidth="oneThird" justifyContent="center">
           <Image
             className="w-20 h-20 rounded-lg"
             source={{
@@ -77,7 +74,6 @@ const MealCard: FC<Props> = ({ meal }) => {
         <Column
           alignItems="center"
           justifyContent="center"
-          preserveFinalMargin
           columnWidth="oneThird">
           <Typography colour="accent" weigth="semiBold">
             {price}

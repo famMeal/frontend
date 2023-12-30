@@ -27,8 +27,8 @@ export interface ColumnProps {
   isPaddingless?: boolean;
   numOfColumns?: number;
   isLastColumn?: boolean;
-  preserveFinalMargin?: boolean;
   columnWidth?: ColumnWidth;
+  parentWidth?: number;
 }
 type Props = ViewProps & Partial<ColumnProps>;
 
@@ -38,10 +38,11 @@ const Column: FC<Props> = ({
   justifyContent,
   numOfColumns,
   isLastColumn = false,
-  preserveFinalMargin = false,
   columnWidth = "half",
+  parentWidth,
+  ...rest
 }) => {
-  const { columnCSS } = useMemo(
+  const { columnCSS, width } = useMemo(
     () =>
       getCSS({
         alignItems,
@@ -49,7 +50,7 @@ const Column: FC<Props> = ({
         numOfColumns,
         isLastColumn,
         columnWidth,
-        preserveFinalMargin,
+        parentWidth,
       }),
     [
       alignItems,
@@ -57,11 +58,15 @@ const Column: FC<Props> = ({
       numOfColumns,
       isLastColumn,
       columnWidth,
-      preserveFinalMargin,
+      parentWidth,
     ],
   );
 
-  return <View style={{ ...columnCSS }}>{children}</View>;
+  return (
+    <View className={columnCSS} style={width} {...rest}>
+      {children}
+    </View>
+  );
 };
 
 export { Column };

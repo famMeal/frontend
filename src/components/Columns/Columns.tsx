@@ -1,8 +1,14 @@
 import type { ColumnProps } from "components/Column";
 import { Column } from "components/Column";
 import type { FC } from "react";
-import { Children, cloneElement, isValidElement, useMemo } from "react";
-import type { ViewProps } from "react-native";
+import {
+  Children,
+  cloneElement,
+  isValidElement,
+  useMemo,
+  useState,
+} from "react";
+import type { LayoutChangeEvent, ViewProps } from "react-native";
 import { View } from "react-native";
 import { getCSS } from "./Columns.styles";
 
@@ -21,10 +27,17 @@ const Columns: FC<Props> = ({
   isMarginless = false,
   ...rest
 }) => {
+  const [parentWidth, setParentWidthWidth] = useState(0);
+
   const { columnsCSS } = useMemo(
     () => getCSS({ direction, isMarginless }),
     [direction, isMarginless],
   );
+
+  const onLayout = (event: LayoutChangeEvent) => {
+    const { width } = event.nativeEvent.layout;
+    setParentWidthWidth(width);
+  };
 
   const numOfColumns = Children.toArray(children).filter(
     child => isValidElement<ColumnProps>(child) && child.type === Column,
@@ -37,12 +50,13 @@ const Columns: FC<Props> = ({
       ? cloneElement(child, {
           numOfColumns,
           isLastColumn,
+          parentWidth,
         })
       : child;
   });
 
   return (
-    <View className={columnsCSS} {...rest}>
+    <View onLayout={onLayout} className={columnsCSS} {...rest}>
       {childrenWithCount}
     </View>
   );

@@ -1,19 +1,21 @@
 import type { DimensionValue } from "react-native";
+import classnames, { flexBox, margin } from "tailwindcss-classnames";
 import type { ColumnProps } from "./Column";
 
 export const getCSS = ({
-  alignItems,
-  justifyContent,
-  numOfColumns,
+  alignItems = "flex-start",
+  justifyContent = "flex-start",
+  columnWidth = "half",
   isLastColumn,
-  columnWidth = "fullWidth",
-  preserveFinalMargin,
+  parentWidth = 0,
 }: ColumnProps) => {
-  const remInPx = 16;
-  const gapSizePx = 1 * remInPx;
-
+  const marginRight = 16;
   let widthFraction;
+
   switch (columnWidth) {
+    case "fullWidth":
+      widthFraction = 1;
+      break;
     case "oneThird":
       widthFraction = 1 / 3;
       break;
@@ -26,38 +28,44 @@ export const getCSS = ({
     case "half":
       widthFraction = 1 / 2;
       break;
-    case "fullWidth":
     default:
       widthFraction = 1;
       break;
   }
 
-  const gapAdjustment = numOfColumns
-    ? ((gapSizePx / remInPx) * (numOfColumns - 1)) / numOfColumns
-    : 0;
+  let columnWidthInPixels = parentWidth * widthFraction;
 
-  const widthPercent = widthFraction * 100 - gapAdjustment;
+  if (!isLastColumn) {
+    columnWidthInPixels -= marginRight;
+  }
 
-  const flexStyle = {
-    flex: 0,
-    width: `${widthPercent}%` as DimensionValue,
-    marginRight:
-      !preserveFinalMargin || isLastColumn
-        ? 0
-        : numOfColumns && numOfColumns > 1
-        ? gapSizePx
-        : 0,
+  let widthPercentage = (columnWidthInPixels / parentWidth) * 100;
+
+  const width = { width: `${widthPercentage}%` as DimensionValue };
+
+  const alignClass = {
+    "flex-start": flexBox("items-start"),
+    "flex-end": flexBox("items-end"),
+    center: flexBox("items-center"),
+    stretch: flexBox("items-stretch"),
   };
 
-  const additionalStyles = {
-    alignItems: alignItems,
-    justifyContent: justifyContent,
+  const justifyClass = {
+    "flex-start": flexBox("justify-start"),
+    "flex-end": flexBox("justify-end"),
+    center: flexBox("justify-center"),
+    "space-between": flexBox("justify-between"),
+    "space-around": flexBox("justify-around"),
+    "space-evenly": flexBox("justify-evenly"),
   };
 
-  const columnCSS = {
-    ...flexStyle,
-    ...additionalStyles,
-  };
+  const marginClass = isLastColumn ? margin("mr-0") : margin("mr-4");
 
-  return { columnCSS };
+  const columnCSS = classnames(
+    alignClass[alignItems],
+    justifyClass[justifyContent],
+    marginClass,
+  );
+
+  return { columnCSS, width };
 };

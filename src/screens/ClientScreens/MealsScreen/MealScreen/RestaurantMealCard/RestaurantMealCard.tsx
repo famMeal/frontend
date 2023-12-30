@@ -65,7 +65,7 @@ const RestaurantMealCard: FC<Props> = ({
         </Column>
       </Columns>
       <Columns isMarginless>
-        <Column columnWidth="twoThird" justifyContent="flex-end">
+        <Column columnWidth="twoThird">
           <Typography type="S" weigth="bold" colour="accent">
             Pickup window
           </Typography>
@@ -73,6 +73,7 @@ const RestaurantMealCard: FC<Props> = ({
             arrowicon={<ChevronDownIcon size={22} color={COLOURS.accent} />}
             inputStyles={{
               color: COLOURS.accent,
+              width: "90%",
             }}
             dropdownStyles={{
               backgroundColor: COLOURS.accent,
@@ -96,7 +97,6 @@ const RestaurantMealCard: FC<Props> = ({
           />
         </Column>
         <Column
-          preserveFinalMargin
           columnWidth="oneThird"
           alignItems="center"
           justifyContent="center">

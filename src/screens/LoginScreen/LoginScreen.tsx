@@ -56,15 +56,15 @@ const LoginScreen: FC = () => {
     );
 
   return (
-    <Container>
+    <Container className="mx-4">
+      <Columns>
+        <Column alignItems="center" columnWidth="fullWidth">
+          <Typography colour="accent" isMarginless weigth="bold" type="H1">
+            Batch
+          </Typography>
+        </Column>
+      </Columns>
       <Box>
-        <Columns>
-          <Column alignItems="center" columnWidth="fullWidth">
-            <Typography colour="accent" isMarginless weigth="bold" type="H1">
-              FamMeal
-            </Typography>
-          </Column>
-        </Columns>
         <Columns>
           <Column columnWidth="fullWidth">
             <Typography weigth="semiBold" type="S">
@@ -90,7 +90,7 @@ const LoginScreen: FC = () => {
               value={password}
               theme="accent"
             />
-            <View className="absolute right-4 top-12">
+            <View className="absolute right-2 top-11">
               <Column>
                 <TouchableOpacity onPress={toggleSecureTextEntry}>
                   {renderEyeIcon()}
@@ -99,7 +99,7 @@ const LoginScreen: FC = () => {
             </View>
           </Column>
         </Columns>
-        <Columns className="mt-4">
+        <Columns isMarginless className="mt-4">
           <Column columnWidth="fullWidth">
             <Button onPress={handleOnPressLogin}>Login</Button>
           </Column>
