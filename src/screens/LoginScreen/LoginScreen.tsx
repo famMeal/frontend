@@ -20,14 +20,15 @@ import { useLoginMutation } from "./useLogInMutation";
 const Screens = {
   Restaurants: "Restaurants",
   Clients: "Clients",
+  SignUp: "SignUp",
 } as const;
 
 const LoginScreen: FC = () => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("shahynkamali@gmail.com");
+  const [password, setPassword] = useState("password");
   const { navigate } = useNavigation<LoginNavigationProps>();
-  const [userLogin] = useLoginMutation({
+  const [userLogin, { loading }] = useLoginMutation({
     onCompleted: ({ userLogin }) => {
       AsyncStorage.setItem("accessToken", userLogin.credentials.accessToken);
       AsyncStorage.setItem("client", userLogin.credentials.client);
@@ -44,7 +45,7 @@ const LoginScreen: FC = () => {
         email,
         password,
       },
-      onCompleted: () => navigate(Screens.Restaurants),
+      onCompleted: () => navigate(Screens.Clients),
     });
   };
 
@@ -57,6 +58,8 @@ const LoginScreen: FC = () => {
     ) : (
       <EyeIcon color={COLOURS.accent} />
     );
+
+  const handleOnSignUpPress = () => navigate(Screens.SignUp);
 
   return (
     <Container className="mx-4">
@@ -102,10 +105,27 @@ const LoginScreen: FC = () => {
             </View>
           </Column>
         </Columns>
-        <Columns isMarginless className="mt-4">
+        <Columns className="mt-4">
           <Column columnWidth="fullWidth">
             <Button isLoading={loading} onPress={handleOnPressLogin}>
               Login
+            </Button>
+          </Column>
+        </Columns>
+        <Columns className="mt-8">
+          <Column
+            alignItems="flex-end"
+            justifyContent="center"
+            columnWidth="twoThird">
+            <Typography type="S">Dont have an account?</Typography>
+          </Column>
+          <Column columnWidth="oneThird" justifyContent="center">
+            <Button
+              onPress={handleOnSignUpPress}
+              theme="accent"
+              isOutlined
+              isClean>
+              Sign Up
             </Button>
           </Column>
         </Columns>

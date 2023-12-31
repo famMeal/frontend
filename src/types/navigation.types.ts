@@ -4,6 +4,7 @@ import type { AddToCartData } from "screens/ClientScreens/MealsScreen/MealScreen
 
 export type RootStackParamList = {
   Login: undefined;
+  SignUp: undefined;
   TabNavigator: undefined;
   Restaurants: undefined;
   ActiveOrders: {
@@ -62,4 +63,9 @@ export type LoginNavigationProps = NativeStackNavigationProp<
 export type SplashNavigationProps = NativeStackNavigationProp<
   RootStackParamList,
   "Splash"
+>;
+
+export type SignUpNavigationProps = NativeStackNavigationProp<
+  RootStackParamList,
+  "SignUp"
 >;

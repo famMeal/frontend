@@ -7,6 +7,7 @@ import {
   ClientScreens,
   LoginScreen,
   RestaurantScreens,
+  SignUpScreen,
   SplashScreen,
 } from "screens";
 import type { RootStackParamList } from "types/navigation.types";
@@ -32,6 +33,21 @@ const App: FC = () => {
           <Screen
             name="Login"
             component={LoginScreen}
+            options={{
+              headerBackground: () => null,
+              tabBarStyle: {
+                display: "none",
+              },
+              headerTitleStyle: {
+                color: COLOURS.white,
+                fontFamily: "Khula-Bold",
+                fontSize: 18,
+              },
+            }}
+          />
+          <Screen
+            name="SignUp"
+            component={SignUpScreen}
             options={{
               headerBackground: () => null,
               tabBarStyle: {
