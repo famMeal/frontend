@@ -29,7 +29,6 @@ const LoginScreen: FC = () => {
   const { navigate } = useNavigation<LoginNavigationProps>();
   const [userLogin] = useLoginMutation({
     onCompleted: completedData => {
-      console.log({ completedData });
       AsyncStorage.setItem(
         "accessToken",
         completedData.userLogin.credentials.accessToken,
