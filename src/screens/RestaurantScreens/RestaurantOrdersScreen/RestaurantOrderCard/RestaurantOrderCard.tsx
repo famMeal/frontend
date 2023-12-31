@@ -1,9 +1,9 @@
 import { Box, Chip, Column, Columns, Typography } from "components";
 import { COLOURS } from "constants/colours";
 import { useState, type FC } from "react";
-import { Switch } from "react-native";
+import { Switch, View } from "react-native";
 import type { OrderData } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
-import { formatTime } from "utilities";
+import { formatTime } from "utilities/formatTime";
 
 interface Props {
   order: OrderData;
@@ -27,43 +27,15 @@ const RestaurantOrderCard: FC<Props> = ({
 
   return (
     <Box key={id}>
-      <Chip type={isEnabled ? "success" : "primary"} position="topRight">
-        {renderStatus(status)}
-      </Chip>
-      <Columns>
-        <Column isPaddingless>
-          <Typography colour="accent" weigth="bold" type="H3" className="mt-10">
-            {name}
-          </Typography>
-          <Typography weigth="semiBold">Pick up between:</Typography>
-          <Typography>
-            {formatTime(pickupStartTime)} and {formatTime(pickupEndTime)}
-          </Typography>
+      <Columns className="border-b border-accent pb-4">
+        <Column>
+          <View>
+            <Chip type={isEnabled ? "success" : "primary"} isStatic>
+              {renderStatus(status)}
+            </Chip>
+          </View>
         </Column>
-      </Columns>
-      <Columns>
-        <Column isPaddingless>
-          <Typography weigth="semiBold">
-            Quantity: <Typography>{quantity}</Typography>
-          </Typography>
-        </Column>
-      </Columns>
-      <Columns>
-        <Column isPaddingless>
-          <Typography weigth="semiBold">
-            Subtotal: <Typography>{subtotal}</Typography>
-          </Typography>
-        </Column>
-      </Columns>
-      <Columns>
-        <Column isPaddingless>
-          <Typography weigth="semiBold">Ordered By:</Typography>
-          <Typography>
-            {firstName} {lastName}
-          </Typography>
-        </Column>
-        <Column isPaddingless className="items-end">
-          <Typography weigth="semiBold">Picked up</Typography>
+        <Column alignItems="flex-end" justifyContent="flex-end">
           <Switch
             trackColor={{ false: COLOURS.white, true: COLOURS.accent }}
             thumbColor={COLOURS.white}
@@ -73,8 +45,82 @@ const RestaurantOrderCard: FC<Props> = ({
           />
         </Column>
       </Columns>
+      <Columns isMarginless>
+        <Column>
+          <Typography
+            isMarginless
+            type="S"
+            colour="accent"
+            weigth="bold"
+            className="mt-4">
+            {quantity} x {name}
+          </Typography>
+          <Typography isMarginless type="S">
+            {firstName} {lastName}
+          </Typography>
+          <Typography isMarginless type="S">
+            Order ID <Typography weigth="bold"> #{id}</Typography>
+          </Typography>
+        </Column>
+        <Column alignItems="flex-end">
+          <Typography
+            isMarginless
+            type="S"
+            colour="accent"
+            weigth="bold"
+            className="mt-4">
+            {subtotal}
+          </Typography>
+        </Column>
+      </Columns>
+      <Columns>
+        <Column columnWidth="fullWidth">
+          <Typography isMarginless type="S">
+            Pick up between:
+            <Typography weigth="bold" type="S">
+              {" "}
+              {formatTime(pickupStartTime)} and {formatTime(pickupEndTime)}
+            </Typography>
+          </Typography>
+        </Column>
+      </Columns>
     </Box>
   );
 };
 
 export { RestaurantOrderCard };
+
+// <Columns>
+// <Column columnWidth="fullWidth">
+
+//   <Typography weigth="semiBold">Pick up between:</Typography>
+//   <Typography>
+//     {formatTime(pickupStartTime)} and {formatTime(pickupEndTime)}
+//   </Typography>
+// </Column>
+// </Columns>
+// <Columns>
+// <Column columnWidth="fullWidth">
+//   <Typography weigth="semiBold">
+//     Quantity: <Typography>{quantity}</Typography>
+//   </Typography>
+// </Column>
+// </Columns>
+// <Columns>
+// <Column isPaddingless>
+//   <Typography weigth="semiBold">
+//     Subtotal: <Typography>{subtotal}</Typography>
+//   </Typography>
+// </Column>
+// </Columns>
+// <Columns>
+// <Column isPaddingless>
+//   <Typography weigth="semiBold">Ordered By:</Typography>
+//   <Typography>
+//     {firstName} {lastName}
+//   </Typography>
+// </Column>
+// <Column isPaddingless className="items-end">
+
+// </Column>
+// </Columns>

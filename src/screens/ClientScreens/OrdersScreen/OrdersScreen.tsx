@@ -8,10 +8,7 @@ import { OrderCard, SkeletonOrderCard } from "./OrderCard";
 import type { OrderData } from "./useUserOrdersScreen";
 import { useGetUserOrdersQuery } from "./useUserOrdersScreen";
 
-type OrderStackProps = NativeStackScreenProps<
-  RootStackParamList,
-  "ClientOrders"
->;
+type OrderStackProps = NativeStackScreenProps<RootStackParamList, "Orders">;
 
 interface Props extends OrderStackProps {
   setActiveScreen: Dispatch<SetStateAction<string>>;

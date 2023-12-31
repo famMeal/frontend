@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import {
   Box,
@@ -15,7 +16,6 @@ import { TouchableOpacity, View } from "react-native";
 import { EyeIcon, EyeSlashIcon } from "react-native-heroicons/solid";
 import type { LoginNavigationProps } from "types/navigation.types";
 import { useLoginMutation } from "./useLogInMutation";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Screens = {
   Restaurants: "Restaurants",
@@ -28,17 +28,10 @@ const LoginScreen: FC = () => {
   const [password, setPassword] = useState("");
   const { navigate } = useNavigation<LoginNavigationProps>();
   const [userLogin] = useLoginMutation({
-    onCompleted: completedData => {
-      AsyncStorage.setItem(
-        "accessToken",
-        completedData.userLogin.credentials.accessToken,
-      );
-      AsyncStorage.setItem(
-        "client",
-        completedData.userLogin.credentials.client,
-      );
-      AsyncStorage.setItem("uid", completedData.userLogin.credentials.uid);
-      navigate(Screens.Clients);
+    onCompleted: ({ userLogin }) => {
+      AsyncStorage.setItem("accessToken", userLogin.credentials.accessToken);
+      AsyncStorage.setItem("client", userLogin.credentials.client);
+      AsyncStorage.setItem("uid", userLogin.credentials.uid);
     },
     onError: error => {
       console.error("Login error:", error.message);
@@ -51,6 +44,7 @@ const LoginScreen: FC = () => {
         email,
         password,
       },
+      onCompleted: () => navigate(Screens.Restaurants),
     });
   };
 
@@ -110,7 +104,9 @@ const LoginScreen: FC = () => {
         </Columns>
         <Columns isMarginless className="mt-4">
           <Column columnWidth="fullWidth">
-            <Button onPress={handleOnPressLogin}>Login</Button>
+            <Button isLoading={loading} onPress={handleOnPressLogin}>
+              Login
+            </Button>
           </Column>
         </Columns>
       </Box>

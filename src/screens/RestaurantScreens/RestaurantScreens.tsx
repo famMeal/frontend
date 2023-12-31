@@ -1,14 +1,22 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { COLOURS } from "constants/colours";
 import type { FC } from "react";
 import { useCallback, useState } from "react";
 import { Text, View } from "react-native";
+import {
+  BookOpenIcon,
+  HomeIcon,
+  PlayIcon,
+  PlusCircleIcon,
+} from "react-native-heroicons/solid";
 import type { RootStackParamList } from "types/navigation.types";
 import { CreateMealScreen } from "./CreateMealScreen";
 import { RestaurantMeals } from "./RestaurantMeals/RestaurantMeals";
 import { RestaurantOrdersScreen } from "./RestaurantOrdersScreen";
 import { RestaurantScreen } from "./RestaurantScreen";
 import { useRestaurantOrdersQuery } from "./useRestaurantOrdersQuery";
+
 const { Navigator, Screen } = createBottomTabNavigator<RootStackParamList>();
 
 const RestaurantScreens: FC = () => {
@@ -17,7 +25,7 @@ const RestaurantScreens: FC = () => {
 
   const { data, loading } = useRestaurantOrdersQuery({
     variables: {
-      id: "6",
+      id: "3",
     },
   });
 
@@ -39,43 +47,119 @@ const RestaurantScreens: FC = () => {
   }
 
   return (
-    <Navigator>
+    <Navigator
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: COLOURS.light,
+        },
+      }}>
       <Screen
         options={{
+          tabBarLabel: "Home",
           headerShown: false,
+          headerTitleStyle: {
+            color: COLOURS.white,
+            fontFamily: "Khula-Bold",
+            fontSize: 18,
+          },
+          tabBarIcon: () => (
+            <HomeIcon
+              size={18}
+              color={
+                activeScreen === "Restaurant" ? COLOURS.primary : COLOURS.accent
+              }
+            />
+          ),
         }}
         name="Restaurant"
-        component={RestaurantScreen}
-        initialParams={{ restaurantID: data?.restaurant?.id }}
-      />
+        initialParams={{ restaurantID: data?.restaurant?.id }}>
+        {props => (
+          <RestaurantScreen {...props} setActiveScreen={setActiveScreen} />
+        )}
+      </Screen>
       <Screen
         options={{
+          tabBarLabel: "Meals",
           headerShown: false,
+          headerTitleStyle: {
+            color: COLOURS.white,
+            fontFamily: "Khula-Bold",
+            fontSize: 18,
+          },
+          tabBarIcon: () => (
+            <BookOpenIcon
+              size={18}
+              color={
+                activeScreen === "RestaurantMeals"
+                  ? COLOURS.primary
+                  : COLOURS.accent
+              }
+            />
+          ),
         }}
         name="RestaurantMeals"
-        component={RestaurantMeals}
         initialParams={{
           restaurantID: data?.restaurant?.id,
-        }}
-      />
+        }}>
+        {props => (
+          <RestaurantMeals {...props} setActiveScreen={setActiveScreen} />
+        )}
+      </Screen>
       <Screen
         options={{
+          tabBarLabel: "Create",
           headerShown: false,
+          headerTitleStyle: {
+            color: COLOURS.white,
+            fontFamily: "Khula-Bold",
+            fontSize: 18,
+          },
+          tabBarIcon: () => (
+            <PlusCircleIcon
+              size={18}
+              color={
+                activeScreen === "CreateMeal" ? COLOURS.primary : COLOURS.accent
+              }
+            />
+          ),
         }}
         name="CreateMeal"
-        component={CreateMealScreen}
-        initialParams={{ restaurantID: data?.restaurant?.id }}
-      />
+        initialParams={{ restaurantID: data?.restaurant?.id }}>
+        {props => (
+          <CreateMealScreen {...props} setActiveScreen={setActiveScreen} />
+        )}
+      </Screen>
       <Screen
         options={{
+          tabBarLabel: "Active Orders",
           headerShown: false,
+          headerTitleStyle: {
+            color: COLOURS.white,
+            fontFamily: "Khula-Bold",
+            fontSize: 18,
+          },
+          tabBarIcon: () => (
+            <PlayIcon
+              size={18}
+              color={
+                activeScreen === "ActiveOrders"
+                  ? COLOURS.primary
+                  : COLOURS.accent
+              }
+            />
+          ),
         }}
-        name="RestaurantOrders"
-        component={RestaurantOrdersScreen}
+        name="ActiveOrders"
         initialParams={{
           restaurantID: data?.restaurant?.id,
-        }}
-      />
+        }}>
+        {props => (
+          <RestaurantOrdersScreen
+            {...props}
+            setActiveScreen={setActiveScreen}
+          />
+        )}
+      </Screen>
     </Navigator>
   );
 };

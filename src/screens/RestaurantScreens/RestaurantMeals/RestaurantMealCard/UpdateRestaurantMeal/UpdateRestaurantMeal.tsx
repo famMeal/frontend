@@ -1,4 +1,4 @@
-import { Button, Column, Columns, Input, Typography } from "components";
+import { Box, Button, Column, Columns, Input, Typography } from "components";
 import { useState, type FC } from "react";
 import { type RestaurantMealData } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
 import { useMealUpdateMutation } from "./useMealUpdateMutation";
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const UpdateRestaurantMeal: FC<Props> = ({
-  meal: { name, description, price, id, active },
+  meal: { name, description, price, id, active, quantityAvailable },
   toggleEditing,
 }) => {
   const [updateMeal, { loading: isUpdateLoading }] = useMealUpdateMutation();
@@ -19,6 +19,7 @@ const UpdateRestaurantMeal: FC<Props> = ({
     name,
     description,
     price: price.replace("$", "").toString(),
+    quantityAvailable: quantityAvailable?.toString() ?? "0",
   };
 
   const [state, setState] = useState(initState);
@@ -51,29 +52,20 @@ const UpdateRestaurantMeal: FC<Props> = ({
     }));
 
   return (
-    <Column isPaddingless>
+    <Box>
       <Columns>
-        <Column isPaddingless>
+        <Column columnWidth="fullWidth">
           <Typography weigth="bold" type="S">
-            Meal Name
+            Name
           </Typography>
           <Input
             onChangeText={value => handleChange("name", value)}
             value={state.name}
           />
         </Column>
-        <Column isPaddingless>
-          <Typography weigth="bold" type="S">
-            Price
-          </Typography>
-          <Input
-            onChangeText={value => handleChange("price", value)}
-            value={state.price}
-          />
-        </Column>
       </Columns>
       <Columns>
-        <Column isPaddingless>
+        <Column columnWidth="fullWidth">
           <Typography weigth="bold" type="S">
             Description
           </Typography>
@@ -86,8 +78,28 @@ const UpdateRestaurantMeal: FC<Props> = ({
           />
         </Column>
       </Columns>
+      <Columns>
+        <Column>
+          <Typography weigth="bold" isMarginless type="S">
+            Price:
+          </Typography>
+          <Input
+            onChangeText={value => handleChange("price", value)}
+            value={state.price}
+          />
+        </Column>
+        <Column>
+          <Typography weigth="bold" isMarginless type="S">
+            Quantity:
+          </Typography>
+          <Input
+            onChangeText={value => handleChange("price", value)}
+            value={state.quantityAvailable}
+          />
+        </Column>
+      </Columns>
       <Columns isMarginless className="mt-4">
-        <Column isPaddingless>
+        <Column>
           <Button
             onPress={() => onPressCancel()(toggleEditing)}
             isOutlined
@@ -95,7 +107,7 @@ const UpdateRestaurantMeal: FC<Props> = ({
             Cancel
           </Button>
         </Column>
-        <Column isPaddingless>
+        <Column>
           <Button
             isLoading={isUpdateLoading}
             onPress={onPressUpdate}
@@ -104,7 +116,7 @@ const UpdateRestaurantMeal: FC<Props> = ({
           </Button>
         </Column>
       </Columns>
-    </Column>
+    </Box>
   );
 };
 

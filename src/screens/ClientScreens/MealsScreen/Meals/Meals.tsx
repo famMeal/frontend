@@ -13,7 +13,7 @@ const Meals: FC = () => {
   );
 
   const renderMeals = useCallback(
-    () => data?.meals.map(renderMeal),
+    () => data?.meals.filter(({ active }) => active).map(renderMeal),
     [data?.meals],
   );
 

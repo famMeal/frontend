@@ -14,6 +14,7 @@ const MEAL_UPDATE = gql`
         description
         price
         active
+        quantityAvailable
       }
     }
   }
@@ -21,7 +22,13 @@ const MEAL_UPDATE = gql`
 
 type MealSplinter = Pick<
   Meal,
-  "__typename" | "id" | "description" | "name" | "price" | "active"
+  | "__typename"
+  | "id"
+  | "description"
+  | "name"
+  | "price"
+  | "active"
+  | "quantityAvailable"
 >;
 
 type MealUpdateSplinter = Pick<

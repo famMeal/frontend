@@ -1,6 +1,6 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Box, Column, Columns, Container, Typography } from "components";
-import type { FC } from "react";
+import { Container, Typography } from "components";
+import { useEffect, type Dispatch, type FC, type SetStateAction } from "react";
 import type { RootStackParamList } from "types/navigation.types";
 import {
   useRestaurantOrdersQuery,
@@ -8,10 +8,25 @@ import {
 } from "../useRestaurantOrdersQuery";
 import { RestaurantMealCard } from "./RestaurantMealCard";
 
-type Props = NativeStackScreenProps<RootStackParamList, "RestaurantMeals">;
+type RestaurantMealsStackProps = NativeStackScreenProps<
+  RootStackParamList,
+  "RestaurantMeals"
+>;
 
-const RestaurantMeals: FC<Props> = ({ route: { params } }) => {
+interface Props extends RestaurantMealsStackProps {
+  setActiveScreen: Dispatch<SetStateAction<string>>;
+}
+
+const RestaurantMeals: FC<Props> = ({ route, navigation, setActiveScreen }) => {
+  const { params } = route ?? {};
   const { restaurantID } = params;
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () =>
+      setActiveScreen(route.name),
+    );
+    return unsubscribe;
+  }, [navigation, setActiveScreen]);
 
   const { data } = useRestaurantOrdersQuery({
     variables: {
@@ -26,19 +41,15 @@ const RestaurantMeals: FC<Props> = ({ route: { params } }) => {
   const renderMeals = () => data?.restaurant?.meals.map(renderMeal);
 
   return (
-    <Container>
-      <Columns>
-        <Column>
-          <Box>
-            <Typography className="text-center" weigth="bold" type="H3">
-              Meals
-            </Typography>
-          </Box>
-        </Column>
-      </Columns>
-      <Columns>
-        <Column>{renderMeals()}</Column>
-      </Columns>
+    <Container className="m-4">
+      <Typography
+        colour="accent"
+        className="text-center mt-4"
+        weigth="bold"
+        type="H3">
+        Meals
+      </Typography>
+      {renderMeals()}
     </Container>
   );
 };

@@ -12,8 +12,8 @@ import {
   Typography,
 } from "components";
 import { COLOURS } from "constants/colours";
-import type { Dispatch } from "react";
-import React, { useState, type FC } from "react";
+import type { Dispatch, SetStateAction } from "react";
+import React, { useEffect, useState, type FC } from "react";
 import { Alert, Platform, View } from "react-native";
 import { ClockIcon } from "react-native-heroicons/solid";
 import {
@@ -34,10 +34,29 @@ const form = {
 
 type FormValues = keyof typeof form;
 
-type Props = NativeStackScreenProps<RootStackParamList, "CreateMeal">;
+type CreateMealStackProps = NativeStackScreenProps<
+  RootStackParamList,
+  "CreateMeal"
+>;
 
-const CreateMealScreen: FC<Props> = ({ route: { params } }) => {
+interface Props extends CreateMealStackProps {
+  setActiveScreen: Dispatch<SetStateAction<string>>;
+}
+
+const CreateMealScreen: FC<Props> = ({
+  route,
+  navigation,
+  setActiveScreen,
+}) => {
+  const { params } = route ?? {};
   const { restaurantID } = params;
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () =>
+      setActiveScreen(route.name),
+    );
+    return unsubscribe;
+  }, [navigation, setActiveScreen]);
 
   const [state, setState] = useState(form);
   const [time, setTime] = useState<TypeOfTimes>("pickupStartTime");

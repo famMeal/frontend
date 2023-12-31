@@ -65,6 +65,7 @@ export const getCSS = ({
     alignClass[alignItems],
     justifyClass[justifyContent],
     marginClass,
+    // borderWidth("border"),
   );
 
   return { columnCSS, width };

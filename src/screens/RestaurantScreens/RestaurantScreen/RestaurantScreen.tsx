@@ -1,13 +1,39 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Column, Columns, Container, Typography } from "components";
-import type { FC } from "react";
+import {
+  Box,
+  Button,
+  Column,
+  Columns,
+  Container,
+  Typography,
+} from "components";
+import { useEffect, type Dispatch, type FC, type SetStateAction } from "react";
 import type { RootStackParamList } from "types/navigation.types";
 import { useRestaurantQuery } from "./useRestaurantQuery";
 
-type Props = NativeStackScreenProps<RootStackParamList, "Restaurant">;
+type RestaurantStackProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Restaurant"
+>;
 
-const RestaurantScreen: FC<Props> = ({ route: { params } }) => {
+interface Props extends RestaurantStackProps {
+  setActiveScreen: Dispatch<SetStateAction<string>>;
+}
+
+const RestaurantScreen: FC<Props> = ({
+  route,
+  navigation,
+  setActiveScreen,
+}) => {
+  const { params } = route ?? {};
   const { restaurantID } = params;
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () =>
+      setActiveScreen(route.name),
+    );
+    return unsubscribe;
+  }, [navigation, setActiveScreen]);
 
   const { data } = useRestaurantQuery({
     variables: {
@@ -17,12 +43,22 @@ const RestaurantScreen: FC<Props> = ({ route: { params } }) => {
   });
 
   return (
-    <Container>
+    <Container className="m-4">
+      <Typography
+        colour="accent"
+        weigth="bold"
+        type="H3"
+        className="text-center mt-4">
+        {data?.restaurant?.name}
+      </Typography>
       <Columns>
-        <Column>
-          <Typography weigth="bold" type="H1">
-            {data?.restaurant?.name}
-          </Typography>
+        <Column columnWidth="fullWidth">
+          <Box>
+            <Typography>
+              You have {data?.restaurant?.orders?.length} orders
+            </Typography>
+            <Button>Create new Meal</Button>
+          </Box>
         </Column>
       </Columns>
     </Container>

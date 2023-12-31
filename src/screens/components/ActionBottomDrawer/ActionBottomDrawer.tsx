@@ -20,15 +20,15 @@ const ActionBottomDrawer: FC<Props> = ({
   return (
     <BottomDrawer isVisible={isVisible} onClose={onClose}>
       <Columns isMarginless>
-        <Column isPaddingless>{children}</Column>
+        <Column columnWidth="fullWidth">{children}</Column>
       </Columns>
-      <Columns>
-        <Column className="pr-0">
+      <Columns className="mt-4 mb-8">
+        <Column>
           <Button onPress={onClose} theme="accent" isOutlined>
             Cancel
           </Button>
         </Column>
-        <Column className="pl-0">
+        <Column>
           <Button isLoading={isLoading} onPress={onPress} theme="accent">
             Delete
           </Button>

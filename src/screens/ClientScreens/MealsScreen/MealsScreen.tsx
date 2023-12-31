@@ -1,9 +1,8 @@
-import { GoogleMap, Skeleton } from "components";
+import { Container, GoogleMap, Skeleton } from "components";
 import type { FC } from "react";
 import { useRef, useState } from "react";
 import { ScrollView, View } from "react-native";
 import type MapView from "react-native-maps";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Meals } from "./Meals";
 import { useGetMealsLocationQuery } from "./useGetMealsLocationQuery";
 
@@ -61,15 +60,12 @@ const MealsScreen: FC = () => {
   };
 
   return (
-    <SafeAreaView>
-      <View className="h-52">{renderMap()}</View>
-      <ScrollView
-        className="px-4 pt-4"
-        ref={setScrollViewRef}
-        onContentSizeChange={handleMapReady}>
+    <Container className="m-4">
+      <View className="h-52 mb-4">{renderMap()}</View>
+      <ScrollView ref={setScrollViewRef} onContentSizeChange={handleMapReady}>
         <Meals />
       </ScrollView>
-    </SafeAreaView>
+    </Container>
   );
 };
 

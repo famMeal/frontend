@@ -32,7 +32,7 @@ const ConfirmationScreen: FC<Props> = ({
 
   const onPressNavigateToMeals = () => navigation.navigate("Meals");
 
-  const onCompleted = () => navigation.navigate("ClientOrders");
+  const onCompleted = () => navigation.navigate("Orders");
 
   if (params?.cart) {
     return (

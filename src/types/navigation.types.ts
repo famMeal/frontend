@@ -6,7 +6,7 @@ export type RootStackParamList = {
   Login: undefined;
   TabNavigator: undefined;
   Restaurants: undefined;
-  RestaurantOrders: {
+  ActiveOrders: {
     restaurantID: Restaurant["id"];
   };
   CreateMeal: {
@@ -31,7 +31,7 @@ export type RootStackParamList = {
     cart: AddToCartData;
   };
   Profile: undefined;
-  ClientOrders: undefined;
+  Orders: undefined;
 };
 
 export type MainNavigationProps = NativeStackNavigationProp<
@@ -51,7 +51,7 @@ export type ProfileNavigationProps = NativeStackNavigationProp<
 
 export type OrdersNavigationProps = NativeStackNavigationProp<
   RootStackParamList,
-  "ClientOrders"
+  "Orders"
 >;
 
 export type LoginNavigationProps = NativeStackNavigationProp<

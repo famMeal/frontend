@@ -15,6 +15,7 @@ const MEAL_CREATE = gql`
         description
         price
         active
+        quantityAvailable
       }
     }
   }
@@ -22,7 +23,13 @@ const MEAL_CREATE = gql`
 
 type MealSplinter = Pick<
   Meal,
-  "__typename" | "id" | "description" | "name" | "price" | "active"
+  | "__typename"
+  | "id"
+  | "description"
+  | "name"
+  | "price"
+  | "active"
+  | "quantityAvailable"
 >;
 
 type MealCreateSplinter = Pick<

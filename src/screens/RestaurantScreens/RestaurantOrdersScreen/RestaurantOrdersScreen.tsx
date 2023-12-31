@@ -9,7 +9,8 @@ import {
   Typography,
 } from "components";
 import { COLOURS } from "constants/colours";
-import { useCallback, useMemo, useState, type FC } from "react";
+import type { Dispatch, SetStateAction } from "react";
+import { useCallback, useEffect, useMemo, useState, type FC } from "react";
 import { View } from "react-native";
 import { MagnifyingGlassIcon, TrashIcon } from "react-native-heroicons/solid";
 import {
@@ -25,11 +26,30 @@ import {
 import type { RestaurantOrderData } from "./useLazyRestaurantOrderQuery";
 import { useLazyRestaurantOrderQuery } from "./useLazyRestaurantOrderQuery";
 
-type Props = NativeStackScreenProps<RootStackParamList, "RestaurantOrders">;
+type ActiveOrdersStackProps = NativeStackScreenProps<
+  RootStackParamList,
+  "ActiveOrders"
+>;
 
-const RestaurantOrdersScreen: FC<Props> = ({ route: { params } }) => {
-  const [isSearching, setIsSearching] = useState(false);
+interface Props extends ActiveOrdersStackProps {
+  setActiveScreen: Dispatch<SetStateAction<string>>;
+}
+
+const RestaurantOrdersScreen: FC<Props> = ({
+  route,
+  navigation,
+  setActiveScreen,
+}) => {
+  const { params } = route ?? {};
   const { restaurantID } = params;
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () =>
+      setActiveScreen(route.name),
+    );
+    return unsubscribe;
+  }, [navigation, setActiveScreen]);
+  const [isSearching, setIsSearching] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   const { data: restaurantData } = useRestaurantOrdersQuery({
@@ -136,10 +156,7 @@ const RestaurantOrdersScreen: FC<Props> = ({ route: { params } }) => {
           </Column>
         </Columns>
       </Box>
-
-      <Columns>
-        <Column>{renderContent()}</Column>
-      </Columns>
+      {renderContent()}
     </Container>
   );
 };
