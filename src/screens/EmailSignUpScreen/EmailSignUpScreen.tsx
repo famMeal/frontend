@@ -5,14 +5,21 @@ import {
   Column,
   Columns,
   Container,
+  Input,
   Typography,
 } from "components";
-import type { FC } from "react";
+import { COLOURS } from "constants/colours";
+import { useState, type FC } from "react";
+import { View, TouchableOpacity } from "react-native";
+import { EyeSlashIcon, EyeIcon } from "react-native-heroicons/solid";
 import { SvgXml } from "react-native-svg";
-import type { EmailSignUpNavigationProps } from "types/navigation.types";
+import type { SignUpNavigationProps } from "types/navigation.types";
 
-const SignUpScreen: FC = () => {
-  const { navigate } = useNavigation<EmailSignUpNavigationProps>();
+const EmailSignUpScreen: FC = () => {
+  const { navigate } = useNavigation<SignUpNavigationProps>();
+  const [email, setEmail] = useState("shahynkamali@gmail.com");
+  const [password, setPassword] = useState("password");
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const svgString = `
     <svg width="86" height="18.75" viewBox="0 0 431 94" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -24,40 +31,78 @@ const SignUpScreen: FC = () => {
     </svg>
   `;
 
-  const handleOnPressLogin = () => navigate("Login");
-  const handleContinueWithEmail = () => navigate("EmailSignUp");
+  const toggleSecureTextEntry = () =>
+    setSecureTextEntry(prevState => !prevState);
 
+  const renderEyeIcon = () =>
+    secureTextEntry ? (
+      <EyeSlashIcon color={COLOURS.accent} />
+    ) : (
+      <EyeIcon color={COLOURS.accent} />
+    );
+
+  const handleOnPressLogin = () => navigate("Login");
   return (
     <Container className="mx-4">
-      <Columns>
-        <Typography weigth="bold" colour="accent" type="H3">
-          Get started with{" "}
-        </Typography>
-        <SvgXml xml={svgString} />
-        <Typography weigth="bold" colour="accent" type="H3">
-          !
-        </Typography>
-      </Columns>
       <Box>
-        <Columns className="mt-4">
+        <Columns>
           <Column columnWidth="fullWidth">
-            <Button onPress={() => console.log("sign up")}>
-              Continue with Google
-            </Button>
+            <Typography weigth="semiBold" type="S">
+              Email
+            </Typography>
+            <Input
+              keyboardType="email-address"
+              onChangeText={newText => setEmail(newText)}
+              value={email}
+              theme="accent"
+            />
+          </Column>
+        </Columns>
+        <Columns>
+          <Column columnWidth="fullWidth">
+            <Typography weigth="semiBold" type="S">
+              Password
+            </Typography>
+            <Input
+              className="relative"
+              secureTextEntry={secureTextEntry}
+              onChangeText={newText => setPassword(newText)}
+              value={password}
+              theme="accent"
+            />
+            <View className="absolute right-2 top-11">
+              <Column>
+                <TouchableOpacity onPress={toggleSecureTextEntry}>
+                  {renderEyeIcon()}
+                </TouchableOpacity>
+              </Column>
+            </View>
+          </Column>
+        </Columns>
+        <Columns>
+          <Column columnWidth="fullWidth">
+            <Typography weigth="semiBold" type="S">
+              Confirm password
+            </Typography>
+            <Input
+              className="relative"
+              secureTextEntry={secureTextEntry}
+              onChangeText={newText => setPassword(newText)}
+              value={password}
+              theme="accent"
+            />
+            <View className="absolute right-2 top-11">
+              <Column>
+                <TouchableOpacity onPress={toggleSecureTextEntry}>
+                  {renderEyeIcon()}
+                </TouchableOpacity>
+              </Column>
+            </View>
           </Column>
         </Columns>
         <Columns className="mt-4">
           <Column columnWidth="fullWidth">
-            <Button onPress={() => console.log("sign up")}>
-              Continue with Apple
-            </Button>
-          </Column>
-        </Columns>
-        <Columns className="mt-4">
-          <Column columnWidth="fullWidth">
-            <Button theme="accent" onPress={handleContinueWithEmail}>
-              Continue with Email
-            </Button>
+            <Button onPress={() => console.log("sign up")}>Sign up</Button>
           </Column>
         </Columns>
         <Columns className="mt-8">
@@ -82,4 +127,4 @@ const SignUpScreen: FC = () => {
   );
 };
 
-export { SignUpScreen };
+export { EmailSignUpScreen };

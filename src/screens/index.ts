@@ -6,4 +6,5 @@ export { OrdersScreen } from "./ClientScreens/OrdersScreen";
 export { LoginScreen } from "./LoginScreen";
 export { RestaurantScreens } from "./RestaurantScreens";
 export { SignUpScreen } from "./SignupScreen";
+export { EmailSignUpScreen } from "./EmailSignUpScreen";
 export { SplashScreen } from "./SplashScreen";

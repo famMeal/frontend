@@ -131,7 +131,7 @@ const LoginScreen: FC = () => {
             alignItems="flex-end"
             justifyContent="center"
             columnWidth="twoThird">
-            <Typography type="S">Dont have an account?</Typography>
+            <Typography type="S">Don't have an account?</Typography>
           </Column>
           <Column columnWidth="oneThird" justifyContent="center">
             <Button
