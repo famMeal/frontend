@@ -10,9 +10,8 @@ import {
 } from "components";
 import { COLOURS } from "constants/colours";
 import { useState, type FC } from "react";
-import { View, TouchableOpacity } from "react-native";
-import { EyeSlashIcon, EyeIcon } from "react-native-heroicons/solid";
-import { SvgXml } from "react-native-svg";
+import { TouchableOpacity, View } from "react-native";
+import { EyeIcon, EyeSlashIcon } from "react-native-heroicons/solid";
 import type { SignUpNavigationProps } from "types/navigation.types";
 
 const EmailSignUpScreen: FC = () => {
@@ -43,7 +42,7 @@ const EmailSignUpScreen: FC = () => {
 
   const handleOnPressLogin = () => navigate("Login");
   return (
-    <Container className="mx-4">
+    <Container>
       <Box>
         <Columns>
           <Column columnWidth="fullWidth">

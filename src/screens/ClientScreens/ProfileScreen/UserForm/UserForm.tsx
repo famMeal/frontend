@@ -8,7 +8,7 @@ interface Props {
 
 const UserForm: FC<Props> = ({ user: { firstName, lastName, email } }) => {
   return (
-    <Container className="mx-4 mt-4">
+    <Container>
       <Box>
         <Columns>
           <Column>

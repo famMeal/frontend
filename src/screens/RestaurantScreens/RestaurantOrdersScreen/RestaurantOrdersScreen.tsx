@@ -128,7 +128,7 @@ const RestaurantOrdersScreen: FC<Props> = ({
       </Button>
     );
   return (
-    <Container className="m-4">
+    <Container>
       <Typography
         colour="accent"
         isMarginless

@@ -14,9 +14,9 @@ import type { FC } from "react";
 import { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { EyeIcon, EyeSlashIcon } from "react-native-heroicons/solid";
+import { SvgXml } from "react-native-svg";
 import type { LoginNavigationProps } from "types/navigation.types";
 import { useLoginMutation } from "./useLogInMutation";
-import { SvgXml } from "react-native-svg";
 
 const Screens = {
   Restaurants: "Restaurants",
@@ -46,7 +46,7 @@ const LoginScreen: FC = () => {
         email,
         password,
       },
-      onCompleted: () => navigate(Screens.Clients),
+      onCompleted: () => navigate(Screens.Restaurants),
     });
   };
 
@@ -72,7 +72,7 @@ const LoginScreen: FC = () => {
   `;
 
   return (
-    <Container className="mx-4">
+    <Container>
       <Columns>
         <Column
           alignItems="center"

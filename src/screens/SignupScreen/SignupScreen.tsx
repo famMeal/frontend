@@ -28,7 +28,7 @@ const SignUpScreen: FC = () => {
   const handleContinueWithEmail = () => navigate("EmailSignUp");
 
   return (
-    <Container className="mx-4">
+    <Container>
       <Columns>
         <Typography weigth="bold" colour="accent" type="H3">
           Get started with{" "}

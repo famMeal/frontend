@@ -20,6 +20,9 @@ export type RootStackParamList = {
   RestaurantMeals: {
     restaurantID: Restaurant["id"];
   };
+  NewRestaurantMeals: {
+    restaurantID: Restaurant["id"];
+  };
   Splash: undefined;
   Clients: undefined;
   Meals: undefined;

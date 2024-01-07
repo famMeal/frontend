@@ -1,8 +1,6 @@
 import type { DateTimePickerEvent } from "@react-native-community/datetimepicker";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
-  BottomDrawer,
   Box,
   Button,
   Column,
@@ -11,18 +9,15 @@ import {
   Input,
   Typography,
 } from "components";
-import { COLOURS } from "constants/colours";
 import type { Dispatch, SetStateAction } from "react";
 import React, { useEffect, useState, type FC } from "react";
-import { Alert, Platform, View } from "react-native";
-import { ClockIcon } from "react-native-heroicons/solid";
+import { Alert } from "react-native";
 import {
   RESTAURANT_ORDERS_QUERY,
   type RestaurantOrdersData,
   type RestaurantOrdersVariables,
 } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
 import type { RootStackParamList } from "types/navigation.types";
-import { formatTimeFromUTC } from "utilities";
 import { useMealCreateMutation } from "./useMealCreateMutation";
 
 const form = {
@@ -162,7 +157,7 @@ const CreateMealScreen: FC<Props> = ({
     });
 
   return (
-    <Container className="m-4">
+    <Container className="flex flex-col justify-between">
       <Typography
         colour="accent"
         className="text-center mt-4"
@@ -172,13 +167,24 @@ const CreateMealScreen: FC<Props> = ({
       </Typography>
       <Box className="mt-4">
         <Columns>
-          <Column columnWidth="fullWidth" isPaddingless>
+          <Column>
             <Typography weigth="bold" type="S">
               Name
             </Typography>
             <Input
               value={state.name}
               onChangeText={value => handleInputChange("name", value)}
+            />
+          </Column>
+          <Column>
+            <Typography weigth="bold" type="S">
+              Price
+            </Typography>
+            <Input
+              value={state.price}
+              keyboardType="numeric"
+              maxLength={3}
+              onChangeText={value => handleInputChange("price", value)}
             />
           </Column>
         </Columns>
@@ -198,32 +204,21 @@ const CreateMealScreen: FC<Props> = ({
           </Column>
         </Columns>
         <Columns>
-          <Column isPaddingless>
-            <Typography weigth="bold" type="S">
-              Quantity
-            </Typography>
-            <Input
-              value={state.quantityAvailable}
-              keyboardType="numeric"
-              maxLength={3}
-              onChangeText={value =>
-                handleInputChange("quantityAvailable", value)
-              }
-            />
-          </Column>
-          <Column isPaddingless>
-            <Typography weigth="bold" type="S">
-              Price
-            </Typography>
-            <Input
-              value={state.price}
-              keyboardType="numeric"
-              maxLength={3}
-              onChangeText={value => handleInputChange("price", value)}
-            />
-          </Column>
+          {/* <Column isPaddingless>
+              <Typography weigth="bold" type="S">
+                Quantity
+              </Typography>
+              <Input
+                value={state.quantityAvailable}
+                keyboardType="numeric"
+                maxLength={3}
+                onChangeText={value =>
+                  handleInputChange("quantityAvailable", value)
+                }
+              />
+            </Column> */}
         </Columns>
-        <Columns>
+        {/* <Columns>
           <Column>
             <Typography weigth="bold" type="S">
               Start Pickup time
@@ -262,8 +257,8 @@ const CreateMealScreen: FC<Props> = ({
               </View>
             </View>
           </Column>
-        </Columns>
-        <Columns>
+        </Columns> */}
+        {/* <Columns>
           <Column>
             <Typography weigth="bold" type="S">
               Start Order time
@@ -302,8 +297,21 @@ const CreateMealScreen: FC<Props> = ({
               </View>
             </View>
           </Column>
-        </Columns>
+        </Columns> */}
       </Box>
+
+      {/* <BottomDrawer
+        isVisible={isDrawerVisible}
+        onClose={() => setDrawerVisible(false)}>
+        <DateTimePicker
+          minimumDate={pickupStartTime}
+          value={selectedTimes[time]}
+          mode="time"
+          display={Platform.OS === "ios" ? "spinner" : "default"}
+          onChange={onTimeChange}
+        />
+      </BottomDrawer> */}
+
       <Box>
         <Columns isMarginless>
           <Column columnWidth="fullWidth">
@@ -316,18 +324,6 @@ const CreateMealScreen: FC<Props> = ({
           </Column>
         </Columns>
       </Box>
-
-      <BottomDrawer
-        isVisible={isDrawerVisible}
-        onClose={() => setDrawerVisible(false)}>
-        <DateTimePicker
-          minimumDate={pickupStartTime}
-          value={selectedTimes[time]}
-          mode="time"
-          display={Platform.OS === "ios" ? "spinner" : "default"}
-          onChange={onTimeChange}
-        />
-      </BottomDrawer>
     </Container>
   );
 };

@@ -17,7 +17,7 @@ interface Props {
 
 const EmptyCart: FC<Props> = ({ onPress }) => {
   return (
-    <Container className="justify-center m-4">
+    <Container className="justify-center">
       <Box>
         <Columns>
           <Column

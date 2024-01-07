@@ -60,7 +60,7 @@ const MealsScreen: FC = () => {
   };
 
   return (
-    <Container className="m-4">
+    <Container>
       <View className="h-52 mb-4">{renderMap()}</View>
       <ScrollView ref={setScrollViewRef} onContentSizeChange={handleMapReady}>
         <Meals />

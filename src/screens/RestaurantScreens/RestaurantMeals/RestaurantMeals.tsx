@@ -1,6 +1,7 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Container, Typography } from "components";
 import { useEffect, type Dispatch, type FC, type SetStateAction } from "react";
+import { ScrollView } from "react-native";
 import type { RootStackParamList } from "types/navigation.types";
 import {
   useRestaurantOrdersQuery,
@@ -41,7 +42,7 @@ const RestaurantMeals: FC<Props> = ({ route, navigation, setActiveScreen }) => {
   const renderMeals = () => data?.restaurant?.meals.map(renderMeal);
 
   return (
-    <Container className="m-4">
+    <Container>
       <Typography
         colour="accent"
         className="text-center mt-4"
@@ -49,7 +50,7 @@ const RestaurantMeals: FC<Props> = ({ route, navigation, setActiveScreen }) => {
         type="H3">
         Meals
       </Typography>
-      {renderMeals()}
+      <ScrollView>{renderMeals()}</ScrollView>
     </Container>
   );
 };
