@@ -12,7 +12,7 @@ import {
 } from "react-native-heroicons/solid";
 import type { RootStackParamList } from "types/navigation.types";
 import { CreateMealScreen } from "./CreateMealScreen";
-import { RestaurantMeals } from "./RestaurantMeals/RestaurantMeals";
+import { RestaurantMealsScreens } from "./RestaurantMealsScreens";
 import { RestaurantOrdersScreen } from "./RestaurantOrdersScreen";
 import { RestaurantScreen } from "./RestaurantScreen";
 import { useRestaurantOrdersQuery } from "./useRestaurantOrdersQuery";
@@ -90,19 +90,22 @@ const RestaurantScreens: FC = () => {
             <BookOpenIcon
               size={18}
               color={
-                activeScreen === "RestaurantMeals"
+                activeScreen === "RestaurantMealsScreens"
                   ? COLOURS.primary
                   : COLOURS.accent
               }
             />
           ),
         }}
-        name="RestaurantMeals"
+        name="RestaurantMealsScreens"
         initialParams={{
           restaurantID: data?.restaurant?.id,
         }}>
         {props => (
-          <RestaurantMeals {...props} setActiveScreen={setActiveScreen} />
+          <RestaurantMealsScreens
+            {...props}
+            setActiveScreen={setActiveScreen}
+          />
         )}
       </Screen>
       <Screen

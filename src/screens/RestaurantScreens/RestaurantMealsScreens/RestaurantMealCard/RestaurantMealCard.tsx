@@ -1,7 +1,10 @@
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Box, Button, Chip, Column, Columns, Typography } from "components";
 import { COLOURS } from "constants/colours";
 import { useState, type FC } from "react";
-import { Switch, View } from "react-native";
+import { View } from "react-native";
+import { TrashIcon } from "react-native-heroicons/solid";
 import type {
   RestaurantOrdersData,
   RestaurantOrdersVariables,
@@ -11,8 +14,8 @@ import {
   type RestaurantMealData,
 } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
 import { ActionBottomDrawer } from "screens/components";
+import type { RootStackParamList } from "types/navigation.types";
 import { UpdateRestaurantMeal } from "./UpdateRestaurantMeal";
-import { useMealUpdateMutation } from "./UpdateRestaurantMeal/useMealUpdateMutation";
 import { useMealDeleteMutation } from "./useMealDeleteMutation";
 
 interface Props {
@@ -20,11 +23,17 @@ interface Props {
   restaurantID: string;
 }
 
+type RestaurantMealsNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "RestaurantMeals"
+>;
+
 const RestaurantMealCard: FC<Props> = ({ meal, restaurantID }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [deleteMeal, { loading: isDeleteLoading }] = useMealDeleteMutation();
-  const [updateMeal] = useMealUpdateMutation();
+
+  const { navigate } = useNavigation<RestaurantMealsNavigationProp>();
 
   const { name, description, price, id, active, quantityAvailable } =
     meal ?? {};
@@ -69,18 +78,8 @@ const RestaurantMealCard: FC<Props> = ({ meal, restaurantID }) => {
       },
     });
 
-  const toggleSwitch = () => {
-    updateMeal({
-      variables: {
-        input: {
-          name: name,
-          description: description,
-          price: Number(price.replace("$", "")),
-          mealId: id,
-          active: !active,
-        },
-      },
-    });
+  const handleOnPressActivate = () => {
+    navigate("ActivateRestaurantMeal", { meal });
   };
 
   const renderContent = () =>
@@ -93,23 +92,24 @@ const RestaurantMealCard: FC<Props> = ({ meal, restaurantID }) => {
     ) : (
       <Box>
         <Columns className="border-b border-accent pb-4">
-          <Column>
+          <Column columnWidth="twoThird">
             <View>
               <Chip isStatic type={active ? "success" : "primary"}>
                 {active ? "Active" : "Disabled"}
               </Chip>
             </View>
           </Column>
-          <Column alignItems="flex-end" justifyContent="flex-end">
-            <Switch
-              trackColor={{ false: COLOURS.white, true: COLOURS.accent }}
-              thumbColor={COLOURS.white}
-              ios_backgroundColor={COLOURS.light}
-              onValueChange={toggleSwitch}
-              value={active}
-            />
-          </Column>
+          <Column
+            columnWidth="oneThird"
+            alignItems="flex-end"
+            justifyContent="flex-end"
+          />
         </Columns>
+        <View className="absolute top-4 right-2">
+          <Button isClean isOutlined onPress={toggleDrawer}>
+            <TrashIcon color={COLOURS.accent} />
+          </Button>
+        </View>
         <Columns>
           <Column columnWidth="twoThird">
             <Typography weigth="semiBold" isMarginless>
@@ -151,7 +151,7 @@ const RestaurantMealCard: FC<Props> = ({ meal, restaurantID }) => {
             </Button>
           </Column>
           <Column>
-            <Button onPress={toggleDrawer}>Delete</Button>
+            <Button onPress={handleOnPressActivate}>Activate</Button>
           </Column>
         </Columns>
       </Box>

@@ -1,4 +1,3 @@
-import type { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
   Box,
@@ -54,41 +53,8 @@ const CreateMealScreen: FC<Props> = ({
   }, [navigation, setActiveScreen]);
 
   const [state, setState] = useState(form);
-  const [time, setTime] = useState<TypeOfTimes>("pickupStartTime");
-  const [isDrawerVisible, setDrawerVisible] = useState(false);
-  const [pickupStartTime, setPickupStartTime] = useState(new Date());
-  const [pickupEndTime, setPickupEndTime] = useState(new Date());
-  const [orderCutoffTime, setOrderCutoffTime] = useState(new Date());
-  const [orderStartTime, setOrderStartTime] = useState(new Date());
+
   const [createMeal, { loading }] = useMealCreateMutation();
-
-  const setTimes = {
-    pickupStartTime: setPickupStartTime,
-    pickupEndTime: setPickupEndTime,
-    orderCutoffTime: setOrderCutoffTime,
-    orderStartTime: setOrderStartTime,
-  } as const;
-
-  const selectedTimes = {
-    pickupStartTime,
-    pickupEndTime,
-    orderCutoffTime,
-    orderStartTime,
-  };
-
-  type TypeOfTimes = keyof typeof setTimes;
-
-  const onTimeChange = (
-    _: DateTimePickerEvent,
-    selectedDate: Date | undefined,
-  ) => (selectedDate ? setTimes[time](selectedDate) : null);
-
-  const handleOpenTimeDrawer = (time: TypeOfTimes) => {
-    return (onCallBackOpenDrawer: Dispatch<React.SetStateAction<boolean>>) => {
-      setTime(time);
-      onCallBackOpenDrawer(true);
-    };
-  };
 
   const handleInputChange = (name: FormValues, value: string) =>
     setState(prevState => ({
@@ -299,18 +265,6 @@ const CreateMealScreen: FC<Props> = ({
           </Column>
         </Columns> */}
       </Box>
-
-      {/* <BottomDrawer
-        isVisible={isDrawerVisible}
-        onClose={() => setDrawerVisible(false)}>
-        <DateTimePicker
-          minimumDate={pickupStartTime}
-          value={selectedTimes[time]}
-          mode="time"
-          display={Platform.OS === "ios" ? "spinner" : "default"}
-          onChange={onTimeChange}
-        />
-      </BottomDrawer> */}
 
       <Box>
         <Columns isMarginless>

@@ -79,22 +79,13 @@ const UpdateRestaurantMeal: FC<Props> = ({
         </Column>
       </Columns>
       <Columns>
-        <Column>
+        <Column columnWidth="fullWidth">
           <Typography weigth="bold" isMarginless type="S">
             Price:
           </Typography>
           <Input
             onChangeText={value => handleChange("price", value)}
             value={state.price}
-          />
-        </Column>
-        <Column>
-          <Typography weigth="bold" isMarginless type="S">
-            Quantity:
-          </Typography>
-          <Input
-            onChangeText={value => handleChange("price", value)}
-            value={state.quantityAvailable}
           />
         </Column>
       </Columns>

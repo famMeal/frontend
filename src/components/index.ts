@@ -6,6 +6,7 @@ export { Chip } from "./Chip";
 export { Column } from "./Column";
 export { Columns } from "./Columns";
 export { Container } from "./Container";
+export { DatePicker } from "./DatePicker";
 export { GoogleMap } from "./GoogleMap";
 export { Input } from "./Input";
 export { QuantitySelector } from "./QuantitySelector";

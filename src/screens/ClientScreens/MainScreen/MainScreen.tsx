@@ -10,6 +10,7 @@ import type {
   RootStackParamList,
 } from "types/navigation.types";
 import { MainHeader } from "./MainHeader";
+
 const { Navigator, Screen } = createNativeStackNavigator<RootStackParamList>();
 
 type MainStackProps = NativeStackScreenProps<RootStackParamList, "Main">;

@@ -1,0 +1,1 @@
+export { RestaurantMealsHeader } from "./RestaurantMealsHeader";

@@ -1,35 +1,25 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Container, Typography } from "components";
-import { useEffect, type Dispatch, type FC, type SetStateAction } from "react";
+import { type FC } from "react";
 import { ScrollView } from "react-native";
+import type { RestaurantMealData } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
+import { useRestaurantOrdersQuery } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
 import type { RootStackParamList } from "types/navigation.types";
-import {
-  useRestaurantOrdersQuery,
-  type RestaurantMealData,
-} from "../useRestaurantOrdersQuery";
-import { RestaurantMealCard } from "./RestaurantMealCard";
+import { RestaurantMealCard } from "../RestaurantMealCard";
 
 type RestaurantMealsStackProps = NativeStackScreenProps<
   RootStackParamList,
   "RestaurantMeals"
 >;
 
-interface Props extends RestaurantMealsStackProps {
-  setActiveScreen: Dispatch<SetStateAction<string>>;
-}
+type Props = RestaurantMealsStackProps;
 
-const RestaurantMeals: FC<Props> = ({ route, navigation, setActiveScreen }) => {
+const RestaurantMeals: FC<Props> = ({ route }) => {
   const { params } = route ?? {};
   const { restaurantID } = params;
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () =>
-      setActiveScreen(route.name),
-    );
-    return unsubscribe;
-  }, [navigation, setActiveScreen]);
-
   const { data } = useRestaurantOrdersQuery({
+    skip: !restaurantID,
     variables: {
       id: restaurantID,
     },
