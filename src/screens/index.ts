@@ -7,4 +7,6 @@ export { LoginScreen } from "./LoginScreen";
 export { RestaurantScreens } from "./RestaurantScreens";
 export { SignUpScreen } from "./SignupScreen";
 export { EmailSignUpScreen } from "./EmailSignUpScreen";
+export { ConfirmEmailScreen } from "./ConfirmEmailScreen";
+export { ConfirmationEmailSentScreen } from "./ConfirmationEmailSentScreen";
 export { SplashScreen } from "./SplashScreen";

@@ -8,6 +8,8 @@ export type RootStackParamList = {
   EmailSignUp: undefined;
   TabNavigator: undefined;
   Restaurants: undefined;
+  ConfirmEmail: undefined;
+  ConfirmationEmailSent: undefined;
   ActiveOrders: {
     restaurantID: Restaurant["id"];
   };

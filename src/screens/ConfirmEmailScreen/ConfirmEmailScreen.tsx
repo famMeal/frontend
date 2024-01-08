@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import {
   Box,
   Button,
@@ -12,10 +11,8 @@ import { COLOURS } from "constants/colours";
 import { useState, type FC } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { EyeSlashIcon, EyeIcon } from "react-native-heroicons/solid";
-import type { SignUpNavigationProps } from "types/navigation.types";
 
-const EmailSignUpScreen: FC = () => {
-  const { navigate } = useNavigation<SignUpNavigationProps>();
+const ConfirmEmailScreen: FC = () => {
   const [email, setEmail] = useState("shahynkamali@gmail.com");
   const [password, setPassword] = useState("password");
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -30,8 +27,6 @@ const EmailSignUpScreen: FC = () => {
       <EyeIcon color={COLOURS.accent} />
     );
 
-  const handleOnPressLogin = () => navigate("Login");
-  const handleOnPressSignUp = () => navigate("ConfirmationEmailSent");
   return (
     <Container className="mx-4">
       <Box>
@@ -92,23 +87,8 @@ const EmailSignUpScreen: FC = () => {
         </Columns>
         <Columns className="mt-4">
           <Column columnWidth="fullWidth">
-            <Button onPress={handleOnPressSignUp}>Sign up</Button>
-          </Column>
-        </Columns>
-        <Columns className="mt-8">
-          <Column
-            alignItems="flex-end"
-            justifyContent="center"
-            columnWidth="twoThird">
-            <Typography type="S">Already have an account?</Typography>
-          </Column>
-          <Column columnWidth="oneThird" justifyContent="center">
-            <Button
-              onPress={handleOnPressLogin}
-              theme="accent"
-              isOutlined
-              isClean>
-              Login
+            <Button onPress={() => console.log("sign up")}>
+              Verify account
             </Button>
           </Column>
         </Columns>
@@ -117,4 +97,4 @@ const EmailSignUpScreen: FC = () => {
   );
 };
 
-export { EmailSignUpScreen };
+export { ConfirmEmailScreen };

@@ -63,5 +63,16 @@
 		<string>Khula-Regular.ttf</string>
 		<string>Khula-SemiBold.ttf</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLName</key>
+            <string>com.batchapp</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>batchapp</string>
+            </array>
+        </dict>
+    </array>
 </dict>
 </plist>
