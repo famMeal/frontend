@@ -25,7 +25,7 @@ const RestaurantScreens: FC = () => {
 
   const { data, loading } = useRestaurantOrdersQuery({
     variables: {
-      id: "3",
+      id: "6",
     },
   });
 

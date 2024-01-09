@@ -62,13 +62,15 @@ const CreateMealScreen: FC<Props> = ({
       [name]: value,
     }));
 
-  const clearState = () =>
+  const clearState = () => {
     setState({
       name: "",
       description: "",
       price: "",
       quantityAvailable: "",
     });
+    navigation.navigate("RestaurantMealsScreens", { restaurantID });
+  };
 
   const showMealCreatedAlert = () => {
     Alert.alert(

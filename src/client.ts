@@ -1,18 +1,18 @@
 import {
   ApolloClient,
-  InMemoryCache,
   ApolloLink,
   HttpLink,
+  InMemoryCache,
 } from "@apollo/client";
-import { Platform } from "react-native";
 import { setContext } from "@apollo/client/link/context";
+import { Platform } from "react-native";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   DEVELOPMENT_URI_ANDROID_BACKEND,
   DEVELOPMENT_URI_IOS_BACKEND,
   PRODUCTION_URI_BACKEND,
 } from "react-native-dotenv";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const clientUri = __DEV__
   ? Platform.OS === "ios"

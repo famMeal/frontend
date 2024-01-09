@@ -44,7 +44,7 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
           pickupStartTime,
           pickupEndTime,
           quantity,
-          userId: "6",
+          userId: "10",
         },
       },
       onCompleted: ({ addToCart: { order } }) => {

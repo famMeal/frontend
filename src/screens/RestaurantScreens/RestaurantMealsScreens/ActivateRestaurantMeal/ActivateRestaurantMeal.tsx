@@ -1,7 +1,11 @@
 import type { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack";
 
+import { useNavigation } from "@react-navigation/native";
 import {
   BottomDrawer,
   Box,
@@ -16,6 +20,7 @@ import {
 import React, { useState, type FC } from "react";
 import { Platform } from "react-native";
 import type { RootStackParamList } from "types/navigation.types";
+import { useActivateMealMutation } from "./useActivateMealMutation";
 
 type ActiveRestaurantMealStackProps = NativeStackScreenProps<
   RootStackParamList,
@@ -36,8 +41,15 @@ const form = {
 
 type Keys = keyof typeof form;
 
+type RestaurantMealsNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "RestaurantMeals"
+>;
+
 const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
-  const { meal } = route?.params;
+  const { navigate } = useNavigation<RestaurantMealsNavigationProp>();
+  const [activateMeal, { loading }] = useActivateMealMutation();
+  const { meal, restaurantID } = route?.params;
   const [state, setState] = useState(form);
   const [isDrawerVisible, setDrawerVisible] = useState(false);
   const {
@@ -54,9 +66,9 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
   };
 
   const minimumDate = {
-    pickupStartTime: new Date(),
+    pickupStartTime: state.pickupDate,
     pickupEndTime: state.pickupStartTime,
-    orderStartTime: new Date(),
+    orderStartTime: state.orderDate,
     orderCutoffTime: state.orderStartTime,
   };
 
@@ -74,6 +86,17 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
     const currentDate = date || state[drawer];
     handleChange(drawer, currentDate);
   };
+
+  const handleOnPressActivate = () =>
+    activateMeal({
+      variables: {
+        input: {
+          mealId: meal?.id,
+          active: true,
+        },
+      },
+      onCompleted: () => navigate("RestaurantMeals", { restaurantID }),
+    });
 
   return (
     <Container>
@@ -164,7 +187,12 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
             />
           </Column>
           <Column justifyContent="flex-end">
-            <Button theme="accent">Activate</Button>
+            <Button
+              isLoading={loading}
+              onPress={handleOnPressActivate}
+              theme="accent">
+              Activate
+            </Button>
           </Column>
         </Columns>
       </Box>

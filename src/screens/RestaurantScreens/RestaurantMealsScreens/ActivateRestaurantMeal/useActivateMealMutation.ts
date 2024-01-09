@@ -2,26 +2,22 @@ import type { MutationHookOptions } from "@apollo/client";
 import { gql, useMutation } from "@apollo/client";
 import type { CreatePayload, Meal, UpdateInput } from "schema";
 
-const MEAL_UPDATE = gql`
-  mutation MealUpdate($input: UpdateInput!) {
+const MEAL_ACTIVATE = gql`
+  mutation MealActivate($input: UpdateInput!) {
     mealUpdate(input: $input) {
       clientMutationId
       errors
+      __typename
       meal {
         __typename
         id
-        name
-        description
-        price
+        active
       }
     }
   }
 `;
 
-type MealSplinter = Pick<
-  Meal,
-  "__typename" | "id" | "description" | "name" | "price"
->;
+type MealSplinter = Pick<Meal, "__typename" | "id" | "active">;
 
 type MealUpdateSplinter = Pick<
   CreatePayload,
@@ -42,7 +38,7 @@ type Variables = {
 
 type Options = MutationHookOptions<Data, Variables>;
 
-const useMealUpdateMutation = (options?: Options) =>
-  useMutation(MEAL_UPDATE, options);
+const useActivateMealMutation = (options?: Options) =>
+  useMutation(MEAL_ACTIVATE, options);
 
-export { useMealUpdateMutation };
+export { useActivateMealMutation };

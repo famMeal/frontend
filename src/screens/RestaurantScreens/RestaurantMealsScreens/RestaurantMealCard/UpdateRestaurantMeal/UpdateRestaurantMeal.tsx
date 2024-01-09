@@ -30,7 +30,7 @@ const UpdateRestaurantMeal: FC<Props> = ({
         input: {
           name: state.name,
           description: state.description,
-          price: Number(price.replace("$", "")),
+          price: Number(state.price),
           mealId: id,
           active,
         },

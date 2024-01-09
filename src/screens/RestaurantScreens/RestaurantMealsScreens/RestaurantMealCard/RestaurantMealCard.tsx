@@ -25,7 +25,7 @@ interface Props {
 
 type RestaurantMealsNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  "RestaurantMeals"
+  "ActivateRestaurantMeal"
 >;
 
 const RestaurantMealCard: FC<Props> = ({ meal, restaurantID }) => {
@@ -79,8 +79,15 @@ const RestaurantMealCard: FC<Props> = ({ meal, restaurantID }) => {
     });
 
   const handleOnPressActivate = () => {
-    navigate("ActivateRestaurantMeal", { meal });
+    navigate("ActivateRestaurantMeal", { meal, restaurantID });
   };
+
+  const renderCTA = () =>
+    active ? (
+      <Button>Deactivate</Button>
+    ) : (
+      <Button onPress={handleOnPressActivate}>Activate</Button>
+    );
 
   const renderContent = () =>
     isEditing ? (
@@ -106,13 +113,13 @@ const RestaurantMealCard: FC<Props> = ({ meal, restaurantID }) => {
           />
         </Columns>
         <View className="absolute top-4 right-2">
-          <Button isClean isOutlined onPress={toggleDrawer}>
-            <TrashIcon color={COLOURS.accent} />
+          <Button disabled={active} onPress={toggleDrawer}>
+            <TrashIcon color={COLOURS.white} />
           </Button>
         </View>
         <Columns>
-          <Column columnWidth="twoThird">
-            <Typography weigth="semiBold" isMarginless>
+          <Column columnWidth="fullWidth">
+            <Typography type="S" weigth="semiBold" isMarginless>
               {name}
             </Typography>
             <Typography isMarginless type="S">
@@ -150,9 +157,7 @@ const RestaurantMealCard: FC<Props> = ({ meal, restaurantID }) => {
               Edit
             </Button>
           </Column>
-          <Column>
-            <Button onPress={handleOnPressActivate}>Activate</Button>
-          </Column>
+          <Column>{renderCTA()}</Column>
         </Columns>
       </Box>
     );

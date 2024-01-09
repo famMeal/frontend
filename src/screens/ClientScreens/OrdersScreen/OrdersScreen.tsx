@@ -24,7 +24,7 @@ const OrdersScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
 
   const { data, loading } = useGetUserOrdersQuery({
     variables: {
-      id: "6",
+      id: "10",
     },
   });
 

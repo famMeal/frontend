@@ -34,6 +34,7 @@ const LoginScreen: FC = () => {
       AsyncStorage.setItem("accessToken", userLogin.credentials.accessToken);
       AsyncStorage.setItem("client", userLogin.credentials.client);
       AsyncStorage.setItem("uid", userLogin.credentials.uid);
+      navigate(Screens.Clients);
     },
     onError: error => {
       console.error("Login error:", error.message);
@@ -46,7 +47,6 @@ const LoginScreen: FC = () => {
         email,
         password,
       },
-      onCompleted: () => navigate(Screens.Restaurants),
     });
   };
 

@@ -23,6 +23,7 @@ export type RootStackParamList = {
   };
   ActivateRestaurantMeal: {
     meal: RestaurantMealData;
+    restaurantID: Restaurant["id"];
   };
   RestaurantMealsScreens: {
     restaurantID: Restaurant["id"];
