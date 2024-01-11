@@ -21,6 +21,7 @@ interface Props extends MainStackProps {
 
 const MainScreen: FC<Props> = ({ route, setActiveScreen }) => {
   const navigation = useNavigation<MainNavigationProps>();
+  const { userID } = route?.params ?? {};
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () =>
@@ -37,6 +38,7 @@ const MainScreen: FC<Props> = ({ route, setActiveScreen }) => {
         options={{ headerShown: false }}
       />
       <Screen
+        initialParams={{ userID }}
         name="Meal"
         component={MealScreen}
         options={({ route }) => ({

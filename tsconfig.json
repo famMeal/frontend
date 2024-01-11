@@ -8,6 +8,7 @@
       "screens/*": ["screens/*"],
       "constants/*": ["constants/*"],
       "utilities/*": ["utilities/*"],
+      "shared/*": ["shared/*"],
       "hooks/*": ["hooks/*"],
       "schema": ["graphql/types/graphql.ts"]
     }

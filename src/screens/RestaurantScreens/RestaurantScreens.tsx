@@ -10,22 +10,25 @@ import {
   PlayIcon,
   PlusCircleIcon,
 } from "react-native-heroicons/solid";
+import { useCurrentUserQuery } from "shared";
 import type { RootStackParamList } from "types/navigation.types";
 import { CreateMealScreen } from "./CreateMealScreen";
 import { RestaurantMealsScreens } from "./RestaurantMealsScreens";
 import { RestaurantOrdersScreen } from "./RestaurantOrdersScreen";
 import { RestaurantScreen } from "./RestaurantScreen";
 import { useRestaurantOrdersQuery } from "./useRestaurantOrdersQuery";
-
 const { Navigator, Screen } = createBottomTabNavigator<RootStackParamList>();
 
 const RestaurantScreens: FC = () => {
   const [activeScreen, setActiveScreen] = useState("");
   const navigation = useNavigation();
+  const { data: currentUserData } = useCurrentUserQuery();
+  const { id } = currentUserData?.currentUser?.restaurant ?? {};
 
   const { data, loading } = useRestaurantOrdersQuery({
+    skip: !id,
     variables: {
-      id: "6",
+      id: id!,
     },
   });
 

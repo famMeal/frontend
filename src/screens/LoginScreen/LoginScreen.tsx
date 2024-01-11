@@ -22,6 +22,7 @@ const Screens = {
   Restaurants: "Restaurants",
   Clients: "Clients",
   SignUp: "SignUp",
+  Splash: "Splash",
 } as const;
 
 const LoginScreen: FC = () => {
@@ -29,12 +30,18 @@ const LoginScreen: FC = () => {
   const [email, setEmail] = useState("shahynkamali@gmail.com");
   const [password, setPassword] = useState("password");
   const { navigate } = useNavigation<LoginNavigationProps>();
+
   const [userLogin, { loading }] = useLoginMutation({
-    onCompleted: ({ userLogin }) => {
-      AsyncStorage.setItem("accessToken", userLogin.credentials.accessToken);
-      AsyncStorage.setItem("client", userLogin.credentials.client);
-      AsyncStorage.setItem("uid", userLogin.credentials.uid);
-      navigate(Screens.Clients);
+    onCompleted: ({ userLogin: { credentials } }) => {
+      if (credentials) {
+        Promise.all(
+          Object.entries(credentials).map(([key, value]) =>
+            AsyncStorage.setItem(key, String(value)),
+          ),
+        ).then(() => {
+          navigate(Screens.Splash);
+        });
+      }
     },
     onError: error => {
       console.error("Login error:", error.message);

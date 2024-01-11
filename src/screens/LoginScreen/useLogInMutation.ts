@@ -1,17 +1,13 @@
 import type { MutationHookOptions } from "@apollo/client";
 import { gql, useMutation } from "@apollo/client";
-import type { User } from "schema";
+import type { Credential } from "schema";
 
 const LOGIN = gql`
   mutation Login($email: String!, $password: String!) {
     userLogin(email: $email, password: $password) {
       __typename
-      authenticatable {
-        email
-        firstName
-        lastName
-      }
       credentials {
+        __typename
         accessToken
         client
         expiry
@@ -24,14 +20,7 @@ const LOGIN = gql`
 
 interface Login {
   userLogin: {
-    authenticatable: User;
-    credentials: {
-      accessToken: string;
-      client: string;
-      expiry: string;
-      tokenType: string;
-      uid: string;
-    };
+    credentials: Credential;
   };
 }
 

@@ -1,28 +1,41 @@
-import type { FC } from "react";
-import { useEffect } from "react";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import React, { useEffect } from "react";
 import { Text, View } from "react-native";
 import SplashScreenRN from "react-native-splash-screen";
-import type { SplashNavigationProps } from "types/navigation.types";
+import { useCurrentUserQuery } from "shared";
+import type { RootStackParamList } from "types/navigation.types";
 
-type Props = {
-  navigation: SplashNavigationProps;
-};
+type Props = NativeStackScreenProps<RootStackParamList, "Splash">;
 
-const SplashScreen: FC<Props> = ({ navigation }) => {
+const Screens = {
+  Restaurants: "Restaurants",
+  Clients: "Clients",
+} as const;
+
+const SplashScreen: React.FC<Props> = ({ navigation }) => {
+  const { data, loading } = useCurrentUserQuery();
+  const { id } = data?.currentUser?.restaurant ?? {};
+
   useEffect(() => {
-    const navigateToLogin = () => {
+    if (!loading) {
       SplashScreenRN.hide();
-      navigation.navigate("Login");
-    };
+      if (id) {
+        navigation.navigate(Screens.Clients);
+      } else {
+        navigation.navigate(Screens.Clients);
+      }
+    }
+  }, [loading, id, navigation]);
 
-    navigateToLogin();
-  }, [navigation]);
+  if (loading) {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
-  return (
-    <View className="flex-1 bg-accent items-center justify-center p-0">
-      <Text className="text-white">Splash Screen</Text>
-    </View>
-  );
+  return null;
 };
 
 export { SplashScreen };

@@ -14,9 +14,11 @@ interface Props extends ProfileStackProps {
 }
 
 const ProfileScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
+  const { userID } = route?.params ?? {};
   const { data, loading } = useGetUserQuery({
+    skip: !userID,
     variables: {
-      id: "10",
+      id: userID,
     },
   });
 

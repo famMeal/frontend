@@ -15,6 +15,8 @@ interface Props extends OrderStackProps {
 }
 
 const OrdersScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
+  const { userID } = route?.params ?? {};
+
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () =>
       setActiveScreen(route.name),
@@ -23,8 +25,9 @@ const OrdersScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
   }, [navigation, setActiveScreen]);
 
   const { data, loading } = useGetUserOrdersQuery({
+    skip: !userID,
     variables: {
-      id: "10",
+      id: userID,
     },
   });
 

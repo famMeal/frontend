@@ -19,7 +19,7 @@ import { useGetMealQuery } from "./useGetMealQuery";
 type Props = NativeStackScreenProps<RootStackParamList, "Meal">;
 
 const MealScreen: FC<Props> = ({ route: { params } }) => {
-  const { mealID } = params;
+  const { mealID, userID } = params;
   const { data, loading } = useGetMealQuery({
     skip: !mealID,
     variables: {
@@ -44,12 +44,13 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
           pickupStartTime,
           pickupEndTime,
           quantity,
-          userId: "10",
+          userId: userID,
         },
       },
       onCompleted: ({ addToCart: { order } }) => {
         navigate("Confirmation", {
           cart: order,
+          userID,
         });
       },
     });

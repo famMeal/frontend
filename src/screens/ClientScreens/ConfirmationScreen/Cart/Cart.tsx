@@ -8,6 +8,7 @@ import {
 } from "components";
 import type { FC } from "react";
 import type { AddToCartData } from "screens/ClientScreens/MealsScreen/MealScreen/useAddToCartMutation";
+import { GET_USER_0RDERS_QUERY } from "screens/ClientScreens/OrdersScreen/useUserOrdersScreen";
 import { formatTime } from "utilities/formatTime";
 import { usePlaceOrderMutation } from "./usePlaceOrderMutation";
 
@@ -49,6 +50,7 @@ const Cart: FC<Props> = ({
           quantity: cart?.quantity,
         },
       },
+      refetchQueries: [GET_USER_0RDERS_QUERY],
       onCompleted,
     });
 

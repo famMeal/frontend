@@ -20,6 +20,7 @@ const ConfirmationScreen: FC<Props> = ({
   setActiveScreen,
 }) => {
   const { params } = route;
+  const { userID } = params;
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () =>
@@ -32,7 +33,7 @@ const ConfirmationScreen: FC<Props> = ({
 
   const onPressNavigateToMeals = () => navigation.navigate("Meals");
 
-  const onCompleted = () => navigation.navigate("Orders");
+  const onCompleted = () => navigation.navigate("Orders", { userID });
 
   if (params?.cart) {
     return (

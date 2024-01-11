@@ -3,6 +3,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { COLOURS } from "constants/colours";
 import type { FC } from "react";
 import { useCallback, useMemo, useState } from "react";
+import { useCurrentUserQuery } from "shared";
 import type { RootStackParamList } from "types/navigation.types";
 import { createScreenOptions } from "utilities";
 import type { iconMap } from "utilities/createScreenOptions";
@@ -14,6 +15,8 @@ const ClientScreens: FC = () => {
   const [activeScreen, setActiveScreen] = useState("");
   const navigation = useNavigation();
   const clientScreens = useMemo(() => clientRoutes(setActiveScreen), []);
+  const { data } = useCurrentUserQuery();
+  const { id } = data?.currentUser ?? {};
 
   useFocusEffect(
     useCallback(() => {
@@ -47,6 +50,9 @@ const ClientScreens: FC = () => {
     <Screen
       key={name}
       name={name}
+      initialParams={{
+        userID: id,
+      }}
       options={getOptions(tabBarLabel, name, iconName)}
       {...rest}>
       {renderComponent}

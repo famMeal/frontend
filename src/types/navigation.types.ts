@@ -1,5 +1,5 @@
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import type { Meal, Restaurant } from "schema";
+import type { Meal, Restaurant, User } from "schema";
 import type { AddToCartData } from "screens/ClientScreens/MealsScreen/MealScreen/useAddToCartMutation";
 import type { RestaurantMealData } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
 
@@ -31,17 +31,25 @@ export type RootStackParamList = {
   Splash: undefined;
   Clients: undefined;
   Meals: undefined;
-  Main: undefined;
+  Main: {
+    userID: User["id"];
+  };
   Meal: {
     restaurantID: Restaurant["id"];
     restaurantName: Restaurant["name"];
     mealID: Meal["id"];
+    userID: User["id"];
   };
   Confirmation: {
+    userID: User["id"];
     cart: AddToCartData;
   };
-  Profile: undefined;
-  Orders: undefined;
+  Profile: {
+    userID: User["id"];
+  };
+  Orders: {
+    userID: User["id"];
+  };
 };
 
 export type MainNavigationProps = NativeStackNavigationProp<

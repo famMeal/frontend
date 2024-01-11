@@ -12,6 +12,7 @@ module.exports = {
           screens: "./src/screens/",
           constants: "./src/constants/",
           utilities: "./src/utilities/",
+          shared: "./src/shared/",
           hooks: "./src/hooks/",
           schema: "./src/graphql/types/graphql.ts",
         },
