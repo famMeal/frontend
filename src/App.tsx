@@ -5,11 +5,11 @@ import { COLOURS } from "constants/colours";
 import type { FC } from "react";
 import {
   ClientScreens,
+  EmailSignUpScreen,
   LoginScreen,
   RestaurantScreens,
   SignUpScreen,
   SplashScreen,
-  EmailSignUpScreen,
 } from "screens";
 import type { RootStackParamList } from "types/navigation.types";
 import { client } from "./client";
@@ -20,17 +20,7 @@ const App: FC = () => {
   return (
     <ApolloProvider client={client}>
       <NavigationContainer>
-        <Navigator>
-          <Screen
-            name="Splash"
-            component={SplashScreen}
-            options={{
-              headerShown: false,
-              tabBarStyle: {
-                display: "none",
-              },
-            }}
-          />
+        <Navigator initialRouteName="Login">
           <Screen
             name="Login"
             component={LoginScreen}
@@ -43,6 +33,16 @@ const App: FC = () => {
                 color: COLOURS.white,
                 fontFamily: "Khula-Bold",
                 fontSize: 18,
+              },
+            }}
+          />
+          <Screen
+            name="Splash"
+            component={SplashScreen}
+            options={{
+              headerShown: false,
+              tabBarStyle: {
+                display: "none",
               },
             }}
           />

@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
   Box,
@@ -8,7 +9,9 @@ import {
   Typography,
 } from "components";
 import { useEffect, type Dispatch, type FC, type SetStateAction } from "react";
+import { View } from "react-native";
 import type { RootStackParamList } from "types/navigation.types";
+import { useLogoutMutation } from "./useLogoutMutation";
 import { useRestaurantQuery } from "./useRestaurantQuery";
 
 type RestaurantStackProps = NativeStackScreenProps<
@@ -27,6 +30,7 @@ const RestaurantScreen: FC<Props> = ({
 }) => {
   const { params } = route ?? {};
   const { restaurantID } = params;
+  const [logout, { loading }] = useLogoutMutation();
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () =>
@@ -42,8 +46,32 @@ const RestaurantScreen: FC<Props> = ({
     skip: !restaurantID,
   });
 
+  const handleOnPressLogOut = () => {
+    logout({
+      onCompleted: async () => {
+        try {
+          await AsyncStorage.removeItem("credentials");
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "Login" }],
+          });
+        } catch (error) {
+          console.error("Logout failed:", error);
+        }
+      },
+      onError: error => {
+        console.error("Logout error:", error);
+      },
+    });
+  };
+
   return (
     <Container className="m-4">
+      <View className="absolute right-2">
+        <Button isLoading={loading} onPress={handleOnPressLogOut}>
+          Logout
+        </Button>
+      </View>
       <Typography
         colour="accent"
         weigth="bold"

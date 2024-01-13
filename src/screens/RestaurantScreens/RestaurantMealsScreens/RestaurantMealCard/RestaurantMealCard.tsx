@@ -14,6 +14,7 @@ import {
   type RestaurantMealData,
 } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
 import { ActionBottomDrawer } from "screens/components";
+import { useActivateMealMutation } from "shared/useActivateMealMutation";
 import type { RootStackParamList } from "types/navigation.types";
 import { UpdateRestaurantMeal } from "./UpdateRestaurantMeal";
 import { useMealDeleteMutation } from "./useMealDeleteMutation";
@@ -32,6 +33,7 @@ const RestaurantMealCard: FC<Props> = ({ meal, restaurantID }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [deleteMeal, { loading: isDeleteLoading }] = useMealDeleteMutation();
+  const [deactivateMeal, { loading }] = useActivateMealMutation();
 
   const { navigate } = useNavigation<RestaurantMealsNavigationProp>();
 
@@ -82,9 +84,21 @@ const RestaurantMealCard: FC<Props> = ({ meal, restaurantID }) => {
     navigate("ActivateRestaurantMeal", { meal, restaurantID });
   };
 
+  const handleOnPressDeactivate = () =>
+    deactivateMeal({
+      variables: {
+        input: {
+          mealId: meal?.id,
+          active: false,
+        },
+      },
+    });
+
   const renderCTA = () =>
     active ? (
-      <Button>Deactivate</Button>
+      <Button isLoading={loading} onPress={handleOnPressDeactivate}>
+        Deactivate
+      </Button>
     ) : (
       <Button onPress={handleOnPressActivate}>Activate</Button>
     );
@@ -113,8 +127,8 @@ const RestaurantMealCard: FC<Props> = ({ meal, restaurantID }) => {
           />
         </Columns>
         <View className="absolute top-4 right-2">
-          <Button disabled={active} onPress={toggleDrawer}>
-            <TrashIcon color={COLOURS.white} />
+          <Button isOutlined isClean disabled={active} onPress={toggleDrawer}>
+            <TrashIcon color={active ? COLOURS.white : COLOURS.primary} />
           </Button>
         </View>
         <Columns>

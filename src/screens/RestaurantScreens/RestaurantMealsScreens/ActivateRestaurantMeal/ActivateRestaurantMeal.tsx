@@ -19,8 +19,8 @@ import {
 } from "components";
 import React, { useState, type FC } from "react";
 import { Platform } from "react-native";
+import { useActivateMealMutation } from "shared";
 import type { RootStackParamList } from "types/navigation.types";
-import { useActivateMealMutation } from "./useActivateMealMutation";
 
 type ActiveRestaurantMealStackProps = NativeStackScreenProps<
   RootStackParamList,
