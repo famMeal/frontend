@@ -9,7 +9,6 @@ import {
   Typography,
 } from "components";
 import { useEffect, type Dispatch, type FC, type SetStateAction } from "react";
-import { View } from "react-native";
 import type { RootStackParamList } from "types/navigation.types";
 import { useLogoutMutation } from "./useLogoutMutation";
 import { useRestaurantQuery } from "./useRestaurantQuery";
@@ -67,11 +66,9 @@ const RestaurantScreen: FC<Props> = ({
 
   return (
     <Container className="m-4">
-      <View className="absolute right-2">
-        <Button isLoading={loading} onPress={handleOnPressLogOut}>
-          Logout
-        </Button>
-      </View>
+      <Button isLoading={loading} onPress={handleOnPressLogOut}>
+        Logout
+      </Button>
       <Typography
         colour="accent"
         weigth="bold"
