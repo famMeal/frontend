@@ -1,0 +1,1 @@
+export { RestaurantSettingsHeader } from "./RestaurantSettingsHeader";

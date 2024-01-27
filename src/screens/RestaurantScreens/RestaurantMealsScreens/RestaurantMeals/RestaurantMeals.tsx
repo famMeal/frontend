@@ -25,8 +25,17 @@ const RestaurantMeals: FC<Props> = ({ route }) => {
     },
   });
 
+  const activeMealID = data?.restaurant?.meals?.find(
+    ({ active }) => active,
+  )?.id;
+
   const renderMeal = (meal: RestaurantMealData) => (
-    <RestaurantMealCard key={meal.id} meal={meal} restaurantID={restaurantID} />
+    <RestaurantMealCard
+      hasActiveMeal={!!activeMealID}
+      key={meal.id}
+      meal={meal}
+      restaurantID={restaurantID}
+    />
   );
 
   const renderMeals = () => data?.restaurant?.meals.map(renderMeal);

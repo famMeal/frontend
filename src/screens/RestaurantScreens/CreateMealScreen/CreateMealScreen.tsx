@@ -133,7 +133,7 @@ const CreateMealScreen: FC<Props> = ({
         type="H3">
         Create Meal
       </Typography>
-      <Box className="mt-4">
+      <Box>
         <Columns>
           <Column>
             <Typography weigth="bold" type="S">
@@ -171,103 +171,7 @@ const CreateMealScreen: FC<Props> = ({
             />
           </Column>
         </Columns>
-        <Columns>
-          {/* <Column isPaddingless>
-              <Typography weigth="bold" type="S">
-                Quantity
-              </Typography>
-              <Input
-                value={state.quantityAvailable}
-                keyboardType="numeric"
-                maxLength={3}
-                onChangeText={value =>
-                  handleInputChange("quantityAvailable", value)
-                }
-              />
-            </Column> */}
-        </Columns>
-        {/* <Columns>
-          <Column>
-            <Typography weigth="bold" type="S">
-              Start Pickup time
-            </Typography>
-            <View className="w-full">
-              <Input
-                editable={false}
-                value={formatTimeFromUTC(pickupStartTime)}
-              />
-              <View className="absolute right-0">
-                <Button
-                  onPress={() =>
-                    handleOpenTimeDrawer("pickupStartTime")(setDrawerVisible)
-                  }>
-                  <ClockIcon color={COLOURS.white} />
-                </Button>
-              </View>
-            </View>
-          </Column>
-          <Column>
-            <Typography weigth="bold" type="S">
-              End Pickup time
-            </Typography>
-            <View className="w-full">
-              <Input
-                editable={false}
-                value={formatTimeFromUTC(pickupEndTime)}
-              />
-              <View className="absolute right-0">
-                <Button
-                  onPress={() =>
-                    handleOpenTimeDrawer("pickupEndTime")(setDrawerVisible)
-                  }>
-                  <ClockIcon color={COLOURS.white} />
-                </Button>
-              </View>
-            </View>
-          </Column>
-        </Columns> */}
-        {/* <Columns>
-          <Column>
-            <Typography weigth="bold" type="S">
-              Start Order time
-            </Typography>
-            <View className="w-full">
-              <Input
-                editable={false}
-                value={formatTimeFromUTC(orderStartTime)}
-              />
-              <View className="absolute right-0">
-                <Button
-                  onPress={() =>
-                    handleOpenTimeDrawer("orderStartTime")(setDrawerVisible)
-                  }>
-                  <ClockIcon color={COLOURS.white} />
-                </Button>
-              </View>
-            </View>
-          </Column>
-          <Column>
-            <Typography weigth="bold" type="S">
-              Order Cutoff time
-            </Typography>
-            <View className="w-full">
-              <Input
-                editable={false}
-                value={formatTimeFromUTC(orderCutoffTime)}
-              />
-              <View className="absolute right-0">
-                <Button
-                  onPress={() =>
-                    handleOpenTimeDrawer("orderCutoffTime")(setDrawerVisible)
-                  }>
-                  <ClockIcon color={COLOURS.white} />
-                </Button>
-              </View>
-            </View>
-          </Column>
-        </Columns> */}
       </Box>
-
       <Box>
         <Columns isMarginless>
           <Column columnWidth="fullWidth">

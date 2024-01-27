@@ -11,4 +11,5 @@ export { GoogleMap } from "./GoogleMap";
 export { Input } from "./Input";
 export { QuantitySelector } from "./QuantitySelector";
 export { Skeleton } from "./Skeleton";
+export { SlideButton } from "./SlideButton";
 export { Typography } from "./Typography";

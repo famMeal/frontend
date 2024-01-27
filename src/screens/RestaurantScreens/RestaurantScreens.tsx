@@ -1,9 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Logo from "assets/svgs/logo.svg";
-import { Column } from "components/Column";
-import { Columns } from "components/Columns";
-import { Container } from "components/Container";
+import { Column, Columns, Container } from "components";
 import { COLOURS } from "constants/colours";
 import type { FC } from "react";
 import { useCallback, useState } from "react";
@@ -17,15 +15,15 @@ import {
 import { useCurrentUserQuery } from "shared";
 import type { RootStackParamList } from "types/navigation.types";
 import { CreateMealScreen } from "./CreateMealScreen";
+import { RestaurantHomeScreens } from "./RestaurantHomeScreens";
 import { RestaurantMealsScreens } from "./RestaurantMealsScreens";
 import { RestaurantOrdersScreen } from "./RestaurantOrdersScreen";
-import { RestaurantScreen } from "./RestaurantScreen";
 import { useRestaurantOrdersQuery } from "./useRestaurantOrdersQuery";
 
 const { Navigator, Screen } = createBottomTabNavigator<RootStackParamList>();
 
 const RestaurantScreens: FC = () => {
-  const [activeScreen, setActiveScreen] = useState("");
+  const [activeScreen, setActiveScreen] = useState("RestaurantHomeScreens");
   const navigation = useNavigation();
   const { data: currentUserData } = useCurrentUserQuery();
   const { id } = currentUserData?.currentUser?.restaurant ?? {};
@@ -66,7 +64,7 @@ const RestaurantScreens: FC = () => {
 
   return (
     <Navigator
-      initialRouteName="Restaurant"
+      initialRouteName="RestaurantHomeScreens"
       screenOptions={{
         tabBarStyle: {
           backgroundColor: COLOURS.light,
@@ -85,15 +83,17 @@ const RestaurantScreens: FC = () => {
             <HomeIcon
               size={18}
               color={
-                activeScreen === "Restaurant" ? COLOURS.primary : COLOURS.accent
+                activeScreen === "Restaurants"
+                  ? COLOURS.primary
+                  : COLOURS.accent
               }
             />
           ),
         }}
-        name="Restaurant"
+        name="RestaurantHomeScreens"
         initialParams={{ restaurantID: data?.restaurant?.id }}>
         {props => (
-          <RestaurantScreen {...props} setActiveScreen={setActiveScreen} />
+          <RestaurantHomeScreens {...props} setActiveScreen={setActiveScreen} />
         )}
       </Screen>
       <Screen

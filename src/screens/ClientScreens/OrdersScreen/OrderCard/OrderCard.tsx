@@ -7,12 +7,14 @@ import {
   Button,
   Column,
   Columns,
+  SlideButton,
   Typography,
 } from "components";
 import { type FC } from "react";
 import { Linking } from "react-native";
 import type { OrderData } from "screens/ClientScreens/OrdersScreen/useUserOrdersScreen";
 import { formatTime } from "utilities/formatTime";
+
 interface Props {
   order: OrderData;
 }
@@ -106,6 +108,9 @@ const OrderCard: FC<Props> = ({ order }) => {
           <Button onPress={handleOpenGoogleMaps} isOutlined>
             Directions
           </Button>
+          <SlideButton onCompletedText="fine">
+            slide to confirm pickup
+          </SlideButton>
         </AccordionContent>
       </Accordion>
     </Box>

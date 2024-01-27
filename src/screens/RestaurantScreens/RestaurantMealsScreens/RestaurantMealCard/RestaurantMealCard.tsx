@@ -3,7 +3,7 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Box, Button, Chip, Column, Columns, Typography } from "components";
 import { COLOURS } from "constants/colours";
 import { useState, type FC } from "react";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { TrashIcon } from "react-native-heroicons/solid";
 import type {
   RestaurantOrdersData,
@@ -22,6 +22,7 @@ import { useMealDeleteMutation } from "./useMealDeleteMutation";
 interface Props {
   meal: RestaurantMealData;
   restaurantID: string;
+  hasActiveMeal: boolean;
 }
 
 type RestaurantMealsNavigationProp = NativeStackNavigationProp<
@@ -29,7 +30,11 @@ type RestaurantMealsNavigationProp = NativeStackNavigationProp<
   "ActivateRestaurantMeal"
 >;
 
-const RestaurantMealCard: FC<Props> = ({ meal, restaurantID }) => {
+const RestaurantMealCard: FC<Props> = ({
+  meal,
+  restaurantID,
+  hasActiveMeal,
+}) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [deleteMeal, { loading: isDeleteLoading }] = useMealDeleteMutation();
@@ -81,7 +86,11 @@ const RestaurantMealCard: FC<Props> = ({ meal, restaurantID }) => {
     });
 
   const handleOnPressActivate = () => {
-    navigate("ActivateRestaurantMeal", { meal, restaurantID });
+    if (hasActiveMeal) {
+      Alert.alert("You can only have 1 active meal at the time");
+    } else {
+      navigate("ActivateRestaurantMeal", { meal, restaurantID });
+    }
   };
 
   const handleOnPressDeactivate = () =>
