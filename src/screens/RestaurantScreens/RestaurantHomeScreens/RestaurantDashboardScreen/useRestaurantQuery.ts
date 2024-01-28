@@ -1,6 +1,6 @@
 import type { QueryHookOptions } from "@apollo/client";
 import { gql, useQuery } from "@apollo/client";
-import type { Order, Restaurant } from "schema";
+import type { Meal, Order, Restaurant } from "schema";
 
 const RESTAURANT_QUERY = gql`
   query Restaurant($id: ID!) {
@@ -8,20 +8,68 @@ const RESTAURANT_QUERY = gql`
       id
       __typename
       name
+      meals {
+        __typename
+        id
+        quantityAvailable
+        active
+        name
+        pickupStartTime
+        pickupEndTime
+        price
+      }
       orders {
         id
         __typename
         status
+        quantity
+        meal {
+          __typename
+          id
+          quantityAvailable
+          active
+          name
+          pickupStartTime
+          pickupEndTime
+          price
+        }
       }
     }
   }
 `;
 
-type OrderSplinter = Pick<Order, "__typename" | "id" | "status">;
+type MealSplinter = Pick<
+  Meal,
+  | "__typename"
+  | "id"
+  | "quantityAvailable"
+  | "name"
+  | "pickupEndTime"
+  | "pickupStartTime"
+  | "active"
+  | "price"
+>;
+
+type OrderMealSplinter = Pick<
+  Meal,
+  | "__typename"
+  | "id"
+  | "quantityAvailable"
+  | "active"
+  | "name"
+  | "pickupStartTime"
+  | "pickupEndTime"
+  | "price"
+>;
+interface OrderSplinter
+  extends Pick<Order, "__typename" | "id" | "status" | "quantity"> {
+  meal: OrderMealSplinter;
+}
 
 interface RestaurantSplinter
-  extends Pick<Restaurant, "id" | "__typename" | "name" | "orders"> {
+  extends Pick<Restaurant, "id" | "__typename" | "name"> {
   orders: OrderSplinter[];
+  meals: MealSplinter[];
 }
 
 interface Data {

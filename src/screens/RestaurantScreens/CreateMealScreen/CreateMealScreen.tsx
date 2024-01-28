@@ -124,6 +124,9 @@ const CreateMealScreen: FC<Props> = ({
       onCompleted: showMealCreatedAlert,
     });
 
+  const isFormValid =
+    !!state.description?.length && !!state.name.length && !!state.price.length;
+
   return (
     <Container className="flex flex-col justify-between">
       <Typography
@@ -176,6 +179,7 @@ const CreateMealScreen: FC<Props> = ({
         <Columns isMarginless>
           <Column columnWidth="fullWidth">
             <Button
+              disabled={!isFormValid}
               onPress={handleCreateMeal}
               isLoading={loading}
               theme="accent">

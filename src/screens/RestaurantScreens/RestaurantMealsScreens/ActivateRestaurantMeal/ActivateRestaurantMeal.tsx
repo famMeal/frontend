@@ -55,6 +55,7 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
     useUpdateRestaurantSetting();
   const { meal, restaurantID } = route?.params;
   const [state, setState] = useState(form);
+
   const [isDrawerVisible, setDrawerVisible] = useState(false);
   const {
     quantity: unused,
