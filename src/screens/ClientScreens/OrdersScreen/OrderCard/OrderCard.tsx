@@ -5,15 +5,18 @@ import {
   AccordionHeader,
   Box,
   Button,
+  Chip,
   Column,
   Columns,
   SlideButton,
   Typography,
 } from "components";
+import { STATUS } from "constants/status";
 import { type FC } from "react";
 import { Linking } from "react-native";
-import type { OrderData } from "screens/ClientScreens/OrdersScreen/useUserOrdersScreen";
+import type { OrderData } from "screens/ClientScreens/OrdersScreen/useGetUserOrdersQuery";
 import { formatTime } from "utilities/formatTime";
+import { useUpdateOrderStatus } from "./useUpdateOrderStatusMutation";
 
 interface Props {
   order: OrderData;
@@ -28,10 +31,26 @@ const OrderCard: FC<Props> = ({ order }) => {
     pickupEndTime,
     pickupStartTime,
     total,
+    status,
   } = order;
 
   const { latitude, longitude, addressLine1, postalCode, city } =
     restaurant ?? {};
+
+  const [updateStatus] = useUpdateOrderStatus();
+
+  const chipStatus = status === STATUS.PICKED_UP ? "success" : "primary";
+
+  const handleOnSlideComplete = () => {
+    updateStatus({
+      variables: {
+        input: {
+          orderId: id,
+          status: STATUS.PICKED_UP,
+        },
+      },
+    });
+  };
 
   const handleOpenGoogleMaps = () => {
     Geolocation.getCurrentPosition(
@@ -53,8 +72,9 @@ const OrderCard: FC<Props> = ({ order }) => {
   return (
     <Box key={id}>
       <Accordion>
+        <Chip type={chipStatus}>{status}</Chip>
         <AccordionHeader>
-          <Columns isMarginless>
+          <Columns isMarginless className="mt-12">
             <Column columnWidth="fullWidth">
               <Typography
                 type="S"
@@ -105,12 +125,23 @@ const OrderCard: FC<Props> = ({ order }) => {
               </Typography>
             </Column>
           </Columns>
-          <Button onPress={handleOpenGoogleMaps} isOutlined>
-            Directions
-          </Button>
-          <SlideButton onCompletedText="fine">
-            slide to confirm pickup
-          </SlideButton>
+          <Columns>
+            <Column columnWidth="fullWidth">
+              <Button onPress={handleOpenGoogleMaps} isOutlined>
+                Directions
+              </Button>
+            </Column>
+          </Columns>
+          <Columns>
+            <Column columnWidth="fullWidth">
+              <SlideButton
+                completed={status === STATUS.PICKED_UP}
+                onSlideComplete={handleOnSlideComplete}
+                onCompletedText="Picked up!">
+                Slide to confirm pickup
+              </SlideButton>
+            </Column>
+          </Columns>
         </AccordionContent>
       </Accordion>
     </Box>

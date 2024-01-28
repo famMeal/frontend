@@ -1,12 +1,17 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Container, GoogleMap, Skeleton } from "components";
 import type { FC } from "react";
 import { useRef, useState } from "react";
 import { ScrollView, View } from "react-native";
 import type MapView from "react-native-maps";
+import { RootStackParamList } from "types/navigation.types";
 import { Meals } from "./Meals";
 import { useGetMealsLocationQuery } from "./useGetMealsLocationQuery";
 
-const MealsScreen: FC = () => {
+type Props = NativeStackScreenProps<RootStackParamList, "Meals">;
+
+const MealsScreen: FC<Props> = ({ route: { params } }) => {
+  const { userID } = params;
   const mapRef = useRef<MapView>(null);
   const [scrollViewRef, setScrollViewRef] = useState<ScrollView | null>(null);
   const { data, loading } = useGetMealsLocationQuery();
@@ -63,7 +68,7 @@ const MealsScreen: FC = () => {
     <Container>
       <View className="h-52 mb-4">{renderMap()}</View>
       <ScrollView ref={setScrollViewRef} onContentSizeChange={handleMapReady}>
-        <Meals />
+        <Meals userID={userID} />
       </ScrollView>
     </Container>
   );

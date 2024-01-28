@@ -1,5 +1,7 @@
 import classnames, {
   alignSelf,
+  backgroundColor,
+  borderColor,
   borderRadius,
   borderWidth,
   boxShadow,
@@ -11,7 +13,11 @@ import classnames, {
   width,
 } from "tailwindcss-classnames";
 
-const getCSS = () => {
+interface Props {
+  isCompleted: boolean;
+}
+
+const getCSS = ({ isCompleted }: Props) => {
   const button = classnames(
     padding("px-4", "py-2"),
     borderRadius("rounded-lg"),
@@ -20,6 +26,8 @@ const getCSS = () => {
     borderWidth("border-2"),
     display("inline-flex"),
     justifyContent("justify-center"),
+    borderColor(isCompleted ? "border-accent" : "border-primary"),
+    backgroundColor(isCompleted ? "bg-accent" : "bg-primary"),
   );
 
   const text = classnames(textColor("text-white"), textAlign("text-center"));

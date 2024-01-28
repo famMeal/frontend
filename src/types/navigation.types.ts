@@ -36,7 +36,9 @@ export type RootStackParamList = {
   };
   Splash: undefined;
   Clients: undefined;
-  Meals: undefined;
+  Meals: {
+    userID: User["id"];
+  };
   Main: {
     userID: User["id"];
   };

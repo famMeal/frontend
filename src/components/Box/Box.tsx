@@ -3,10 +3,12 @@ import type { ViewProps } from "react-native";
 import { View } from "react-native";
 import { getCSS } from "./Box.styles";
 
-type Props = PropsWithChildren & ViewProps;
+interface Props extends PropsWithChildren, ViewProps {
+  isPaddingLess?: boolean;
+}
 
-const Box: FC<Props> = ({ children, ...rest }) => {
-  const { boxCSS } = getCSS();
+const Box: FC<Props> = ({ children, isPaddingLess, ...rest }) => {
+  const { boxCSS } = getCSS({ isPaddingLess });
   return (
     <View className={boxCSS} {...rest}>
       {children}
@@ -15,3 +17,4 @@ const Box: FC<Props> = ({ children, ...rest }) => {
 };
 
 export { Box };
+export type { Props as BoxProps };

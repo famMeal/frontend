@@ -1,3 +1,4 @@
+import { useApolloClient } from "@apollo/client";
 import {
   Box,
   Button,
@@ -9,7 +10,7 @@ import {
 import type { FC } from "react";
 import { ScrollView } from "react-native";
 import type { AddToCartData } from "screens/ClientScreens/MealsScreen/MealScreen/useAddToCartMutation";
-import { GET_USER_0RDERS_QUERY } from "screens/ClientScreens/OrdersScreen/useUserOrdersScreen";
+import { GET_USER_0RDERS_QUERY } from "screens/ClientScreens/OrdersScreen/useGetUserOrdersQuery";
 import { formatTime } from "utilities/formatTime";
 import { usePlaceOrderMutation } from "./usePlaceOrderMutation";
 
@@ -40,8 +41,14 @@ const Cart: FC<Props> = ({
   onCompleted,
 }) => {
   const [placeOrder, { loading }] = usePlaceOrderMutation();
+  const client = useApolloClient();
 
-  const onPressPlaceOrder = () =>
+  const onPressPlaceOrder = () => {
+    const queryExistsInCache = Boolean(
+      client?.cache?.readQuery({
+        query: GET_USER_0RDERS_QUERY,
+      }),
+    );
     placeOrder({
       variables: {
         input: {
@@ -51,9 +58,10 @@ const Cart: FC<Props> = ({
           quantity: cart?.quantity,
         },
       },
-      refetchQueries: [GET_USER_0RDERS_QUERY],
+      refetchQueries: queryExistsInCache ? [GET_USER_0RDERS_QUERY] : [],
       onCompleted,
     });
+  };
 
   return (
     <Container className="flex flex-col justify-between">

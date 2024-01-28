@@ -70,7 +70,7 @@ const LoginScreen: FC = () => {
   const handleOnSignUpPress = () => navigate(Screens.SignUp);
 
   return (
-    <Container>
+    <Container className="flex flex-col justify-center items-center">
       <Columns>
         <Column
           alignItems="center"

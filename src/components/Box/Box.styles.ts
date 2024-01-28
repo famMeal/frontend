@@ -10,8 +10,9 @@ import classnames, {
   position,
   width,
 } from "tailwindcss-classnames";
+import { BoxProps } from "./Box";
 
-export const getCSS = () => {
+export const getCSS = ({ isPaddingLess }: BoxProps) => {
   const boxCSS = classnames(
     position("relative"),
     display("flex"),
@@ -21,8 +22,8 @@ export const getCSS = () => {
     boxShadow("shadow-2xl"),
     borderRadius("rounded-lg"),
     width("w-full"),
-    padding("p-4"),
-    margin("mb-4", "last-of-type:mb-0"),
+    padding(isPaddingLess ? "p-0" : "p-4"),
+    margin(isPaddingLess ? "m-0" : "mb-4", "last-of-type:mb-0"),
   );
 
   return { boxCSS };

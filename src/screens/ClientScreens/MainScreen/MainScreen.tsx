@@ -36,6 +36,7 @@ const MainScreen: FC<Props> = ({ route, setActiveScreen }) => {
         name="Meals"
         component={MealsScreen}
         options={{ headerShown: false }}
+        initialParams={{ userID }}
       />
       <Screen
         initialParams={{ userID }}

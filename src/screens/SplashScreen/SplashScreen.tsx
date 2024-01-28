@@ -18,6 +18,7 @@ const Screens = {
 } as const;
 
 const SplashScreen: React.FC<Props> = ({ navigation }) => {
+  const { navigate } = navigation;
   const { data, loading } = useCurrentUserQuery();
 
   useEffect(() => {
@@ -26,10 +27,8 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
 
       if (data?.currentUser) {
         const isRestaurant = !!data?.currentUser?.restaurant;
-        navigation.navigate(isRestaurant ? Screens.Clients : Screens.Clients);
-      } else {
-        navigation.navigate(Screens.Login);
-      }
+        navigate(isRestaurant ? Screens?.Restaurants : Screens.Clients);
+      } else navigate(Screens.Login);
     }
   }, [loading, data, navigation]);
 

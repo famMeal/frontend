@@ -6,16 +6,22 @@ const SkeletonOrderCard: FC = () => {
     <Box>
       <Columns isMarginless>
         <Column columnWidth="fullWidth">
-          <Skeleton size="medium" />
-          <Skeleton size="large" />
+          <Box isPaddingLess>
+            <Skeleton size="large" width="full" />
+            <Skeleton size="large" width="full" />
+          </Box>
         </Column>
       </Columns>
       <Columns isMarginless>
         <Column>
-          <Skeleton size="small" />
+          <Box isPaddingLess>
+            <Skeleton size="large" width="full" />
+          </Box>
         </Column>
         <Column alignItems="flex-end">
-          <Skeleton size="small" />
+          <Box isPaddingLess>
+            <Skeleton size="large" width="full" />
+          </Box>
         </Column>
       </Columns>
     </Box>

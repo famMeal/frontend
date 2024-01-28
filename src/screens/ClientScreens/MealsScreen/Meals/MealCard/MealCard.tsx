@@ -3,12 +3,14 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Box, Button, Chip, Column, Columns, Typography } from "components";
 import type { FC } from "react";
 import { Image } from "react-native";
+import { User } from "schema";
 import type { MealsData } from "screens/ClientScreens/MealsScreen/Meals/useGetMealsQuery";
 import type { RootStackParamList } from "types/navigation.types";
 import { formatTime } from "utilities/formatTime";
 
 interface Props {
   meal: MealsData;
+  userID: User["id"];
 }
 
 type MealScreenNavigationProp = NativeStackNavigationProp<
@@ -16,7 +18,7 @@ type MealScreenNavigationProp = NativeStackNavigationProp<
   "Meal"
 >;
 
-const MealCard: FC<Props> = ({ meal }) => {
+const MealCard: FC<Props> = ({ meal, userID }) => {
   const {
     id,
     restaurant,
@@ -35,6 +37,7 @@ const MealCard: FC<Props> = ({ meal }) => {
       restaurantID: restaurant?.id,
       restaurantName: restaurant?.name,
       mealID: id,
+      userID: userID,
     });
 
   return (

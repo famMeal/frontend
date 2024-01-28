@@ -18,7 +18,7 @@ export const getCSS = ({ size, isFullyRounded }: Omit<Props, "width">) => {
     justifyContent("justify-center"),
     alignItems("items-center"),
     backgroundColor("bg-gray-200"),
-    margin("my-4"),
+    margin("my-2"),
     animation("animate-pulse"),
     borderRadius(isFullyRounded ? "rounded-full" : "rounded-lg"),
   );

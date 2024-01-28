@@ -25,6 +25,7 @@ const App: FC = () => {
             name="Login"
             component={LoginScreen}
             options={{
+              headerShown: false,
               headerBackground: () => null,
               tabBarStyle: {
                 display: "none",

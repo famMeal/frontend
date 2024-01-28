@@ -1,29 +1,38 @@
 import { Box, Column, Columns, Skeleton } from "components";
 import type { FC } from "react";
-import { View } from "react-native";
 
 const SkeletonMealCard: FC = () => {
   return (
     <Box>
-      <Columns isMarginless>
-        <Column className="justify-center">
-          <View className="w-20 h-20 rounded-lg">
-            <Skeleton size="large" />
-          </View>
+      <Columns>
+        <Column isPaddingless columnWidth="oneThird" justifyContent="center">
+          <Box isPaddingLess>
+            <Skeleton size="large" width="full" />
+            <Skeleton size="large" width="full" />
+          </Box>
         </Column>
-        <Column>
-          <Skeleton size="medium" />
-          <Skeleton size="small" />
-          <Skeleton size="large" />
-          <Skeleton size="small" width="full" />
+        <Column isPaddingless columnWidth="twoThird">
+          <Box isPaddingLess>
+            <Skeleton size="large" />
+            <Skeleton size="medium" width="half" />
+            <Skeleton size="small" width="half" />
+          </Box>
         </Column>
       </Columns>
-      <Columns isMarginless>
-        <Column>
-          <Skeleton size="large" />
+      <Columns>
+        <Column
+          isPaddingless
+          alignItems="center"
+          justifyContent="center"
+          columnWidth="oneThird">
+          <Box isPaddingLess>
+            <Skeleton width="full" size="large" />
+          </Box>
         </Column>
-        <Column>
-          <Skeleton size="large" />
+        <Column isPaddingless columnWidth="twoThird" alignItems="center">
+          <Box isPaddingLess>
+            <Skeleton size="large" />
+          </Box>
         </Column>
       </Columns>
     </Box>

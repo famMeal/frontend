@@ -5,8 +5,8 @@ import { ScrollView } from "react-native";
 import type { RootStackParamList } from "types/navigation.types";
 import { createList } from "utilities/createList";
 import { OrderCard, SkeletonOrderCard } from "./OrderCard";
-import type { OrderData } from "./useUserOrdersScreen";
-import { useGetUserOrdersQuery } from "./useUserOrdersScreen";
+import type { OrderData } from "./useGetUserOrdersQuery";
+import { useGetUserOrdersQuery } from "./useGetUserOrdersQuery";
 
 type OrderStackProps = NativeStackScreenProps<RootStackParamList, "Orders">;
 
