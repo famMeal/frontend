@@ -26,12 +26,12 @@ const RESTAURANT_QUERY = gql`
         meal {
           __typename
           id
-          quantityAvailable
           active
           name
           pickupStartTime
           pickupEndTime
           price
+          quantityAvailable
         }
       }
     }

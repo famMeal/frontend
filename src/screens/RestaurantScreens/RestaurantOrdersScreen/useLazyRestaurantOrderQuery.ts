@@ -25,6 +25,7 @@ export const RESTAURANT_ORDER_QUERY = gql`
         pickupStartTime
         pickupEndTime
         price
+        quantityAvailable
         restaurant {
           id
           __typename
@@ -50,6 +51,7 @@ type MealSplinter = Pick<
   | "pickupEndTime"
   | "name"
   | "price"
+  | "quantityAvailable"
 >;
 
 type RestaurantSplinter = Pick<Restaurant, "__typename" | "id">;

@@ -25,6 +25,7 @@ export const RESTAURANT_ORDERS_QUERY = gql`
         subtotal
         total
         meal {
+          __typename
           active
           id
           name
