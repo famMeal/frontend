@@ -1,10 +1,10 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Container, GoogleMap, Skeleton } from "components";
 import type { FC } from "react";
 import { useRef, useState } from "react";
 import { ScrollView, View } from "react-native";
 import type MapView from "react-native-maps";
-import { RootStackParamList } from "types/navigation.types";
+import type { RootStackParamList } from "types/navigation.types";
 import { Meals } from "./Meals";
 import { useGetMealsLocationQuery } from "./useGetMealsLocationQuery";
 

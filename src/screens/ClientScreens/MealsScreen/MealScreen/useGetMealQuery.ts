@@ -55,6 +55,7 @@ interface Variables {
 
 type Options = QueryHookOptions<Data, Variables>;
 
-const useGetMealQuery = (options?: Options) => useQuery(GET_MEAL, options);
+const useGetMealQuery = (options?: Options) =>
+  useQuery<Data, Variables>(GET_MEAL, options);
 
 export { useGetMealQuery };

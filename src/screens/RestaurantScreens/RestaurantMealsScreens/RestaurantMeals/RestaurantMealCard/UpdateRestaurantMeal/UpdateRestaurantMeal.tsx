@@ -1,6 +1,6 @@
 import { Box, Button, Column, Columns, Input, Typography } from "components";
 import { useState, type FC } from "react";
-import { RestaurantMealsQueryData } from "../../useRestaurantMealsQuery";
+import type { RestaurantMealsQueryData } from "../../useRestaurantMealsQuery";
 import { useMealUpdateMutation } from "./useMealUpdateMutation";
 
 interface Props {

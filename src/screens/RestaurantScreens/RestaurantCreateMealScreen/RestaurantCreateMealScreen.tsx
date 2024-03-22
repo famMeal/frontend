@@ -12,11 +12,11 @@ import type { Dispatch, SetStateAction } from "react";
 import React, { useEffect, useState, type FC } from "react";
 import { Alert } from "react-native";
 import type { RootStackParamList } from "types/navigation.types";
-import {
-  RESTAURANT_MEALS_QUERY,
+import type {
   RestaurantMealsQueryData,
   RestaurantMealsQueryVariables,
 } from "../RestaurantMealsScreens/RestaurantMeals/useRestaurantMealsQuery";
+import { RESTAURANT_MEALS_QUERY } from "../RestaurantMealsScreens/RestaurantMeals/useRestaurantMealsQuery";
 import { useMealCreateMutation } from "./useMealCreateMutation";
 
 const form = {

@@ -10,7 +10,7 @@ import classnames, {
   position,
   width,
 } from "tailwindcss-classnames";
-import { BoxProps } from "./Box";
+import type { BoxProps } from "./Box";
 
 export const getCSS = ({ isPaddingLess }: BoxProps) => {
   const boxCSS = classnames(

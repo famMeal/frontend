@@ -138,11 +138,12 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
           });
         },
       });
-    } else
+    } else {
       Alert.alert(
         "Dates/Times are not valid",
         "Time travelling is not possible",
       );
+    }
   };
 
   const timePicker = (
@@ -155,7 +156,9 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
   );
 
   const renderTimePicker = () => {
-    if (drawer === "closed") return null;
+    if (drawer === "closed") {
+      return null;
+    }
 
     return Platform.OS === "ios" ? (
       <BottomDrawer isVisible={true} onClose={() => setDrawer("closed")}>

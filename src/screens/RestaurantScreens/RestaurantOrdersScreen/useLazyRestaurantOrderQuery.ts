@@ -76,7 +76,7 @@ interface Variables {
 type Options = LazyQueryHookOptions<Data, Variables>;
 
 const useLazyRestaurantOrderQuery = (options?: Options) =>
-  useLazyQuery(RESTAURANT_ORDER_QUERY, options);
+  useLazyQuery<Data, Variables>(RESTAURANT_ORDER_QUERY, options);
 
 export { useLazyRestaurantOrderQuery };
 export type { Data as RestaurantOrderData };

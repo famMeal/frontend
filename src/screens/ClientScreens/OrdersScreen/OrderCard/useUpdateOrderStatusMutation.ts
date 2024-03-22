@@ -1,4 +1,5 @@
-import { MutationHookOptions, gql, useMutation } from "@apollo/client";
+import type { MutationHookOptions } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import type { Order, UpdateOrderInput, UpdateOrderPayload } from "schema";
 
 const UPDATE_ORDER_STATUS = gql`

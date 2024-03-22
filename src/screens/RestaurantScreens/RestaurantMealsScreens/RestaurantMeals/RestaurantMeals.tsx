@@ -15,10 +15,8 @@ import {
   RestaurantMealCard,
   SkeletonRestaurantMealCard,
 } from "./RestaurantMealCard";
-import {
-  RestaurantMealsQueryData,
-  useRestaurantMealsQuery,
-} from "./useRestaurantMealsQuery";
+import type { RestaurantMealsQueryData } from "./useRestaurantMealsQuery";
+import { useRestaurantMealsQuery } from "./useRestaurantMealsQuery";
 
 type RestaurantMealsStackProps = NativeStackScreenProps<
   RootStackParamList,

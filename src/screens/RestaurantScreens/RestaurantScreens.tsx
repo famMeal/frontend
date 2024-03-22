@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useFocusEffect } from "@react-navigation/native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { COLOURS } from "constants/colours";
 import type { Dispatch, FC, SetStateAction } from "react";
 import { useCallback, useState } from "react";
@@ -51,7 +51,9 @@ const RestaurantScreens: FC<Props> = ({ navigation }) => {
     }, [navigation]),
   );
 
-  if (loading) return <SkeletonRestaurantScreens />;
+  if (loading) {
+    return <SkeletonRestaurantScreens />;
+  }
 
   return (
     <Navigator

@@ -1,7 +1,14 @@
 import type { PropsWithChildren } from "react";
 import { useState, type FC } from "react";
-import { LayoutAnimation } from "react-native";
+import { LayoutAnimation, Platform, UIManager } from "react-native";
 import { AccordionContext } from "./AccordionContext";
+
+if (
+  Platform.OS === "android" &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 const Accordion: FC<PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);

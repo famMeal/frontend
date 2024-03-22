@@ -46,6 +46,6 @@ interface Data {
 type Options = QueryHookOptions<Data>;
 
 const useGetMealsLocationQuery = (options?: Options) =>
-  useQuery(GET_MEALS_LOCATION_QUERY, options);
+  useQuery<Data>(GET_MEALS_LOCATION_QUERY, options);
 
 export { useGetMealsLocationQuery };

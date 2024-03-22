@@ -30,6 +30,6 @@ interface Variables {
 type Options = QueryHookOptions<Data, Variables>;
 
 const useGetUserQuery = (options?: Options) =>
-  useQuery(GET_USER_QUERY, options);
+  useQuery<Data, Variables>(GET_USER_QUERY, options);
 
 export { useGetUserQuery };

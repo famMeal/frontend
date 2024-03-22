@@ -10,7 +10,7 @@ import {
   Typography,
 } from "components";
 import { type FC } from "react";
-import { Meal, Restaurant } from "schema";
+import type { Meal, Restaurant } from "schema";
 import { useActivateMealMutation } from "shared/useActivateMealMutation";
 import { formatTime } from "utilities/formatTime";
 import { returnDateInWeekday } from "utilities/returnDateInWeekday";

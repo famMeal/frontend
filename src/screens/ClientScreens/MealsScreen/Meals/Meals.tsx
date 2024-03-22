@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useCallback } from "react";
-import { User } from "schema";
+import type { User } from "schema";
 import { createList } from "utilities/createList";
 import { MealCard, SkeletonMealCard } from "./MealCard";
 import type { MealsData } from "./useGetMealsQuery";

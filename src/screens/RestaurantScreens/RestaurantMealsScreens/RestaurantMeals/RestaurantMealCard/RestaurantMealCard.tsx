@@ -9,11 +9,11 @@ import { TrashIcon } from "react-native-heroicons/solid";
 import { ActionBottomDrawer } from "screens/components";
 import { useActivateMealMutation } from "shared/useActivateMealMutation";
 import type { RootStackParamList } from "types/navigation.types";
-import {
-  RESTAURANT_MEALS_QUERY,
+import type {
   RestaurantMealsQueryData,
   RestaurantMealsQueryVariables,
 } from "../useRestaurantMealsQuery";
+import { RESTAURANT_MEALS_QUERY } from "../useRestaurantMealsQuery";
 import { UpdateRestaurantMeal } from "./UpdateRestaurantMeal";
 import { useMealDeleteMutation } from "./useMealDeleteMutation";
 

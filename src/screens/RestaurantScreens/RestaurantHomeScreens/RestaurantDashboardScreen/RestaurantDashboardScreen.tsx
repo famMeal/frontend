@@ -77,7 +77,7 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
     ));
 
   const renderNoActiveMealCTA = () => {
-    if (hasMeals)
+    if (hasMeals) {
       return (
         <Columns direction="column">
           <Column columnWidth="fullWidth" alignItems="center">
@@ -96,6 +96,7 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
           </Column>
         </Columns>
       );
+    }
     return (
       <Columns direction="column">
         <Column columnWidth="fullWidth" alignItems="center">

@@ -1,6 +1,6 @@
 import { Typography } from "components/Typography";
-import type { FC } from "react";
-import React, { PropsWithChildren, useCallback, useRef, useState } from "react";
+import type { FC, PropsWithChildren } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Animated, TouchableOpacity } from "react-native";
 import { getCSS } from "./SlideButton.styles";
 
@@ -38,7 +38,9 @@ const SlideButton: FC<Props> = ({
   };
 
   const handleSlideStart = () => {
-    if (isCompleted) return null;
+    if (isCompleted) {
+      return null;
+    }
     setIsCompleted(false);
     animateSlide(100);
   };

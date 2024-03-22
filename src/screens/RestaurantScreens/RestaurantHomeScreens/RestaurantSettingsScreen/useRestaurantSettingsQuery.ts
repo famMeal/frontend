@@ -61,6 +61,6 @@ interface Variables {
 type Options = QueryHookOptions<Data, Variables>;
 
 const useRestaurantSettingsQuery = (options?: Options) =>
-  useQuery(RESTAURANT_SETTINGS_QUERY, options);
+  useQuery<Data, Variables>(RESTAURANT_SETTINGS_QUERY, options);
 
 export { useRestaurantSettingsQuery };
