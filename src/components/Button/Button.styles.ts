@@ -1,3 +1,4 @@
+import { Platform } from "react-native";
 import {
   alignItems,
   backgroundColor,
@@ -49,6 +50,10 @@ export const getCSS = ({
     padding("pb-1", disabled ? "pt-3" : isOutlined ? "pt-2" : "pt-2"),
   );
 
+  const androidPadding = classnames(
+    padding("pb-2", disabled ? "pt-2" : isOutlined ? "pt-2" : "pt-2"),
+  );
+
   const buttonCSS = classnames(
     themeButtonCSS[theme],
     width(isFullWidth ? "w-full" : "w-auto"),
@@ -59,7 +64,14 @@ export const getCSS = ({
     boxShadow(isClean ? "shadow-none" : "shadow-md"),
     width("w-full"),
     display("flex"),
-    padding("px-4", isFullyRounded ? "py-4" : paddingStyles),
+    padding(
+      "px-4",
+      isFullyRounded
+        ? "py-4"
+        : Platform.OS === "android"
+        ? androidPadding
+        : paddingStyles,
+    ),
     borderWidth(isClean ? "border-0" : "border-2"),
   );
 

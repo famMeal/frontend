@@ -79,7 +79,7 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
   const renderNoActiveMealCTA = () => {
     if (hasMeals) {
       return (
-        <Columns direction="column">
+        <Columns isMarginless direction="column">
           <Column columnWidth="fullWidth" alignItems="center">
             <Typography weigth="bold" type="H3" className="text-center mb-4">
               No Active Meal
@@ -98,7 +98,7 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
       );
     }
     return (
-      <Columns direction="column">
+      <Columns isMarginless direction="column">
         <Column columnWidth="fullWidth" alignItems="center">
           <Typography weigth="bold" type="P" className="text-center mb-4">
             Get started by creating a new meal
