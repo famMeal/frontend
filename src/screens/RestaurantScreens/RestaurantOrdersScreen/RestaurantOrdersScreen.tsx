@@ -28,7 +28,7 @@ import { useLazyRestaurantOrderQuery } from "./useLazyRestaurantOrderQuery";
 
 type ActiveOrdersStackProps = NativeStackScreenProps<
   RootStackParamList,
-  "ActiveOrders"
+  "RestaurantOrdersScreen"
 >;
 
 interface Props extends ActiveOrdersStackProps {
@@ -57,6 +57,7 @@ const RestaurantOrdersScreen: FC<Props> = ({
       id: restaurantID,
     },
   });
+
   const [findOrder, { data, loading }] = useLazyRestaurantOrderQuery();
 
   const handleClearSearch = () => {
@@ -123,7 +124,7 @@ const RestaurantOrdersScreen: FC<Props> = ({
         <TrashIcon color={COLOURS.accent} className="absolute" />
       </Button>
     ) : (
-      <Button theme="accent" disabled={!searchTerm} onPress={handleSearch}>
+      <Button theme="accent" onPress={handleSearch}>
         <MagnifyingGlassIcon color={COLOURS.white} className="absolute" />
       </Button>
     );

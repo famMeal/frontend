@@ -1,34 +1,52 @@
-import type { DateTimePickerEvent } from "@react-native-community/datetimepicker";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import type { FC } from "react";
-import React from "react";
+import DateTimePicker, {
+  DateTimePickerAndroid,
+  type AndroidNativeProps,
+} from "@react-native-community/datetimepicker";
+import { Button } from "components/Button";
+import React, { type FC } from "react";
+import { Platform } from "react-native";
 
 interface Props {
   onChange: (name: string, date: Date) => void;
   name: string;
   value: Date;
+  minimumDate: Date;
 }
 
-const DatePicker: FC<Props> = ({ onChange, name, value }) => {
-  const handleOnChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    if (event.type === "set") {
-      const currentDate = selectedDate || value;
-      onChange?.(name, currentDate);
-    } else if (event.type === "dismissed") {
-      return null;
+const DatePicker: FC<Props> = ({ onChange, name, value, minimumDate }) => {
+  const handleAndroidDateChange = (selectedDate: Date | undefined) => {
+    if (selectedDate) {
+      onChange(name, selectedDate);
     }
   };
 
-  return (
-    <DateTimePicker
-      value={value}
-      mode="date"
-      is24Hour
-      display="default"
-      onChange={handleOnChange}
-      minimumDate={new Date()}
-    />
-  );
+  const showDatePickerAndroid = () => {
+    const params: AndroidNativeProps = {
+      value: value,
+      onChange: (_, date) => handleAndroidDateChange(date),
+      minimumDate: minimumDate,
+      mode: "date",
+    };
+    DateTimePickerAndroid.open(params);
+  };
+
+  if (Platform.OS === "android") {
+    return (
+      <Button isOutlined onPress={showDatePickerAndroid}>
+        {value.toDateString()}
+      </Button>
+    );
+  } else {
+    return (
+      <DateTimePicker
+        value={value}
+        mode="date"
+        display="default"
+        onChange={(event, date) => onChange(name, date as Date)}
+        minimumDate={minimumDate}
+      />
+    );
+  }
 };
 
 export { DatePicker };

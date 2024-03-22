@@ -1,11 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import Logo from "assets/svgs/logo.svg";
-import { Column, Columns, Container } from "components";
+import { useFocusEffect } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { COLOURS } from "constants/colours";
-import type { FC } from "react";
+import type { Dispatch, FC, SetStateAction } from "react";
 import { useCallback, useState } from "react";
-import { View } from "react-native";
 import {
   BookOpenIcon,
   HomeIcon,
@@ -14,17 +12,26 @@ import {
 } from "react-native-heroicons/solid";
 import { useCurrentUserQuery } from "shared";
 import type { RootStackParamList } from "types/navigation.types";
-import { CreateMealScreen } from "./CreateMealScreen";
+import { RestaurantCreateMealScreen } from "./RestaurantCreateMealScreen";
 import { RestaurantHomeScreens } from "./RestaurantHomeScreens";
 import { RestaurantMealsScreens } from "./RestaurantMealsScreens";
 import { RestaurantOrdersScreen } from "./RestaurantOrdersScreen";
+import { SkeletonRestaurantScreens } from "./SkeletonRestaurantScreens";
 import { useRestaurantOrdersQuery } from "./useRestaurantOrdersQuery";
 
 const { Navigator, Screen } = createBottomTabNavigator<RootStackParamList>();
 
-const RestaurantScreens: FC = () => {
+type RestaurantStackProps = NativeStackScreenProps<
+  RootStackParamList,
+  "RestaurantHomeScreens"
+>;
+
+interface Props extends RestaurantStackProps {
+  setActiveScreen: Dispatch<SetStateAction<string>>;
+}
+
+const RestaurantScreens: FC<Props> = ({ navigation }) => {
   const [activeScreen, setActiveScreen] = useState("RestaurantHomeScreens");
-  const navigation = useNavigation();
   const { data: currentUserData } = useCurrentUserQuery();
   const { id } = currentUserData?.currentUser?.restaurant ?? {};
 
@@ -38,29 +45,13 @@ const RestaurantScreens: FC = () => {
   useFocusEffect(
     useCallback(() => {
       const { name } =
-        navigation.getState().routes[navigation.getState().index];
+        navigation?.getState?.().routes[navigation?.getState?.().index];
 
       setActiveScreen(name);
     }, [navigation]),
   );
 
-  if (loading) {
-    return (
-      <Container>
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-          <Columns>
-            <Column
-              alignItems="center"
-              columnWidth="fullWidth"
-              justifyContent="center">
-              <Logo />
-            </Column>
-          </Columns>
-        </View>
-      </Container>
-    );
-  }
+  if (loading) return <SkeletonRestaurantScreens />;
 
   return (
     <Navigator
@@ -140,15 +131,20 @@ const RestaurantScreens: FC = () => {
             <PlusCircleIcon
               size={18}
               color={
-                activeScreen === "CreateMeal" ? COLOURS.primary : COLOURS.accent
+                activeScreen === "RestaurantCreateMealScreen"
+                  ? COLOURS.primary
+                  : COLOURS.accent
               }
             />
           ),
         }}
-        name="CreateMeal"
+        name="RestaurantCreateMealScreen"
         initialParams={{ restaurantID: data?.restaurant?.id }}>
         {props => (
-          <CreateMealScreen {...props} setActiveScreen={setActiveScreen} />
+          <RestaurantCreateMealScreen
+            {...props}
+            setActiveScreen={setActiveScreen}
+          />
         )}
       </Screen>
       <Screen
@@ -164,14 +160,14 @@ const RestaurantScreens: FC = () => {
             <PlayIcon
               size={18}
               color={
-                activeScreen === "ActiveOrders"
+                activeScreen === "RestaurantOrdersScreen"
                   ? COLOURS.primary
                   : COLOURS.accent
               }
             />
           ),
         }}
-        name="ActiveOrders"
+        name="RestaurantOrdersScreen"
         initialParams={{
           restaurantID: data?.restaurant?.id,
         }}>

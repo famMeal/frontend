@@ -1,11 +1,24 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Container, Typography } from "components";
+import {
+  Box,
+  Button,
+  Column,
+  Columns,
+  Container,
+  Typography,
+} from "components";
 import { type FC } from "react";
 import { ScrollView } from "react-native";
-import type { RestaurantMealData } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
-import { useRestaurantOrdersQuery } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
 import type { RootStackParamList } from "types/navigation.types";
-import { RestaurantMealCard } from "../RestaurantMealCard";
+import { createList } from "utilities/createList";
+import {
+  RestaurantMealCard,
+  SkeletonRestaurantMealCard,
+} from "./RestaurantMealCard";
+import {
+  RestaurantMealsQueryData,
+  useRestaurantMealsQuery,
+} from "./useRestaurantMealsQuery";
 
 type RestaurantMealsStackProps = NativeStackScreenProps<
   RootStackParamList,
@@ -14,11 +27,12 @@ type RestaurantMealsStackProps = NativeStackScreenProps<
 
 type Props = RestaurantMealsStackProps;
 
-const RestaurantMeals: FC<Props> = ({ route }) => {
+const RestaurantMeals: FC<Props> = ({ route, navigation }) => {
+  const { navigate } = navigation;
   const { params } = route ?? {};
   const { restaurantID } = params;
 
-  const { data } = useRestaurantOrdersQuery({
+  const { data, loading } = useRestaurantMealsQuery({
     skip: !restaurantID,
     variables: {
       id: restaurantID,
@@ -29,7 +43,9 @@ const RestaurantMeals: FC<Props> = ({ route }) => {
     ({ active }) => active,
   )?.id;
 
-  const renderMeal = (meal: RestaurantMealData) => (
+  const renderMeal = (
+    meal: RestaurantMealsQueryData["restaurant"]["meals"][number],
+  ) => (
     <RestaurantMealCard
       hasActiveMeal={!!activeMealID}
       key={meal.id}
@@ -38,7 +54,35 @@ const RestaurantMeals: FC<Props> = ({ route }) => {
     />
   );
 
-  const renderMeals = () => data?.restaurant?.meals.map(renderMeal);
+  const hasMeals = !!data?.restaurant?.meals?.length;
+
+  const renderSkeletons = () =>
+    createList(3).map(index => <SkeletonRestaurantMealCard key={index} />);
+
+  const onPressNavigateToCreateMeal = () =>
+    navigate("RestaurantCreateMealScreen", { restaurantID });
+
+  const renderNoMealsCTA = () => (
+    <Box>
+      <Columns direction="column">
+        <Column columnWidth="fullWidth" alignItems="center">
+          <Typography weigth="bold" type="P" className="text-center mb-4">
+            You have no meals created yet
+          </Typography>
+        </Column>
+        <Column columnWidth="fullWidth">
+          <Button onPress={onPressNavigateToCreateMeal}>
+            Create a new meal
+          </Button>
+        </Column>
+      </Columns>
+    </Box>
+  );
+
+  const renderMealCards = () =>
+    hasMeals ? data?.restaurant?.meals.map(renderMeal) : renderNoMealsCTA();
+
+  const renderMeals = () => (loading ? renderSkeletons() : renderMealCards());
 
   return (
     <Container>

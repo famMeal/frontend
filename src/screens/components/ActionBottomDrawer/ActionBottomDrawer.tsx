@@ -22,7 +22,7 @@ const ActionBottomDrawer: FC<Props> = ({
       <Columns isMarginless>
         <Column columnWidth="fullWidth">{children}</Column>
       </Columns>
-      <Columns className="mt-4 mb-8">
+      <Columns className="mt-4" isMarginless>
         <Column>
           <Button onPress={onClose} theme="accent" isOutlined>
             Cancel

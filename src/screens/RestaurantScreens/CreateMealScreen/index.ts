@@ -1,1 +1,0 @@
-export { CreateMealScreen } from "./CreateMealScreen";

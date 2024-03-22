@@ -4,23 +4,18 @@ import type {
   NativeStackScreenProps,
 } from "@react-navigation/native-stack";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionHeader,
   Box,
   Button,
-  Chip,
   Column,
   Columns,
   Container,
   Typography,
 } from "components";
 import { type FC } from "react";
-import { useActivateMealMutation } from "shared";
 import type { RootStackParamList } from "types/navigation.types";
 import { formatCurrency } from "utilities/formatCurrency";
-import { formatTime } from "utilities/formatTime";
 import { parseCurrency } from "utilities/parseCurrency";
+import { RestaurantDashboardMealCard } from "./RestaurantDashboardMealCard";
 import { useRestaurantQuery } from "./useRestaurantQuery";
 
 type RestaurantStackProps = NativeStackScreenProps<
@@ -39,16 +34,18 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
   const { navigate } = useNavigation<RestaurantMealsNavigationProp>();
   const { params } = route ?? {};
   const { restaurantID } = params;
-  const [toggleActiveStateMeal, { loading }] = useActivateMealMutation();
+
+  const onPressNavigateToOrders = () =>
+    navigate("RestaurantOrdersScreen", { restaurantID });
+
+  const onPressNavigateToMeals = () =>
+    navigate("RestaurantMealsScreens", { restaurantID });
+
+  const onPressNavigateToCreateMeal = () =>
+    navigate("RestaurantCreateMealScreen", { restaurantID });
 
   const OnPressNavigateToSettings = () =>
     navigate("RestaurantSettingsScreen", { restaurantID });
-
-  const onPressNavigateToOrders = () =>
-    navigate("ActiveOrders", { restaurantID });
-
-  const OnPressNavigateToCreate = () =>
-    navigate("CreateMeal", { restaurantID });
 
   const { data } = useRestaurantQuery({
     variables: {
@@ -59,17 +56,9 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
 
   const activeMeal = data?.restaurant?.meals?.find(({ active }) => active);
 
-  const mealWithOrders = data?.restaurant?.orders?.[0].meal;
+  const hasMeals = data?.restaurant?.meals.length!!;
 
-  const {
-    name,
-    quantityAvailable,
-    price,
-    pickupStartTime,
-    pickupEndTime,
-    id,
-    active,
-  } = (activeMeal || mealWithOrders) ?? {};
+  const { price } = activeMeal ?? {};
 
   const totalQuantityOrdered = data?.restaurant?.orders.reduce(
     (sum, order) => sum + order?.quantity!,
@@ -80,15 +69,59 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
     totalQuantityOrdered! * parseCurrency(price!),
   );
 
-  const onPressToggleActiveStateMeal = () =>
-    toggleActiveStateMeal({
-      variables: {
-        input: {
-          mealId: id!,
-          active: !active,
-        },
-      },
-    });
+  const renderNonActiveMeals = () =>
+    data?.restaurant?.meals.map(({ name, id }) => (
+      <Typography key={id} type="S" className=" mb-4">
+        - {name}
+      </Typography>
+    ));
+
+  const renderNoActiveMealCTA = () => {
+    if (hasMeals)
+      return (
+        <Columns direction="column">
+          <Column columnWidth="fullWidth" alignItems="center">
+            <Typography weigth="bold" type="H3" className="text-center mb-4">
+              No Active Meal
+            </Typography>
+          </Column>
+          <Column columnWidth="fullWidth">
+            <Typography weigth="bold" type="P" className="text-center mb-4">
+              Current list of meals:
+            </Typography>
+            {renderNonActiveMeals()}
+          </Column>
+          <Column columnWidth="fullWidth">
+            <Button onPress={onPressNavigateToMeals}>Activate a meal</Button>
+          </Column>
+        </Columns>
+      );
+    return (
+      <Columns direction="column">
+        <Column columnWidth="fullWidth" alignItems="center">
+          <Typography weigth="bold" type="P" className="text-center mb-4">
+            Get started by creating a new meal
+          </Typography>
+        </Column>
+        <Column columnWidth="fullWidth">
+          <Button onPress={onPressNavigateToCreateMeal}>
+            Create a new meal
+          </Button>
+        </Column>
+      </Columns>
+    );
+  };
+
+  const renderActiveMeal = () =>
+    activeMeal ? (
+      <RestaurantDashboardMealCard
+        restaurantID={restaurantID}
+        onPressNavigateToOrders={onPressNavigateToOrders}
+        meal={{ ...activeMeal, totalQuantityOrdered, totalRevenue }}
+      />
+    ) : (
+      <Box>{renderNoActiveMealCTA()}</Box>
+    );
 
   return (
     <Container>
@@ -97,108 +130,27 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
         weigth="bold"
         type="H3"
         className="text-center mt-4">
-        {data?.restaurant?.name}
+        {data?.restaurant?.name} Dashboard
       </Typography>
-      {/*
       <Columns>
-        <Column>
-          <Box>
-            <Button onPress={OnPressNavigateToSettings}>settings</Button>
-          </Box>
-        </Column>
-        <Column>
-          <Box>
-            <Button theme="accent" onPress={OnPressNavigateToCreate}>
-              Create Meal
-            </Button>
-          </Box>
-        </Column>
-      </Columns> */}
-
-      <Columns>
-        <Column columnWidth="fullWidth" justifyContent="center"></Column>
+        <Column columnWidth="fullWidth">{renderActiveMeal()}</Column>
       </Columns>
       <Columns>
-        <Column columnWidth="fullWidth">
-          <Box>
-            <Chip type={active ? "success" : "primary"}>
-              {active ? "Active" : "Disabled"}
-            </Chip>
-            <Accordion>
-              <AccordionHeader>
-                <Typography className="mt-12" colour="accent" weigth="bold">
-                  {name}
-                </Typography>
-                <Columns isMarginless>
-                  <Column>
-                    <Typography type="S" weigth="bold">
-                      Available:{" "}
-                      <Typography colour="accent" type="S">
-                        {" "}
-                        {quantityAvailable}
-                      </Typography>
-                    </Typography>
-                  </Column>
-                  <Column>
-                    <Typography type="S" weigth="bold">
-                      Reserved:{" "}
-                      <Typography colour="accent" type="S">
-                        {" "}
-                        {totalQuantityOrdered}
-                      </Typography>
-                    </Typography>
-                  </Column>
-                </Columns>
-              </AccordionHeader>
-              <AccordionContent>
-                <Columns>
-                  <Column>
-                    <Typography type="S" weigth="bold">
-                      Remaining:{" "}
-                      <Typography type="S">
-                        {" "}
-                        {quantityAvailable! - totalQuantityOrdered!}
-                      </Typography>
-                    </Typography>
-                  </Column>
-                  <Column>
-                    <Typography type="S" weigth="bold">
-                      Revenue: <Typography type="S"> {totalRevenue}</Typography>
-                    </Typography>
-                  </Column>
-                </Columns>
-                <Columns>
-                  <Column columnWidth="fullWidth">
-                    <Typography type="S" isMarginless weigth="bold">
-                      Pickup between:
-                      <Typography isMarginless type="S">
-                        {" "}
-                        {formatTime(pickupStartTime)} and{" "}
-                      </Typography>
-                      <Typography isMarginless type="S">
-                        {formatTime(pickupEndTime)}
-                      </Typography>
-                    </Typography>
-                  </Column>
-                </Columns>
-                <Columns>
-                  <Column>
-                    <Button
-                      onPress={onPressToggleActiveStateMeal}
-                      isLoading={loading}
-                      theme="accent">
-                      {active ? "Deactivate" : "Activate"}
-                    </Button>
-                  </Column>
-                  <Column>
-                    <Button onPress={onPressNavigateToOrders}>
-                      View orders
-                    </Button>
-                  </Column>
-                </Columns>
-              </AccordionContent>
-            </Accordion>
-          </Box>
+        <Column columnWidth="half">
+          <Button
+            onPress={OnPressNavigateToSettings}
+            isOutlined
+            theme="primary">
+            Settings
+          </Button>
+        </Column>
+        <Column columnWidth="half">
+          <Button
+            onPress={onPressNavigateToCreateMeal}
+            isOutlined
+            theme="accent">
+            Create meal
+          </Button>
         </Column>
       </Columns>
     </Container>

@@ -1,10 +1,10 @@
 import { Box, Button, Column, Columns, Input, Typography } from "components";
 import { useState, type FC } from "react";
-import { type RestaurantMealData } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
+import { RestaurantMealsQueryData } from "../../useRestaurantMealsQuery";
 import { useMealUpdateMutation } from "./useMealUpdateMutation";
 
 interface Props {
-  meal: RestaurantMealData;
+  meal: RestaurantMealsQueryData["restaurant"]["meals"][number];
   restaurantID: string;
   toggleEditing: () => void;
 }

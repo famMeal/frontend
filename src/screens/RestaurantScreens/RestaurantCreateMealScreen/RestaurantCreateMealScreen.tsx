@@ -11,12 +11,12 @@ import {
 import type { Dispatch, SetStateAction } from "react";
 import React, { useEffect, useState, type FC } from "react";
 import { Alert } from "react-native";
-import {
-  RESTAURANT_ORDERS_QUERY,
-  type RestaurantOrdersData,
-  type RestaurantOrdersVariables,
-} from "screens/RestaurantScreens/useRestaurantOrdersQuery";
 import type { RootStackParamList } from "types/navigation.types";
+import {
+  RESTAURANT_MEALS_QUERY,
+  RestaurantMealsQueryData,
+  RestaurantMealsQueryVariables,
+} from "../RestaurantMealsScreens/RestaurantMeals/useRestaurantMealsQuery";
 import { useMealCreateMutation } from "./useMealCreateMutation";
 
 const form = {
@@ -30,14 +30,14 @@ type FormValues = keyof typeof form;
 
 type CreateMealStackProps = NativeStackScreenProps<
   RootStackParamList,
-  "CreateMeal"
+  "RestaurantCreateMealScreen"
 >;
 
 interface Props extends CreateMealStackProps {
   setActiveScreen: Dispatch<SetStateAction<string>>;
 }
 
-const CreateMealScreen: FC<Props> = ({
+const RestaurantCreateMealScreen: FC<Props> = ({
   route,
   navigation,
   setActiveScreen,
@@ -93,18 +93,21 @@ const CreateMealScreen: FC<Props> = ({
       },
       update: (cache, result) => {
         const data = cache.readQuery<
-          RestaurantOrdersData,
-          RestaurantOrdersVariables
+          RestaurantMealsQueryData,
+          RestaurantMealsQueryVariables
         >({
-          query: RESTAURANT_ORDERS_QUERY,
+          query: RESTAURANT_MEALS_QUERY,
           variables: {
             id: restaurantID,
           },
         });
 
         if (data && result?.data?.mealCreate?.meal) {
-          cache.writeQuery<RestaurantOrdersData, RestaurantOrdersVariables>({
-            query: RESTAURANT_ORDERS_QUERY,
+          cache.writeQuery<
+            RestaurantMealsQueryData,
+            RestaurantMealsQueryVariables
+          >({
+            query: RESTAURANT_MEALS_QUERY,
             variables: {
               id: restaurantID,
             },
@@ -192,4 +195,4 @@ const CreateMealScreen: FC<Props> = ({
   );
 };
 
-export { CreateMealScreen };
+export { RestaurantCreateMealScreen };

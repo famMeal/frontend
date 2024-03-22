@@ -1,7 +1,7 @@
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { Meal, Restaurant, User } from "schema";
 import type { AddToCartData } from "screens/ClientScreens/MealsScreen/MealScreen/useAddToCartMutation";
-import type { RestaurantMealData } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
+import { RestaurantMealsQueryData } from "screens/RestaurantScreens/RestaurantMealsScreens/RestaurantMeals/useRestaurantMealsQuery";
 
 export type RootStackParamList = {
   Login: undefined;
@@ -9,10 +9,10 @@ export type RootStackParamList = {
   EmailSignUp: undefined;
   TabNavigator: undefined;
   Restaurants: undefined;
-  ActiveOrders: {
+  RestaurantOrdersScreen: {
     restaurantID: Restaurant["id"];
   };
-  CreateMeal: {
+  RestaurantCreateMealScreen: {
     restaurantID: Restaurant["id"];
   };
   RestaurantDashboardScreen: {
@@ -28,7 +28,7 @@ export type RootStackParamList = {
     restaurantID: Restaurant["id"];
   };
   ActivateRestaurantMeal: {
-    meal: RestaurantMealData;
+    meal: RestaurantMealsQueryData["restaurant"]["meals"][number];
     restaurantID: Restaurant["id"];
   };
   RestaurantMealsScreens: {

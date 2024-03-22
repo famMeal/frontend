@@ -36,7 +36,7 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
     string[]
   >([]);
 
-  const handleOnPressContinue = () => {
+  const handleOnPressContinue = () =>
     addToCart({
       variables: {
         input: {
@@ -54,13 +54,13 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
         });
       },
     });
-  };
 
   const renderMeal = () =>
     loading ? (
       <SkeletonRestaurantMealCard />
     ) : (
       <RestaurantMealCard
+        userID={userID}
         quantity={quantity}
         setQuantity={setQuantity}
         setSelectedTime={setSelectedTime}

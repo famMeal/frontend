@@ -45,6 +45,10 @@ export const getCSS = ({
     ),
   };
 
+  const paddingStyles = classnames(
+    padding("pb-1", disabled ? "pt-3" : isOutlined ? "pt-2" : "pt-2"),
+  );
+
   const buttonCSS = classnames(
     themeButtonCSS[theme],
     width(isFullWidth ? "w-full" : "w-auto"),
@@ -54,8 +58,8 @@ export const getCSS = ({
     borderRadius(isFullyRounded ? "rounded-full" : "rounded-lg"),
     boxShadow(isClean ? "shadow-none" : "shadow-md"),
     width("w-full"),
-    display("inline-flex"),
-    padding("px-4", isFullyRounded ? "py-4" : "py-2"),
+    display("flex"),
+    padding("px-4", isFullyRounded ? "py-4" : paddingStyles),
     borderWidth(isClean ? "border-0" : "border-2"),
   );
 

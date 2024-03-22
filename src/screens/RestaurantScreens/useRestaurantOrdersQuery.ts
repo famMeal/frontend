@@ -3,20 +3,11 @@ import { gql, useQuery } from "@apollo/client";
 import type { Meal, Order, Restaurant, User } from "schema";
 
 export const RESTAURANT_ORDERS_QUERY = gql`
-  query ActiveOrders($id: ID!) {
+  query RestaurantOrders($id: ID!) {
     restaurant(id: $id) {
       id
       __typename
       name
-      meals {
-        active
-        __typename
-        id
-        name
-        description
-        price
-        quantityAvailable
-      }
       orders {
         __typename
         id
@@ -62,17 +53,6 @@ type OrderMealSplinter = Pick<
   | "quantityAvailable"
 >;
 
-export type RestaurantMealData = Pick<
-  Meal,
-  | "id"
-  | "name"
-  | "active"
-  | "price"
-  | "description"
-  | "__typename"
-  | "quantityAvailable"
->;
-
 type UserSplinter = Pick<User, "__typename" | "id" | "firstName" | "lastName">;
 
 export interface OrderData extends OrderSplinter {
@@ -83,7 +63,6 @@ export interface OrderData extends OrderSplinter {
 type RestaurantSplinter = Pick<Restaurant, "id" | "__typename" | "name">;
 
 interface RestaurantData extends RestaurantSplinter {
-  meals: RestaurantMealData[];
   orders: OrderData[];
 }
 

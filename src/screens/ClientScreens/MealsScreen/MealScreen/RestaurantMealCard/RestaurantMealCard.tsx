@@ -17,6 +17,7 @@ import type { ConfirmationNavigationProps } from "types/navigation.types";
 import { createTimeArray, formatTimeIntervals } from "utilities";
 
 interface Props {
+  userID: string;
   quantity: number;
   setQuantity: Dispatch<React.SetStateAction<number>>;
   meal?: Omit<MealSplinter, "restaurant">;
@@ -24,6 +25,7 @@ interface Props {
 }
 
 const RestaurantMealCard: FC<Props> = ({
+  userID,
   quantity,
   setQuantity,
   meal,
@@ -45,7 +47,7 @@ const RestaurantMealCard: FC<Props> = ({
     }
   };
 
-  const handleOnPressDelete = () => navigate("Meals");
+  const handleOnPressDelete = () => navigate("Meals", { userID });
 
   return (
     <Box className="relative">

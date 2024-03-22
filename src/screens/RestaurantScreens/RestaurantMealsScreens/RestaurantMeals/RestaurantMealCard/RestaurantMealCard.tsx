@@ -5,22 +5,20 @@ import { COLOURS } from "constants/colours";
 import { useState, type FC } from "react";
 import { Alert, View } from "react-native";
 import { TrashIcon } from "react-native-heroicons/solid";
-import type {
-  RestaurantOrdersData,
-  RestaurantOrdersVariables,
-} from "screens/RestaurantScreens/useRestaurantOrdersQuery";
-import {
-  RESTAURANT_ORDERS_QUERY,
-  type RestaurantMealData,
-} from "screens/RestaurantScreens/useRestaurantOrdersQuery";
+
 import { ActionBottomDrawer } from "screens/components";
 import { useActivateMealMutation } from "shared/useActivateMealMutation";
 import type { RootStackParamList } from "types/navigation.types";
+import {
+  RESTAURANT_MEALS_QUERY,
+  RestaurantMealsQueryData,
+  RestaurantMealsQueryVariables,
+} from "../useRestaurantMealsQuery";
 import { UpdateRestaurantMeal } from "./UpdateRestaurantMeal";
 import { useMealDeleteMutation } from "./useMealDeleteMutation";
 
 interface Props {
-  meal: RestaurantMealData;
+  meal: RestaurantMealsQueryData["restaurant"]["meals"][number];
   restaurantID: string;
   hasActiveMeal: boolean;
 }
@@ -58,18 +56,21 @@ const RestaurantMealCard: FC<Props> = ({
       onCompleted: toggleDrawer,
       update: cache => {
         const data = cache.readQuery<
-          RestaurantOrdersData,
-          RestaurantOrdersVariables
+          RestaurantMealsQueryData,
+          RestaurantMealsQueryVariables
         >({
-          query: RESTAURANT_ORDERS_QUERY,
+          query: RESTAURANT_MEALS_QUERY,
           variables: {
             id: restaurantID,
           },
         });
 
         if (data?.restaurant?.meals) {
-          cache.writeQuery<RestaurantOrdersData, RestaurantOrdersVariables>({
-            query: RESTAURANT_ORDERS_QUERY,
+          cache.writeQuery<
+            RestaurantMealsQueryData,
+            RestaurantMealsQueryVariables
+          >({
+            query: RESTAURANT_MEALS_QUERY,
             variables: {
               id: restaurantID,
             },
@@ -135,9 +136,12 @@ const RestaurantMealCard: FC<Props> = ({
             justifyContent="flex-end"
           />
         </Columns>
-        <View className="absolute top-4 right-2">
-          <Button isOutlined isClean disabled={active} onPress={toggleDrawer}>
-            <TrashIcon color={active ? COLOURS.white : COLOURS.primary} />
+        <View className="absolute top-4 right-4">
+          <Button isClean isOutlined disabled={active} onPress={toggleDrawer}>
+            <TrashIcon
+              size={22}
+              color={active ? COLOURS.white : COLOURS.primary}
+            />
           </Button>
         </View>
         <Columns>

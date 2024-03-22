@@ -1,11 +1,8 @@
-import type { DateTimePickerEvent } from "@react-native-community/datetimepicker";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import { useNavigation } from "@react-navigation/native";
 import type {
   NativeStackNavigationProp,
   NativeStackScreenProps,
 } from "@react-navigation/native-stack";
-
-import { useNavigation } from "@react-navigation/native";
 import {
   BottomDrawer,
   Box,
@@ -15,12 +12,15 @@ import {
   Container,
   DatePicker,
   Input,
+  TimePicker,
   Typography,
 } from "components";
 import React, { useState, type FC } from "react";
-import { Platform } from "react-native";
+import { Alert, Platform } from "react-native";
+import { RESTAURANT_QUERY } from "screens/RestaurantScreens/RestaurantHomeScreens/RestaurantDashboardScreen/useRestaurantQuery";
 import { useActivateMealMutation } from "shared";
 import type { RootStackParamList } from "types/navigation.types";
+import { RESTAURANT_MEALS_QUERY } from "../RestaurantMeals/useRestaurantMealsQuery";
 import { useUpdateRestaurantSetting } from "./useUpdateRestaurantSettingsMutation";
 
 type ActiveRestaurantMealStackProps = NativeStackScreenProps<
@@ -30,22 +30,17 @@ type ActiveRestaurantMealStackProps = NativeStackScreenProps<
 
 type Props = ActiveRestaurantMealStackProps;
 
-const form = {
-  quantity: "",
-  pickupDate: new Date(),
-  pickupStartTime: new Date(),
-  pickupEndTime: new Date(),
-  orderDate: new Date(),
-  orderStartTime: new Date(),
-  orderCutoffTime: new Date(),
-};
-
-type Keys = keyof typeof form;
-
 type RestaurantMealsNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "RestaurantMeals"
 >;
+
+type Drawers =
+  | "pickupStartTime"
+  | "pickupEndTime"
+  | "orderCutoffTime"
+  | "orderStartTime"
+  | "closed";
 
 const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
   const { navigate } = useNavigation<RestaurantMealsNavigationProp>();
@@ -54,96 +49,151 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
   const [updateRestaurantSetting, { loading: isestaurantSettingLoading }] =
     useUpdateRestaurantSetting();
   const { meal, restaurantID } = route?.params;
-  const [state, setState] = useState(form);
 
-  const [isDrawerVisible, setDrawerVisible] = useState(false);
-  const {
-    quantity: unused,
-    pickupDate: unusedPickupedDate,
-    orderDate: unusedOrderDate,
-    ...times
-  } = state;
-  type Time = keyof typeof times;
-  const [drawer, setDrawer] = useState<Time>("orderStartTime");
+  const [drawer, setDrawer] = useState<Drawers>("closed");
+  const [orderStartTime, setOrderStartTime] = useState(new Date());
+  const [orderCutoffTime, setOrderCutoffTime] = useState(new Date());
+  const [pickupStartTime, setPickupStartTime] = useState(new Date());
+  const [pickupEndTime, setPickupEndTime] = useState(new Date());
 
-  const handleChange = (name: Keys | string, value: string | Date) => {
-    setState(prev => ({ ...prev, [name]: value }));
-  };
+  const [quantity, setQuantity] = useState("");
 
   const minimumDate = {
     orderStartTime: new Date(),
-    orderCutoffTime: state.orderStartTime,
-    pickupStartTime: state.orderCutoffTime,
-    pickupEndTime: state.pickupStartTime,
+    orderCutoffTime: orderStartTime,
+    pickupStartTime: orderCutoffTime,
+    pickupEndTime: pickupStartTime,
+    closed: new Date(),
   };
 
-  const toggleDrawerState = () => setDrawerVisible(prev => !prev);
-
-  const handleOpenDrawer = (drawer: Time) => {
-    setDrawer(drawer);
-    toggleDrawerState();
+  const stateSetters = {
+    pickupStartTime: setPickupStartTime,
+    pickupEndTime: setPickupEndTime,
+    orderStartTime: setOrderStartTime,
+    orderCutoffTime: setOrderCutoffTime,
   };
 
-  const handleDateTimeChange = (
-    _: DateTimePickerEvent,
-    date?: Date | undefined,
-  ) => {
-    const currentDate = date || state[drawer];
-    handleChange(drawer, currentDate);
+  const times = {
+    orderStartTime,
+    orderCutoffTime,
+    pickupStartTime,
+    pickupEndTime,
+    closed: new Date(),
   };
 
-  const handleOnPressActivate = () =>
-    activateMeal({
-      variables: {
-        input: {
-          mealId: meal?.id,
-          active: true,
-        },
-      },
-      onCompleted: () => {
-        updateRestaurantSetting({
-          variables: {
-            input: {
-              restaurantId: restaurantID,
-              orderCutoffTime: state.orderCutoffTime.toUTCString(),
-              orderStartTime: state.orderStartTime.toUTCString(),
-              pickupEndTime: state.pickupEndTime.toUTCString(),
-              pickupStartTime: state.orderStartTime.toUTCString(),
-              quantityAvailable: Number(state.quantity),
-            },
+  const dateSetters = {
+    orderStartTime: [setOrderStartTime, setOrderCutoffTime, setPickupStartTime],
+    orderCutoffTime: [setOrderStartTime, setOrderCutoffTime],
+    pickupStartTime: [setPickupStartTime, setPickupEndTime],
+    pickupEndTime: [setPickupStartTime, setPickupEndTime],
+  };
+
+  const updateDateState = (stateName: string, newValue: Date) => {
+    setDrawer("closed");
+    dateSetters[stateName as keyof typeof stateSetters].forEach(setter =>
+      setter(newValue),
+    );
+  };
+
+  const updateTimeState = (stateName: string, newValue: Date) => {
+    setDrawer("closed");
+    stateSetters[stateName as keyof typeof stateSetters](newValue);
+  };
+
+  const handleDateTimeChange = (date?: Date) => {
+    updateTimeState(drawer, date!);
+  };
+
+  const areMinimumDatesValid = (): boolean => {
+    return (
+      orderCutoffTime > orderStartTime &&
+      pickupStartTime > orderCutoffTime &&
+      pickupEndTime > pickupStartTime
+    );
+  };
+
+  const handleOnPressActivate = () => {
+    if (areMinimumDatesValid()) {
+      activateMeal({
+        variables: {
+          input: {
+            mealId: meal?.id,
+            active: true,
           },
-          onCompleted: () => navigate("RestaurantMeals", { restaurantID }),
-        });
-      },
-    });
+        },
+        onCompleted: () => {
+          updateRestaurantSetting({
+            variables: {
+              input: {
+                restaurantId: restaurantID,
+                orderCutoffTime: orderCutoffTime.toUTCString(),
+                orderStartTime: orderStartTime.toUTCString(),
+                pickupStartTime: pickupStartTime.toUTCString(),
+                pickupEndTime: pickupEndTime.toUTCString(),
+                quantityAvailable: Number(quantity),
+              },
+            },
+            onCompleted: () => navigate("RestaurantMeals", { restaurantID }),
+            refetchQueries: [RESTAURANT_MEALS_QUERY, RESTAURANT_QUERY],
+          });
+        },
+      });
+    } else
+      Alert.alert(
+        "Dates/Times are not valid",
+        "Time travelling is not possible",
+      );
+  };
+
+  const timePicker = (
+    <TimePicker
+      isClosed={drawer === "closed"}
+      minimumDate={minimumDate[drawer]}
+      value={times[drawer]}
+      onTimeChange={handleDateTimeChange}
+    />
+  );
+
+  const renderTimePicker = () => {
+    if (drawer === "closed") return null;
+
+    return Platform.OS === "ios" ? (
+      <BottomDrawer isVisible={true} onClose={() => setDrawer("closed")}>
+        {timePicker}
+      </BottomDrawer>
+    ) : (
+      timePicker
+    );
+  };
 
   return (
-    <Container>
-      <Typography
-        colour="accent"
-        className="text-center mt-4"
-        weigth="bold"
-        type="H3">
-        {meal?.name}
-      </Typography>
+    <Container className="flex flex-col justify-center items-center">
       <Box>
+        <Typography
+          colour="accent"
+          className="text-center mt-4"
+          weigth="bold"
+          type="H3">
+          {meal?.name}
+        </Typography>
         <Columns>
           <Column alignItems="center" justifyContent="center">
             <Typography weigth="bold" type="S">
               Order Date
             </Typography>
             <DatePicker
-              name="orderDate"
-              onChange={handleChange}
-              value={state.pickupDate}
+              minimumDate={new Date()}
+              name="orderStartTime"
+              onChange={updateDateState}
+              value={orderStartTime}
             />
           </Column>
           <Column alignItems="center">
             <Typography weigth="bold" type="S">
               Between
             </Typography>
-            <Button onPress={() => handleOpenDrawer("orderStartTime")}>
-              {state.orderStartTime.toLocaleTimeString("en-US", {
+            <Button onPress={() => setDrawer("orderStartTime")}>
+              {orderStartTime.toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",
                 hour12: true,
@@ -151,8 +201,8 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
             </Button>
             <Button
               className="mt-4"
-              onPress={() => handleOpenDrawer("orderCutoffTime")}>
-              {state.orderCutoffTime.toLocaleTimeString("en-US", {
+              onPress={() => setDrawer("orderCutoffTime")}>
+              {orderCutoffTime.toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",
                 hour12: true,
@@ -166,26 +216,25 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
               Pickup Date
             </Typography>
             <DatePicker
-              name="pickupDate"
-              onChange={handleChange}
-              value={state.pickupDate}
+              minimumDate={orderCutoffTime}
+              name="pickupStartTime"
+              onChange={updateDateState}
+              value={pickupStartTime}
             />
           </Column>
           <Column alignItems="center">
             <Typography weigth="bold" type="S">
               Between
             </Typography>
-            <Button onPress={() => handleOpenDrawer("pickupStartTime")}>
-              {state.pickupStartTime.toLocaleTimeString("en-US", {
+            <Button onPress={() => setDrawer("pickupStartTime")}>
+              {pickupStartTime.toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",
                 hour12: true,
               })}
             </Button>
-            <Button
-              className="mt-4"
-              onPress={() => handleOpenDrawer("pickupEndTime")}>
-              {state.pickupEndTime.toLocaleTimeString("en-US", {
+            <Button className="mt-4" onPress={() => setDrawer("pickupEndTime")}>
+              {pickupEndTime.toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",
                 hour12: true,
@@ -200,12 +249,13 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
             </Typography>
             <Input
               keyboardType="numeric"
-              onChangeText={value => handleChange("quantity", value)}
-              value={state.quantity ?? ""}
+              onChangeText={setQuantity}
+              value={quantity ?? ""}
             />
           </Column>
           <Column justifyContent="flex-end">
             <Button
+              disabled={!quantity}
               isLoading={isestaurantSettingLoading || isActivateLoading}
               onPress={handleOnPressActivate}
               theme="accent">
@@ -214,17 +264,7 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
           </Column>
         </Columns>
       </Box>
-      <BottomDrawer
-        isVisible={isDrawerVisible}
-        onClose={() => setDrawerVisible(false)}>
-        <DateTimePicker
-          minimumDate={minimumDate[drawer]}
-          value={times[drawer]}
-          mode="time"
-          display={Platform.OS === "ios" ? "spinner" : "default"}
-          onChange={handleDateTimeChange}
-        />
-      </BottomDrawer>
+      {renderTimePicker()}
     </Container>
   );
 };

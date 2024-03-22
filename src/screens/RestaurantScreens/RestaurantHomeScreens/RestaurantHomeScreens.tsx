@@ -5,7 +5,7 @@ import {
 import { useEffect, type Dispatch, type FC, type SetStateAction } from "react";
 import type { RootStackParamList } from "types/navigation.types";
 import { RestaurantDashboardScreen } from "./RestaurantDashboardScreen";
-import { RestaurantSettingsHeader } from "./RestaurantSettingsHeaderHeader";
+import { RestaurantSettingsHeader } from "./RestaurantSettingsHeader";
 import { RestaurantSettingsScreen } from "./RestaurantSettingsScreen";
 
 const { Navigator, Screen } = createNativeStackNavigator<RootStackParamList>();
