@@ -63,6 +63,7 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
         userID={userID}
         quantity={quantity}
         setQuantity={setQuantity}
+        selectedTime={[pickupStartTime, pickupEndTime]}
         setSelectedTime={setSelectedTime}
         meal={meal}
       />

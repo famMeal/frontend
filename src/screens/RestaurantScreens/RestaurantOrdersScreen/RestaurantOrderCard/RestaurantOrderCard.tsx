@@ -89,38 +89,3 @@ const RestaurantOrderCard: FC<Props> = ({
 };
 
 export { RestaurantOrderCard };
-
-// <Columns>
-// <Column columnWidth="fullWidth">
-
-//   <Typography weigth="semiBold">Pick up between:</Typography>
-//   <Typography>
-//     {formatTime(pickupStartTime)} and {formatTime(pickupEndTime)}
-//   </Typography>
-// </Column>
-// </Columns>
-// <Columns>
-// <Column columnWidth="fullWidth">
-//   <Typography weigth="semiBold">
-//     Quantity: <Typography>{quantity}</Typography>
-//   </Typography>
-// </Column>
-// </Columns>
-// <Columns>
-// <Column isPaddingless>
-//   <Typography weigth="semiBold">
-//     Subtotal: <Typography>{subtotal}</Typography>
-//   </Typography>
-// </Column>
-// </Columns>
-// <Columns>
-// <Column isPaddingless>
-//   <Typography weigth="semiBold">Ordered By:</Typography>
-//   <Typography>
-//     {firstName} {lastName}
-//   </Typography>
-// </Column>
-// <Column isPaddingless className="items-end">
-
-// </Column>
-// </Columns>

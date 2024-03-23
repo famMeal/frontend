@@ -84,13 +84,6 @@ const RestaurantMeals: FC<Props> = ({ route, navigation }) => {
 
   return (
     <Container>
-      <Typography
-        colour="accent"
-        className="text-center mt-4"
-        weigth="bold"
-        type="H3">
-        Meals
-      </Typography>
       <ScrollView>{renderMeals()}</ScrollView>
     </Container>
   );

@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useFocusEffect } from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { COLOURS } from "constants/colours";
-import type { Dispatch, FC, SetStateAction } from "react";
+import type { FC } from "react";
 import { useCallback, useState } from "react";
 import {
   BookOpenIcon,
@@ -23,12 +23,10 @@ const { Navigator, Screen } = createBottomTabNavigator<RootStackParamList>();
 
 type RestaurantStackProps = NativeStackScreenProps<
   RootStackParamList,
-  "RestaurantHomeScreens"
+  "Restaurants"
 >;
 
-interface Props extends RestaurantStackProps {
-  setActiveScreen: Dispatch<SetStateAction<string>>;
-}
+interface Props extends RestaurantStackProps {}
 
 const RestaurantScreens: FC<Props> = ({ navigation }) => {
   const [activeScreen, setActiveScreen] = useState("RestaurantHomeScreens");

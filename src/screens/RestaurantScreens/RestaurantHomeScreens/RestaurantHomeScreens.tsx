@@ -2,7 +2,10 @@ import {
   createNativeStackNavigator,
   type NativeStackScreenProps,
 } from "@react-navigation/native-stack";
+import { Button, Column, Columns, Typography } from "components";
 import { useEffect, type Dispatch, type FC, type SetStateAction } from "react";
+import { View } from "react-native";
+import { AdjustmentsHorizontalIcon } from "react-native-heroicons/solid";
 import type { RootStackParamList } from "types/navigation.types";
 import { RestaurantDashboardScreen } from "./RestaurantDashboardScreen";
 import { RestaurantSettingsHeader } from "./RestaurantSettingsHeader";
@@ -41,6 +44,28 @@ const RestaurantHomeScreens: FC<Props> = ({
         component={RestaurantDashboardScreen}
         initialParams={{ restaurantID }}
         options={{
+          headerBackground: () => {
+            return (
+              <Columns isMarginless className="bg-primary relative">
+                <View className=" absolute right-0">
+                  <Button>
+                    <AdjustmentsHorizontalIcon color="white" />
+                  </Button>
+                </View>
+                <Column
+                  columnWidth="fullWidth"
+                  justifyContent="center"
+                  alignItems="center">
+                  <Typography
+                    weigth="bold"
+                    type="H3"
+                    className="mt-4 text-white">
+                    Dashboard
+                  </Typography>
+                </Column>
+              </Columns>
+            );
+          },
           headerShown: false,
         }}
       />

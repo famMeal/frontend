@@ -12,6 +12,7 @@ import {
   Typography,
 } from "components";
 import { type FC } from "react";
+import { ScrollView } from "react-native";
 import type { RootStackParamList } from "types/navigation.types";
 import { formatCurrency } from "utilities/formatCurrency";
 import { parseCurrency } from "utilities/parseCurrency";
@@ -126,34 +127,44 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
 
   return (
     <Container>
-      <Typography
-        colour="accent"
-        weigth="bold"
-        type="H3"
-        className="text-center mt-4">
-        {data?.restaurant?.name} Dashboard
-      </Typography>
-      <Columns>
-        <Column columnWidth="fullWidth">{renderActiveMeal()}</Column>
-      </Columns>
-      <Columns>
-        <Column columnWidth="half">
-          <Button
-            onPress={OnPressNavigateToSettings}
-            isOutlined
-            theme="primary">
-            Settings
-          </Button>
-        </Column>
-        <Column columnWidth="half">
-          <Button
-            onPress={onPressNavigateToCreateMeal}
-            isOutlined
-            theme="accent">
-            Create meal
-          </Button>
-        </Column>
-      </Columns>
+      <ScrollView>
+        {renderActiveMeal()}
+        <Box>
+          <Columns direction="column" isMarginless>
+            <Column columnWidth="fullWidth">
+              <Typography weigth="bold">Settings</Typography>
+              <Typography type="S">
+                Update your restaurant information and payment details
+              </Typography>
+            </Column>
+            <Column columnWidth="fullWidth">
+              <Button
+                onPress={OnPressNavigateToSettings}
+                isOutlined
+                theme="primary">
+                View Settings
+              </Button>
+            </Column>
+          </Columns>
+        </Box>
+
+        <Box>
+          <Columns direction="column" isMarginless>
+            <Column columnWidth="fullWidth">
+              <Typography weigth="bold">Create Meal</Typography>
+              <Typography type="S">Add a meal to your batched meals</Typography>
+            </Column>
+            <Column columnWidth="fullWidth">
+              <Button
+                onPress={onPressNavigateToCreateMeal}
+                isOutlined
+                theme="accent">
+                Create
+              </Button>
+            </Column>
+          </Columns>
+        </Box>
+      </ScrollView>
     </Container>
   );
 };

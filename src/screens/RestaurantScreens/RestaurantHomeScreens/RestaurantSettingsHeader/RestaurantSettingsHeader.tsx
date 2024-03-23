@@ -67,13 +67,12 @@ const RestaurantSettingsHeader: FC<Props> = memo(({ restaurantID }) => {
           onPress={() =>
             navigate("RestaurantDashboardScreen", { restaurantID })
           }
-          theme="accent"
           isFullyRounded>
           <ArrowLeftCircleIcon color="white" size={30} />
         </Button>
       </View>
       <View className={logoutWrapper}>
-        <Button onPress={showAlert} theme="accent" isFullyRounded>
+        <Button onPress={showAlert} isFullyRounded>
           <ArrowLeftOnRectangleIcon color="white" size={30} />
         </Button>
       </View>

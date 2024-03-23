@@ -1,5 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { COLOURS } from "constants/colours";
 import type { FC } from "react";
 import { useCallback, useMemo, useState } from "react";
@@ -11,9 +12,16 @@ import { clientRoutes } from "./routes";
 
 const { Navigator, Screen } = createBottomTabNavigator<RootStackParamList>();
 
-const ClientScreens: FC = () => {
+type RestaurantStackProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Clients"
+>;
+
+interface Props extends RestaurantStackProps {}
+
+const ClientScreens: FC<Props> = ({ navigation }) => {
   const [activeScreen, setActiveScreen] = useState("");
-  const navigation = useNavigation();
+
   const clientScreens = useMemo(() => clientRoutes(setActiveScreen), []);
   const { data } = useCurrentUserQuery();
   const { id } = data?.currentUser ?? {};

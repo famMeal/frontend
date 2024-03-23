@@ -10,7 +10,7 @@ import {
 import { COLOURS } from "constants/colours";
 import type { Dispatch, FC, SetStateAction } from "react";
 import { View } from "react-native";
-import { SelectList } from "react-native-dropdown-select-list";
+import { Dropdown } from "react-native-element-dropdown";
 import { ChevronDownIcon, TrashIcon } from "react-native-heroicons/solid";
 import type { MealSplinter } from "screens/ClientScreens/MealsScreen/MealScreen/useGetMealQuery";
 import type { ConfirmationNavigationProps } from "types/navigation.types";
@@ -22,7 +22,14 @@ interface Props {
   setQuantity: Dispatch<React.SetStateAction<number>>;
   meal?: Omit<MealSplinter, "restaurant">;
   setSelectedTime: Dispatch<SetStateAction<string[]>>;
+  selectedTime: string[];
 }
+
+const formatForDropdown = (timeIntervals: string[]): { value: string }[] => {
+  return timeIntervals.map(value => ({
+    value,
+  }));
+};
 
 const RestaurantMealCard: FC<Props> = ({
   userID,
@@ -30,15 +37,18 @@ const RestaurantMealCard: FC<Props> = ({
   setQuantity,
   meal,
   setSelectedTime,
+  selectedTime,
 }) => {
+  const [selectedStartTime, selectedEndTime] = selectedTime;
   const { name, description, pickupEndTime, pickupStartTime } = meal ?? {};
 
   const { navigate } = useNavigation<ConfirmationNavigationProps>();
 
   const timeIntervals = createTimeArray(pickupStartTime, pickupEndTime);
 
-  const handleSetSelectedTime = (time: string) => {
-    const [selectedPickupStartTime, selectedPickupEndTime] = time?.split("and");
+  const handleSetSelectedTime = (time: { value: string }) => {
+    const [selectedPickupStartTime, selectedPickupEndTime] =
+      time.value.split("&");
     if (selectedPickupEndTime && selectedPickupStartTime) {
       setSelectedTime([
         selectedPickupStartTime.trim(),
@@ -71,38 +81,56 @@ const RestaurantMealCard: FC<Props> = ({
           <Typography type="S" weigth="bold" colour="accent">
             Pickup window
           </Typography>
-          <SelectList
-            arrowicon={<ChevronDownIcon size={22} color={COLOURS.accent} />}
-            inputStyles={{
-              color: COLOURS.accent,
-              width: "90%",
-            }}
-            dropdownStyles={{
-              backgroundColor: COLOURS.accent,
-              borderColor: COLOURS.accent,
-            }}
-            dropdownTextStyles={{
-              color: COLOURS.white,
-            }}
-            boxStyles={{
-              borderRadius: 8,
-              paddingVertical: 16,
-              paddingHorizontal: 8,
-              borderColor: COLOURS.accent,
-              borderWidth: 2,
-            }}
+          <Dropdown<{ value: string }>
+            renderRightIcon={() => <ChevronDownIcon color="white" />}
+            value={`${selectedStartTime} & ${selectedEndTime}`}
+            valueField="value"
+            labelField="value"
             placeholder="Select time"
-            fontFamily="Khula-Bold"
-            search={false}
-            data={formatTimeIntervals(timeIntervals)}
-            setSelected={handleSetSelectedTime}
+            data={formatForDropdown(formatTimeIntervals(timeIntervals))}
+            style={[
+              {
+                width: "100%",
+                backgroundColor: COLOURS.accent,
+                borderColor: COLOURS.accent,
+                borderRadius: 8,
+                borderWidth: 2,
+                paddingLeft: 8,
+                paddingRight: 8,
+              },
+            ]}
+            placeholderStyle={{
+              color: COLOURS.white,
+              fontFamily: "Khula-Bold",
+              textAlign: "center",
+            }}
+            selectedTextStyle={{
+              color: COLOURS.white,
+              fontFamily: "Khula-Bold",
+              width: "90%",
+              fontSize: 14,
+            }}
+            onChange={handleSetSelectedTime}
+            renderItem={item => (
+              <Columns isMarginless className="bg-accent border-b border-white">
+                <Column columnWidth="fullWidth">
+                  <Typography
+                    isMarginless
+                    weigth="bold"
+                    className="text-white p-1"
+                    type="S">
+                    {item.value}
+                  </Typography>
+                </Column>
+              </Columns>
+            )}
           />
         </Column>
         <Column
           columnWidth="oneThird"
           alignItems="center"
           justifyContent="center">
-          <Typography className="mb-4" type="S" weigth="bold" colour="accent">
+          <Typography className="mb-2" type="S" weigth="bold" colour="accent">
             Quantity
           </Typography>
           <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
