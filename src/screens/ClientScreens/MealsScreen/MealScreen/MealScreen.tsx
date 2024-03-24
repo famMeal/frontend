@@ -100,7 +100,7 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
   return (
     <Container className="flex flex-col justify-between">
       <View className="h-36">{renderMap()}</View>
-      <ScrollView className="px-4 pt-4">{renderMeal()}</ScrollView>
+      <ScrollView className="mt-4">{renderMeal()}</ScrollView>
       <View className="mx-4">
         <Box>{renderCTA()}</Box>
       </View>
