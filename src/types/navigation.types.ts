@@ -7,6 +7,9 @@ export type RootStackParamList = {
   Login: undefined;
   SignUp: undefined;
   EmailSignUp: undefined;
+  VerifyAccount: {
+    email: User["email"];
+  };
   TabNavigator: undefined;
   Restaurants: undefined;
   RestaurantOrdersScreen: {
@@ -98,4 +101,9 @@ export type SignUpNavigationProps = NativeStackNavigationProp<
 export type EmailSignUpNavigationProps = NativeStackNavigationProp<
   RootStackParamList,
   "SignUp"
+>;
+
+export type VerifyAccountNavigationProps = NativeStackNavigationProp<
+  RootStackParamList,
+  "VerifyAccount"
 >;

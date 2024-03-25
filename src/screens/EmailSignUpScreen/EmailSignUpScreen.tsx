@@ -13,11 +13,13 @@ import { useState, type FC } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { EyeIcon, EyeSlashIcon } from "react-native-heroicons/solid";
 import type { SignUpNavigationProps } from "types/navigation.types";
+import { useSignUpMutation } from "./useSignUpMutation";
 
 const EmailSignUpScreen: FC = () => {
   const { navigate } = useNavigation<SignUpNavigationProps>();
   const [email, setEmail] = useState("shahynkamali@gmail.com");
   const [password, setPassword] = useState("password");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("password");
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const toggleSecureTextEntry = () =>
@@ -31,6 +33,25 @@ const EmailSignUpScreen: FC = () => {
     );
 
   const handleOnPressLogin = () => navigate("Login");
+
+  const [signUp, { loading }] = useSignUpMutation({
+    onCompleted: () => {
+      navigate("VerifyAccount", { email });
+    },
+    onError: error => {
+      console.error("Sign up error:", error.message);
+    },
+  });
+  const handleOnPresSignUp = () => {
+    signUp({
+      variables: {
+        email,
+        password,
+        passwordConfirmation,
+      },
+    });
+  };
+
   return (
     <Container>
       <Box>
@@ -76,8 +97,8 @@ const EmailSignUpScreen: FC = () => {
             <Input
               className="relative"
               secureTextEntry={secureTextEntry}
-              onChangeText={newText => setPassword(newText)}
-              value={password}
+              onChangeText={newText => setPasswordConfirmation(newText)}
+              value={passwordConfirmation}
               theme="accent"
             />
             <View className="absolute right-2 top-11">
@@ -91,7 +112,9 @@ const EmailSignUpScreen: FC = () => {
         </Columns>
         <Columns className="mt-4">
           <Column columnWidth="fullWidth">
-            <Button onPress={() => console.log("sign up")}>Sign up</Button>
+            <Button isLoading={loading} onPress={handleOnPresSignUp}>
+              Sign up
+            </Button>
           </Column>
         </Columns>
         <Columns className="mt-8">

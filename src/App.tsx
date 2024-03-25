@@ -10,6 +10,7 @@ import {
   RestaurantScreens,
   SignUpScreen,
   SplashScreen,
+  VerifyAccountScreen,
 } from "screens";
 import type { RootStackParamList } from "types/navigation.types";
 import { client } from "./client";
@@ -65,6 +66,21 @@ const App: FC = () => {
           <Screen
             name="EmailSignUp"
             component={EmailSignUpScreen}
+            options={{
+              headerBackground: () => null,
+              tabBarStyle: {
+                display: "none",
+              },
+              headerTitleStyle: {
+                color: COLOURS.white,
+                fontFamily: "Khula-Bold",
+                fontSize: 18,
+              },
+            }}
+          />
+          <Screen
+            name="VerifyAccount"
+            component={VerifyAccountScreen}
             options={{
               headerBackground: () => null,
               tabBarStyle: {

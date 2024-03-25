@@ -1,0 +1,1 @@
+export { VerifyAccountScreen } from "./VerifyAccountScreen";

@@ -8,3 +8,4 @@ export { RestaurantScreens } from "./RestaurantScreens";
 export { SignUpScreen } from "./SignupScreen";
 export { EmailSignUpScreen } from "./EmailSignUpScreen";
 export { SplashScreen } from "./SplashScreen";
+export { VerifyAccountScreen } from "./VerifyAccountScreen";
