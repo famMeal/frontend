@@ -20,8 +20,6 @@ const clientUri = __DEV__
     : DEVELOPMENT_URI_ANDROID_BACKEND
   : PRODUCTION_URI_BACKEND;
 
-const link = new HttpLink({ uri: clientUri });
-
 const cache = new InMemoryCache({
   typePolicies: {
     Restaurant: {
@@ -54,6 +52,6 @@ const authLink = setContext(async (_, { headers }) => {
 });
 
 export const client = new ApolloClient({
-  link: ApolloLink.from([authLink, link]),
+  link: ApolloLink.from([authLink, new HttpLink({ uri: clientUri })]),
   cache,
 });

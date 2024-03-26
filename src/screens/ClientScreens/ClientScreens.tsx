@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useFocusEffect } from "@react-navigation/native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { COLOURS } from "constants/colours";
 import type { FC } from "react";
 import { useCallback, useMemo, useState } from "react";
