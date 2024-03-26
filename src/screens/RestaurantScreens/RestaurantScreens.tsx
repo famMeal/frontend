@@ -4,15 +4,9 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { COLOURS } from "constants/colours";
 import type { FC } from "react";
 import { useCallback, useState } from "react";
-import {
-  BookOpenIcon,
-  HomeIcon,
-  PlayIcon,
-  PlusCircleIcon,
-} from "react-native-heroicons/solid";
+import { BookOpenIcon, HomeIcon, PlayIcon } from "react-native-heroicons/solid";
 import { useCurrentUserQuery } from "shared";
 import type { RootStackParamList } from "types/navigation.types";
-import { RestaurantCreateMealScreen } from "./RestaurantCreateMealScreen";
 import { RestaurantHomeScreens } from "./RestaurantHomeScreens";
 import { RestaurantMealsScreens } from "./RestaurantMealsScreens";
 import { RestaurantOrdersScreen } from "./RestaurantOrdersScreen";
@@ -118,35 +112,7 @@ const RestaurantScreens: FC<Props> = ({ navigation }) => {
           />
         )}
       </Screen>
-      <Screen
-        options={{
-          tabBarLabel: "Create",
-          headerShown: false,
-          headerTitleStyle: {
-            color: COLOURS.white,
-            fontFamily: "Khula-Bold",
-            fontSize: 18,
-          },
-          tabBarIcon: () => (
-            <PlusCircleIcon
-              size={18}
-              color={
-                activeScreen === "RestaurantCreateMealScreen"
-                  ? COLOURS.primary
-                  : COLOURS.accent
-              }
-            />
-          ),
-        }}
-        name="RestaurantCreateMealScreen"
-        initialParams={{ restaurantID: data?.restaurant?.id }}>
-        {props => (
-          <RestaurantCreateMealScreen
-            {...props}
-            setActiveScreen={setActiveScreen}
-          />
-        )}
-      </Screen>
+
       <Screen
         options={{
           tabBarLabel: "Active Orders",

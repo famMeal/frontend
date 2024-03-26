@@ -11,11 +11,12 @@ import {
   Container,
   Typography,
 } from "components";
-import { type FC } from "react";
+import { useState, type FC } from "react";
 import { ScrollView } from "react-native";
 import type { RootStackParamList } from "types/navigation.types";
 import { formatCurrency } from "utilities/formatCurrency";
 import { parseCurrency } from "utilities/parseCurrency";
+import { RestaurantCreateMealModal } from "./RestaurantCreateMealModal/RestaurantCreateMealModal";
 import { RestaurantDashboardMealCard } from "./RestaurantDashboardMealCard";
 import { useRestaurantQuery } from "./useRestaurantQuery";
 
@@ -33,6 +34,7 @@ interface Props extends RestaurantStackProps {}
 
 const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
   const { navigate } = useNavigation<RestaurantMealsNavigationProp>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { params } = route ?? {};
   const { restaurantID } = params;
 
@@ -42,8 +44,7 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
   const onPressNavigateToMeals = () =>
     navigate("RestaurantMealsScreens", { restaurantID });
 
-  const onPressNavigateToCreateMeal = () =>
-    navigate("RestaurantCreateMealScreen", { restaurantID });
+  const onPressNavigateToCreateMeal = () => setIsModalOpen(true);
 
   const OnPressNavigateToSettings = () =>
     navigate("RestaurantSettingsScreen", { restaurantID });
@@ -165,6 +166,11 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
           </Columns>
         </Box>
       </ScrollView>
+      <RestaurantCreateMealModal
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        restaurantID={restaurantID}
+      />
     </Container>
   );
 };

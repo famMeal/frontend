@@ -15,9 +15,6 @@ export type RootStackParamList = {
   RestaurantOrdersScreen: {
     restaurantID: Restaurant["id"];
   };
-  RestaurantCreateMealScreen: {
-    restaurantID: Restaurant["id"];
-  };
   RestaurantDashboardScreen: {
     restaurantID: Restaurant["id"];
   };
