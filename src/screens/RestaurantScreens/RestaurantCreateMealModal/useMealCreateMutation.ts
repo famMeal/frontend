@@ -52,6 +52,6 @@ interface Variables {
 type Options = MutationHookOptions<Data, Variables>;
 
 const useMealCreateMutation = (options?: Options) =>
-  useMutation(MEAL_CREATE, options);
+  useMutation<Data, Variables>(MEAL_CREATE, options);
 
 export { useMealCreateMutation };

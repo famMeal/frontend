@@ -3,14 +3,16 @@ import { Button, Typography } from "components";
 import { memo, type FC } from "react";
 import { View } from "react-native";
 import { ArrowLeftCircleIcon } from "react-native-heroicons/solid";
+import type { User } from "schema";
 import type { MainNavigationProps } from "types/navigation.types";
 import { getCSS } from "./MainHeader.styles";
 
 interface Props {
   title: string;
+  userID: User["id"];
 }
 
-const MainHeader: FC<Props> = memo(({ title }) => {
+const MainHeader: FC<Props> = memo(({ title, userID }) => {
   const { container, wrapper } = getCSS();
   const navigation = useNavigation<MainNavigationProps>();
 
@@ -18,7 +20,7 @@ const MainHeader: FC<Props> = memo(({ title }) => {
     <View className={container}>
       <View className={wrapper}>
         <Button
-          onPress={() => navigation.navigate("Meals")}
+          onPress={() => navigation.navigate("Meals", { userID })}
           theme="accent"
           isFullyRounded>
           <ArrowLeftCircleIcon color="white" size={30} />

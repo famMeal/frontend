@@ -7,8 +7,9 @@ import {
   Container,
   Typography,
 } from "components";
-import { type FC } from "react";
+import { useState, type FC } from "react";
 import { ScrollView } from "react-native";
+import { RestaurantCreateMealModal } from "screens/RestaurantScreens/RestaurantCreateMealModal";
 import type { RootStackParamList } from "types/navigation.types";
 import { createList } from "utilities/createList";
 import {
@@ -26,6 +27,7 @@ type RestaurantMealsStackProps = NativeStackScreenProps<
 type Props = RestaurantMealsStackProps;
 
 const RestaurantMeals: FC<Props> = ({ route }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { params } = route ?? {};
   const { restaurantID } = params;
 
@@ -59,13 +61,18 @@ const RestaurantMeals: FC<Props> = ({ route }) => {
   const renderNoMealsCTA = () => (
     <Box>
       <Columns direction="column">
-        <Column columnWidth="fullWidth" alignItems="center">
-          <Typography weigth="bold" type="P" className="text-center mb-4">
-            You have no meals created yet
+        <Column columnWidth="fullWidth">
+          <Typography weigth="bold" type="H3" className="mb-4">
+            Meals
+          </Typography>
+          <Typography type="S">
+            Create your first meal and starting making money
           </Typography>
         </Column>
         <Column columnWidth="fullWidth">
-          <Button>Create a new meal</Button>
+          <Button className="mt-4" onPress={() => setIsModalOpen(true)}>
+            Create a new meal
+          </Button>
         </Column>
       </Columns>
     </Box>
@@ -79,6 +86,11 @@ const RestaurantMeals: FC<Props> = ({ route }) => {
   return (
     <Container>
       <ScrollView>{renderMeals()}</ScrollView>
+      <RestaurantCreateMealModal
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        restaurantID={restaurantID}
+      />
     </Container>
   );
 };

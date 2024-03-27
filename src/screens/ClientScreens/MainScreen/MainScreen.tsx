@@ -45,7 +45,7 @@ const MainScreen: FC<Props> = ({ route, setActiveScreen }) => {
         options={({ route }) => ({
           headerShown: false,
           headerBackground: () => (
-            <MainHeader title={route?.params?.restaurantName} />
+            <MainHeader userID={userID} title={route?.params?.restaurantName} />
           ),
         })}
       />

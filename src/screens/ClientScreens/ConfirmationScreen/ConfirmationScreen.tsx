@@ -31,7 +31,7 @@ const ConfirmationScreen: FC<Props> = ({
 
   const onPressGoBack = () => navigation.goBack();
 
-  const onPressNavigateToMeals = () => navigation.navigate("Meals");
+  const onPressNavigateToMeals = () => navigation.navigate("Meals", { userID });
 
   const onCompleted = () => navigation.navigate("Orders", { userID });
 
