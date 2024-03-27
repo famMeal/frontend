@@ -18,10 +18,10 @@ import {
   ArrowRightCircleIcon,
   CheckCircleIcon,
 } from "react-native-heroicons/solid";
+import { RestaurantCreateMealModal } from "screens/RestaurantScreens/RestaurantCreateMealModal";
 import type { RootStackParamList } from "types/navigation.types";
 import { formatCurrency } from "utilities/formatCurrency";
 import { parseCurrency } from "utilities/parseCurrency";
-import { RestaurantCreateMealModal } from "./RestaurantCreateMealModal/RestaurantCreateMealModal";
 import { RestaurantDashboardMealCard } from "./RestaurantDashboardMealCard";
 import { useRestaurantQuery } from "./useRestaurantQuery";
 
