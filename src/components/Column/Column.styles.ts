@@ -1,5 +1,10 @@
 import type { DimensionValue } from "react-native";
-import classnames, { flexBox, margin } from "tailwindcss-classnames";
+import classnames, {
+  display,
+  flexBox,
+  flexDirection,
+  margin,
+} from "tailwindcss-classnames";
 import type { ColumnProps } from "./Column";
 
 export const getCSS = ({
@@ -8,6 +13,7 @@ export const getCSS = ({
   columnWidth = "half",
   isLastColumn,
   parentWidth = 0,
+  direction,
 }: ColumnProps) => {
   const marginRight = 16;
   let widthFraction;
@@ -62,6 +68,8 @@ export const getCSS = ({
   const marginClass = isLastColumn ? margin("mr-0") : margin("mr-4");
 
   const columnCSS = classnames(
+    display("flex"),
+    flexDirection(direction === "column" ? "flex-col" : "flex-row"),
     alignClass[alignItems],
     justifyClass[justifyContent],
     marginClass,

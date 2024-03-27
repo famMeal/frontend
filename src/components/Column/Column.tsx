@@ -29,6 +29,7 @@ export interface ColumnProps {
   isLastColumn?: boolean;
   columnWidth?: ColumnWidth;
   parentWidth?: number;
+  direction: "row" | "column";
 }
 type Props = ViewProps & Partial<ColumnProps>;
 
@@ -40,6 +41,7 @@ const Column: FC<Props> = ({
   isLastColumn = false,
   columnWidth = "half",
   parentWidth,
+  direction = "column",
   ...rest
 }) => {
   const { columnCSS, width } = useMemo(
@@ -51,6 +53,7 @@ const Column: FC<Props> = ({
         isLastColumn,
         columnWidth,
         parentWidth,
+        direction,
       }),
     [
       alignItems,

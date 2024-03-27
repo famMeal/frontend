@@ -25,8 +25,7 @@ type RestaurantMealsStackProps = NativeStackScreenProps<
 
 type Props = RestaurantMealsStackProps;
 
-const RestaurantMeals: FC<Props> = ({ route, navigation }) => {
-  const { navigate } = navigation;
+const RestaurantMeals: FC<Props> = ({ route }) => {
   const { params } = route ?? {};
   const { restaurantID } = params;
 
@@ -57,9 +56,6 @@ const RestaurantMeals: FC<Props> = ({ route, navigation }) => {
   const renderSkeletons = () =>
     createList(3).map(index => <SkeletonRestaurantMealCard key={index} />);
 
-  const onPressNavigateToCreateMeal = () =>
-    navigate("RestaurantCreateMealScreen", { restaurantID });
-
   const renderNoMealsCTA = () => (
     <Box>
       <Columns direction="column">
@@ -69,9 +65,7 @@ const RestaurantMeals: FC<Props> = ({ route, navigation }) => {
           </Typography>
         </Column>
         <Column columnWidth="fullWidth">
-          <Button onPress={onPressNavigateToCreateMeal}>
-            Create a new meal
-          </Button>
+          <Button>Create a new meal</Button>
         </Column>
       </Columns>
     </Box>

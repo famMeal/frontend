@@ -2,8 +2,10 @@ import {
   createNativeStackNavigator,
   type NativeStackScreenProps,
 } from "@react-navigation/native-stack";
+import { Header } from "components/Header";
 import { useEffect, type Dispatch, type FC, type SetStateAction } from "react";
 import type { RootStackParamList } from "types/navigation.types";
+
 import { RestaurantDashboardScreen } from "./RestaurantDashboardScreen";
 import { RestaurantSettingsHeader } from "./RestaurantSettingsHeader";
 import { RestaurantSettingsScreen } from "./RestaurantSettingsScreen";
@@ -42,6 +44,7 @@ const RestaurantHomeScreens: FC<Props> = ({
         initialParams={{ restaurantID }}
         options={{
           headerShown: false,
+          headerBackground: () => <Header title="Dashboard" />,
         }}
       />
       <Screen

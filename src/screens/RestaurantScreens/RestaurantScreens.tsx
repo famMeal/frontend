@@ -68,7 +68,7 @@ const RestaurantScreens: FC<Props> = ({ navigation }) => {
             <HomeIcon
               size={18}
               color={
-                activeScreen === "Restaurants"
+                activeScreen === "RestaurantHomeScreens"
                   ? COLOURS.primary
                   : COLOURS.accent
               }

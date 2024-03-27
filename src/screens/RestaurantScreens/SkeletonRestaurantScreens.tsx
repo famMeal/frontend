@@ -1,10 +1,11 @@
 import { Box, Column, Columns, Container, Skeleton } from "components";
 import type { FC } from "react";
+import { createList } from "utilities/createList";
 
 const SkeletonRestaurantScreens: FC = () => {
-  return (
-    <Container>
-      <Box>
+  const renderSkeletons = () =>
+    createList(8).map((num: number) => (
+      <Box key={num}>
         <Columns>
           <Column columnWidth="fullWidth">
             <Box isPaddingLess>
@@ -26,30 +27,8 @@ const SkeletonRestaurantScreens: FC = () => {
           </Column>
         </Columns>
       </Box>
-      <Box>
-        <Columns>
-          <Column columnWidth="fullWidth">
-            <Box isPaddingLess>
-              <Skeleton size="large" width="full" />
-              <Skeleton size="large" width="full" />
-            </Box>
-          </Column>
-        </Columns>
-        <Columns isMarginless>
-          <Column>
-            <Box isPaddingLess>
-              <Skeleton size="large" width="full" />
-            </Box>
-          </Column>
-          <Column alignItems="flex-end">
-            <Box isPaddingLess>
-              <Skeleton size="large" width="full" />
-            </Box>
-          </Column>
-        </Columns>
-      </Box>
-    </Container>
-  );
+    ));
+  return <Container>{renderSkeletons()}</Container>;
 };
 
 export { SkeletonRestaurantScreens };

@@ -2,16 +2,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Button, Typography } from "components";
-import { memo, type FC } from "react";
-import { Alert, View } from "react-native";
-import {
-  ArrowLeftCircleIcon,
-  ArrowLeftOnRectangleIcon,
-} from "react-native-heroicons/solid";
+import { Button, Header } from "components";
+import { type FC } from "react";
+import { Alert } from "react-native";
+import { ArrowLeftOnRectangleIcon } from "react-native-heroicons/solid";
 import type { Restaurant } from "schema";
 import type { RootStackParamList } from "types/navigation.types";
-import { getCSS } from "./RestaurantSettingsHeader.styles";
 import { useLogoutMutation } from "./useLogoutMutation";
 
 interface Props {
@@ -23,8 +19,7 @@ export type MainNavigationProps = NativeStackNavigationProp<
   "RestaurantDashboardScreen"
 >;
 
-const RestaurantSettingsHeader: FC<Props> = memo(({ restaurantID }) => {
-  const { container, wrapper, logoutWrapper } = getCSS();
+const RestaurantSettingsHeader: FC<Props> = ({ restaurantID }) => {
   const navigation = useNavigation<MainNavigationProps>();
   const { navigate } = navigation;
 
@@ -60,26 +55,16 @@ const RestaurantSettingsHeader: FC<Props> = memo(({ restaurantID }) => {
     ]);
   };
 
+  const onBackButtonPress = () =>
+    navigate("RestaurantDashboardScreen", { restaurantID });
+
   return (
-    <View className={container}>
-      <View className={wrapper}>
-        <Button
-          onPress={() =>
-            navigate("RestaurantDashboardScreen", { restaurantID })
-          }
-          isFullyRounded>
-          <ArrowLeftCircleIcon color="white" size={30} />
-        </Button>
-      </View>
-      <View className={logoutWrapper}>
-        <Button onPress={showAlert} isFullyRounded>
-          <ArrowLeftOnRectangleIcon color="white" size={30} />
-        </Button>
-      </View>
-      <Typography type="H3" weigth="bold" className="text-white">
-        Settings
-      </Typography>
-    </View>
+    <Header title="Settings" onBackButtonPress={onBackButtonPress}>
+      <Button theme="accent" isClean onPress={showAlert} isFullyRounded>
+        <ArrowLeftOnRectangleIcon color="white" size={30} />
+      </Button>
+    </Header>
   );
-});
+};
+
 export { RestaurantSettingsHeader };
