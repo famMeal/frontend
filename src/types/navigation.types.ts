@@ -58,6 +58,7 @@ export type RootStackParamList = {
   Orders: {
     userID: User["id"];
   };
+  PreviousOrders: undefined;
 };
 
 export type MainNavigationProps = NativeStackNavigationProp<

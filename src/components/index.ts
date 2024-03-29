@@ -13,6 +13,6 @@ export { Input } from "./Input";
 export { Modal } from "./Modal";
 export { QuantitySelector } from "./QuantitySelector";
 export { Skeleton } from "./Skeleton";
-export { SlideButton } from "./SlideButton";
 export { TimePicker } from "./TimePicker";
 export { Typography } from "./Typography";
+

@@ -8,14 +8,16 @@ import {
   Chip,
   Column,
   Columns,
-  SlideButton,
   Typography,
 } from "components";
+import { COLOURS } from "constants/colours";
 import { STATUS } from "constants/status";
 import { type FC } from "react";
-import { Linking } from "react-native";
-import type { OrderData } from "screens/ClientScreens/OrdersScreen/useGetUserOrdersQuery";
+import { ActivityIndicator, Linking, StyleSheet, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import SlideButton from "rn-slide-button";
 import { formatTime } from "utilities/formatTime";
+import type { OrderData } from "../ActiveOrderTab/useGetUserOrdersQuery";
 import { useUpdateOrderStatus } from "./useUpdateOrderStatusMutation";
 
 interface Props {
@@ -37,7 +39,7 @@ const OrderCard: FC<Props> = ({ order }) => {
   const { latitude, longitude, addressLine1, postalCode, city } =
     restaurant ?? {};
 
-  const [updateStatus] = useUpdateOrderStatus();
+  const [updateStatus, { loading }] = useUpdateOrderStatus();
 
   const chipStatus = status === STATUS.PICKED_UP ? "success" : "primary";
 
@@ -68,6 +70,44 @@ const OrderCard: FC<Props> = ({ order }) => {
       { enableHighAccuracy: true },
     );
   };
+
+  <ActivityIndicator />;
+  const renderPickupCTA = () =>
+    status !== STATUS.PICKED_UP ? (
+      <>
+        <Columns>
+          <Column columnWidth="fullWidth">
+            <Button onPress={handleOpenGoogleMaps} isOutlined>
+              Directions
+            </Button>
+          </Column>
+        </Columns>
+
+        <GestureHandlerRootView style={{ position: "relative" }}>
+          <SlideButton
+            animation
+            onReachedToEnd={handleOnSlideComplete}
+            padding={0}
+            title="Slide to pickup"
+            containerStyle={{ backgroundColor: COLOURS.accent }}
+            underlayStyle={{ backgroundColor: COLOURS.primary }}
+            titleStyle={{ fontWeight: 700, fontFamily: "Khula-Bold" }}
+            disabled={loading}
+          />
+          {loading && (
+            <View
+              style={{
+                ...StyleSheet.absoluteFillObject,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "rgba(255, 255, 255, 0.7)",
+              }}>
+              <ActivityIndicator size="large" color={COLOURS.primary} />
+            </View>
+          )}
+        </GestureHandlerRootView>
+      </>
+    ) : null;
 
   return (
     <Box key={id}>
@@ -125,23 +165,7 @@ const OrderCard: FC<Props> = ({ order }) => {
               </Typography>
             </Column>
           </Columns>
-          <Columns>
-            <Column columnWidth="fullWidth">
-              <Button onPress={handleOpenGoogleMaps} isOutlined>
-                Directions
-              </Button>
-            </Column>
-          </Columns>
-          <Columns>
-            <Column columnWidth="fullWidth">
-              <SlideButton
-                completed={status === STATUS.PICKED_UP}
-                onSlideComplete={handleOnSlideComplete}
-                onCompletedText="Picked up!">
-                Slide to confirm pickup
-              </SlideButton>
-            </Column>
-          </Columns>
+          {renderPickupCTA()}
         </AccordionContent>
       </Accordion>
     </Box>

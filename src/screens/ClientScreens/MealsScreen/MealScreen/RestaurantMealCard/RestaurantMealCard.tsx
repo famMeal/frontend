@@ -62,6 +62,21 @@ const RestaurantMealCard: FC<Props> = ({
     navigate("Meals", { userID });
   };
 
+  if (!meal) {
+    return (
+      <Box>
+        <Typography>No meal in basket</Typography>
+        <Columns>
+          <Column>
+            <Button onPress={() => navigate("Meals", { userID })}>
+              Go Back
+            </Button>
+          </Column>
+        </Columns>
+      </Box>
+    );
+  }
+
   return (
     <Box className="relative">
       <View className="absolute right-4 top-4 z-10">

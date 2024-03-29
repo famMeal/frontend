@@ -4,7 +4,7 @@ import { type FC } from "react";
 const SkeletonOrderCard: FC = () => {
   return (
     <Box>
-      <Columns isMarginless>
+      <Columns>
         <Column columnWidth="fullWidth">
           <Box isPaddingLess>
             <Skeleton size="large" width="full" />

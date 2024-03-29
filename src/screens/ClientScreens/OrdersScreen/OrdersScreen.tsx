@@ -1,18 +1,18 @@
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Column, Columns, Container } from "components";
+import { COLOURS } from "constants/colours";
 import { useEffect, type Dispatch, type FC, type SetStateAction } from "react";
-import { ScrollView } from "react-native";
 import type { RootStackParamList } from "types/navigation.types";
-import { createList } from "utilities/createList";
-import { OrderCard, SkeletonOrderCard } from "./OrderCard";
-import type { OrderData } from "./useGetUserOrdersQuery";
-import { useGetUserOrdersQuery } from "./useGetUserOrdersQuery";
+import { ActiveOrderTab } from "./ActiveOrderTab";
+import { PreviousOrdersTab } from "./PreviousOrdersTab";
 
 type OrderStackProps = NativeStackScreenProps<RootStackParamList, "Orders">;
 
 interface Props extends OrderStackProps {
   setActiveScreen: Dispatch<SetStateAction<string>>;
 }
+
+const { Navigator, Screen } = createMaterialTopTabNavigator();
 
 const OrdersScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
   const { userID } = route?.params ?? {};
@@ -24,36 +24,35 @@ const OrdersScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
     return unsubscribe;
   }, [navigation, setActiveScreen]);
 
-  const { data, loading } = useGetUserOrdersQuery({
-    skip: !userID,
-    variables: {
-      id: userID,
-    },
-  });
-
-  const { orders } = data?.user ?? {};
-
-  const renderOrder = (order: OrderData) => (
-    <OrderCard key={order.id} order={order} />
-  );
-
-  const renderOrders = () => orders?.map(renderOrder);
-
-  const renderSkeleton = (num: number) => <SkeletonOrderCard key={num} />;
-
-  const renderOrderSkeletons = () => createList(3).map(renderSkeleton);
-
-  const renderContent = () =>
-    loading ? renderOrderSkeletons() : renderOrders();
-
   return (
-    <Container>
-      <Columns>
-        <Column columnWidth="fullWidth">
-          <ScrollView>{renderContent()}</ScrollView>
-        </Column>
-      </Columns>
-    </Container>
+    <Navigator>
+      <Screen
+        options={{
+          tabBarIndicatorStyle: {
+            backgroundColor: COLOURS.primary,
+          },
+          tabBarLabelStyle: {
+            fontFamily: "Khula-Bold",
+            fontSize: 14,
+          },
+        }}
+        name="Active">
+        {props => <ActiveOrderTab {...props} userID={userID} />}
+      </Screen>
+      <Screen
+        options={{
+          tabBarIndicatorStyle: {
+            backgroundColor: COLOURS.primary,
+          },
+          tabBarLabelStyle: {
+            fontFamily: "Khula-Bold",
+            fontSize: 14,
+          },
+        }}
+        name="Previous">
+        {props => <PreviousOrdersTab {...props} userID={userID} />}
+      </Screen>
+    </Navigator>
   );
 };
 

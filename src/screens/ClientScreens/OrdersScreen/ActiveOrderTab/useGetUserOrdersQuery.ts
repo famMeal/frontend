@@ -9,6 +9,7 @@ export const GET_USER_0RDERS_QUERY = gql`
       __typename
       orders {
         __typename
+        createdAt
         id
         pickupEndTime
         pickupStartTime
@@ -46,6 +47,7 @@ type OrderSplinter = Pick<
   | "status"
   | "quantity"
   | "total"
+  | "createdAt"
 >;
 
 export interface OrderData extends OrderSplinter {
@@ -80,4 +82,4 @@ type Options = QueryHookOptions<Data, Variables>;
 const useGetUserOrdersQuery = (options?: Options) =>
   useQuery<Data, Variables>(GET_USER_0RDERS_QUERY, options);
 
-export { useGetUserOrdersQuery };
+export { useGetUserOrdersQuery, type Data as UserOrderQueryData };
