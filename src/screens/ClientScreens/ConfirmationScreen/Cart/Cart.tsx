@@ -66,22 +66,18 @@ const Cart: FC<Props> = ({
   return (
     <Container className="flex flex-col justify-between">
       <ScrollView>
-        <Columns isMarginless className="px-4 mt-8">
+        <Columns isMarginless>
           <Column
             columnWidth="fullWidth"
             justifyContent="center"
             alignItems="center">
-            <Typography
-              colour="accent"
-              type="H3"
-              weigth="bold"
-              className="text-center mt-4">
-              Pick up Location
-            </Typography>
             <Box>
+              <Typography type="H3" weigth="bold" className="mt-4">
+                Pick up Location
+              </Typography>
               <Columns isMarginless>
                 <Column>
-                  <Typography type="S" isMarginless weigth="bold">
+                  <Typography isMarginless weigth="bold">
                     {cart?.restaurant.name}
                   </Typography>
                   <Typography type="S" isMarginless>
@@ -102,14 +98,11 @@ const Cart: FC<Props> = ({
                 </Column>
               </Columns>
             </Box>
-            <Typography
-              colour="accent"
-              className="text-center mt-4"
-              type="H3"
-              weigth="bold">
-              Summary
-            </Typography>
+
             <Box>
+              <Typography className="mt-4" type="H3" weigth="bold">
+                Summary
+              </Typography>
               <Columns isMarginless>
                 <Column>
                   <Typography isMarginless type="S" weigth="bold">
@@ -181,7 +174,7 @@ const Cart: FC<Props> = ({
           </Column>
         </Columns>
       </ScrollView>
-      <Columns isMarginless className="p-4 pb-0">
+      <Columns isMarginless>
         <Column columnWidth="fullWidth">
           <Box>
             <Button isLoading={loading} onPress={onPressPlaceOrder}>

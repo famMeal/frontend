@@ -11,7 +11,7 @@ import classnames, {
 
 export const getCSS = () => {
   const container = classnames(
-    backgroundColor("bg-accent"),
+    backgroundColor("bg-white"),
     width("w-full"),
     height("h-full"),
     position("relative"),

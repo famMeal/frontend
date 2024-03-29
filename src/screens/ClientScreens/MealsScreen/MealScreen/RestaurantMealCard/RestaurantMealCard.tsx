@@ -8,7 +8,7 @@ import {
   Typography,
 } from "components";
 import { COLOURS } from "constants/colours";
-import type { Dispatch, FC, SetStateAction } from "react";
+import { type Dispatch, type FC, type SetStateAction } from "react";
 import { View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { ChevronDownIcon, TrashIcon } from "react-native-heroicons/solid";
@@ -19,10 +19,11 @@ import { createTimeArray, formatTimeIntervals } from "utilities";
 interface Props {
   userID: string;
   quantity: number;
-  setQuantity: Dispatch<React.SetStateAction<number>>;
+  setQuantity: Dispatch<SetStateAction<number>>;
   meal?: Omit<MealSplinter, "restaurant">;
   setSelectedTime: Dispatch<SetStateAction<string[]>>;
   selectedTime: string[];
+  setBasket: Dispatch<SetStateAction<MealSplinter | undefined>>;
 }
 
 const formatForDropdown = (timeIntervals: string[]): { value: string }[] => {
@@ -38,12 +39,11 @@ const RestaurantMealCard: FC<Props> = ({
   meal,
   setSelectedTime,
   selectedTime,
+  setBasket,
 }) => {
   const [selectedStartTime, selectedEndTime] = selectedTime;
   const { name, description, pickupEndTime, pickupStartTime } = meal ?? {};
-
   const { navigate } = useNavigation<ConfirmationNavigationProps>();
-
   const timeIntervals = createTimeArray(pickupStartTime, pickupEndTime);
 
   const handleSetSelectedTime = (time: { value: string }) => {
@@ -57,7 +57,10 @@ const RestaurantMealCard: FC<Props> = ({
     }
   };
 
-  const handleOnPressDelete = () => navigate("Meals", { userID });
+  const handleOnPressDelete = () => {
+    setBasket(undefined);
+    navigate("Meals", { userID });
+  };
 
   return (
     <Box className="relative">

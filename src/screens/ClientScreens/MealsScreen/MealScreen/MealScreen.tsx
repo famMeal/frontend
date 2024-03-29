@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Box, Button, Container, GoogleMap, Skeleton } from "components";
 import type { FC } from "react";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ScrollView, View } from "react-native";
 import type MapView from "react-native-maps";
 import type {
@@ -31,6 +31,12 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
   const { navigate } = useNavigation<ConfirmationNavigationProps>();
   const { meal } = data ?? {};
   const { restaurant } = meal ?? {};
+
+  useEffect(() => {
+    setBasket(meal);
+  }, [meal]);
+
+  const [basket, setBasket] = useState(meal);
   const [quantity, setQuantity] = useState(1);
   const [[pickupStartTime, pickupEndTime], setSelectedTime] = useState<
     string[]
@@ -65,7 +71,8 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
         setQuantity={setQuantity}
         selectedTime={[pickupStartTime, pickupEndTime]}
         setSelectedTime={setSelectedTime}
-        meal={meal}
+        meal={basket}
+        setBasket={setBasket}
       />
     );
 

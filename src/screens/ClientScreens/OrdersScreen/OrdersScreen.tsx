@@ -48,7 +48,7 @@ const OrdersScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
 
   return (
     <Container>
-      <Columns className="p-4">
+      <Columns>
         <Column columnWidth="fullWidth">
           <ScrollView>{renderContent()}</ScrollView>
         </Column>
