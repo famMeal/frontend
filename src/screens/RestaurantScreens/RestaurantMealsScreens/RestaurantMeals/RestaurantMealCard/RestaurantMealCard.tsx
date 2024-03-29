@@ -146,7 +146,7 @@ const RestaurantMealCard: FC<Props> = ({
         </View>
         <Columns>
           <Column columnWidth="fullWidth">
-            <Typography type="S" weigth="semiBold" isMarginless>
+            <Typography weigth="semiBold" isMarginless>
               {name}
             </Typography>
             <Typography isMarginless type="S">

@@ -78,8 +78,17 @@ const RestaurantMeals: FC<Props> = ({ route }) => {
     </Box>
   );
 
-  const renderMealCards = () =>
-    hasMeals ? data?.restaurant?.meals.map(renderMeal) : renderNoMealsCTA();
+  const renderMealCards = () => {
+    if (!hasMeals) {
+      return renderNoMealsCTA();
+    }
+
+    const sortedMeals = [...data.restaurant.meals].sort((a, b) =>
+      b.active === a.active ? 0 : a.active ? -1 : 1,
+    );
+
+    return sortedMeals.map(renderMeal);
+  };
 
   const renderMeals = () => (loading ? renderSkeletons() : renderMealCards());
 

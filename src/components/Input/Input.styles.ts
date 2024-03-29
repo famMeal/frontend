@@ -1,3 +1,4 @@
+import { Platform } from "react-native";
 import classnames, {
   borderColor,
   borderRadius,
@@ -23,7 +24,7 @@ export const getCSS = ({ theme }: InputProps) => {
     fontFamily("font-khula"),
     fontSize("text-lg"),
     borderRadius("rounded-lg"),
-    padding("pl-2", "pr-6", "py-2"),
+    padding("pl-2", "pr-6", Platform.OS === "ios" ? "py-1.5" : "py-2"),
     borderWidth("border-2"),
   );
   return { inputCSS };

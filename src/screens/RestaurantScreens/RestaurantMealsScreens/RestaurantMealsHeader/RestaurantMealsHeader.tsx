@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Button, Typography } from "components";
+import { COLOURS } from "constants/colours";
 import { memo, type FC } from "react";
 import { View } from "react-native";
 import { ArrowLeftCircleIcon } from "react-native-heroicons/solid";
@@ -26,12 +27,13 @@ const RestaurantMealsHeader: FC<Props> = memo(({ restaurantID }) => {
       <View className={wrapper}>
         <Button
           onPress={() => navigate("RestaurantMeals", { restaurantID })}
-          theme="accent"
-          isFullyRounded>
-          <ArrowLeftCircleIcon color="white" size={30} />
+          isFullyRounded
+          isClean
+          isOutlined>
+          <ArrowLeftCircleIcon color={COLOURS.accent} size={30} />
         </Button>
       </View>
-      <Typography type="H3" weigth="bold" className="text-white">
+      <Typography type="H3" weigth="bold" colour="accent">
         Activate
       </Typography>
     </View>

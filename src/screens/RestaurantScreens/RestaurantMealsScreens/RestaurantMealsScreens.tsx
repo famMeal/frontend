@@ -28,6 +28,8 @@ const RestaurantMealsScreens: FC<Props> = ({
   const { params } = route ?? {};
   const { restaurantID } = params;
 
+  const OnPressNavigateBack = () => navigation.goBack();
+
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () =>
       setActiveScreen(route.name),
@@ -43,7 +45,9 @@ const RestaurantMealsScreens: FC<Props> = ({
         initialParams={{ restaurantID }}
         options={{
           headerShown: false,
-          headerBackground: () => <Header title="Meals" />,
+          headerBackground: () => (
+            <Header onBackButtonPress={OnPressNavigateBack} title="Meals" />
+          ),
         }}
       />
       <Screen

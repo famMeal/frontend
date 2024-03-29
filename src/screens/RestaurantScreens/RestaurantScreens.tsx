@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useFocusEffect } from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Header } from "components";
 import { COLOURS } from "constants/colours";
 import type { FC } from "react";
 import { useCallback, useState } from "react";
@@ -112,15 +113,13 @@ const RestaurantScreens: FC<Props> = ({ navigation }) => {
           />
         )}
       </Screen>
-
       <Screen
         options={{
           tabBarLabel: "Active Orders",
-          headerShown: false,
+          headerShown: true,
+          headerBackground: () => <Header title="Orders" />,
           headerTitleStyle: {
-            color: COLOURS.white,
-            fontFamily: "Khula-Bold",
-            fontSize: 18,
+            display: "none",
           },
           tabBarIcon: () => (
             <PlayIcon

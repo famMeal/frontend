@@ -17,12 +17,8 @@ const Header: FC<Props> = ({ children, title, onBackButtonPress }) => {
   const renderBackButton = () =>
     onBackButtonPress ? (
       <View className={wrapper}>
-        <Button
-          theme="accent"
-          isFullyRounded
-          isClean
-          onPress={onBackButtonPress}>
-          <ArrowLeftCircleIcon color="white" size={30} />
+        <Button isOutlined isFullyRounded isClean onPress={onBackButtonPress}>
+          <ArrowLeftCircleIcon color={COLOURS.accent} size={30} />
         </Button>
       </View>
     ) : null;
@@ -33,8 +29,8 @@ const Header: FC<Props> = ({ children, title, onBackButtonPress }) => {
     <View className={container}>
       {renderBackButton()}
       {renderChildren()}
-      <StatusBar backgroundColor={COLOURS.accent} barStyle="light-content" />
-      <Typography type="H3" weigth="bold" className="text-white">
+      <StatusBar backgroundColor={COLOURS.white} barStyle="light-content" />
+      <Typography type="H3" weigth="bold" colour="accent">
         {title}
       </Typography>
     </View>

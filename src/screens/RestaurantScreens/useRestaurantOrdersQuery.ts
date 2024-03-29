@@ -77,10 +77,11 @@ export interface Variables {
 type Options = QueryHookOptions<Data, Variables>;
 
 const useRestaurantOrdersQuery = (options?: Options) =>
-  useQuery(RESTAURANT_ORDERS_QUERY, options);
+  useQuery<Data, Variables>(RESTAURANT_ORDERS_QUERY, options);
 
 export { useRestaurantOrdersQuery };
 export type {
   Data as RestaurantOrdersData,
-  Variables as RestaurantOrdersVariables,
+  Variables as RestaurantOrdersVariables
 };
+

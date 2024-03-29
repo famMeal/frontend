@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Button, Header } from "components";
+import { COLOURS } from "constants/colours";
 import { type FC } from "react";
 import { Alert } from "react-native";
 import { ArrowLeftOnRectangleIcon } from "react-native-heroicons/solid";
@@ -60,8 +61,8 @@ const RestaurantSettingsHeader: FC<Props> = ({ restaurantID }) => {
 
   return (
     <Header title="Settings" onBackButtonPress={onBackButtonPress}>
-      <Button theme="accent" isClean onPress={showAlert} isFullyRounded>
-        <ArrowLeftOnRectangleIcon color="white" size={30} />
+      <Button isOutlined isClean onPress={showAlert} isFullyRounded>
+        <ArrowLeftOnRectangleIcon color={COLOURS.accent} size={30} />
       </Button>
     </Header>
   );

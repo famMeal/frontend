@@ -10,20 +10,15 @@ import {
 } from "components";
 import { COLOURS } from "constants/colours";
 import type { Dispatch, SetStateAction } from "react";
-import { useCallback, useEffect, useMemo, useState, type FC } from "react";
+import { useEffect, useMemo, useState, type FC } from "react";
 import { View } from "react-native";
-import { MagnifyingGlassIcon, TrashIcon } from "react-native-heroicons/solid";
-import {
-  useRestaurantOrdersQuery,
-  type OrderData,
-} from "screens/RestaurantScreens/useRestaurantOrdersQuery";
+import { MagnifyingGlassIcon } from "react-native-heroicons/solid";
+import { useRestaurantOrdersQuery } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
 import type { RootStackParamList } from "types/navigation.types";
-import { createList } from "utilities/createList";
 import {
   RestaurantOrderCard,
   SkeletonRestaurantOrderCard,
 } from "./RestaurantOrderCard";
-import type { RestaurantOrderData } from "./useLazyRestaurantOrderQuery";
 import { useLazyRestaurantOrderQuery } from "./useLazyRestaurantOrderQuery";
 
 type ActiveOrdersStackProps = NativeStackScreenProps<
@@ -60,11 +55,6 @@ const RestaurantOrdersScreen: FC<Props> = ({
 
   const [findOrder, { data, loading }] = useLazyRestaurantOrderQuery();
 
-  const handleClearSearch = () => {
-    setSearchTerm("");
-    setIsSearching(false);
-  };
-
   const renderNothingFound = useMemo(
     () => (
       <Box>
@@ -78,67 +68,20 @@ const RestaurantOrdersScreen: FC<Props> = ({
     [],
   );
 
-  const renderSearchOrder = (data: RestaurantOrderData) =>
-    data?.order && doesOrderBelongToRestaurant(data)
-      ? renderOrder(data?.order)
-      : renderNothingFound;
-
-  const renderOrder = (order: OrderData) => (
-    <RestaurantOrderCard key={order?.id} order={order} />
-  );
-
-  const renderOrders = () =>
-    restaurantData?.restaurant?.orders?.map(renderOrder);
-
   const renderSkeleton = (index: number) => (
     <SkeletonRestaurantOrderCard key={index} />
   );
 
-  const renderSkeletons = useCallback(
-    () => createList(1).map(renderSkeleton),
-    [],
-  );
+  const renderOrders = () =>
+    restaurantData?.restaurant?.orders?.map(order => (
+      <RestaurantOrderCard order={order} key={order.id} />
+    ));
 
-  const doesOrderBelongToRestaurant = (data?: RestaurantOrderData) =>
-    data?.order?.meal?.restaurant?.id === restaurantID;
+  const handleSearch = () => {};
 
-  const renderContent = () =>
-    loading
-      ? renderSkeletons()
-      : !!data && isSearching
-      ? renderSearchOrder(data)
-      : renderOrders();
-
-  const handleSearch = () => {
-    findOrder({
-      variables: {
-        id: searchTerm,
-      },
-      onCompleted: () => setIsSearching(true),
-    });
-  };
-
-  const renderDeleteSearchButton = () =>
-    isSearching ? (
-      <Button theme="accent" isOutlined onPress={handleClearSearch}>
-        <TrashIcon color={COLOURS.accent} className="absolute" />
-      </Button>
-    ) : (
-      <Button theme="accent" onPress={handleSearch}>
-        <MagnifyingGlassIcon color={COLOURS.white} className="absolute" />
-      </Button>
-    );
   return (
     <Container>
-      <Typography
-        colour="accent"
-        isMarginless
-        className="text-center mt-4"
-        weigth="bold"
-        type="H3">
-        Today's orders
-      </Typography>
-      <Box className="mt-4">
+      <Box>
         <Columns>
           <Column columnWidth="fullWidth">
             <Typography weigth="bold" type="S">
@@ -152,12 +95,20 @@ const RestaurantOrdersScreen: FC<Props> = ({
               onChangeText={setSearchTerm}
             />
             <View className="absolute right-0 bottom-0">
-              {renderDeleteSearchButton()}
+              <Button
+                theme="accent"
+                onPress={handleSearch}
+                className="rounded-l-none">
+                <MagnifyingGlassIcon
+                  color={COLOURS.white}
+                  className="absolute"
+                />
+              </Button>
             </View>
           </Column>
         </Columns>
       </Box>
-      {renderContent()}
+      {renderOrders()}
     </Container>
   );
 };
