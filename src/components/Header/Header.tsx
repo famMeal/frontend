@@ -1,9 +1,9 @@
 import { Button, Typography } from "components";
 import { COLOURS } from "constants/colours";
+import { ArrowLeftCircleIcon } from "lucide-react-native";
 import type { PropsWithChildren } from "react";
 import React, { type FC } from "react";
 import { StatusBar, View } from "react-native";
-import { ArrowLeftCircleIcon } from "react-native-heroicons/solid";
 import { getCSS } from "./Header.styles";
 
 interface Props extends Partial<PropsWithChildren> {

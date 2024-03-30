@@ -7,9 +7,9 @@ import {
   Typography,
 } from "components";
 import { COLOURS } from "constants/colours";
+import { ShoppingCartIcon } from "lucide-react-native";
 import type { FC } from "react";
 import React from "react";
-import { ExclamationTriangleIcon } from "react-native-heroicons/solid";
 
 interface Props {
   onPress: () => void;
@@ -27,7 +27,7 @@ const EmptyCart: FC<Props> = ({ onPress }) => {
             <Typography weigth="bold" type="H3" className="text-center">
               Your cart is empty
             </Typography>
-            <ExclamationTriangleIcon size={100} color={COLOURS.accent} />
+            <ShoppingCartIcon size={100} color={COLOURS.accent} />
           </Column>
         </Columns>
 

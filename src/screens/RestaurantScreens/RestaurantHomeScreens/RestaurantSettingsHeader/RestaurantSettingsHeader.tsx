@@ -1,12 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Button, Header } from "components";
 import { COLOURS } from "constants/colours";
+import { LogOutIcon } from "lucide-react-native";
 import { type FC } from "react";
 import { Alert } from "react-native";
-import { ArrowLeftOnRectangleIcon } from "react-native-heroicons/solid";
 import type { Restaurant } from "schema";
 import type { RootStackParamList } from "types/navigation.types";
 import { useLogoutMutation } from "./useLogoutMutation";
@@ -62,7 +61,7 @@ const RestaurantSettingsHeader: FC<Props> = ({ restaurantID }) => {
   return (
     <Header title="Settings" onBackButtonPress={onBackButtonPress}>
       <Button isOutlined isClean onPress={showAlert} isFullyRounded>
-        <ArrowLeftOnRectangleIcon color={COLOURS.accent} size={30} />
+        <LogOutIcon color={COLOURS.accent} size={30} />
       </Button>
     </Header>
   );

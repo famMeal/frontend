@@ -9,10 +9,10 @@ import {
   Typography,
 } from "components";
 import { COLOURS } from "constants/colours";
+import { SearchIcon } from "lucide-react-native";
 import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useMemo, useState, type FC } from "react";
 import { View } from "react-native";
-import { MagnifyingGlassIcon } from "react-native-heroicons/solid";
 import { useRestaurantOrdersQuery } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
 import type { RootStackParamList } from "types/navigation.types";
 import {
@@ -99,10 +99,7 @@ const RestaurantOrdersScreen: FC<Props> = ({
                 theme="accent"
                 onPress={handleSearch}
                 className="rounded-l-none">
-                <MagnifyingGlassIcon
-                  color={COLOURS.white}
-                  className="absolute"
-                />
+                <SearchIcon color={COLOURS.white} />
               </Button>
             </View>
           </Column>

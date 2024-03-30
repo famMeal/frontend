@@ -55,16 +55,18 @@ const MealCard: FC<Props> = ({ meal, userID }) => {
         </Column>
       </Columns>
       <Columns direction="column">
-        <Column columnWidth="fullWidth">
+        <Column columnWidth="fullWidth" direction="row">
           <Typography isMarginless type="S">
             Order By:{" "}
           </Typography>
-          <Typography type="S" weigth="bold" colour="accent">
+          <Typography isMarginless type="S" weigth="bold" colour="accent">
             {formatDate(orderCutoffTime)}
           </Typography>
         </Column>
-        <Column columnWidth="fullWidth">
-          <Typography type="S">Pickup Between:</Typography>
+        <Column columnWidth="fullWidth" direction="row">
+          <Typography isMarginless type="S">
+            Pickup:{" "}
+          </Typography>
           <Typography isMarginless type="S" weigth="bold" colour="accent">
             {formatTimeRange(pickupStartTime, pickupEndTime)}
           </Typography>

@@ -65,12 +65,14 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
   };
 
   return (
-    <Container>
-      <View className="h-52 mb-4">{renderMap()}</View>
-      <ScrollView ref={setScrollViewRef} onContentSizeChange={handleMapReady}>
-        <Meals userID={userID} />
-      </ScrollView>
-    </Container>
+    <>
+      <View className="h-52">{renderMap()}</View>
+      <Container>
+        <ScrollView ref={setScrollViewRef} onContentSizeChange={handleMapReady}>
+          <Meals userID={userID} />
+        </ScrollView>
+      </Container>
+    </>
   );
 };
 

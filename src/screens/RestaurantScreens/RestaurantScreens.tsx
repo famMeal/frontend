@@ -3,9 +3,9 @@ import { useFocusEffect } from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Header } from "components";
 import { COLOURS } from "constants/colours";
+import { CookingPotIcon, Home, ListTodoIcon } from "lucide-react-native";
 import type { FC } from "react";
-import { useCallback, useState } from "react";
-import { BookOpenIcon, HomeIcon, PlayIcon } from "react-native-heroicons/solid";
+import React, { useCallback, useState } from "react";
 import { useCurrentUserQuery } from "shared";
 import type { RootStackParamList } from "types/navigation.types";
 import { RestaurantHomeScreens } from "./RestaurantHomeScreens";
@@ -58,6 +58,14 @@ const RestaurantScreens: FC<Props> = ({ navigation }) => {
       }}>
       <Screen
         options={{
+          tabBarLabelStyle: {
+            marginBottom: 5,
+            fontFamily: "Khula-Bold",
+            color:
+              activeScreen === "RestaurantHomeScreens"
+                ? COLOURS.primary
+                : COLOURS.accent,
+          },
           tabBarLabel: "Home",
           headerShown: false,
           headerTitleStyle: {
@@ -66,7 +74,7 @@ const RestaurantScreens: FC<Props> = ({ navigation }) => {
             fontSize: 18,
           },
           tabBarIcon: () => (
-            <HomeIcon
+            <Home
               size={18}
               color={
                 activeScreen === "RestaurantHomeScreens"
@@ -84,6 +92,14 @@ const RestaurantScreens: FC<Props> = ({ navigation }) => {
       </Screen>
       <Screen
         options={{
+          tabBarLabelStyle: {
+            marginBottom: 5,
+            fontFamily: "Khula-Bold",
+            color:
+              activeScreen === "RestaurantMealsScreens"
+                ? COLOURS.primary
+                : COLOURS.accent,
+          },
           tabBarLabel: "Meals",
           headerShown: false,
           headerTitleStyle: {
@@ -92,7 +108,7 @@ const RestaurantScreens: FC<Props> = ({ navigation }) => {
             fontSize: 18,
           },
           tabBarIcon: () => (
-            <BookOpenIcon
+            <CookingPotIcon
               size={18}
               color={
                 activeScreen === "RestaurantMealsScreens"
@@ -115,6 +131,14 @@ const RestaurantScreens: FC<Props> = ({ navigation }) => {
       </Screen>
       <Screen
         options={{
+          tabBarLabelStyle: {
+            marginBottom: 5,
+            fontFamily: "Khula-Bold",
+            color:
+              activeScreen === "RestaurantOrdersScreen"
+                ? COLOURS.primary
+                : COLOURS.accent,
+          },
           tabBarLabel: "Active Orders",
           headerShown: true,
           headerBackground: () => <Header title="Orders" />,
@@ -122,7 +146,7 @@ const RestaurantScreens: FC<Props> = ({ navigation }) => {
             display: "none",
           },
           tabBarIcon: () => (
-            <PlayIcon
+            <ListTodoIcon
               size={18}
               color={
                 activeScreen === "RestaurantOrdersScreen"

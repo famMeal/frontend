@@ -40,12 +40,19 @@ export const groupAndSortOrders = (
     Object.keys(groupedOrders)?.forEach(dateKey => {
       groupedOrders[dateKey].sort(
         (a, b) =>
-          new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime(),
+          new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime(),
       );
     });
+    const sortedGroupKeys = Object.keys(groupedOrders)?.sort(
+      (a, b) => new Date(b).getTime() - new Date(a).getTime(),
+    );
+    const sortedGroupedOrders = sortedGroupKeys?.reduce((acc, key) => {
+      acc[key] = groupedOrders[key];
+      return acc;
+    }, {} as Record<string, OrderData[]>);
+    return sortedGroupedOrders;
   }
-
-  return groupedOrders ?? {};
+  return {};
 };
 
 export const toReadableDate = (dateString: string): string => {
@@ -70,7 +77,7 @@ const ActiveOrderTab: FC<Props> = ({ userID }) => {
   const renderOrderSkeletons = () => createList(3).map(renderSkeleton);
 
   const orders = data?.user?.orders?.filter(
-    ({ status }) => status !== STATUS.PICKED_UP,
+    ({ status }) => status !== STATUS.COMPLETED,
   );
 
   const groupedOrders = groupAndSortOrders(orders!);

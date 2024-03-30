@@ -4,8 +4,8 @@ import { Box, Button, Chip, Column, Columns, Typography } from "components";
 import { COLOURS } from "constants/colours";
 import { useState, type FC } from "react";
 import { Alert, View } from "react-native";
-import { TrashIcon } from "react-native-heroicons/solid";
 
+import { Trash2Icon } from "lucide-react-native";
 import { ActionBottomDrawer } from "screens/components";
 import { useActivateMealMutation } from "shared/useActivateMealMutation";
 import type { RootStackParamList } from "types/navigation.types";
@@ -138,7 +138,7 @@ const RestaurantMealCard: FC<Props> = ({
         </Columns>
         <View className="absolute top-4 right-4">
           <Button isClean isOutlined disabled={active} onPress={toggleDrawer}>
-            <TrashIcon
+            <Trash2Icon
               size={22}
               color={active ? COLOURS.white : COLOURS.primary}
             />

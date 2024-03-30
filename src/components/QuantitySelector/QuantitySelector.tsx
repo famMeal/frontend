@@ -1,9 +1,9 @@
 import { Button } from "components/Button";
 import { Typography } from "components/Typography";
 import { COLOURS } from "constants/colours";
+import { Minus, Plus } from "lucide-react-native";
 import type { Dispatch, FC, SetStateAction } from "react";
 import { View } from "react-native";
-import { MinusIcon, PlusIcon } from "react-native-heroicons/solid";
 
 const operations = {
   increment: (quantity: number) => quantity + 1,
@@ -27,7 +27,7 @@ const QuantitySelector: FC<Props> = ({ quantity, setQuantity }) => {
           disabled={quantity === 1}
           onPress={() => handleQuantityOnPress("decrement")}
           isFullyRounded>
-          <MinusIcon color={COLOURS.white} />
+          <Minus color={COLOURS.white} />
         </Button>
       </View>
       <View className="w-6 flex  items-center justify-center">
@@ -41,7 +41,7 @@ const QuantitySelector: FC<Props> = ({ quantity, setQuantity }) => {
           theme="accent"
           onPress={() => handleQuantityOnPress("increment")}
           isFullyRounded>
-          <PlusIcon color={COLOURS.white} />
+          <Plus color={COLOURS.white} />
         </Button>
       </View>
     </View>

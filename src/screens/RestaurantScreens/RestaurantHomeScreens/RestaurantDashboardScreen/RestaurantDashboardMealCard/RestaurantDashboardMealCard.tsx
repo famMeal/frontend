@@ -9,6 +9,8 @@ import {
   Columns,
   Typography,
 } from "components";
+import { COLOURS } from "constants/colours";
+import { Clock10Icon } from "lucide-react-native";
 import { type FC } from "react";
 import type { Meal, Restaurant } from "schema";
 import { useActivateMealMutation } from "shared/useActivateMealMutation";
@@ -116,7 +118,8 @@ const RestaurantDashboardMealCard: FC<Props> = ({
                 Pickup {returnDateInWeekday(pickupStartTime!)} between:
               </Typography>
             </Column>
-            <Column columnWidth="fullWidth">
+            <Column columnWidth="fullWidth" direction="row">
+              <Clock10Icon color={COLOURS.accent} className="mr-2" />
               <Typography isMarginless type="S">
                 {formatTime(pickupStartTime)} and {formatTime(pickupEndTime)}
               </Typography>

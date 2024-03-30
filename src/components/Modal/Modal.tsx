@@ -1,10 +1,10 @@
 import { Button } from "components/Button";
 import { Column } from "components/Column";
 import { Columns } from "components/Columns";
+import { XIcon } from "lucide-react-native";
 import type { ReactNode } from "react";
 import React, { type FC } from "react";
 import { Modal as ReactModal, StyleSheet, View } from "react-native";
-import { XMarkIcon } from "react-native-heroicons/solid";
 
 interface ModalProps {
   isModalVisible: boolean;
@@ -36,7 +36,7 @@ const Modal: FC<ModalProps> = ({
           </Columns>
           <View className="top-4 absolute right-4">
             <Button theme="accent" onPress={() => setModalVisible(false)}>
-              <XMarkIcon color="white" />
+              <XIcon color="white" />
             </Button>
           </View>
         </View>
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     position: "relative",
     flex: 1,
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // Optional: for a semi-transparent background
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalView: {
     backgroundColor: "white",

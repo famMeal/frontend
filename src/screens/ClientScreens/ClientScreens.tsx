@@ -38,6 +38,11 @@ const ClientScreens: FC<Props> = ({ navigation }) => {
 
   const getOptions = (tabBarLabel: string, name: string, iconName: string) =>
     createScreenOptions({
+      tabBarLabelStyle: {
+        marginBottom: 5,
+        fontFamily: "Khula-Bold",
+        color: activeScreen === name ? COLOURS.primary : COLOURS.accent,
+      },
       headerShown: true,
       headerTitleStyle: {
         display: "none",

@@ -19,7 +19,7 @@ export const getCSS = ({ isPaddingLess }: BoxProps) => {
     flexDirection("flex-col"),
     backgroundColor("bg-white"),
     overflow("overflow-hidden"),
-    boxShadow("shadow-2xl"),
+    boxShadow("2xl:shadow-xl"),
     borderRadius("rounded-lg"),
     width("w-full"),
     padding(isPaddingLess ? "p-0" : "p-4"),

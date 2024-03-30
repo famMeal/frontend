@@ -19,7 +19,7 @@ const clientRoutes = (setActiveScreen: Dispatch<SetStateAction<string>>) =>
   [
     {
       name: "Main",
-      iconName: "archive",
+      iconName: "utensils",
       tabBarLabel: "Meals",
       renderComponent: (props: ClientRoutes) => (
         <MainScreen
@@ -30,7 +30,7 @@ const clientRoutes = (setActiveScreen: Dispatch<SetStateAction<string>>) =>
     },
     {
       name: "Confirmation",
-      iconName: "badge",
+      iconName: "calenderCheck",
       tabBarLabel: "Confirmation",
       renderComponent: (props: ClientRoutes) => (
         <ConfirmationScreen

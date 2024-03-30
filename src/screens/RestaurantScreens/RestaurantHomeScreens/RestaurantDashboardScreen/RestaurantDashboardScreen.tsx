@@ -12,12 +12,9 @@ import {
   Typography,
 } from "components";
 import { COLOURS } from "constants/colours";
+import { ArrowRightCircle, BadgeCheck } from "lucide-react-native";
 import React, { useState, type FC } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
-import {
-  ArrowRightCircleIcon,
-  CheckCircleIcon,
-} from "react-native-heroicons/solid";
 import { RestaurantCreateMealModal } from "screens/RestaurantScreens/RestaurantCreateMealModal";
 import type { RootStackParamList } from "types/navigation.types";
 import { formatCurrency } from "utilities/formatCurrency";
@@ -87,8 +84,8 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
 
   const renderCheckMark = (active: boolean) =>
     active ? (
-      <View className="ml-2">
-        <CheckCircleIcon size={25} color={COLOURS.accent} />
+      <View className="ml-2 mt-0.5">
+        <BadgeCheck size={20} color={COLOURS.accent} />
       </View>
     ) : null;
 
@@ -105,10 +102,10 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
             direction="row"
             justifyContent="flex-end">
             <Typography weigth="semiBold" isMarginless type="S">
-              {activeMeal ? "View" : "Activate"}
+              {activeMeal ? "View" : "View"}
             </Typography>
             <View className="ml-4">
-              <ArrowRightCircleIcon size={25} color={COLOURS.primary} />
+              <ArrowRightCircle size={25} color={COLOURS.primary} />
             </View>
           </Column>
         </Columns>
@@ -120,19 +117,21 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
       return (
         <Box>
           <Columns direction="column">
-            <Column columnWidth="fullWidth" direction="row">
-              <Typography weigth="bold" type="H3" className="mb-4">
+            <Column
+              columnWidth="fullWidth"
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between">
+              <Typography weigth="bold" type="H3">
                 Meals
               </Typography>
             </Column>
             {renderNonActiveMeals()}
           </Columns>
+
           <Columns direction="column" isMarginless>
             <Column columnWidth="fullWidth">
-              <Button
-                onPress={onPressNavigateToCreateMeal}
-                isOutlined
-                theme="accent">
+              <Button onPress={onPressNavigateToCreateMeal} theme="accent">
                 Create New Meal
               </Button>
             </Column>
@@ -180,7 +179,6 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
               <Button
                 className="mt-4"
                 onPress={OnPressNavigateToSettings}
-                isOutlined
                 theme="primary">
                 View Settings
               </Button>

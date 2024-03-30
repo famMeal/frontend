@@ -8,10 +8,11 @@ import {
   Typography,
 } from "components";
 import { COLOURS } from "constants/colours";
+import { Trash2Icon } from "lucide-react-native";
 import { type Dispatch, type FC, type SetStateAction } from "react";
 import { View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
-import { ChevronDownIcon, TrashIcon } from "react-native-heroicons/solid";
+import { ChevronDownIcon } from "react-native-heroicons/solid";
 import type { MealSplinter } from "screens/ClientScreens/MealsScreen/MealScreen/useGetMealQuery";
 import type { ConfirmationNavigationProps } from "types/navigation.types";
 import { createTimeArray, formatTimeIntervals } from "utilities";
@@ -81,7 +82,7 @@ const RestaurantMealCard: FC<Props> = ({
     <Box className="relative">
       <View className="absolute right-4 top-4 z-10">
         <Button onPress={handleOnPressDelete} isOutlined isClean>
-          <TrashIcon color={COLOURS.primary} />
+          <Trash2Icon color={COLOURS.primary} />
         </Button>
       </View>
       <Columns className="mt-4">

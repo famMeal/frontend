@@ -1,36 +1,36 @@
 import type { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
 import { COLOURS } from "constants/colours";
-import React from "react";
 import {
-  ArchiveBoxIcon,
-  CheckBadgeIcon,
-  ShoppingBagIcon,
-  UserCircleIcon,
-} from "react-native-heroicons/solid";
+  CalendarCheck2Icon,
+  ShoppingCartIcon,
+  UserCogIcon,
+  UtensilsIcon,
+} from "lucide-react-native";
+import React from "react";
 
 export const iconMap = (isScreenActive: boolean) =>
   ({
-    archive: (
-      <ArchiveBoxIcon
-        size={18}
+    utensils: (
+      <UtensilsIcon
+        size={20}
         color={isScreenActive ? COLOURS.primary : COLOURS.accent}
       />
     ),
-    badge: (
-      <CheckBadgeIcon
-        size={18}
+    calenderCheck: (
+      <CalendarCheck2Icon
+        size={20}
         color={isScreenActive ? COLOURS.primary : COLOURS.accent}
       />
     ),
     shopping: (
-      <ShoppingBagIcon
-        size={18}
+      <ShoppingCartIcon
+        size={20}
         color={isScreenActive ? COLOURS.primary : COLOURS.accent}
       />
     ),
     user: (
-      <UserCircleIcon
-        size={18}
+      <UserCogIcon
+        size={20}
         color={isScreenActive ? COLOURS.primary : COLOURS.accent}
       />
     ),

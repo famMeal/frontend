@@ -3,4 +3,5 @@ export enum STATUS {
   PREPARING = "preparing",
   READY = "ready",
   PICKED_UP = "picked_up",
+  COMPLETED = "completed",
 }

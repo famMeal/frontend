@@ -1,8 +1,8 @@
 import { COLOURS } from "constants/colours";
+import { ChevronRightIcon } from "lucide-react-native";
 import type { FC, PropsWithChildren } from "react";
 import { useEffect } from "react";
 import { Animated, View } from "react-native";
-import { ChevronRightIcon } from "react-native-heroicons/solid";
 import { useAccordionContext } from "./AccordionContext";
 
 const AccordionHeader: FC<PropsWithChildren> = ({ children }) => {

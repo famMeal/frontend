@@ -12,7 +12,7 @@ import {
 } from "components";
 import { COLOURS } from "constants/colours";
 import { STATUS } from "constants/status";
-import { type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import { ActivityIndicator, Linking, StyleSheet, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import SlideButton from "rn-slide-button";
@@ -40,6 +40,15 @@ const OrderCard: FC<Props> = ({ order }) => {
     restaurant ?? {};
 
   const [updateStatus, { loading }] = useUpdateOrderStatus();
+  const [shouldSliderBeVisisble, setShouldSliderBeVisible] = useState(false);
+
+  useEffect(() => {
+    if (status === STATUS.PICKED_UP) {
+      setShouldSliderBeVisible(false);
+    } else {
+      setShouldSliderBeVisible(true);
+    }
+  }, [status]);
 
   const chipStatus = status === STATUS.PICKED_UP ? "success" : "primary";
 
@@ -50,6 +59,9 @@ const OrderCard: FC<Props> = ({ order }) => {
           orderId: id,
           status: STATUS.PICKED_UP,
         },
+      },
+      onCompleted: () => {
+        setShouldSliderBeVisible(false);
       },
     });
   };
@@ -71,43 +83,36 @@ const OrderCard: FC<Props> = ({ order }) => {
     );
   };
 
-  <ActivityIndicator />;
-  const renderPickupCTA = () =>
-    status !== STATUS.PICKED_UP ? (
-      <>
-        <Columns>
-          <Column columnWidth="fullWidth">
-            <Button onPress={handleOpenGoogleMaps} isOutlined>
-              Directions
-            </Button>
-          </Column>
-        </Columns>
-
-        <GestureHandlerRootView style={{ position: "relative" }}>
-          <SlideButton
-            animation
-            onReachedToEnd={handleOnSlideComplete}
-            padding={0}
-            title="Slide to pickup"
-            containerStyle={{ backgroundColor: COLOURS.accent }}
-            underlayStyle={{ backgroundColor: COLOURS.primary }}
-            titleStyle={{ fontWeight: 700, fontFamily: "Khula-Bold" }}
-            disabled={loading}
-          />
-          {loading && (
-            <View
-              style={{
-                ...StyleSheet.absoluteFillObject,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "rgba(255, 255, 255, 0.7)",
-              }}>
-              <ActivityIndicator size="large" color={COLOURS.primary} />
-            </View>
-          )}
-        </GestureHandlerRootView>
-      </>
-    ) : null;
+  const renderSlider = (isVisible: boolean) => {
+    if (!isVisible) {
+      return null;
+    }
+    return (
+      <GestureHandlerRootView>
+        <SlideButton
+          animation
+          onReachedToEnd={handleOnSlideComplete}
+          padding={0}
+          title="Slide to pickup"
+          containerStyle={{ backgroundColor: COLOURS.accent }}
+          underlayStyle={{ backgroundColor: COLOURS.primary }}
+          titleStyle={{ fontWeight: 700, fontFamily: "Khula-Bold" }}
+          disabled={loading}
+        />
+        {loading && (
+          <View
+            style={{
+              ...StyleSheet.absoluteFillObject,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "rgba(255, 255, 255, 0.7)",
+            }}>
+            <ActivityIndicator size="large" color={COLOURS.primary} />
+          </View>
+        )}
+      </GestureHandlerRootView>
+    );
+  };
 
   return (
     <Box key={id}>
@@ -165,7 +170,15 @@ const OrderCard: FC<Props> = ({ order }) => {
               </Typography>
             </Column>
           </Columns>
-          {renderPickupCTA()}
+          <Columns>
+            <Column columnWidth="fullWidth">
+              <Button onPress={handleOpenGoogleMaps} isOutlined>
+                Directions
+              </Button>
+            </Column>
+          </Columns>
+
+          {renderSlider(shouldSliderBeVisisble)}
         </AccordionContent>
       </Accordion>
     </Box>

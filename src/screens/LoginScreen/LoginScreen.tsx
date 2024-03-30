@@ -11,10 +11,10 @@ import {
   Typography,
 } from "components";
 import { COLOURS } from "constants/colours";
+import { EyeIcon, EyeOffIcon } from "lucide-react-native";
 import type { FC } from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { EyeIcon, EyeSlashIcon } from "react-native-heroicons/solid";
 import type { LoginNavigationProps } from "types/navigation.types";
 import { useLoginMutation } from "./useLogInMutation";
 
@@ -62,9 +62,9 @@ const LoginScreen: FC = () => {
 
   const renderEyeIcon = () =>
     secureTextEntry ? (
-      <EyeSlashIcon color={COLOURS.accent} />
-    ) : (
       <EyeIcon color={COLOURS.accent} />
+    ) : (
+      <EyeOffIcon color={COLOURS.accent} />
     );
 
   const handleOnSignUpPress = () => navigate(Screens.SignUp);
