@@ -10,19 +10,16 @@ import {
   Columns,
   Typography,
 } from "components";
-import { COLOURS } from "constants/colours";
+import type { ChipTypes } from "components/Chip/Chip";
 import { STATUS } from "constants/status";
-import { ImageUpIcon } from "lucide-react-native";
 import React, { type FC } from "react";
 import { Linking } from "react-native";
-import SlideButton from "rn-slide-button";
-import { RESTAURANT_ORDERS_QUERY } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
-import { useUpdateOrderStatus } from "shared/useUpdateOrderStatusMutation";
 import { formatTime } from "utilities/formatTime";
-import type { OrderData } from "../ActiveOrderTab/useGetUserOrdersQuery";
+import { type UserOrderQueryData } from "../useGetUserOrdersQuery";
+import { OrderCardSliderButton } from "./OrderCardSliderButton";
 
 interface Props {
-  order: OrderData;
+  order: UserOrderQueryData["user"]["orders"][number];
 }
 
 const OrderCard: FC<Props> = ({ order }) => {
@@ -40,21 +37,15 @@ const OrderCard: FC<Props> = ({ order }) => {
   const { latitude, longitude, addressLine1, postalCode, city } =
     restaurant ?? {};
 
-  const [updateStatus, { loading }] = useUpdateOrderStatus();
-
-  const chipStatus = status === STATUS.PICKED_UP ? "success" : "primary";
-
-  const handleOnSlideComplete = () => {
-    updateStatus({
-      variables: {
-        input: {
-          orderId: id,
-          status: STATUS.PICKED_UP,
-        },
-      },
-      refetchQueries: [RESTAURANT_ORDERS_QUERY],
-    });
+  const STATUS_CHIP_MAP = {
+    [STATUS.COMPLETED]: "success",
+    [STATUS.PICKED_UP]: "success",
+    [STATUS.PREPARING]: "primary",
+    [STATUS.READY]: "primary",
   };
+
+  const chipStatus =
+    STATUS_CHIP_MAP[status as keyof typeof STATUS_CHIP_MAP] || "error";
 
   const handleOpenGoogleMaps = () => {
     Geolocation.getCurrentPosition(
@@ -74,28 +65,16 @@ const OrderCard: FC<Props> = ({ order }) => {
   };
 
   const renderSlider = () => {
-    if (status === STATUS.PICKED_UP) {
+    if (status === STATUS.COMPLETED || status === STATUS.PICKED_UP) {
       return null;
     }
-    return (
-      <SlideButton
-        animation
-        onReachedToEnd={handleOnSlideComplete}
-        padding={0}
-        title="Slide to pickup"
-        containerStyle={{ backgroundColor: COLOURS.accent }}
-        underlayStyle={{ backgroundColor: COLOURS.primary }}
-        titleStyle={{ fontWeight: 700, fontFamily: "Khula-Bold" }}
-        disabled={loading}
-        icon={<ImageUpIcon />}
-      />
-    );
+    return <OrderCardSliderButton orderId={id} />;
   };
 
   return (
     <Box key={id}>
       <Accordion>
-        <Chip type={chipStatus}>{status}</Chip>
+        <Chip type={chipStatus as ChipTypes}>{status}</Chip>
         <AccordionHeader>
           <Columns isMarginless className="mt-12">
             <Column columnWidth="fullWidth">
@@ -155,7 +134,6 @@ const OrderCard: FC<Props> = ({ order }) => {
               </Button>
             </Column>
           </Columns>
-
           {renderSlider()}
         </AccordionContent>
       </Accordion>

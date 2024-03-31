@@ -20,7 +20,7 @@ const clientRoutes = (setActiveScreen: Dispatch<SetStateAction<string>>) =>
     {
       name: "Main",
       iconName: "utensils",
-      tabBarLabel: "Meals",
+      tabBarLabel: "Today's Batches",
       renderComponent: (props: ClientRoutes) => (
         <MainScreen
           setActiveScreen={setActiveScreen}

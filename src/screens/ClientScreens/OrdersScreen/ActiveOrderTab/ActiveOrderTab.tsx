@@ -4,56 +4,20 @@ import { STATUS } from "constants/status";
 import type { FC } from "react";
 import React from "react";
 import { ScrollView } from "react-native";
-import type { User } from "schema";
+import { type User } from "schema";
 import {
   OrderCard,
   SkeletonOrderCard,
 } from "screens/ClientScreens/OrdersScreen/OrderCard";
 import { createList } from "utilities/createList";
-import type { OrderData } from "./useGetUserOrdersQuery";
-import { useGetUserOrdersQuery } from "./useGetUserOrdersQuery";
+import { groupAndSortOrdersByStatus } from "utilities/groupAndSortOrders";
+import { useGetUserOrdersQuery } from "../useGetUserOrdersQuery";
 
 interface Props {
   userID: User["id"];
   route: RouteProp<ParamListBase, "Active">;
   navigation: any;
 }
-
-export const groupAndSortOrders = (
-  orders: OrderData[],
-): Record<string, OrderData[]> => {
-  const groupedOrders = orders?.reduce(
-    (acc: Record<string, OrderData[]>, order: OrderData) => {
-      const dateKey = order?.createdAt?.split(" ")[0];
-      if (dateKey) {
-        if (!acc[dateKey]) {
-          acc[dateKey] = [];
-        }
-        acc[dateKey].push(order);
-      }
-      return acc;
-    },
-    {},
-  );
-
-  if (groupedOrders) {
-    Object.keys(groupedOrders)?.forEach(dateKey => {
-      groupedOrders[dateKey].sort(
-        (a, b) =>
-          new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime(),
-      );
-    });
-    const sortedGroupKeys = Object.keys(groupedOrders)?.sort(
-      (a, b) => new Date(b).getTime() - new Date(a).getTime(),
-    );
-    const sortedGroupedOrders = sortedGroupKeys?.reduce((acc, key) => {
-      acc[key] = groupedOrders[key];
-      return acc;
-    }, {} as Record<string, OrderData[]>);
-    return sortedGroupedOrders;
-  }
-  return {};
-};
 
 export const toReadableDate = (dateString: string): string => {
   const date = new Date(dateString);
@@ -80,7 +44,7 @@ const ActiveOrderTab: FC<Props> = ({ userID }) => {
     ({ status }) => status !== STATUS.COMPLETED,
   );
 
-  const groupedOrders = groupAndSortOrders(orders!);
+  const groupedOrders = groupAndSortOrdersByStatus(orders!);
 
   const renderOrders = () =>
     Object.entries(groupedOrders).map(([date, ordersForDate]) => (

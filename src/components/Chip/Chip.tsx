@@ -5,7 +5,7 @@ import type { ViewProps } from "react-native";
 import { View } from "react-native";
 import { getCSS } from "./Chip.styles";
 
-type ChipTypes = "error" | "primary" | "success" | "accent";
+export type ChipTypes = "error" | "primary" | "success" | "accent";
 type ChipPositions = "topLeft" | "topRight" | "bottomLeft" | "bottomRight";
 
 export interface ChipProps {

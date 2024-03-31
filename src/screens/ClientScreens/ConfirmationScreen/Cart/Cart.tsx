@@ -9,7 +9,7 @@ import {
 import type { FC } from "react";
 import { ScrollView } from "react-native";
 import type { AddToCartData } from "screens/ClientScreens/MealsScreen/MealScreen/useAddToCartMutation";
-import { GET_USER_0RDERS_QUERY } from "screens/ClientScreens/OrdersScreen/ActiveOrderTab/useGetUserOrdersQuery";
+import { GET_USER_0RDERS_QUERY } from "screens/ClientScreens/OrdersScreen/useGetUserOrdersQuery";
 import { formatTime } from "utilities/formatTime";
 import { usePlaceOrderMutation } from "./usePlaceOrderMutation";
 

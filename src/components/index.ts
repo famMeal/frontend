@@ -8,6 +8,7 @@ export { Columns } from "./Columns";
 export { Container } from "./Container";
 export { DatePicker } from "./DatePicker";
 export { GoogleMap } from "./GoogleMap";
+export { GoogleMarker } from "./GoogleMarker";
 export { Header } from "./Header";
 export { Input } from "./Input";
 export { Modal } from "./Modal";
@@ -15,3 +16,4 @@ export { QuantitySelector } from "./QuantitySelector";
 export { Skeleton } from "./Skeleton";
 export { TimePicker } from "./TimePicker";
 export { Typography } from "./Typography";
+

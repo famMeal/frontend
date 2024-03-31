@@ -1,13 +1,13 @@
+import { GoogleMarker } from "components/GoogleMarker";
 import { COLOURS } from "constants/colours";
 import { useUserLocation } from "hooks";
-import { UtensilsIcon } from "lucide-react-native";
 import React, {
   forwardRef,
   useEffect,
   useImperativeHandle,
   useRef,
 } from "react";
-import { Dimensions, View } from "react-native";
+import { Dimensions } from "react-native";
 import { GOOGLE_API_KEY } from "react-native-dotenv";
 import type { MapMarkerProps, Region } from "react-native-maps";
 import MapView, { Marker } from "react-native-maps";
@@ -96,33 +96,7 @@ const GoogleMap = forwardRef<MapView, GoogleMapProps>(
     const renderMarkers = () => {
       return coordinates?.map((markerProps, index) => (
         <Marker key={index} {...markerProps}>
-          <View style={{ alignItems: "center" }}>
-            <View
-              style={{
-                backgroundColor: COLOURS.accent,
-                padding: 8,
-                borderRadius: 50,
-                alignItems: "center",
-                justifyContent: "center",
-              }}>
-              <UtensilsIcon size={20} color={COLOURS.white} />
-            </View>
-            <View
-              style={{
-                width: 0,
-                height: 0,
-                backgroundColor: "transparent",
-                borderStyle: "solid",
-                borderLeftWidth: 10,
-                borderRightWidth: 10,
-                borderTopWidth: 15,
-                borderLeftColor: "transparent",
-                borderRightColor: "transparent",
-                borderTopColor: COLOURS.accent,
-                marginTop: -6,
-              }}
-            />
-          </View>
+          <GoogleMarker />
         </Marker>
       ));
     };

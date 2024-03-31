@@ -42,6 +42,7 @@ const EmailSignUpScreen: FC = () => {
       console.error("Sign up error:", error.message);
     },
   });
+
   const handleOnPresSignUp = () => {
     signUp({
       variables: {

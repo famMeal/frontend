@@ -1,18 +1,19 @@
 import type { ParamListBase, RouteProp } from "@react-navigation/native";
 import { Chip, Column, Columns, Container } from "components";
-import { STATUS } from "constants/status";
 import type { FC } from "react";
 import React from "react";
 import { ScrollView } from "react-native";
-import type { User } from "schema";
+import { OrderStatusField, type User } from "schema";
 
 import {
   OrderCard,
   SkeletonOrderCard,
 } from "screens/ClientScreens/OrdersScreen/OrderCard";
 import { createList } from "utilities/createList";
-import type { OrderData } from "./useGetUserOrdersQuery";
-import { useGetUserOrdersQuery } from "./useGetUserOrdersQuery";
+import type { UserOrderQueryData } from "../useGetUserOrdersQuery";
+import { useGetUserOrdersQuery } from "../useGetUserOrdersQuery";
+
+type OrderData = UserOrderQueryData["user"]["orders"][number];
 
 interface Props {
   userID: User["id"];
@@ -70,6 +71,9 @@ const PreviousOrdersTab: FC<Props> = ({ userID }) => {
     skip: !userID,
     variables: {
       id: userID,
+      filters: {
+        status: OrderStatusField.Completed,
+      },
     },
   });
 
@@ -77,11 +81,7 @@ const PreviousOrdersTab: FC<Props> = ({ userID }) => {
 
   const renderOrderSkeletons = () => createList(3).map(renderSkeleton);
 
-  const orders = data?.user?.orders?.filter(
-    ({ status }) => status === STATUS.COMPLETED,
-  );
-
-  const groupedOrders = groupAndSortOrders(orders!);
+  const groupedOrders = groupAndSortOrders(data?.user?.orders!);
 
   const renderOrders = () =>
     Object.entries(groupedOrders).map(([date, ordersForDate]) => (

@@ -51,8 +51,8 @@ const LoginScreen: FC = () => {
   const handleOnPressLogin = () => {
     userLogin({
       variables: {
-        email,
-        password,
+        email: email.trim(),
+        password: password.trim(),
       },
     });
   };
