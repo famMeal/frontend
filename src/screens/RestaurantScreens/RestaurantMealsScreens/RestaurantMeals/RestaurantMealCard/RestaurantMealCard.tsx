@@ -180,7 +180,7 @@ const RestaurantMealCard: FC<Props> = ({
         </Columns>
         <Columns isMarginless>
           <Column>
-            <Button theme="accent" onPress={toggleEditing}>
+            <Button theme="accent" isOutlined onPress={toggleEditing}>
               Edit
             </Button>
           </Column>

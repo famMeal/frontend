@@ -11,9 +11,16 @@ interface Props {
   name: string;
   value: Date;
   minimumDate: Date;
+  disabled: boolean;
 }
 
-const DatePicker: FC<Props> = ({ onChange, name, value, minimumDate }) => {
+const DatePicker: FC<Props> = ({
+  onChange,
+  name,
+  value,
+  minimumDate,
+  disabled,
+}) => {
   const handleAndroidDateChange = (selectedDate: Date | undefined) => {
     if (selectedDate) {
       onChange(name, selectedDate);
@@ -32,7 +39,11 @@ const DatePicker: FC<Props> = ({ onChange, name, value, minimumDate }) => {
 
   if (Platform.OS === "android") {
     return (
-      <Button isOutlined onPress={showDatePickerAndroid}>
+      <Button
+        theme="accent"
+        isClean
+        isOutlined
+        onPress={disabled ? () => {} : showDatePickerAndroid}>
         {value.toDateString()}
       </Button>
     );

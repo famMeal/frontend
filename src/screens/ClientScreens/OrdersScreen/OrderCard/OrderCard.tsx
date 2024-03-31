@@ -12,13 +12,14 @@ import {
 } from "components";
 import { COLOURS } from "constants/colours";
 import { STATUS } from "constants/status";
-import { useEffect, useState, type FC } from "react";
-import { ActivityIndicator, Linking, StyleSheet, View } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { ImageUpIcon } from "lucide-react-native";
+import React, { type FC } from "react";
+import { Linking } from "react-native";
 import SlideButton from "rn-slide-button";
+import { RESTAURANT_ORDERS_QUERY } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
+import { useUpdateOrderStatus } from "shared/useUpdateOrderStatusMutation";
 import { formatTime } from "utilities/formatTime";
 import type { OrderData } from "../ActiveOrderTab/useGetUserOrdersQuery";
-import { useUpdateOrderStatus } from "./useUpdateOrderStatusMutation";
 
 interface Props {
   order: OrderData;
@@ -40,15 +41,6 @@ const OrderCard: FC<Props> = ({ order }) => {
     restaurant ?? {};
 
   const [updateStatus, { loading }] = useUpdateOrderStatus();
-  const [shouldSliderBeVisisble, setShouldSliderBeVisible] = useState(false);
-
-  useEffect(() => {
-    if (status === STATUS.PICKED_UP) {
-      setShouldSliderBeVisible(false);
-    } else {
-      setShouldSliderBeVisible(true);
-    }
-  }, [status]);
 
   const chipStatus = status === STATUS.PICKED_UP ? "success" : "primary";
 
@@ -60,9 +52,7 @@ const OrderCard: FC<Props> = ({ order }) => {
           status: STATUS.PICKED_UP,
         },
       },
-      onCompleted: () => {
-        setShouldSliderBeVisible(false);
-      },
+      refetchQueries: [RESTAURANT_ORDERS_QUERY],
     });
   };
 
@@ -83,34 +73,22 @@ const OrderCard: FC<Props> = ({ order }) => {
     );
   };
 
-  const renderSlider = (isVisible: boolean) => {
-    if (!isVisible) {
+  const renderSlider = () => {
+    if (status === STATUS.PICKED_UP) {
       return null;
     }
     return (
-      <GestureHandlerRootView>
-        <SlideButton
-          animation
-          onReachedToEnd={handleOnSlideComplete}
-          padding={0}
-          title="Slide to pickup"
-          containerStyle={{ backgroundColor: COLOURS.accent }}
-          underlayStyle={{ backgroundColor: COLOURS.primary }}
-          titleStyle={{ fontWeight: 700, fontFamily: "Khula-Bold" }}
-          disabled={loading}
-        />
-        {loading && (
-          <View
-            style={{
-              ...StyleSheet.absoluteFillObject,
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "rgba(255, 255, 255, 0.7)",
-            }}>
-            <ActivityIndicator size="large" color={COLOURS.primary} />
-          </View>
-        )}
-      </GestureHandlerRootView>
+      <SlideButton
+        animation
+        onReachedToEnd={handleOnSlideComplete}
+        padding={0}
+        title="Slide to pickup"
+        containerStyle={{ backgroundColor: COLOURS.accent }}
+        underlayStyle={{ backgroundColor: COLOURS.primary }}
+        titleStyle={{ fontWeight: 700, fontFamily: "Khula-Bold" }}
+        disabled={loading}
+        icon={<ImageUpIcon />}
+      />
     );
   };
 
@@ -178,7 +156,7 @@ const OrderCard: FC<Props> = ({ order }) => {
             </Column>
           </Columns>
 
-          {renderSlider(shouldSliderBeVisisble)}
+          {renderSlider()}
         </AccordionContent>
       </Accordion>
     </Box>

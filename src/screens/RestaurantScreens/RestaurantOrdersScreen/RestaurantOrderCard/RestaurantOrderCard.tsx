@@ -1,8 +1,10 @@
 import { Box, Chip, Column, Columns, Typography } from "components";
 import { COLOURS } from "constants/colours";
-import { useState, type FC } from "react";
+import { STATUS } from "constants/status";
+import { type FC } from "react";
 import { Switch, View } from "react-native";
 import type { OrderData } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
+import { useUpdateOrderStatus } from "shared/useUpdateOrderStatusMutation";
 import { formatTime } from "utilities/formatTime";
 
 interface Props {
@@ -15,33 +17,50 @@ const RestaurantOrderCard: FC<Props> = ({
     status,
     subtotal,
     quantity,
-    meal: { pickupEndTime, pickupStartTime, price: unusedPrice, name },
+    meal: { pickupEndTime, pickupStartTime, name },
     user: { firstName, lastName },
   },
 }) => {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const [updateStatus] = useUpdateOrderStatus();
 
-  const renderStatus = (status?: OrderData["status"]) =>
-    isEnabled ? "Picked up" : status;
+  const chipType = status === STATUS.PICKED_UP ? "primary" : "success";
+  const chipStatus =
+    status === STATUS.COMPLETED
+      ? "Completed"
+      : status === STATUS.PICKED_UP
+      ? "Picked Up"
+      : "In Progress";
+
+  const switchValue = status === STATUS.COMPLETED ? true : false;
+
+  const toggleSwitch = () => {
+    updateStatus({
+      variables: {
+        input: {
+          orderId: id,
+          status: STATUS.COMPLETED,
+        },
+      },
+    });
+  };
 
   return (
     <Box key={id}>
       <Columns className="border-b border-accent pb-4">
         <Column>
           <View>
-            <Chip type={isEnabled ? "success" : "primary"} isStatic>
-              {renderStatus(status)}
+            <Chip type={chipType} isStatic>
+              {chipStatus}
             </Chip>
           </View>
         </Column>
         <Column alignItems="flex-end" justifyContent="flex-end">
           <Switch
-            trackColor={{ false: COLOURS.white, true: COLOURS.accent }}
-            thumbColor={COLOURS.white}
+            trackColor={{ false: COLOURS.primary, true: COLOURS.accent }}
+            thumbColor={COLOURS.light}
             ios_backgroundColor={COLOURS.light}
             onValueChange={toggleSwitch}
-            value={isEnabled}
+            value={switchValue}
           />
         </Column>
       </Columns>

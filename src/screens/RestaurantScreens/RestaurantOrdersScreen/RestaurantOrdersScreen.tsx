@@ -12,14 +12,14 @@ import { COLOURS } from "constants/colours";
 import { SearchIcon } from "lucide-react-native";
 import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useMemo, useState, type FC } from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { useRestaurantOrdersQuery } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
 import type { RootStackParamList } from "types/navigation.types";
+import { createList } from "utilities/createList";
 import {
   RestaurantOrderCard,
   SkeletonRestaurantOrderCard,
 } from "./RestaurantOrderCard";
-import { useLazyRestaurantOrderQuery } from "./useLazyRestaurantOrderQuery";
 
 type ActiveOrdersStackProps = NativeStackScreenProps<
   RootStackParamList,
@@ -44,16 +44,16 @@ const RestaurantOrdersScreen: FC<Props> = ({
     );
     return unsubscribe;
   }, [navigation, setActiveScreen]);
-  const [isSearching, setIsSearching] = useState(false);
+
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { data: restaurantData } = useRestaurantOrdersQuery({
+  const { data, loading } = useRestaurantOrdersQuery({
     variables: {
       id: restaurantID,
     },
   });
 
-  const [findOrder, { data, loading }] = useLazyRestaurantOrderQuery();
+  // const [findOrder, { data }] = useLazyRestaurantOrderQuery();
 
   const renderNothingFound = useMemo(
     () => (
@@ -73,9 +73,11 @@ const RestaurantOrdersScreen: FC<Props> = ({
   );
 
   const renderOrders = () =>
-    restaurantData?.restaurant?.orders?.map(order => (
-      <RestaurantOrderCard order={order} key={order.id} />
-    ));
+    loading
+      ? createList(3).map(renderSkeleton)
+      : data?.restaurant?.orders?.map(order => (
+          <RestaurantOrderCard order={order} key={order.id} />
+        ));
 
   const handleSearch = () => {};
 
@@ -89,7 +91,6 @@ const RestaurantOrdersScreen: FC<Props> = ({
             </Typography>
             <Input
               theme="accent"
-              editable={!isSearching}
               placeholder="123"
               value={searchTerm}
               onChangeText={setSearchTerm}
@@ -105,7 +106,7 @@ const RestaurantOrdersScreen: FC<Props> = ({
           </Column>
         </Columns>
       </Box>
-      {renderOrders()}
+      <ScrollView>{renderOrders()}</ScrollView>
     </Container>
   );
 };

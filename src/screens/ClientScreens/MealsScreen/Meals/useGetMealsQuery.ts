@@ -66,6 +66,6 @@ interface Data {
 type Options = QueryHookOptions<Data>;
 
 const useGetMealsQuery = (options?: Options) =>
-  useQuery(GET_MEALS_QUERY, options);
+  useQuery<Data>(GET_MEALS_QUERY, options);
 
 export { useGetMealsQuery };

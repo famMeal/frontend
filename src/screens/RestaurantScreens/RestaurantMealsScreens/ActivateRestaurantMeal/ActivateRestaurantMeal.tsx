@@ -52,9 +52,15 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
 
   const [drawer, setDrawer] = useState<Drawers>("closed");
   const [orderStartTime, setOrderStartTime] = useState(new Date());
-  const [orderCutoffTime, setOrderCutoffTime] = useState(new Date());
-  const [pickupStartTime, setPickupStartTime] = useState(new Date());
-  const [pickupEndTime, setPickupEndTime] = useState(new Date());
+  const [orderCutoffTime, setOrderCutoffTime] = useState(
+    new Date(new Date().setHours(new Date().getHours() + 2)),
+  );
+  const [pickupStartTime, setPickupStartTime] = useState(
+    new Date(new Date().setHours(new Date().getHours() + 4)),
+  );
+  const [pickupEndTime, setPickupEndTime] = useState(
+    new Date(new Date().setHours(new Date().getHours() + 6)),
+  );
 
   const [quantity, setQuantity] = useState("");
 
@@ -170,40 +176,60 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
   };
 
   return (
-    <Container className="flex flex-col justify-center items-center">
+    <Container>
       <Box>
+        <Typography weigth="bold" type="H3">
+          Meal
+        </Typography>
         <Typography
+          className="text-center"
           colour="accent"
-          className="text-center mt-4"
           weigth="bold"
-          type="H3">
+          type="P">
           {meal?.name}
         </Typography>
+        <Typography className="text-center" type="S">
+          {meal?.description}
+        </Typography>
+      </Box>
+      <Box>
+        <Typography weigth="bold" type="H3">
+          Date
+        </Typography>
         <Columns>
-          <Column alignItems="center" justifyContent="center">
-            <Typography weigth="bold" type="S">
-              Order Date
-            </Typography>
+          <Column columnWidth="fullWidth">
             <DatePicker
+              disabled
               minimumDate={new Date()}
               name="orderStartTime"
               onChange={updateDateState}
               value={orderStartTime}
             />
           </Column>
-          <Column alignItems="center">
+        </Columns>
+        <Columns>
+          <Column columnWidth="half">
             <Typography weigth="bold" type="S">
-              Between
+              Order Start Time:
             </Typography>
-            <Button onPress={() => setDrawer("orderStartTime")}>
+            <Button
+              theme="accent"
+              isOutlined
+              onPress={() => setDrawer("orderStartTime")}>
               {orderStartTime.toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",
                 hour12: true,
               })}
             </Button>
+          </Column>
+          <Column columnWidth="half">
+            <Typography weigth="bold" type="S">
+              Order Cutoff Time:
+            </Typography>
             <Button
-              className="mt-4"
+              theme="accent"
+              isOutlined
               onPress={() => setDrawer("orderCutoffTime")}>
               {orderCutoffTime.toLocaleTimeString("en-US", {
                 hour: "2-digit",
@@ -213,30 +239,42 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
             </Button>
           </Column>
         </Columns>
-        <Columns>
-          <Column alignItems="center" justifyContent="center">
-            <Typography weigth="bold" type="S">
-              Pickup Date
-            </Typography>
+        {/* <Columns>
+          <Column columnWidth="fullWidth">
             <DatePicker
+              disabled
               minimumDate={orderCutoffTime}
               name="pickupStartTime"
               onChange={updateDateState}
               value={pickupStartTime}
             />
           </Column>
-          <Column alignItems="center">
+        </Columns> */}
+
+        <Columns>
+          <Column columnWidth="half">
             <Typography weigth="bold" type="S">
-              Between
+              Pickup Start Time:
             </Typography>
-            <Button onPress={() => setDrawer("pickupStartTime")}>
+            <Button
+              theme="accent"
+              isOutlined
+              onPress={() => setDrawer("pickupStartTime")}>
               {pickupStartTime.toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",
                 hour12: true,
               })}
             </Button>
-            <Button className="mt-4" onPress={() => setDrawer("pickupEndTime")}>
+          </Column>
+          <Column columnWidth="half">
+            <Typography weigth="bold" type="S">
+              Pickup Cutoff Time:
+            </Typography>
+            <Button
+              theme="accent"
+              isOutlined
+              onPress={() => setDrawer("pickupEndTime")}>
               {pickupEndTime.toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -251,6 +289,7 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
               Quantity:
             </Typography>
             <Input
+              theme="accent"
               keyboardType="numeric"
               onChangeText={setQuantity}
               value={quantity ?? ""}
