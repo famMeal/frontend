@@ -17,16 +17,16 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
   const { data, loading } = useGetMealsLocationQuery();
   const { meals } = data ?? {};
 
-  const locations = meals?.map(
-    ({ restaurant: { latitude, longitude, name, meals } }) => {
+  const locations = meals
+    ?.map(({ restaurant }) => {
       return {
-        latitude,
-        longitude,
-        name,
-        id: meals.find(({ active }) => active)?.id,
+        latitude: restaurant.latitude,
+        longitude: restaurant.longitude,
+        name: restaurant.name,
+        id: restaurant.meals.find(({ active }) => active)?.id,
       };
-    },
-  );
+    })
+    .filter(location => location.latitude && location.longitude && location.id);
 
   const handleMapReady = () => {
     const coordinates = locations?.map(({ latitude, longitude }) => {
@@ -41,8 +41,11 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
 
   const handleOnPressMarker = (restaurantId: string) => {
     const restaurantIndex = meals?.findIndex(({ id }) => id === restaurantId);
-    if (scrollViewRef && restaurantIndex !== -1) {
-      scrollViewRef.scrollTo({ y: restaurantIndex ?? 0 * 400, animated: true });
+    if (restaurantIndex !== undefined && restaurantIndex !== -1) {
+      scrollViewRef?.scrollTo({
+        y: restaurantIndex * 400,
+        animated: true,
+      });
     }
   };
 

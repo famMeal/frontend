@@ -26,7 +26,7 @@ const RestaurantMealsScreens: FC<Props> = ({
   setActiveScreen,
 }) => {
   const { params } = route ?? {};
-  const { restaurantID } = params;
+  const { restaurantID, mealID } = params;
 
   const OnPressNavigateBack = () => navigation.goBack();
 
@@ -42,7 +42,7 @@ const RestaurantMealsScreens: FC<Props> = ({
       <Screen
         name="RestaurantMeals"
         component={RestaurantMeals}
-        initialParams={{ restaurantID }}
+        initialParams={{ restaurantID, mealID }}
         options={{
           headerShown: false,
           headerBackground: () => (

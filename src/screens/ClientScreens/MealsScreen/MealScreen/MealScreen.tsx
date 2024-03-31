@@ -86,10 +86,12 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
           destination={{
             latitude: restaurant?.latitude!,
             longitude: restaurant?.longitude!,
+            latitudeDelta: 0.005, // Closer zoom
+            longitudeDelta: 0.005,
           }}
         />
       ),
-    [loading],
+    [loading, restaurant?.latitude, restaurant?.longitude],
   );
 
   const renderCTA = () =>

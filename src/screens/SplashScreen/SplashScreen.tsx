@@ -27,7 +27,7 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
 
       if (data?.currentUser) {
         const isRestaurant = !!data?.currentUser?.restaurant;
-        navigate(isRestaurant ? Screens.Restaurants : Screens.Clients);
+        navigate(isRestaurant ? Screens?.Clients : Screens.Clients);
       }
     }
   }, [loading, data, navigation]);

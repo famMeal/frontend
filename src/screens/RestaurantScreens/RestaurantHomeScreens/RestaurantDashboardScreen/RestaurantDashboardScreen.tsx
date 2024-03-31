@@ -15,6 +15,7 @@ import { COLOURS } from "constants/colours";
 import { ArrowRightCircle, BadgeCheck } from "lucide-react-native";
 import React, { useState, type FC } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
+import type { Meal } from "schema";
 import { RestaurantCreateMealModal } from "screens/RestaurantScreens/RestaurantCreateMealModal";
 import type { RootStackParamList } from "types/navigation.types";
 import { formatCurrency } from "utilities/formatCurrency";
@@ -43,8 +44,8 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
   const onPressNavigateToOrders = () =>
     navigate("RestaurantOrdersScreen", { restaurantID });
 
-  const onPressNavigateToActivateMeal = () =>
-    navigate("RestaurantMealsScreens", { restaurantID });
+  const onPressNavigateToActivateMeal = (mealID: Meal["id"]) =>
+    navigate("RestaurantMealsScreens", { restaurantID, mealID });
 
   const onPressNavigateToCreateMeal = () => setIsModalOpen(true);
 
@@ -91,7 +92,9 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
 
   const renderNonActiveMeals = () =>
     data?.restaurant?.meals.map(({ name, id, active }) => (
-      <TouchableOpacity key={id} onPress={onPressNavigateToActivateMeal}>
+      <TouchableOpacity
+        key={id}
+        onPress={() => onPressNavigateToActivateMeal(id)}>
         <Columns className="border-b border-accent pb-2 ">
           <Column columnWidth="twoThird" direction="row">
             <Typography isMarginless>{name}</Typography>

@@ -26,6 +26,7 @@ export type RootStackParamList = {
   };
   RestaurantMeals: {
     restaurantID: Restaurant["id"];
+    mealID?: Meal["id"];
   };
   ActivateRestaurantMeal: {
     meal: RestaurantMealsQueryData["restaurant"]["meals"][number];
@@ -33,6 +34,7 @@ export type RootStackParamList = {
   };
   RestaurantMealsScreens: {
     restaurantID: Restaurant["id"];
+    mealID?: Meal["id"];
   };
   Splash: undefined;
   Clients: undefined;
