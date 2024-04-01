@@ -7,8 +7,7 @@ import {
   Container,
   Typography,
 } from "components";
-import { useRef, useState, type FC } from "react";
-import type { View } from "react-native";
+import { useState, type FC } from "react";
 import { ScrollView } from "react-native";
 import { RestaurantCreateMealModal } from "screens/RestaurantScreens/RestaurantCreateMealModal";
 import type { RootStackParamList } from "types/navigation.types";
@@ -30,12 +29,7 @@ type Props = RestaurantMealsStackProps;
 const RestaurantMeals: FC<Props> = ({ route }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { params } = route ?? {};
-  const { restaurantID, mealID } = params;
-
-  type MealRefs = { [key: string]: React.RefObject<View> };
-
-  const scrollViewRef = useRef<ScrollView>(null);
-  const mealRefs = useRef<MealRefs>({});
+  const { restaurantID } = params;
 
   const { data, loading } = useRestaurantMealsQuery({
     skip: !restaurantID,

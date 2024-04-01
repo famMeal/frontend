@@ -40,6 +40,7 @@ const ConfirmationScreen: FC<Props> = ({
   if (params?.cart) {
     return (
       <Cart
+        userID={userID}
         cart={params.cart}
         onCompleted={onCompleted}
         onPressDelete={onPressNavigateToMeals}

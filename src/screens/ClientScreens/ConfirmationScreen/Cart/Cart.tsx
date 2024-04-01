@@ -8,6 +8,7 @@ import {
 } from "components";
 import type { FC } from "react";
 import { ScrollView } from "react-native";
+import type { User } from "schema";
 import type { AddToCartData } from "screens/ClientScreens/MealsScreen/MealScreen/useAddToCartMutation";
 import { GET_USER_0RDERS_QUERY } from "screens/ClientScreens/OrdersScreen/useGetUserOrdersQuery";
 import { formatTime } from "utilities/formatTime";
@@ -31,6 +32,7 @@ interface Props {
   onPressGoBack: () => void;
   onPressDelete: () => void;
   onCompleted: () => void;
+  userID: User["id"];
 }
 
 const Cart: FC<Props> = ({
@@ -38,6 +40,7 @@ const Cart: FC<Props> = ({
   onPressDelete,
   onPressGoBack,
   onCompleted,
+  userID,
 }) => {
   const [placeOrder, { loading }] = usePlaceOrderMutation();
 
@@ -51,7 +54,14 @@ const Cart: FC<Props> = ({
           quantity: cart?.quantity,
         },
       },
-      refetchQueries: [GET_USER_0RDERS_QUERY],
+      refetchQueries: [
+        {
+          query: GET_USER_0RDERS_QUERY,
+          variables: {
+            id: userID,
+          },
+        },
+      ],
       onCompleted,
     });
   };

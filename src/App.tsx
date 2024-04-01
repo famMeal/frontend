@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { COLOURS } from "constants/colours";
 import type { FC } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   ClientScreens,
   EmailSignUpScreen,
@@ -19,103 +20,105 @@ const { Navigator, Screen } = createBottomTabNavigator<RootStackParamList>();
 
 const App: FC = () => {
   return (
-    <ApolloProvider client={client}>
-      <NavigationContainer>
-        <Navigator initialRouteName="Login">
-          <Screen
-            name="Login"
-            component={LoginScreen}
-            options={{
-              headerShown: false,
-              headerBackground: () => null,
-              tabBarStyle: {
-                display: "none",
-              },
-              headerTitleStyle: {
-                color: COLOURS.white,
-                fontFamily: "Khula-Bold",
-                fontSize: 18,
-              },
-            }}
-          />
-          <Screen
-            name="Splash"
-            component={SplashScreen}
-            options={{
-              headerShown: false,
-              tabBarStyle: {
-                display: "none",
-              },
-            }}
-          />
-          <Screen
-            name="SignUp"
-            component={SignUpScreen}
-            options={{
-              headerBackground: () => null,
-              tabBarStyle: {
-                display: "none",
-              },
-              headerTitleStyle: {
-                color: COLOURS.white,
-                fontFamily: "Khula-Bold",
-                fontSize: 18,
-              },
-            }}
-          />
-          <Screen
-            name="EmailSignUp"
-            component={EmailSignUpScreen}
-            options={{
-              headerBackground: () => null,
-              tabBarStyle: {
-                display: "none",
-              },
-              headerTitleStyle: {
-                color: COLOURS.white,
-                fontFamily: "Khula-Bold",
-                fontSize: 18,
-              },
-            }}
-          />
-          <Screen
-            name="VerifyAccount"
-            component={VerifyAccountScreen}
-            options={{
-              headerBackground: () => null,
-              tabBarStyle: {
-                display: "none",
-              },
-              headerTitleStyle: {
-                color: COLOURS.white,
-                fontFamily: "Khula-Bold",
-                fontSize: 18,
-              },
-            }}
-          />
-          <Screen
-            name="Clients"
-            component={ClientScreens}
-            options={{
-              headerShown: false,
-              tabBarStyle: {
-                display: "none",
-              },
-            }}
-          />
-          <Screen
-            name="Restaurants"
-            component={RestaurantScreens}
-            options={{
-              headerShown: false,
-              tabBarStyle: {
-                display: "none",
-              },
-            }}
-          />
-        </Navigator>
-      </NavigationContainer>
-    </ApolloProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ApolloProvider client={client}>
+        <NavigationContainer>
+          <Navigator initialRouteName="Login">
+            <Screen
+              name="Login"
+              component={LoginScreen}
+              options={{
+                headerShown: false,
+                headerBackground: () => null,
+                tabBarStyle: {
+                  display: "none",
+                },
+                headerTitleStyle: {
+                  color: COLOURS.white,
+                  fontFamily: "Khula-Bold",
+                  fontSize: 18,
+                },
+              }}
+            />
+            <Screen
+              name="Splash"
+              component={SplashScreen}
+              options={{
+                headerShown: false,
+                tabBarStyle: {
+                  display: "none",
+                },
+              }}
+            />
+            <Screen
+              name="SignUp"
+              component={SignUpScreen}
+              options={{
+                headerBackground: () => null,
+                tabBarStyle: {
+                  display: "none",
+                },
+                headerTitleStyle: {
+                  color: COLOURS.white,
+                  fontFamily: "Khula-Bold",
+                  fontSize: 18,
+                },
+              }}
+            />
+            <Screen
+              name="EmailSignUp"
+              component={EmailSignUpScreen}
+              options={{
+                headerBackground: () => null,
+                tabBarStyle: {
+                  display: "none",
+                },
+                headerTitleStyle: {
+                  color: COLOURS.white,
+                  fontFamily: "Khula-Bold",
+                  fontSize: 18,
+                },
+              }}
+            />
+            <Screen
+              name="VerifyAccount"
+              component={VerifyAccountScreen}
+              options={{
+                headerBackground: () => null,
+                tabBarStyle: {
+                  display: "none",
+                },
+                headerTitleStyle: {
+                  color: COLOURS.white,
+                  fontFamily: "Khula-Bold",
+                  fontSize: 18,
+                },
+              }}
+            />
+            <Screen
+              name="Clients"
+              component={ClientScreens}
+              options={{
+                headerShown: false,
+                tabBarStyle: {
+                  display: "none",
+                },
+              }}
+            />
+            <Screen
+              name="Restaurants"
+              component={RestaurantScreens}
+              options={{
+                headerShown: false,
+                tabBarStyle: {
+                  display: "none",
+                },
+              }}
+            />
+          </Navigator>
+        </NavigationContainer>
+      </ApolloProvider>
+    </GestureHandlerRootView>
   );
 };
 

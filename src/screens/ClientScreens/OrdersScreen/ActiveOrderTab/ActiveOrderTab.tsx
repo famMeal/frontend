@@ -36,15 +36,25 @@ const ActiveOrderTab: FC<Props> = ({ userID }) => {
   });
 
   const renderSkeleton = (num: number) => <SkeletonOrderCard key={num} />;
-
   const renderOrderSkeletons = () => createList(3).map(renderSkeleton);
 
-  const orders = data?.user?.orders?.filter(
-    ({ status }) => status !== STATUS.COMPLETED,
-  );
+  const parseDateString = (dateString: string) => {
+    const isoString = dateString.replace(" UTC", "Z");
+    return new Date(isoString);
+  };
+
+  // Filter and sort orders
+  const filteredAndSortedOrders = data?.user?.orders
+    ?.filter(({ status }) => status !== STATUS.COMPLETED)
+    .sort((a, b) => {
+      return (
+        parseDateString(b.createdAt!).getTime() -
+        parseDateString(a.createdAt!).getTime()
+      );
+    });
 
   const renderOrders = () =>
-    orders?.map(({ id, ...rest }) => (
+    filteredAndSortedOrders?.map(({ id, ...rest }) => (
       <OrderCard key={id} order={{ id, ...rest }} />
     ));
 

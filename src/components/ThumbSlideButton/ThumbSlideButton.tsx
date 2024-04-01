@@ -1,16 +1,14 @@
 import { COLOURS } from "constants/colours";
 import { ChevronRightIcon } from "lucide-react-native";
-import type { FC } from "react";
-import React, { useEffect, useRef } from "react";
-import {
-  ActivityIndicator,
-  Animated,
-  Dimensions,
-  PanResponder,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import React, { useEffect } from "react";
+import { ActivityIndicator, Dimensions, StyleSheet, Text } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import Animated, {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
 
 interface Props {
   onSlideComplete: () => void;
@@ -20,82 +18,78 @@ interface Props {
 
 const { width: screenWidth } = Dimensions.get("window");
 
-const ThumbSlideButton: FC<Props> = ({
+const ThumbSlideButton: React.FC<Props> = ({
   onSlideComplete,
   loading = false,
   isCompleted = false,
 }) => {
-  const slideProgress = useRef(new Animated.Value(0)).current; // Using useRef to persist the animated value
+  const slideProgress = useSharedValue(0);
+  const maxSlideDistance = screenWidth - 50;
 
   useEffect(() => {
     if (isCompleted) {
-      Animated.spring(slideProgress, {
-        toValue: screenWidth,
-        useNativeDriver: false,
-      }).start();
+      slideProgress.value = withSpring(maxSlideDistance);
     }
-  }, [isCompleted, slideProgress]);
+  }, [isCompleted]);
 
-  const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => !loading && !isCompleted,
-    onPanResponderMove: Animated.event([null, { dx: slideProgress }], {
-      useNativeDriver: false,
-    }),
-    onPanResponderRelease: (e, gestureState) => {
-      if (!isCompleted && gestureState.dx >= screenWidth * 0.8) {
-        onSlideComplete();
-      } else {
-        Animated.spring(slideProgress, {
-          toValue: 0,
-          useNativeDriver: false,
-        }).start();
+  const panGesture = Gesture.Pan()
+    .enabled(!isCompleted) // Disable the gesture when isCompleted is true
+    .onUpdate(event => {
+      if (!loading && !isCompleted) {
+        const translationX = Math.min(maxSlideDistance, event.translationX);
+        slideProgress.value = translationX;
       }
-    },
-  });
+    })
+    .onEnd(() => {
+      if (
+        slideProgress.value >= maxSlideDistance * 0.8 &&
+        !isCompleted &&
+        !loading
+      ) {
+        runOnJS(onSlideComplete)();
+        slideProgress.value = withSpring(maxSlideDistance);
+      } else {
+        slideProgress.value = withSpring(0);
+      }
+    });
 
-  const animatedButtonStyle = {
-    transform: [
-      {
-        translateX: slideProgress.interpolate({
-          inputRange: [0, screenWidth],
-          outputRange: [0, screenWidth - 70], // Subtract the thumb width to prevent overflow
-          extrapolate: "clamp",
-        }),
-      },
-    ],
-  };
+  const animatedThumbStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: slideProgress.value }],
+  }));
 
-  const renderIcon = () =>
-    loading ? (
-      <ActivityIndicator size="large" color={COLOURS.primary} />
-    ) : (
-      <ChevronRightIcon color={COLOURS.accent} />
-    );
+  const backgroundColorInterpolate = useAnimatedStyle(() => ({
+    backgroundColor:
+      slideProgress.value >= maxSlideDistance * 0.8
+        ? COLOURS.primary
+        : COLOURS.accent,
+  }));
 
   return (
-    <View style={styles.container}>
-      <Animated.View
-        {...panResponder.panHandlers}
-        style={[animatedButtonStyle, styles.thumb]}>
-        {renderIcon()}
+    <GestureDetector gesture={panGesture}>
+      <Animated.View style={[styles.container, backgroundColorInterpolate]}>
+        <Animated.View style={[styles.thumb, animatedThumbStyle]}>
+          {loading ? (
+            <ActivityIndicator color={COLOURS.accent} />
+          ) : (
+            <ChevronRightIcon color={COLOURS.accent} />
+          )}
+        </Animated.View>
+        <Text style={styles.text}>
+          {isCompleted ? "Picked up!" : "Slide to pickup"}
+        </Text>
       </Animated.View>
-      <Text style={styles.text}>
-        {isCompleted ? "Completed!" : "Slide to pickup"}
-      </Text>
-    </View>
+    </GestureDetector>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 2,
-    borderColor: COLOURS.accent,
-    backgroundColor: COLOURS.accent,
     borderRadius: 30,
     overflow: "hidden",
     justifyContent: "center",
-    width: "100%", // full width
-    minHeight: 55, // Make sure the button has height even when empty
+    width: "100%",
+    minHeight: 55,
+    paddingHorizontal: 10,
   },
   thumb: {
     height: 50,
@@ -104,7 +98,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLOURS.white,
     justifyContent: "center",
     alignItems: "center",
-    elevation: 2,
     position: "absolute",
     zIndex: 10,
   },
