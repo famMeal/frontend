@@ -1,5 +1,5 @@
 import type { ParamListBase, RouteProp } from "@react-navigation/native";
-import { Chip, Column, Columns, Container } from "components";
+import { Container } from "components";
 import { STATUS } from "constants/status";
 import type { FC } from "react";
 import React from "react";
@@ -10,7 +10,6 @@ import {
   SkeletonOrderCard,
 } from "screens/ClientScreens/OrdersScreen/OrderCard";
 import { createList } from "utilities/createList";
-import { groupAndSortOrdersByStatus } from "utilities/groupAndSortOrders";
 import { useGetUserOrdersQuery } from "../useGetUserOrdersQuery";
 
 interface Props {
@@ -44,22 +43,9 @@ const ActiveOrderTab: FC<Props> = ({ userID }) => {
     ({ status }) => status !== STATUS.COMPLETED,
   );
 
-  const groupedOrders = groupAndSortOrdersByStatus(orders!);
-
   const renderOrders = () =>
-    Object.entries(groupedOrders).map(([date, ordersForDate]) => (
-      <Columns direction="column" key={date}>
-        <Column columnWidth="fullWidth" justifyContent="center">
-          <Chip type="accent" className="mb-4" isStatic>
-            {toReadableDate(date)}
-          </Chip>
-        </Column>
-        <Column columnWidth="fullWidth">
-          {ordersForDate.map(({ id, ...rest }) => (
-            <OrderCard key={id} order={{ id, ...rest }} />
-          ))}
-        </Column>
-      </Columns>
+    orders?.map(({ id, ...rest }) => (
+      <OrderCard key={id} order={{ id, ...rest }} />
     ));
 
   const renderContent = () =>

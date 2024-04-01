@@ -1,41 +1,38 @@
 import { useAccordionContext } from "components/Accordion/AccordionContext";
-import { COLOURS } from "constants/colours";
+import { ThumbSlideButton } from "components/ThumbSlideButton";
 import { STATUS } from "constants/status";
 import { type FC } from "react";
-import SlideButton from "rn-slide-button";
 import type { Order } from "schema";
 import { useUpdateOrderStatus } from "shared/useUpdateOrderStatusMutation";
 
 interface Props {
   orderId: Order["id"];
+  status: Order["status"];
 }
 
-const OrderCardSliderButton: FC<Props> = ({ orderId }) => {
+const OrderCardSliderButton: FC<Props> = ({ orderId, status }) => {
   const [updateStatus, { loading }] = useUpdateOrderStatus();
   const { setIsOpen } = useAccordionContext();
 
   const handleOnSlideComplete = () => {
-    updateStatus({
-      variables: {
-        input: {
-          orderId,
-          status: STATUS.PICKED_UP,
+    if (status !== STATUS.PICKED_UP) {
+      updateStatus({
+        variables: {
+          input: {
+            orderId,
+            status: STATUS.PICKED_UP,
+          },
         },
-      },
-      onCompleted: () => setIsOpen(false),
-    });
+        onCompleted: () => setIsOpen(false),
+      });
+    }
   };
 
   return (
-    <SlideButton
-      animation
-      onReachedToEnd={handleOnSlideComplete}
-      padding={0}
-      title="Slide to pickup"
-      containerStyle={{ backgroundColor: COLOURS.accent }}
-      underlayStyle={{ backgroundColor: COLOURS.primary }}
-      titleStyle={{ fontWeight: 700, fontFamily: "Khula-Bold" }}
-      disabled={loading}
+    <ThumbSlideButton
+      isCompleted={status === STATUS.PICKED_UP}
+      onSlideComplete={handleOnSlideComplete}
+      loading={loading}
     />
   );
 };

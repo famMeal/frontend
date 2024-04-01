@@ -64,12 +64,10 @@ const OrderCard: FC<Props> = ({ order }) => {
     );
   };
 
-  const renderSlider = () => {
-    if (status === STATUS.COMPLETED || status === STATUS.PICKED_UP) {
-      return null;
-    }
-    return <OrderCardSliderButton orderId={id} />;
-  };
+  const renderButton = () =>
+    status === STATUS.COMPLETED ? null : (
+      <OrderCardSliderButton status={status} orderId={id} />
+    );
 
   return (
     <Box key={id}>
@@ -134,7 +132,7 @@ const OrderCard: FC<Props> = ({ order }) => {
               </Button>
             </Column>
           </Columns>
-          {renderSlider()}
+          {renderButton()}
         </AccordionContent>
       </Accordion>
     </Box>

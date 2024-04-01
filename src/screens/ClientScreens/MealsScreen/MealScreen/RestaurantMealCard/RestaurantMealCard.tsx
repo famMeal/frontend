@@ -8,11 +8,10 @@ import {
   Typography,
 } from "components";
 import { COLOURS } from "constants/colours";
-import { Trash2Icon } from "lucide-react-native";
+import { ChevronDownIcon, Trash2Icon } from "lucide-react-native";
 import { type Dispatch, type FC, type SetStateAction } from "react";
 import { View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
-import { ChevronDownIcon } from "react-native-heroicons/solid";
 import type { MealSplinter } from "screens/ClientScreens/MealsScreen/MealScreen/useGetMealQuery";
 import type { ConfirmationNavigationProps } from "types/navigation.types";
 import { createTimeArray, formatTimeIntervals } from "utilities";

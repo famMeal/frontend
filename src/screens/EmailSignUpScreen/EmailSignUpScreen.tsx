@@ -9,9 +9,9 @@ import {
   Typography,
 } from "components";
 import { COLOURS } from "constants/colours";
+import { EyeIcon, EyeOffIcon } from "lucide-react-native";
 import { useState, type FC } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { EyeIcon, EyeSlashIcon } from "react-native-heroicons/solid";
 import type { SignUpNavigationProps } from "types/navigation.types";
 import { useSignUpMutation } from "./useSignUpMutation";
 
@@ -27,7 +27,7 @@ const EmailSignUpScreen: FC = () => {
 
   const renderEyeIcon = () =>
     secureTextEntry ? (
-      <EyeSlashIcon color={COLOURS.accent} />
+      <EyeOffIcon color={COLOURS.accent} />
     ) : (
       <EyeIcon color={COLOURS.accent} />
     );

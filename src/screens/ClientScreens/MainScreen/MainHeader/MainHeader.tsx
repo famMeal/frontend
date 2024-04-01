@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import { Button, Typography } from "components";
 import { COLOURS } from "constants/colours";
+import { ArrowLeftCircleIcon } from "lucide-react-native";
 import { memo, type FC } from "react";
 import { View } from "react-native";
-import { ArrowLeftCircleIcon } from "react-native-heroicons/solid";
 import type { User } from "schema";
 import type { MainNavigationProps } from "types/navigation.types";
 import { getCSS } from "./MainHeader.styles";

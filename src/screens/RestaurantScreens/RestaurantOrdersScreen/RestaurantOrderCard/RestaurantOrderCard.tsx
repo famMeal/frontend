@@ -56,6 +56,7 @@ const RestaurantOrderCard: FC<Props> = ({
         </Column>
         <Column alignItems="flex-end" justifyContent="flex-end">
           <Switch
+            disabled={status === STATUS.COMPLETED}
             trackColor={{ false: COLOURS.primary, true: COLOURS.accent }}
             thumbColor={COLOURS.light}
             ios_backgroundColor={COLOURS.light}

@@ -2,9 +2,9 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Button, Typography } from "components";
 import { COLOURS } from "constants/colours";
+import { ArrowLeftIcon } from "lucide-react-native";
 import { memo, type FC } from "react";
 import { View } from "react-native";
-import { ArrowLeftCircleIcon } from "react-native-heroicons/solid";
 import type { Restaurant } from "schema";
 import type { RootStackParamList } from "types/navigation.types";
 import { getCSS } from "./RestaurantMealsHeader.styles";
@@ -30,7 +30,7 @@ const RestaurantMealsHeader: FC<Props> = memo(({ restaurantID }) => {
           isFullyRounded
           isClean
           isOutlined>
-          <ArrowLeftCircleIcon color={COLOURS.accent} size={30} />
+          <ArrowLeftIcon color={COLOURS.accent} size={30} />
         </Button>
       </View>
       <Typography type="H3" weigth="bold" colour="accent">
