@@ -1,4 +1,3 @@
-import { useAccordionContext } from "components/Accordion/AccordionContext";
 import { ThumbSlideButton } from "components/ThumbSlideButton";
 import { STATUS } from "constants/status";
 import { type FC } from "react";
@@ -12,7 +11,6 @@ interface Props {
 
 const OrderCardSliderButton: FC<Props> = ({ orderId, status }) => {
   const [updateStatus, { loading }] = useUpdateOrderStatus();
-  const { setIsOpen } = useAccordionContext();
 
   const handleOnSlideComplete = () => {
     if (status !== STATUS.PICKED_UP) {
@@ -23,7 +21,6 @@ const OrderCardSliderButton: FC<Props> = ({ orderId, status }) => {
             status: STATUS.PICKED_UP,
           },
         },
-        onCompleted: () => setIsOpen(false),
       });
     }
   };

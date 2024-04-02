@@ -1,6 +1,7 @@
 import { Button } from "components/Button";
 import { Column } from "components/Column";
 import { Columns } from "components/Columns";
+import { COLOURS } from "constants/colours";
 import { XIcon } from "lucide-react-native";
 import type { ReactNode } from "react";
 import React, { type FC } from "react";
@@ -35,8 +36,13 @@ const Modal: FC<ModalProps> = ({
             </Column>
           </Columns>
           <View className="top-4 absolute right-4">
-            <Button theme="accent" onPress={() => setModalVisible(false)}>
-              <XIcon color="white" />
+            <Button
+              isOutlined
+              isClean
+              isIcon
+              theme="accent"
+              onPress={() => setModalVisible(false)}>
+              <XIcon color={COLOURS.accent} />
             </Button>
           </View>
         </View>

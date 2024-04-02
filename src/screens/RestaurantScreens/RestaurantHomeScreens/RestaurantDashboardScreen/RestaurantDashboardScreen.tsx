@@ -21,6 +21,7 @@ import type { RootStackParamList } from "types/navigation.types";
 import { formatCurrency } from "utilities/formatCurrency";
 import { parseCurrency } from "utilities/parseCurrency";
 import { RestaurantDashboardMealCard } from "./RestaurantDashboardMealCard";
+import { SkeletonRestaurantDashboardScreens } from "./SkeletonRestaurantDashboardScreen";
 import { useRestaurantQuery } from "./useRestaurantQuery";
 
 type RestaurantStackProps = NativeStackScreenProps<
@@ -52,7 +53,7 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
   const OnPressNavigateToSettings = () =>
     navigate("RestaurantSettingsScreen", { restaurantID });
 
-  const { data } = useRestaurantQuery({
+  const { data, loading } = useRestaurantQuery({
     variables: {
       id: restaurantID,
     },
@@ -73,6 +74,10 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
   const totalRevenue = formatCurrency(
     totalQuantityOrdered! * parseCurrency(price!)
   );
+
+  if (loading) {
+    return <SkeletonRestaurantDashboardScreens />;
+  }
 
   const renderActiveMeal = () =>
     activeMeal ? (

@@ -8,7 +8,7 @@ const GoogleMarker = () => {
       <View
         style={{
           backgroundColor: COLOURS.accent,
-          padding: 8,
+          padding: 14,
           borderRadius: 50,
           alignItems: "center",
           justifyContent: "center",

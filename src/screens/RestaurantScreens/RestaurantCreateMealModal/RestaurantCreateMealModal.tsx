@@ -109,14 +109,13 @@ const RestaurantCreateMealModal: FC<Props> = ({
 
   return (
     <Modal isModalVisible={isOpen} setModalVisible={setIsOpen}>
-      <Typography
-        colour="accent"
-        className="text-center mt-4"
-        weigth="bold"
-        type="H3">
-        Create Meal
-      </Typography>
-
+      <Columns>
+        <Column>
+          <Typography colour="accent" className=" mt-4" weigth="bold" type="H3">
+            Create Meal
+          </Typography>
+        </Column>
+      </Columns>
       <Columns>
         <Column>
           <Typography weigth="bold" type="S">

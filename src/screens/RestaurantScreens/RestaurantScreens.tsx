@@ -12,7 +12,6 @@ import { RestaurantHomeScreens } from "./RestaurantHomeScreens";
 import { RestaurantMealsScreens } from "./RestaurantMealsScreens";
 import { RestaurantOrdersScreen } from "./RestaurantOrdersScreen";
 import { SkeletonRestaurantScreens } from "./SkeletonRestaurantScreens";
-import { useRestaurantOrdersQuery } from "./useRestaurantOrdersQuery";
 
 const { Navigator, Screen } = createBottomTabNavigator<RootStackParamList>();
 
@@ -25,15 +24,7 @@ interface Props extends RestaurantStackProps {}
 
 const RestaurantScreens: FC<Props> = ({ navigation }) => {
   const [activeScreen, setActiveScreen] = useState("RestaurantHomeScreens");
-  const { data: currentUserData } = useCurrentUserQuery();
-  const { id } = currentUserData?.currentUser?.restaurant ?? {};
-
-  const { data, loading } = useRestaurantOrdersQuery({
-    skip: !id,
-    variables: {
-      id: id!,
-    },
-  });
+  const { data, loading } = useCurrentUserQuery();
 
   useFocusEffect(
     useCallback(() => {
@@ -44,7 +35,7 @@ const RestaurantScreens: FC<Props> = ({ navigation }) => {
     }, [navigation])
   );
 
-  if (loading) {
+  if (!data?.currentUser?.restaurant || loading) {
     return <SkeletonRestaurantScreens />;
   }
 
@@ -85,7 +76,7 @@ const RestaurantScreens: FC<Props> = ({ navigation }) => {
           ),
         }}
         name="RestaurantHomeScreens"
-        initialParams={{ restaurantID: data?.restaurant?.id }}>
+        initialParams={{ restaurantID: data?.currentUser?.restaurant?.id }}>
         {props => (
           <RestaurantHomeScreens {...props} setActiveScreen={setActiveScreen} />
         )}
@@ -120,7 +111,7 @@ const RestaurantScreens: FC<Props> = ({ navigation }) => {
         }}
         name="RestaurantMealsScreens"
         initialParams={{
-          restaurantID: data?.restaurant?.id,
+          restaurantID: data?.currentUser?.restaurant?.id,
         }}>
         {props => (
           <RestaurantMealsScreens
@@ -158,7 +149,7 @@ const RestaurantScreens: FC<Props> = ({ navigation }) => {
         }}
         name="RestaurantOrdersScreen"
         initialParams={{
-          restaurantID: data?.restaurant?.id,
+          restaurantID: data?.currentUser?.restaurant?.id,
         }}>
         {props => (
           <RestaurantOrdersScreen

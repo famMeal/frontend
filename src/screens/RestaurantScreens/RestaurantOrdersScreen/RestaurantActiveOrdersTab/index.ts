@@ -1,0 +1,1 @@
+export { RestaurantActiveOrdersTab } from "./RestaurantActiveOrdersTab";

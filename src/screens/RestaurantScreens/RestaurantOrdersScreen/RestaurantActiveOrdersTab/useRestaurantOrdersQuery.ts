@@ -1,14 +1,14 @@
 import type { QueryHookOptions } from "@apollo/client";
 import { gql, useQuery } from "@apollo/client";
-import type { Meal, Order, Restaurant, User } from "schema";
+import type { Meal, Order, OrdersFilterObject, Restaurant, User } from "schema";
 
 export const RESTAURANT_ORDERS_QUERY = gql`
-  query RestaurantOrders($id: ID!) {
+  query RestaurantOrders($id: ID!, $filters: OrdersFilterObject) {
     restaurant(id: $id) {
       id
       __typename
       name
-      orders {
+      orders(filters: $filters) {
         __typename
         id
         quantity
@@ -72,6 +72,7 @@ export interface Data {
 
 export interface Variables {
   id: string;
+  filters?: OrdersFilterObject;
 }
 
 type Options = QueryHookOptions<Data, Variables>;

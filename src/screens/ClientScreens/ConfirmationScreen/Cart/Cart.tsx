@@ -171,6 +171,7 @@ const Cart: FC<Props> = ({
                 </Column>
                 <Column>
                   <Button
+                    isOutlined
                     isLoading={isLoading}
                     onPress={onPressDelete}
                     theme="accent">

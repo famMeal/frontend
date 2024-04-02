@@ -33,7 +33,7 @@ const ThumbSlideButton: React.FC<Props> = ({
   }, [isCompleted]);
 
   const panGesture = Gesture.Pan()
-    .enabled(!isCompleted) // Disable the gesture when isCompleted is true
+    .enabled(!isCompleted)
     .onUpdate(event => {
       if (!loading && !isCompleted) {
         const translationX = Math.min(maxSlideDistance, event.translationX);
@@ -64,19 +64,22 @@ const ThumbSlideButton: React.FC<Props> = ({
         : COLOURS.accent,
   }));
 
+  const renderText = () =>
+    loading ? (
+      <ActivityIndicator color={COLOURS.white} />
+    ) : (
+      <Text style={styles.text}>
+        {isCompleted ? "Picked up!" : "Slide to pickup"}
+      </Text>
+    );
+
   return (
     <GestureDetector gesture={panGesture}>
       <Animated.View style={[styles.container, backgroundColorInterpolate]}>
         <Animated.View style={[styles.thumb, animatedThumbStyle]}>
-          {loading ? (
-            <ActivityIndicator color={COLOURS.accent} />
-          ) : (
-            <ChevronRightIcon color={COLOURS.accent} />
-          )}
+          <ChevronRightIcon color={COLOURS.accent} />
         </Animated.View>
-        <Text style={styles.text}>
-          {isCompleted ? "Picked up!" : "Slide to pickup"}
-        </Text>
+        {renderText()}
       </Animated.View>
     </GestureDetector>
   );
@@ -92,8 +95,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   thumb: {
-    height: 50,
-    width: 50,
+    shadowColor: COLOURS.primary,
+    elevation: 10,
+    height: 55,
+    width: 55,
+    borderWidth: 3,
+    borderColor: COLOURS.light,
     borderRadius: 25,
     backgroundColor: COLOURS.white,
     justifyContent: "center",

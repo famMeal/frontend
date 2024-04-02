@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Box, Button, Column, Columns, Typography } from "components";
 import type { FC } from "react";
+import React from "react";
 import type { Order, User } from "schema";
 import type { MealsData } from "screens/ClientScreens/MealsScreen/Meals/useGetMealsQuery";
 import type { RootStackParamList } from "types/navigation.types";

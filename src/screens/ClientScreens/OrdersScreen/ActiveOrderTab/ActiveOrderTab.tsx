@@ -44,7 +44,7 @@ const ActiveOrderTab: FC<Props> = ({ userID }) => {
   };
 
   const filteredAndSortedOrders = data?.user?.orders
-    ?.filter(({ status }) => status !== STATUS.COMPLETED)
+    ?.filter(({ status }) => status !== STATUS.COMPLETED || STATUS.CART)
     .sort((a, b) => {
       return (
         parseDateString(b.createdAt!).getTime() -

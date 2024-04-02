@@ -178,26 +178,8 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
   return (
     <Container>
       <Box>
-        <Typography weigth="bold" type="H3">
-          Meal
-        </Typography>
-        <Typography
-          className="text-center"
-          colour="accent"
-          weigth="bold"
-          type="P">
-          {meal?.name}
-        </Typography>
-        <Typography className="text-center" type="S">
-          {meal?.description}
-        </Typography>
-      </Box>
-      <Box>
-        <Typography weigth="bold" type="H3">
-          Date
-        </Typography>
         <Columns>
-          <Column columnWidth="fullWidth">
+          <Column columnWidth="half">
             <DatePicker
               disabled
               minimumDate={new Date()}
@@ -205,6 +187,11 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
               onChange={updateDateState}
               value={orderStartTime}
             />
+          </Column>
+          <Column columnWidth="half" direction="column" justifyContent="center">
+            <Typography colour="accent" weigth="bold" type="P">
+              {meal?.name}
+            </Typography>
           </Column>
         </Columns>
         <Columns>
@@ -299,13 +286,13 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
             <Button
               disabled={!quantity}
               isLoading={isestaurantSettingLoading || isActivateLoading}
-              onPress={handleOnPressActivate}
-              theme="accent">
+              onPress={handleOnPressActivate}>
               Activate
             </Button>
           </Column>
         </Columns>
       </Box>
+
       {renderTimePicker()}
     </Container>
   );
