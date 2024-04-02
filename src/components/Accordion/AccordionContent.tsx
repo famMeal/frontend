@@ -7,7 +7,7 @@ const AccordionContent: FC<PropsWithChildren> = ({ children }) => {
 
   const renderContent = useCallback(
     () => (isOpen ? <View>{children}</View> : null),
-    [isOpen],
+    [isOpen]
   );
   return renderContent();
 };

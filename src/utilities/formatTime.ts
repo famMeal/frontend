@@ -1,5 +1,5 @@
 const formatTime = <T extends string | null | undefined>(
-  time: T,
+  time: T
 ): string | null => {
   if (!time) {
     return null;

@@ -12,9 +12,9 @@ export const GET_ORDER_QUERY = gql`
       total
       status
       subtotal
+      taxes
       pickupEndTime
       pickupStartTime
-      taxes
       meal {
         __typename
         id

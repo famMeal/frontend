@@ -39,11 +39,11 @@ const RestaurantMeals: FC<Props> = ({ route }) => {
   });
 
   const activeMealID = data?.restaurant?.meals?.find(
-    ({ active }) => active,
+    ({ active }) => active
   )?.id;
 
   const renderMeal = (
-    meal: RestaurantMealsQueryData["restaurant"]["meals"][number],
+    meal: RestaurantMealsQueryData["restaurant"]["meals"][number]
   ) => (
     <RestaurantMealCard
       hasActiveMeal={!!activeMealID}
@@ -84,7 +84,7 @@ const RestaurantMeals: FC<Props> = ({ route }) => {
     }
 
     const sortedMeals = [...data.restaurant.meals].sort((a, b) =>
-      b.active === a.active ? 0 : a.active ? -1 : 1,
+      b.active === a.active ? 0 : a.active ? -1 : 1
     );
 
     return sortedMeals.map(renderMeal);

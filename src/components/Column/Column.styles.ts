@@ -72,7 +72,7 @@ export const getCSS = ({
     flexDirection(direction === "column" ? "flex-col" : "flex-row"),
     alignClass[alignItems],
     justifyClass[justifyContent],
-    marginClass,
+    marginClass
   );
 
   return { columnCSS, width };

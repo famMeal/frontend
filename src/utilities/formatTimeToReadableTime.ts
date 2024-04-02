@@ -12,7 +12,7 @@ export const formatDate = (input: string): string => {
 
 export const formatTimeRange = (
   pickupStartTime: string,
-  pickupEndTime: string,
+  pickupEndTime: string
 ): string => {
   const parseTime = (timeString: string) => {
     const [_, time] = timeString.split(" ");

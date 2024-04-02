@@ -60,7 +60,7 @@ const OrderCard: FC<Props> = ({ order }) => {
       error => {
         console.error("Error getting user's location:", error);
       },
-      { enableHighAccuracy: true },
+      { enableHighAccuracy: true }
     );
   };
 

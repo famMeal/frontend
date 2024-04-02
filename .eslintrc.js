@@ -9,6 +9,7 @@ module.exports = {
         disallowTypeAnnotations: true,
       },
     ],
+    "comma-dangle": ["error", "always-multiline"],
     quotes: ["error", "double"],
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-shadow": "off",

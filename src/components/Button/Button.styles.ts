@@ -35,23 +35,23 @@ export const getCSS = ({
     primary: classnames(
       borderColor(disabled ? "border-gray-400" : "border-primary"),
       backgroundColor(
-        disabled ? "bg-gray-400" : isOutlined ? "bg-white" : "bg-primary",
-      ),
+        disabled ? "bg-gray-400" : isOutlined ? "bg-white" : "bg-primary"
+      )
     ),
     accent: classnames(
       borderColor(disabled ? "border-gray-400" : "border-accent"),
       backgroundColor(
-        disabled ? "bg-gray-400" : isOutlined ? "bg-white" : "bg-accent",
-      ),
+        disabled ? "bg-gray-400" : isOutlined ? "bg-white" : "bg-accent"
+      )
     ),
   };
 
   const paddingStyles = classnames(
-    padding("pb-1", disabled ? "pt-3" : isOutlined ? "pt-2" : "pt-2"),
+    padding("pb-1", disabled ? "pt-3" : isOutlined ? "pt-2" : "pt-2")
   );
 
   const androidPadding = classnames(
-    padding("pb-2", disabled ? "pt-2" : isOutlined ? "pt-2" : "pt-2"),
+    padding("pb-2", disabled ? "pt-2" : isOutlined ? "pt-2" : "pt-2")
   );
 
   const buttonCSS = classnames(
@@ -70,9 +70,9 @@ export const getCSS = ({
         ? "py-4"
         : Platform.OS === "android"
         ? androidPadding
-        : paddingStyles,
+        : paddingStyles
     ),
-    borderWidth(isClean ? "border-0" : "border-2"),
+    borderWidth(isClean ? "border-0" : "border-2")
   );
 
   const themeTextCSS = {
@@ -84,12 +84,12 @@ export const getCSS = ({
     themeTextCSS[theme],
     backgroundColor("bg-inherit"),
     opacity(isLoading ? "opacity-0" : "opacity-100"),
-    fontFamily("font-khulaBold"),
+    fontFamily("font-khulaBold")
   );
 
   const spinnerCSS = classnames(
     position("absolute"),
-    display(isLoading ? "inline" : "hidden"),
+    display(isLoading ? "inline" : "hidden")
   );
 
   return { buttonCSS, textCSS, spinnerCSS };

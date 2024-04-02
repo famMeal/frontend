@@ -37,7 +37,7 @@ const ProfileScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
 
   const renderUserForm = useCallback(
     () => (loading ? <SkeletonUserForm /> : <UserForm user={rest} />),
-    [loading],
+    [loading]
   );
 
   return <Container>{renderUserForm()}</Container>;

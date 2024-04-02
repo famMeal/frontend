@@ -12,7 +12,7 @@ export const getCSS = () => {
   const content = classnames(
     backgroundColor("bg-white"),
     padding("p-4"),
-    borderRadius("rounded-tl-2xl", "rounded-tr-2xl"),
+    borderRadius("rounded-tl-2xl", "rounded-tr-2xl")
   );
   return {
     container,

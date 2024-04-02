@@ -53,7 +53,7 @@ const RestaurantCreateMealModal: FC<Props> = ({
       "Meal Created",
       "Your meal has been successfully created!",
       [{ text: "Close", onPress: clearState }],
-      { cancelable: false },
+      { cancelable: false }
     );
     setIsOpen(false);
   };

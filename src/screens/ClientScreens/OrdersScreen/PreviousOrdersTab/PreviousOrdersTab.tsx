@@ -22,7 +22,7 @@ interface Props {
 }
 
 export const groupAndSortOrders = (
-  orders: OrderData[],
+  orders: OrderData[]
 ): Record<string, OrderData[]> => {
   const groupedOrders = orders?.reduce(
     (acc: Record<string, OrderData[]>, order: OrderData) => {
@@ -35,18 +35,18 @@ export const groupAndSortOrders = (
       }
       return acc;
     },
-    {},
+    {}
   );
 
   if (groupedOrders) {
     Object.keys(groupedOrders)?.forEach(dateKey => {
       groupedOrders[dateKey].sort(
         (a, b) =>
-          new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime(),
+          new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()
       );
     });
     const sortedGroupKeys = Object.keys(groupedOrders)?.sort(
-      (a, b) => new Date(b).getTime() - new Date(a).getTime(),
+      (a, b) => new Date(b).getTime() - new Date(a).getTime()
     );
     const sortedGroupedOrders = sortedGroupKeys?.reduce((acc, key) => {
       acc[key] = groupedOrders[key];

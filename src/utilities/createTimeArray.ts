@@ -1,6 +1,6 @@
 const createTimeArray = (
   startTime?: string | null,
-  endTime?: string | null,
+  endTime?: string | null
 ): string[][] => {
   const intervals: string[][] = [];
 

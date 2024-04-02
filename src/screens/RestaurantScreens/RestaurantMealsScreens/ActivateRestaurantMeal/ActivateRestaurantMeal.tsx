@@ -53,13 +53,13 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
   const [drawer, setDrawer] = useState<Drawers>("closed");
   const [orderStartTime, setOrderStartTime] = useState(new Date());
   const [orderCutoffTime, setOrderCutoffTime] = useState(
-    new Date(new Date().setHours(new Date().getHours() + 2)),
+    new Date(new Date().setHours(new Date().getHours() + 2))
   );
   const [pickupStartTime, setPickupStartTime] = useState(
-    new Date(new Date().setHours(new Date().getHours() + 4)),
+    new Date(new Date().setHours(new Date().getHours() + 4))
   );
   const [pickupEndTime, setPickupEndTime] = useState(
-    new Date(new Date().setHours(new Date().getHours() + 6)),
+    new Date(new Date().setHours(new Date().getHours() + 6))
   );
 
   const [quantity, setQuantity] = useState("");
@@ -97,7 +97,7 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
   const updateDateState = (stateName: string, newValue: Date) => {
     setDrawer("closed");
     dateSetters[stateName as keyof typeof stateSetters].forEach(setter =>
-      setter(newValue),
+      setter(newValue)
     );
   };
 
@@ -147,7 +147,7 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
     } else {
       Alert.alert(
         "Dates/Times are not valid",
-        "Time travelling is not possible",
+        "Time travelling is not possible"
       );
     }
   };

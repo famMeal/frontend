@@ -20,7 +20,7 @@ export const getCSS = ({ size, isFullyRounded }: Omit<Props, "width">) => {
     backgroundColor("bg-gray-200"),
     margin("my-2"),
     animation("animate-pulse"),
-    borderRadius(isFullyRounded ? "rounded-full" : "rounded-lg"),
+    borderRadius(isFullyRounded ? "rounded-full" : "rounded-lg")
   );
 
   const skeletonSize = {
@@ -34,7 +34,7 @@ export const getCSS = ({ size, isFullyRounded }: Omit<Props, "width">) => {
     animation("animate-pulse"),
     backgroundColor("bg-gray-200"),
     overflow("overflow-hidden"),
-    borderRadius(isFullyRounded ? "rounded-full" : "rounded-lg"),
+    borderRadius(isFullyRounded ? "rounded-full" : "rounded-lg")
   );
 
   return { container, wrapper };

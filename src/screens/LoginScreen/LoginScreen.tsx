@@ -36,8 +36,8 @@ const LoginScreen: FC = () => {
       if (credentials) {
         Promise.all(
           Object.entries(credentials).map(([key, value]) =>
-            AsyncStorage.setItem(key, String(value)),
-          ),
+            AsyncStorage.setItem(key, String(value))
+          )
         ).then(() => {
           navigate(Screens.Splash);
         });

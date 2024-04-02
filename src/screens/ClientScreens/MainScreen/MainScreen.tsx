@@ -25,7 +25,7 @@ const MainScreen: FC<Props> = ({ route, setActiveScreen }) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () =>
-      setActiveScreen(route.name),
+      setActiveScreen(route.name)
     );
     return unsubscribe;
   }, [navigation, route.params, route.name, setActiveScreen]);

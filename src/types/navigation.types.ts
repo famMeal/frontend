@@ -1,6 +1,7 @@
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { Meal, Order, Restaurant, User } from "schema";
 import type { RestaurantMealsQueryData } from "screens/RestaurantScreens/RestaurantMealsScreens/RestaurantMeals/useRestaurantMealsQuery";
+import type { GetOrderQueryData } from "shared/useGetOrderQuery";
 
 export type RootStackParamList = {
   Login: undefined;
@@ -51,6 +52,7 @@ export type RootStackParamList = {
   Confirmation: {
     userID: User["id"];
     orderID: Order["id"];
+    cart: GetOrderQueryData["order"];
   };
   Profile: {
     userID: User["id"];

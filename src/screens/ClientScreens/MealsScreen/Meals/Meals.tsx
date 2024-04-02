@@ -19,14 +19,14 @@ const Meals: FC<Props> = ({ userID }) => {
 
   const renderMeals = useCallback(
     () => data?.meals.filter(({ active }) => active).map(renderMeal),
-    [data?.meals],
+    [data?.meals]
   );
 
   const renderSkeleton = (index: number) => <SkeletonMealCard key={index} />;
 
   const renderSkeletons = useCallback(
     () => createList(3).map(renderSkeleton),
-    [],
+    []
   );
 
   const renderContent = () => (loading ? renderSkeletons() : renderMeals());

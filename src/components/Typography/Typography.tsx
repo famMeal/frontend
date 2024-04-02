@@ -27,7 +27,7 @@ const Typography: FC<Props> = ({
 }) => {
   const { typographyCSS } = useMemo(
     () => getCSS({ weigth, type, isMarginless, colour }),
-    [weigth, type, isMarginless, colour],
+    [weigth, type, isMarginless, colour]
   );
 
   return (

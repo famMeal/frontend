@@ -62,7 +62,7 @@ const Column: FC<Props> = ({
       isLastColumn,
       columnWidth,
       parentWidth,
-    ],
+    ]
   );
 
   return (

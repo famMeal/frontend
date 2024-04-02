@@ -17,7 +17,7 @@ export const getCSS = () => {
     position("relative"),
     display("flex"),
     justifyContent("justify-end"),
-    alignItems("items-center"),
+    alignItems("items-center")
   );
   const wrapper = classnames(position("absolute"), inset("bottom-0", "left-0"));
   return { container, wrapper };

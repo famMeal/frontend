@@ -4,7 +4,7 @@ import type { UserOrderQueryData } from "screens/ClientScreens/OrdersScreen/useG
 type OrderData = UserOrderQueryData["user"]["orders"][number];
 
 export const groupAndSortOrdersByStatus = (
-  orders: OrderData[],
+  orders: OrderData[]
 ): Record<string, OrderData[]> => {
   const statusPrecedence = {
     [STATUS.READY]: 1,
@@ -27,7 +27,7 @@ export const groupAndSortOrdersByStatus = (
       }
       return acc;
     },
-    {},
+    {}
   );
 
   if (groupedOrders) {
@@ -35,12 +35,12 @@ export const groupAndSortOrdersByStatus = (
       groupedOrders[dateKey].sort(
         (a, b) =>
           getStatusRank(a.status as keyof typeof statusPrecedence) -
-          getStatusRank(b.status as keyof typeof statusPrecedence),
+          getStatusRank(b.status as keyof typeof statusPrecedence)
       );
     });
 
     const sortedGroupKeys = Object.keys(groupedOrders)?.sort(
-      (a, b) => new Date(b).getTime() - new Date(a).getTime(),
+      (a, b) => new Date(b).getTime() - new Date(a).getTime()
     );
 
     const sortedGroupedOrders = sortedGroupKeys?.reduce((acc, key) => {

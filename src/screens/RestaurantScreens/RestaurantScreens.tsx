@@ -41,7 +41,7 @@ const RestaurantScreens: FC<Props> = ({ navigation }) => {
         navigation?.getState?.().routes[navigation?.getState?.().index];
 
       setActiveScreen(name);
-    }, [navigation]),
+    }, [navigation])
   );
 
   if (loading) {

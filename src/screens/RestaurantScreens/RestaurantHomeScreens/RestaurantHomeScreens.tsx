@@ -31,7 +31,7 @@ const RestaurantHomeScreens: FC<Props> = ({
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () =>
-      setActiveScreen(route.name),
+      setActiveScreen(route.name)
     );
     return unsubscribe;
   }, [navigation, setActiveScreen]);

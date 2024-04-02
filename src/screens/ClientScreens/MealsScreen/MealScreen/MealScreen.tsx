@@ -7,6 +7,11 @@ import { useCallback, useRef, useState } from "react";
 import { ScrollView, View } from "react-native";
 import type MapView from "react-native-maps";
 import type {
+  GetOrderQueryData,
+  GetOrderQueryVariables,
+} from "shared/useGetOrderQuery";
+import { GET_ORDER_QUERY, useGetOrderQuery } from "shared/useGetOrderQuery";
+import type {
   ConfirmationNavigationProps,
   RootStackParamList,
 } from "types/navigation.types";
@@ -14,12 +19,6 @@ import {
   RestaurantMealCard,
   SkeletonRestaurantMealCard,
 } from "./RestaurantMealCard";
-
-import type {
-  GetOrderQueryData,
-  GetOrderQueryVariables,
-} from "shared/useGetOrderQuery";
-import { GET_ORDER_QUERY, useGetOrderQuery } from "shared/useGetOrderQuery";
 import { useUpdateOrderMutation } from "./useUpdateOrderMutation";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Meal">;
@@ -87,6 +86,7 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
           navigate("Confirmation", {
             userID,
             orderID: updateOrder?.order?.id,
+            cart: updateOrder?.order,
           });
         }
       },
@@ -123,7 +123,7 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
           }}
         />
       ),
-    [loading, restaurant?.latitude, restaurant?.longitude],
+    [loading, restaurant?.latitude, restaurant?.longitude]
   );
 
   const renderCTA = () =>

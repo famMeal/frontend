@@ -12,7 +12,7 @@ export const getCSS = ({ direction, isMarginless }: ColumnsProps) => {
     width("w-full"),
     margin(isMarginless ? "mb-0" : "mb-4"),
     display("flex"),
-    flexDirection(direction === "column" ? "flex-col" : "flex-row"),
+    flexDirection(direction === "column" ? "flex-col" : "flex-row")
   );
   return { columnsCSS };
 };

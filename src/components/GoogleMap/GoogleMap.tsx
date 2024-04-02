@@ -110,7 +110,7 @@ const GoogleMap = forwardRef<MapView, GoogleMapProps>(
         {renderMarkers()}
       </MapView>
     );
-  },
+  }
 );
 
 export { GoogleMap };

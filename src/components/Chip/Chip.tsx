@@ -25,7 +25,7 @@ const Chip: FC<Props> = ({
 }) => {
   const { ChipCSS, textCSS } = useMemo(
     () => getCSS({ type, position, isStatic }),
-    [type, position, isStatic],
+    [type, position, isStatic]
   );
   return (
     <View className={ChipCSS} {...rest}>

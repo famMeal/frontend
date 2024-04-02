@@ -40,7 +40,7 @@ const RestaurantOrdersScreen: FC<Props> = ({
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () =>
-      setActiveScreen(route.name),
+      setActiveScreen(route.name)
     );
     return unsubscribe;
   }, [navigation, setActiveScreen]);
@@ -65,7 +65,7 @@ const RestaurantOrdersScreen: FC<Props> = ({
         </Columns>
       </Box>
     ),
-    [],
+    []
   );
 
   const renderSkeleton = (index: number) => (

@@ -1,6 +1,6 @@
 const parseUTCDateString = (dateStr: string): Date => {
   const parts = dateStr.match(
-    /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}) UTC/,
+    /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}) UTC/
   );
   if (!parts) {
     throw new Error("Invalid date format");
@@ -12,8 +12,8 @@ const parseUTCDateString = (dateStr: string): Date => {
       parseInt(parts[3], 10),
       parseInt(parts[4], 10),
       parseInt(parts[5], 10),
-      parseInt(parts[6], 10),
-    ),
+      parseInt(parts[6], 10)
+    )
   );
 };
 

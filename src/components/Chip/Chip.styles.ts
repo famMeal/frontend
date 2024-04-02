@@ -43,12 +43,12 @@ export const getCSS = ({
     whitespace("whitespace-nowrap"),
     borderRadius("rounded-full"),
     padding("px-3", "py-1"),
-    lineHeight("leading-none"),
+    lineHeight("leading-none")
   );
 
   const textCSS = classnames(
     textColor("text-white"),
-    textTransform("uppercase"),
+    textTransform("uppercase")
   );
   return {
     ChipCSS,

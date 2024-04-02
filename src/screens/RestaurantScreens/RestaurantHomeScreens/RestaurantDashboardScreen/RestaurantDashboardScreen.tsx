@@ -67,11 +67,11 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
 
   const totalQuantityOrdered = data?.restaurant?.orders.reduce(
     (sum, order) => sum + order?.quantity!,
-    0,
+    0
   );
 
   const totalRevenue = formatCurrency(
-    totalQuantityOrdered! * parseCurrency(price!),
+    totalQuantityOrdered! * parseCurrency(price!)
   );
 
   const renderActiveMeal = () =>

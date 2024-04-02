@@ -23,7 +23,7 @@ export const getCSS = ({ isPaddingLess }: BoxProps) => {
     borderRadius("rounded-lg"),
     width("w-full"),
     padding(isPaddingLess ? "p-0" : "p-4"),
-    margin(isPaddingLess ? "m-0" : "mb-4", "last-of-type:mb-0"),
+    margin(isPaddingLess ? "m-0" : "mb-4", "last-of-type:mb-0")
   );
 
   return { boxCSS };

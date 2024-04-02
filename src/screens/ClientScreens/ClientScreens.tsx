@@ -33,7 +33,7 @@ const ClientScreens: FC<Props> = ({ navigation }) => {
         navigation.getState().routes[navigation.getState().index];
 
       setActiveScreen(name);
-    }, [navigation]),
+    }, [navigation])
   );
 
   const getOptions = (tabBarLabel: string, name: string, iconName: string) =>
@@ -73,7 +73,7 @@ const ClientScreens: FC<Props> = ({ navigation }) => {
 
   const renderScreens = useCallback(
     () => clientScreens.map(renderScreen),
-    [activeScreen],
+    [activeScreen]
   );
 
   return (

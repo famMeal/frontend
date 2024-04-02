@@ -31,7 +31,7 @@ const Columns: FC<Props> = ({
 
   const { columnsCSS } = useMemo(
     () => getCSS({ direction, isMarginless }),
-    [direction, isMarginless],
+    [direction, isMarginless]
   );
 
   const onLayout = (event: LayoutChangeEvent) => {
@@ -40,7 +40,7 @@ const Columns: FC<Props> = ({
   };
 
   const numOfColumns = Children.toArray(children).filter(
-    child => isValidElement<ColumnProps>(child) && child.type === Column,
+    child => isValidElement<ColumnProps>(child) && child.type === Column
   ).length;
 
   const childrenWithCount = Children.map(children, (child, index) => {

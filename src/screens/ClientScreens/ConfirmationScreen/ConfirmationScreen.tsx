@@ -3,11 +3,9 @@ import type { Dispatch, FC, SetStateAction } from "react";
 import { useEffect, useState } from "react";
 import { useDeleteOrderMutation } from "shared/useDeleteOrderMutation";
 import type { GetOrderQueryData } from "shared/useGetOrderQuery";
-import { useGetOrderQuery } from "shared/useGetOrderQuery";
 import type { RootStackParamList } from "types/navigation.types";
 import { Cart } from "./Cart";
 import { EmptyCart } from "./EmptyCart";
-import { SkeletonConfirmationScreen } from "./SkeletonConfirmationScreen";
 
 type ConfirmationStackProps = NativeStackScreenProps<
   RootStackParamList,
@@ -24,23 +22,18 @@ const ConfirmationScreen: FC<Props> = ({
   setActiveScreen,
 }) => {
   const { params } = route;
-  const { userID, orderID } = params;
+  const { userID, orderID, cart: cartOrder } = params;
   const [cart, setCart] = useState<GetOrderQueryData["order"]>();
 
-  const { loading: isDataLoading } = useGetOrderQuery({
-    fetchPolicy: "network-only",
-    variables: {
-      id: orderID,
-    },
-    skip: !orderID,
-    onCompleted: ({ order }) => setCart(order),
-  });
+  useEffect(() => {
+    setCart(cartOrder);
+  }, [cartOrder]);
 
   const [deleteOrder, { loading }] = useDeleteOrderMutation();
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () =>
-      setActiveScreen(route.name),
+      setActiveScreen(route.name)
     );
     return unsubscribe;
   }, [navigation, setActiveScreen]);
@@ -71,10 +64,6 @@ const ConfirmationScreen: FC<Props> = ({
         cache.gc();
       },
     });
-
-  if (isDataLoading) {
-    return <SkeletonConfirmationScreen />;
-  }
 
   if (cart) {
     return (

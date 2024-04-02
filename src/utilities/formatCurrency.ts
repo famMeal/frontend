@@ -1,6 +1,6 @@
 const formatCurrency = (
   amount?: number | null,
-  options?: Intl.NumberFormatOptions,
+  options?: Intl.NumberFormatOptions
 ) => {
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
