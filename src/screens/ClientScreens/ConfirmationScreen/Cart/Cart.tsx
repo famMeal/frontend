@@ -28,6 +28,7 @@ const sumCurrency = (currency: string, quantity = 0) => {
 };
 
 interface Props {
+  isLoading: boolean;
   cart: GetOrderQueryData["order"];
   onPressGoBack: () => void;
   onPressDelete: () => void;
@@ -36,6 +37,7 @@ interface Props {
 }
 
 const Cart: FC<Props> = ({
+  isLoading,
   cart,
   onPressDelete,
   onPressGoBack,
@@ -168,7 +170,10 @@ const Cart: FC<Props> = ({
                   </Button>
                 </Column>
                 <Column>
-                  <Button onPress={onPressDelete} theme="accent">
+                  <Button
+                    isLoading={isLoading}
+                    onPress={onPressDelete}
+                    theme="accent">
                     Remove
                   </Button>
                 </Column>

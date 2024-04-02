@@ -1,6 +1,7 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { Dispatch, FC, SetStateAction } from "react";
 import { useEffect } from "react";
+import { useDeleteOrderMutation } from "shared/useDeleteOrderMutation";
 import type { RootStackParamList } from "types/navigation.types";
 import { Cart } from "./Cart";
 import { EmptyCart } from "./EmptyCart";
@@ -21,6 +22,7 @@ const ConfirmationScreen: FC<Props> = ({
 }) => {
   const { params } = route;
   const { userID, cart } = params;
+  const [deleteOrder, { loading }] = useDeleteOrderMutation();
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () =>
@@ -37,13 +39,24 @@ const ConfirmationScreen: FC<Props> = ({
     navigation.navigate("Orders", { userID });
   };
 
+  const handleOnPressDelete = () =>
+    deleteOrder({
+      variables: {
+        input: {
+          orderId: cart?.id!,
+        },
+      },
+      onCompleted: onPressNavigateToMeals,
+    });
+
   if (cart) {
     return (
       <Cart
+        isLoading={loading}
         userID={userID}
         cart={cart}
         onCompleted={onCompleted}
-        onPressDelete={onPressNavigateToMeals}
+        onPressDelete={handleOnPressDelete}
         onPressGoBack={onPressGoBack}
       />
     );

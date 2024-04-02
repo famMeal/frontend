@@ -99,6 +99,7 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
       <SkeletonRestaurantMealCard />
     ) : (
       <RestaurantMealCard
+        orderID={orderID}
         userID={userID}
         quantity={quantity}
         setQuantity={setQuantity}

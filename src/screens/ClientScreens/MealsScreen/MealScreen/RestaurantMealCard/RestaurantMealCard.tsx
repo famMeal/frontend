@@ -12,11 +12,13 @@ import { ChevronDownIcon, Trash2Icon } from "lucide-react-native";
 import { type Dispatch, type FC, type SetStateAction } from "react";
 import { View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
-import type { Meal } from "schema";
+import type { Meal, Order } from "schema";
+import { useDeleteOrderMutation } from "shared/useDeleteOrderMutation";
 import type { ConfirmationNavigationProps } from "types/navigation.types";
 import { createTimeArray, formatTimeIntervals } from "utilities";
 
 interface Props {
+  orderID: Order["id"];
   userID: string;
   quantity: number;
   setQuantity: Dispatch<SetStateAction<number>>;
@@ -40,6 +42,7 @@ const formatForDropdown = (timeIntervals: string[]): { value: string }[] => {
 };
 
 const RestaurantMealCard: FC<Props> = ({
+  orderID,
   userID,
   quantity,
   setQuantity,
@@ -51,6 +54,7 @@ const RestaurantMealCard: FC<Props> = ({
   const { name, description, pickupEndTime, pickupStartTime } = meal ?? {};
   const { navigate } = useNavigation<ConfirmationNavigationProps>();
   const timeIntervals = createTimeArray(pickupStartTime, pickupEndTime);
+  const [deleteOrder, { loading }] = useDeleteOrderMutation();
 
   const handleSetSelectedTime = (time: { value: string }) => {
     const [selectedPickupStartTime, selectedPickupEndTime] =
@@ -63,9 +67,15 @@ const RestaurantMealCard: FC<Props> = ({
     }
   };
 
-  const handleOnPressDelete = () => {
-    navigate("Meals", { userID });
-  };
+  const handleOnPressDelete = () =>
+    deleteOrder({
+      variables: {
+        input: {
+          orderId: orderID,
+        },
+      },
+      onCompleted: () => navigate("Meals", { userID }),
+    });
 
   if (!meal) {
     return (
@@ -85,7 +95,11 @@ const RestaurantMealCard: FC<Props> = ({
   return (
     <Box className="relative">
       <View className="absolute right-4 top-4 z-10">
-        <Button onPress={handleOnPressDelete} isOutlined isClean>
+        <Button
+          isLoading={loading}
+          onPress={handleOnPressDelete}
+          isOutlined
+          isClean>
           <Trash2Icon color={COLOURS.primary} />
         </Button>
       </View>
