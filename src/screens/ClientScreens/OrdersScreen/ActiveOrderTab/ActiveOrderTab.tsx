@@ -43,7 +43,6 @@ const ActiveOrderTab: FC<Props> = ({ userID }) => {
     return new Date(isoString);
   };
 
-  // Filter and sort orders
   const filteredAndSortedOrders = data?.user?.orders
     ?.filter(({ status }) => status !== STATUS.COMPLETED)
     .sort((a, b) => {

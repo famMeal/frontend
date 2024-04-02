@@ -14,11 +14,12 @@ import {
   RestaurantMealCard,
   SkeletonRestaurantMealCard,
 } from "./RestaurantMealCard";
+
 import type {
   GetOrderQueryData,
   GetOrderQueryVariables,
-} from "./useGetOrderQuery";
-import { GET_ORDER_QUERY, useGetOrderQuery } from "./useGetOrderQuery";
+} from "shared/useGetOrderQuery";
+import { GET_ORDER_QUERY, useGetOrderQuery } from "shared/useGetOrderQuery";
 import { useUpdateOrderMutation } from "./useUpdateOrderMutation";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Meal">;
@@ -85,9 +86,7 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
         if (updateOrder?.order) {
           navigate("Confirmation", {
             userID,
-            cart: {
-              ...updateOrder?.order,
-            },
+            orderID: updateOrder?.order?.id,
           });
         }
       },

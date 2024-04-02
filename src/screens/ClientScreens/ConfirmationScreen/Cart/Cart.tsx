@@ -9,8 +9,8 @@ import {
 import type { FC } from "react";
 import { ScrollView } from "react-native";
 import type { User } from "schema";
-import type { GetOrderQueryData } from "screens/ClientScreens/MealsScreen/MealScreen/useGetOrderQuery";
 import { GET_USER_0RDERS_QUERY } from "screens/ClientScreens/OrdersScreen/useGetUserOrdersQuery";
+import type { GetOrderQueryData } from "shared/useGetOrderQuery";
 import { formatTime } from "utilities/formatTime";
 import { usePlaceOrderMutation } from "./usePlaceOrderMutation";
 
