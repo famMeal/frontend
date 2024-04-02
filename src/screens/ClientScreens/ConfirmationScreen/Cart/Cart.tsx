@@ -9,7 +9,7 @@ import {
 import type { FC } from "react";
 import { ScrollView } from "react-native";
 import type { User } from "schema";
-import type { AddToCartData } from "screens/ClientScreens/MealsScreen/MealScreen/useAddToCartMutation";
+import type { GetOrderQueryData } from "screens/ClientScreens/MealsScreen/MealScreen/useGetOrderQuery";
 import { GET_USER_0RDERS_QUERY } from "screens/ClientScreens/OrdersScreen/useGetUserOrdersQuery";
 import { formatTime } from "utilities/formatTime";
 import { usePlaceOrderMutation } from "./usePlaceOrderMutation";
@@ -28,7 +28,7 @@ const sumCurrency = (currency: string, quantity = 0) => {
 };
 
 interface Props {
-  cart: AddToCartData;
+  cart: GetOrderQueryData["order"];
   onPressGoBack: () => void;
   onPressDelete: () => void;
   onCompleted: () => void;
@@ -39,8 +39,8 @@ const Cart: FC<Props> = ({
   cart,
   onPressDelete,
   onPressGoBack,
-  onCompleted,
   userID,
+  onCompleted,
 }) => {
   const [placeOrder, { loading }] = usePlaceOrderMutation();
 
@@ -48,9 +48,9 @@ const Cart: FC<Props> = ({
     placeOrder({
       variables: {
         input: {
-          orderId: cart?.id,
-          pickupEndTime: cart.pickupEndTime,
-          pickupStartTime: cart.pickupStartTime,
+          orderId: cart?.id!,
+          pickupEndTime: cart?.pickupEndTime,
+          pickupStartTime: cart?.pickupStartTime,
           quantity: cart?.quantity,
         },
       },
@@ -81,13 +81,13 @@ const Cart: FC<Props> = ({
               <Columns isMarginless>
                 <Column>
                   <Typography isMarginless weigth="bold">
-                    {cart?.restaurant.name}
+                    {cart?.restaurant?.name}
                   </Typography>
                   <Typography type="S" isMarginless>
-                    {cart?.restaurant.addressLine1}
+                    {cart?.restaurant?.addressLine1}
                   </Typography>
                   <Typography isMarginless type="S">
-                    {cart?.restaurant.postalCode} {cart?.restaurant.city}
+                    {cart?.restaurant?.postalCode} {cart?.restaurant?.city}
                   </Typography>
                 </Column>
                 <Column>
@@ -111,13 +111,13 @@ const Cart: FC<Props> = ({
                   <Typography isMarginless type="S" weigth="bold">
                     ({cart?.quantity}x){" "}
                     <Typography type="S" isMarginless>
-                      {cart?.meal.name}
+                      {cart?.meal?.name}
                     </Typography>
                   </Typography>
                 </Column>
                 <Column alignItems="flex-end">
                   <Typography type="S" className="mr-4">
-                    {sumCurrency(cart?.meal.price, cart?.quantity!)}
+                    {sumCurrency(cart?.meal?.price!, cart?.quantity!)}
                   </Typography>
                 </Column>
               </Columns>
@@ -180,7 +180,7 @@ const Cart: FC<Props> = ({
       <Columns isMarginless>
         <Column columnWidth="fullWidth">
           <Box>
-            <Button isLoading={loading} onPress={onPressPlaceOrder}>
+            <Button onPress={onPressPlaceOrder} isLoading={loading}>
               Place order
             </Button>
           </Box>

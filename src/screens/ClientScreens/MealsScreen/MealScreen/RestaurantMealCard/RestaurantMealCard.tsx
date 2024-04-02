@@ -12,7 +12,7 @@ import { ChevronDownIcon, Trash2Icon } from "lucide-react-native";
 import { type Dispatch, type FC, type SetStateAction } from "react";
 import { View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
-import type { MealSplinter } from "screens/ClientScreens/MealsScreen/MealScreen/useGetMealQuery";
+import type { Meal } from "schema";
 import type { ConfirmationNavigationProps } from "types/navigation.types";
 import { createTimeArray, formatTimeIntervals } from "utilities";
 
@@ -20,10 +20,17 @@ interface Props {
   userID: string;
   quantity: number;
   setQuantity: Dispatch<SetStateAction<number>>;
-  meal?: Omit<MealSplinter, "restaurant">;
+  meal?: Pick<
+    Meal,
+    | "__typename"
+    | "id"
+    | "name"
+    | "description"
+    | "pickupEndTime"
+    | "pickupStartTime"
+  >;
   setSelectedTime: Dispatch<SetStateAction<string[]>>;
   selectedTime: string[];
-  setBasket: Dispatch<SetStateAction<MealSplinter | undefined>>;
 }
 
 const formatForDropdown = (timeIntervals: string[]): { value: string }[] => {
@@ -39,7 +46,6 @@ const RestaurantMealCard: FC<Props> = ({
   meal,
   setSelectedTime,
   selectedTime,
-  setBasket,
 }) => {
   const [selectedStartTime, selectedEndTime] = selectedTime;
   const { name, description, pickupEndTime, pickupStartTime } = meal ?? {};
@@ -58,7 +64,6 @@ const RestaurantMealCard: FC<Props> = ({
   };
 
   const handleOnPressDelete = () => {
-    setBasket(undefined);
     navigate("Meals", { userID });
   };
 

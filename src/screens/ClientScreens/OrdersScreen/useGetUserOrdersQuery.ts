@@ -83,6 +83,8 @@ type Options = QueryHookOptions<Data, Variables>;
 const useGetUserOrdersQuery = (options?: Options) =>
   useQuery<Data, Variables>(GET_USER_0RDERS_QUERY, options);
 
-export { useGetUserOrdersQuery, type Data as UserOrderQueryData };
-export type { Variables as UserOrderQueryVariables };
-
+export {
+  useGetUserOrdersQuery,
+  type Data as UserOrderQueryData,
+  type Variables as UserOrderQueryVariables,
+};

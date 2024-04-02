@@ -2,13 +2,14 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Box, Button, Column, Columns, Typography } from "components";
 import type { FC } from "react";
-import type { User } from "schema";
+import type { Order, User } from "schema";
 import type { MealsData } from "screens/ClientScreens/MealsScreen/Meals/useGetMealsQuery";
 import type { RootStackParamList } from "types/navigation.types";
 import {
   formatDate,
   formatTimeRange,
 } from "utilities/formatTimeToReadableTime";
+import { useAddToCartMutation } from "./useAddToCartMutation";
 
 interface Props {
   meal: MealsData;
@@ -33,12 +34,28 @@ const MealCard: FC<Props> = ({ meal, userID }) => {
   } = meal ?? {};
 
   const { navigate } = useNavigation<MealScreenNavigationProp>();
-  const handleOnPressReserve = () =>
+  const [addToCart, { loading }] = useAddToCartMutation();
+
+  const onCompletedNavigateToMealScreen = (orderID: Order["id"]) =>
     navigate("Meal", {
-      restaurantID: restaurant?.id,
       restaurantName: restaurant?.name,
-      mealID: id,
       userID: userID,
+      orderID: orderID,
+    });
+
+  const handleOnPressReserve = () =>
+    addToCart({
+      variables: {
+        input: {
+          mealId: id,
+          pickupStartTime,
+          pickupEndTime,
+          quantity: 1,
+          userId: userID,
+        },
+      },
+      onCompleted: ({ addToCart }) =>
+        onCompletedNavigateToMealScreen(addToCart?.order?.id),
     });
 
   return (
@@ -83,7 +100,9 @@ const MealCard: FC<Props> = ({ meal, userID }) => {
           </Typography>
         </Column>
         <Column columnWidth="twoThird" alignItems="center">
-          <Button onPress={handleOnPressReserve}>Reserve</Button>
+          <Button isLoading={loading} onPress={handleOnPressReserve}>
+            Reserve
+          </Button>
         </Column>
       </Columns>
     </Box>

@@ -1,8 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Box, Button, Container, GoogleMap, Skeleton } from "components";
+import { STATUS } from "constants/status";
 import type { FC } from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { ScrollView, View } from "react-native";
 import type MapView from "react-native-maps";
 import type {
@@ -13,53 +14,85 @@ import {
   RestaurantMealCard,
   SkeletonRestaurantMealCard,
 } from "./RestaurantMealCard";
-import { useAddToCartMutation } from "./useAddToCartMutation";
-import { useGetMealQuery } from "./useGetMealQuery";
+import type {
+  GetOrderQueryData,
+  GetOrderQueryVariables,
+} from "./useGetOrderQuery";
+import { GET_ORDER_QUERY, useGetOrderQuery } from "./useGetOrderQuery";
+import { useUpdateOrderMutation } from "./useUpdateOrderMutation";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Meal">;
 
 const MealScreen: FC<Props> = ({ route: { params } }) => {
-  const { mealID, userID } = params;
-  const { data, loading } = useGetMealQuery({
-    skip: !mealID,
+  const { orderID, userID } = params;
+  const { data, loading } = useGetOrderQuery({
     variables: {
-      id: mealID,
+      id: orderID,
     },
+    skip: !orderID,
   });
-  const [addToCart, { loading: isAddToCartLoading }] = useAddToCartMutation();
+
   const mapRef = useRef<MapView>(null);
   const { navigate } = useNavigation<ConfirmationNavigationProps>();
-  const { meal } = data ?? {};
-  const { restaurant } = meal ?? {};
+  const { meal, restaurant } = data?.order ?? {};
 
-  useEffect(() => {
-    setBasket(meal);
-  }, [meal]);
-
-  const [basket, setBasket] = useState(meal);
   const [quantity, setQuantity] = useState(1);
+
   const [[pickupStartTime, pickupEndTime], setSelectedTime] = useState<
     string[]
   >([]);
 
-  const handleOnPressContinue = () =>
-    addToCart({
+  const [updateOrder, { loading: isUpdateLoading }] = useUpdateOrderMutation();
+
+  const onContinuePress = () => {
+    updateOrder({
       variables: {
         input: {
-          mealId: mealID,
+          orderId: orderID,
           pickupStartTime,
           pickupEndTime,
           quantity,
-          userId: userID,
+          status: STATUS.CART,
         },
       },
-      onCompleted: ({ addToCart: { order } }) => {
-        navigate("Confirmation", {
-          cart: order,
-          userID,
+      update: (cache, { data }) => {
+        const cacheData = cache?.readQuery<
+          GetOrderQueryData,
+          GetOrderQueryVariables
+        >({
+          query: GET_ORDER_QUERY,
+          variables: {
+            id: orderID,
+          },
         });
+
+        if (cacheData?.order) {
+          cache.writeQuery<GetOrderQueryData, GetOrderQueryVariables>({
+            query: GET_ORDER_QUERY,
+            variables: {
+              id: orderID,
+            },
+            data: {
+              order: {
+                ...cacheData?.order,
+                ...data?.updateOrder,
+              },
+            },
+          });
+        }
+      },
+      onCompleted: ({ updateOrder }) => {
+        if (updateOrder?.order) {
+          navigate("Confirmation", {
+            userID,
+            cart: {
+              ...updateOrder?.order,
+            },
+          });
+        }
       },
     });
+  };
 
   const renderMeal = () =>
     loading ? (
@@ -71,8 +104,7 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
         setQuantity={setQuantity}
         selectedTime={[pickupStartTime, pickupEndTime]}
         setSelectedTime={setSelectedTime}
-        meal={basket}
-        setBasket={setBasket}
+        meal={meal}
       />
     );
 
@@ -86,7 +118,7 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
           destination={{
             latitude: restaurant?.latitude!,
             longitude: restaurant?.longitude!,
-            latitudeDelta: 0.005, // Closer zoom
+            latitudeDelta: 0.005,
             longitudeDelta: 0.005,
           }}
         />
@@ -99,9 +131,9 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
       <Skeleton size="large" />
     ) : (
       <Button
-        disabled={!pickupEndTime || !pickupStartTime}
-        isLoading={isAddToCartLoading}
-        onPress={handleOnPressContinue}>
+        isLoading={isUpdateLoading}
+        onPress={onContinuePress}
+        disabled={!pickupEndTime || !pickupStartTime}>
         Continue
       </Button>
     );

@@ -3,7 +3,7 @@ import { gql, useMutation } from "@apollo/client";
 import type { Order, UpdateOrderInput, UpdateOrderPayload } from "schema";
 
 const UPDATE_ORDER_STATUS = gql`
-  mutation updateOrderStatus($input: UpdateOrderInput!) {
+  mutation UpdateOrderStatus($input: UpdateOrderInput!) {
     updateOrder(input: $input) {
       __typename
       clientMutationId
