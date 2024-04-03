@@ -5,12 +5,12 @@ import { COLOURS } from "constants/colours";
 import type { FC } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
+  AppSplashScreen,
   ClientScreens,
   EmailSignUpScreen,
   LoginScreen,
   RestaurantScreens,
   SignUpScreen,
-  SplashScreen,
   VerifyAccountScreen,
 } from "screens";
 import type { RootStackParamList } from "types/navigation.types";
@@ -42,7 +42,7 @@ const App: FC = () => {
             />
             <Screen
               name="Splash"
-              component={SplashScreen}
+              component={AppSplashScreen}
               options={{
                 headerShown: false,
                 tabBarStyle: {

@@ -1,11 +1,11 @@
+export { AppSplashScreen } from "./AppSplashScreen";
 export { ClientScreens } from "./ClientScreens";
 export { ConfirmationScreen } from "./ClientScreens/ConfirmationScreen";
 export { MainScreen } from "./ClientScreens/MainScreen";
 export { MealScreen } from "./ClientScreens/MealsScreen/MealScreen";
 export { OrdersScreen } from "./ClientScreens/OrdersScreen";
+export { EmailSignUpScreen } from "./EmailSignUpScreen";
 export { LoginScreen } from "./LoginScreen";
 export { RestaurantScreens } from "./RestaurantScreens";
 export { SignUpScreen } from "./SignupScreen";
-export { EmailSignUpScreen } from "./EmailSignUpScreen";
-export { SplashScreen } from "./SplashScreen";
 export { VerifyAccountScreen } from "./VerifyAccountScreen";

@@ -5,7 +5,7 @@ import { Columns } from "components/Columns";
 import { Container } from "components/Container";
 import React, { useEffect } from "react";
 import { View } from "react-native";
-import SplashScreenRN from "react-native-splash-screen";
+import AppSplashScreenRN from "react-native-splash-screen";
 import { useCurrentUserQuery } from "shared";
 import type { RootStackParamList } from "types/navigation.types";
 
@@ -17,17 +17,17 @@ const Screens = {
   Login: "Login",
 } as const;
 
-const SplashScreen: React.FC<Props> = ({ navigation }) => {
+const AppSplashScreen: React.FC<Props> = ({ navigation }) => {
   const { navigate } = navigation;
   const { data, loading } = useCurrentUserQuery();
 
   useEffect(() => {
     if (!loading) {
-      SplashScreenRN.hide();
+      AppSplashScreenRN.hide();
 
       if (data?.currentUser) {
         const isRestaurant = !!data?.currentUser?.restaurant;
-        navigate(isRestaurant ? Screens?.Restaurants : Screens.Clients);
+        navigate(isRestaurant ? Screens?.Clients : Screens.Clients);
       }
     }
   }, [loading, data, navigation]);
@@ -53,4 +53,4 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
   return null;
 };
 
-export { SplashScreen };
+export { AppSplashScreen };

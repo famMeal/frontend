@@ -12,7 +12,7 @@ import { COLOURS } from "constants/colours";
 import { SearchIcon } from "lucide-react-native";
 import { useState, type FC } from "react";
 import { ScrollView, View } from "react-native";
-import type { Restaurant } from "schema";
+import { OrderStatusField, type Restaurant } from "schema";
 import { createList } from "utilities/createList";
 import {
   RestaurantOrderCard,
@@ -32,6 +32,13 @@ const RestaurantActiveOrdersTab: FC<Props> = ({ restaurantID }) => {
     skip: !restaurantID,
     variables: {
       id: restaurantID,
+      filters: {
+        statusList: [
+          OrderStatusField.Preparing,
+          OrderStatusField.Ready,
+          OrderStatusField.PickedUp,
+        ],
+      },
     },
   });
 

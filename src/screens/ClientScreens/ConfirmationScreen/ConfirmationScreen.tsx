@@ -46,6 +46,7 @@ const ConfirmationScreen: FC<Props> = ({
   };
 
   const onCompleted = () => {
+    setCart(undefined);
     navigation.navigate("Orders", { userID });
   };
 

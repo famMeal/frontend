@@ -1,15 +1,15 @@
 import type { ParamListBase, RouteProp } from "@react-navigation/native";
 import { Container } from "components";
-import { STATUS } from "constants/status";
 import type { FC } from "react";
 import React from "react";
 import { ScrollView } from "react-native";
-import { type User } from "schema";
+import { OrderStatusField, type User } from "schema";
 import {
   OrderCard,
   SkeletonOrderCard,
 } from "screens/ClientScreens/OrdersScreen/OrderCard";
 import { createList } from "utilities/createList";
+import type { UserOrderQueryData } from "../useGetUserOrdersQuery";
 import { useGetUserOrdersQuery } from "../useGetUserOrdersQuery";
 
 interface Props {
@@ -32,10 +32,20 @@ const ActiveOrderTab: FC<Props> = ({ userID }) => {
     skip: !userID,
     variables: {
       id: userID,
+      filters: {
+        statusList: [
+          OrderStatusField.Preparing,
+          OrderStatusField.Ready,
+          OrderStatusField.PickedUp,
+        ],
+      },
     },
   });
 
+  const { orders } = data?.user ?? {};
+
   const renderSkeleton = (num: number) => <SkeletonOrderCard key={num} />;
+
   const renderOrderSkeletons = () => createList(3).map(renderSkeleton);
 
   const parseDateString = (dateString: string) => {
@@ -43,28 +53,27 @@ const ActiveOrderTab: FC<Props> = ({ userID }) => {
     return new Date(isoString);
   };
 
-  const filteredAndSortedOrders = data?.user?.orders
-    ?.filter(({ status }) => status !== STATUS.COMPLETED || STATUS.CART)
-    .sort((a, b) => {
-      return (
-        parseDateString(b.createdAt!).getTime() -
-        parseDateString(a.createdAt!).getTime()
+  const filteredAndSortedOrders = (
+    userOrders?: UserOrderQueryData["user"]["orders"]
+  ) => {
+    if (userOrders) {
+      return [...userOrders].sort(
+        (a, b) =>
+          parseDateString(b.createdAt!).getTime() -
+          parseDateString(a.createdAt!).getTime()
       );
-    });
+    }
+  };
 
   const renderOrders = () =>
-    filteredAndSortedOrders?.map(({ id, ...rest }) => (
+    filteredAndSortedOrders(orders)?.map(({ id, ...rest }) => (
       <OrderCard key={id} order={{ id, ...rest }} />
     ));
 
   const renderContent = () =>
     loading ? renderOrderSkeletons() : renderOrders();
 
-  return (
-    <Container>
-      <ScrollView>{renderContent()}</ScrollView>
-    </Container>
-  );
+  return <Container>{<ScrollView>{renderContent()}</ScrollView>}</Container>;
 };
 
 export { ActiveOrderTab };

@@ -8,7 +8,7 @@ import {
 } from "components";
 import type { FC } from "react";
 import { ScrollView } from "react-native";
-import type { User } from "schema";
+import { OrderStatusField, type User } from "schema";
 import { GET_USER_0RDERS_QUERY } from "screens/ClientScreens/OrdersScreen/useGetUserOrdersQuery";
 import type { GetOrderQueryData } from "shared/useGetOrderQuery";
 import { formatTime } from "utilities/formatTime";
@@ -61,6 +61,13 @@ const Cart: FC<Props> = ({
           query: GET_USER_0RDERS_QUERY,
           variables: {
             id: userID,
+            filters: {
+              statusList: [
+                OrderStatusField.Preparing,
+                OrderStatusField.Ready,
+                OrderStatusField.PickedUp,
+              ],
+            },
           },
         },
       ],
@@ -162,20 +169,17 @@ const Cart: FC<Props> = ({
               <Columns isMarginless>
                 <Column>
                   <Button
-                    onPress={onPressGoBack}
+                    isOutlined
                     isClean
-                    isOutlined
-                    theme="accent">
-                    Edit
-                  </Button>
-                </Column>
-                <Column>
-                  <Button
-                    isOutlined
                     isLoading={isLoading}
                     onPress={onPressDelete}
                     theme="accent">
                     Remove
+                  </Button>
+                </Column>
+                <Column>
+                  <Button onPress={onPressGoBack} isOutlined theme="accent">
+                    Edit
                   </Button>
                 </Column>
               </Columns>

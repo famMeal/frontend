@@ -1,4 +1,8 @@
-import type { ParamListBase, RouteProp } from "@react-navigation/native";
+import {
+  useIsFocused,
+  type ParamListBase,
+  type RouteProp,
+} from "@react-navigation/native";
 import { Chip, Column, Columns, Container } from "components";
 import type { FC } from "react";
 import React from "react";
@@ -67,12 +71,14 @@ export const toReadableDate = (dateString: string): string => {
 };
 
 const PreviousOrdersTab: FC<Props> = ({ userID }) => {
+  const isActive = useIsFocused();
+
   const { data, loading } = useGetUserOrdersQuery({
-    skip: !userID,
+    skip: !userID || !isActive,
     variables: {
       id: userID,
       filters: {
-        status: OrderStatusField.Completed,
+        statusList: [OrderStatusField.Completed],
       },
     },
   });
@@ -100,7 +106,7 @@ const PreviousOrdersTab: FC<Props> = ({ userID }) => {
     ));
 
   const renderContent = () =>
-    loading ? renderOrderSkeletons() : renderOrders();
+    loading || !data ? renderOrderSkeletons() : renderOrders();
 
   return (
     <Container>

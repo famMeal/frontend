@@ -12,7 +12,7 @@ import { COLOURS } from "constants/colours";
 import { SearchIcon } from "lucide-react-native";
 import { useState, type FC } from "react";
 import { View } from "react-native";
-import type { Restaurant } from "schema";
+import { type Restaurant } from "schema";
 
 interface Props {
   restaurantID: Restaurant["id"];
@@ -25,6 +25,9 @@ const RestaurantPreviousOrdersTab: FC<Props> = ({ restaurantID }) => {
   // const { data, loading } = useRestaurantOrdersQuery({
   //   variables: {
   //     id: restaurantID,
+  //     filters: {
+  //       statusList: [OrderStatusField.Completed],
+  //     },
   //   },
   // });
 
