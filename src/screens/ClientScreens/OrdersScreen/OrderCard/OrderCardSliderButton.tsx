@@ -27,6 +27,8 @@ const OrderCardSliderButton: FC<Props> = ({ orderId, status }) => {
 
   return (
     <ThumbSlideButton
+      inCompletedText="Slide tp pickup"
+      completedText="Picked Up!"
       isCompleted={status === STATUS.PICKED_UP}
       onSlideComplete={handleOnSlideComplete}
       loading={loading}

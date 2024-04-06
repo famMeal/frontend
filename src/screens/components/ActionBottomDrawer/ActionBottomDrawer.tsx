@@ -19,7 +19,7 @@ const ActionBottomDrawer: FC<Props> = ({
 }) => {
   return (
     <BottomDrawer isVisible={isVisible} onClose={onClose}>
-      <Columns isMarginless>
+      <Columns>
         <Column columnWidth="fullWidth">{children}</Column>
       </Columns>
       <Columns className="mt-4" isMarginless>

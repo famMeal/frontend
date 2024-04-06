@@ -40,6 +40,7 @@ const DatePicker: FC<Props> = ({
   if (Platform.OS === "android") {
     return (
       <Button
+        className="-ml-6"
         theme="accent"
         isClean
         isOutlined
@@ -50,6 +51,10 @@ const DatePicker: FC<Props> = ({
   } else {
     return (
       <DateTimePicker
+        style={{
+          marginLeft: -20,
+        }}
+        disabled
         value={value}
         mode="date"
         display="default"

@@ -1,12 +1,13 @@
 import { Button, Column, Columns, Input, Modal, Typography } from "components";
 import React, { useState, type FC } from "react";
-import { Alert } from "react-native";
+import Toast from "react-native-toast-message";
 import type { Restaurant } from "schema";
+import { RESTAURANT_QUERY } from "../RestaurantHomeScreens/RestaurantDashboardScreen/useRestaurantQuery";
 import type {
   RestaurantMealsQueryData,
   RestaurantMealsQueryVariables,
-} from "screens/RestaurantScreens/RestaurantMealsScreens/RestaurantMeals/useRestaurantMealsQuery";
-import { RESTAURANT_MEALS_QUERY } from "screens/RestaurantScreens/RestaurantMealsScreens/RestaurantMeals/useRestaurantMealsQuery";
+} from "../RestaurantMealsScreens/RestaurantMeals/useRestaurantMealsQuery";
+import { RESTAURANT_MEALS_QUERY } from "../RestaurantMealsScreens/RestaurantMeals/useRestaurantMealsQuery";
 import { useMealCreateMutation } from "./useMealCreateMutation";
 
 const form = {
@@ -49,12 +50,11 @@ const RestaurantCreateMealModal: FC<Props> = ({
   };
 
   const showMealCreatedAlert = () => {
-    Alert.alert(
-      "Meal Created",
-      "Your meal has been successfully created!",
-      [{ text: "Close", onPress: clearState }],
-      { cancelable: false }
-    );
+    Toast.show({
+      type: "accent",
+      text1: "New meal added!",
+    });
+    clearState();
     setIsOpen(false);
   };
 
@@ -68,6 +68,7 @@ const RestaurantCreateMealModal: FC<Props> = ({
           restaurantId: restaurantID,
         },
       },
+      refetchQueries: [RESTAURANT_QUERY],
       update: (cache, result) => {
         const data = cache.readQuery<
           RestaurantMealsQueryData,

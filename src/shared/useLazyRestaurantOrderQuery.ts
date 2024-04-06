@@ -2,8 +2,8 @@ import type { LazyQueryHookOptions } from "@apollo/client";
 import { gql, useLazyQuery } from "@apollo/client";
 import type { Meal, Order, Restaurant, User } from "schema";
 
-export const RESTAURANT_ORDER_QUERY = gql`
-  query RestaurantOrder($id: ID!) {
+export const LAZY_RESTAURANT_ORDER_QUERY = gql`
+  query LazyRestaurantOrder($id: ID!) {
     order(id: $id) {
       __typename
       id
@@ -11,12 +11,6 @@ export const RESTAURANT_ORDER_QUERY = gql`
       status
       subtotal
       total
-      user {
-        __typename
-        id
-        lastName
-        firstName
-      }
       meal {
         __typename
         active
@@ -26,14 +20,23 @@ export const RESTAURANT_ORDER_QUERY = gql`
         pickupEndTime
         price
         quantityAvailable
-        restaurant {
-          id
-          __typename
-        }
+      }
+      user {
+        __typename
+        id
+        lastName
+        firstName
+      }
+      restaurant {
+        __typename
+        id
+        name
       }
     }
   }
 `;
+
+type RestaurantSplinter = Pick<Restaurant, "__typename" | "id" | "name">;
 
 type OrderSplinter = Pick<
   Order,
@@ -54,15 +57,10 @@ type MealSplinter = Pick<
   | "quantityAvailable"
 >;
 
-type RestaurantSplinter = Pick<Restaurant, "__typename" | "id">;
-
-interface MealData extends MealSplinter {
-  restaurant: RestaurantSplinter;
-}
-
 interface OrderData extends OrderSplinter {
-  user: UserSplinter;
-  meal: MealData;
+  user?: UserSplinter;
+  meal?: MealSplinter;
+  restaurant?: RestaurantSplinter;
 }
 
 interface Data {
@@ -76,7 +74,7 @@ interface Variables {
 type Options = LazyQueryHookOptions<Data, Variables>;
 
 const useLazyRestaurantOrderQuery = (options?: Options) =>
-  useLazyQuery<Data, Variables>(RESTAURANT_ORDER_QUERY, options);
+  useLazyQuery<Data, Variables>(LAZY_RESTAURANT_ORDER_QUERY, options);
 
 export { useLazyRestaurantOrderQuery };
 export type { Data as RestaurantOrderData };

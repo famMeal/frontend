@@ -9,6 +9,7 @@ import React from "react";
 import { ScrollView } from "react-native";
 import { OrderStatusField, type User } from "schema";
 
+import { CalendarCheck } from "lucide-react-native";
 import {
   OrderCard,
   SkeletonOrderCard,
@@ -93,7 +94,11 @@ const PreviousOrdersTab: FC<Props> = ({ userID }) => {
     Object.entries(groupedOrders).map(([date, ordersForDate]) => (
       <Columns direction="column" key={date}>
         <Column columnWidth="fullWidth" justifyContent="center">
-          <Chip type="accent" className="mb-4" isStatic>
+          <Chip
+            type="info"
+            className="mb-4"
+            isStatic
+            icon={<CalendarCheck className="text-white mr-2" />}>
             {toReadableDate(date)}
           </Chip>
         </Column>

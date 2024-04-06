@@ -130,7 +130,7 @@ const RestaurantScreens: FC<Props> = ({ navigation }) => {
                 ? COLOURS.primary
                 : COLOURS.accent,
           },
-          tabBarLabel: "Active Orders",
+          tabBarLabel: "Orders",
           headerShown: true,
           headerBackground: () => <Header title="Orders" />,
           headerTitleStyle: {

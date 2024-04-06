@@ -26,17 +26,17 @@ const ConfirmationScreen: FC<Props> = ({
   const [cart, setCart] = useState<GetOrderQueryData["order"]>();
 
   useEffect(() => {
-    setCart(cartOrder);
-  }, [cartOrder]);
-
-  const [deleteOrder, { loading }] = useDeleteOrderMutation();
-
-  useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () =>
       setActiveScreen(route.name)
     );
     return unsubscribe;
   }, [navigation, setActiveScreen]);
+
+  useEffect(() => {
+    setCart(cartOrder);
+  }, [cartOrder]);
+
+  const [deleteOrder, { loading }] = useDeleteOrderMutation();
 
   const onPressGoBack = () => navigation.goBack();
 

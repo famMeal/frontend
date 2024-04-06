@@ -1,5 +1,6 @@
 import { COLOURS } from "constants/colours";
 import { ChevronRightIcon } from "lucide-react-native";
+import type { FC } from "react";
 import React, { useEffect } from "react";
 import { ActivityIndicator, Dimensions, StyleSheet, Text } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -14,14 +15,18 @@ interface Props {
   onSlideComplete: () => void;
   loading?: boolean;
   isCompleted?: boolean;
+  inCompletedText: string;
+  completedText: string;
 }
 
 const { width: screenWidth } = Dimensions.get("window");
 
-const ThumbSlideButton: React.FC<Props> = ({
+const ThumbSlideButton: FC<Props> = ({
   onSlideComplete,
   loading = false,
   isCompleted = false,
+  completedText,
+  inCompletedText,
 }) => {
   const slideProgress = useSharedValue(0);
   const maxSlideDistance = screenWidth - 50;
@@ -69,7 +74,7 @@ const ThumbSlideButton: React.FC<Props> = ({
       <ActivityIndicator color={COLOURS.white} />
     ) : (
       <Text style={styles.text}>
-        {isCompleted ? "Picked up!" : "Slide to pickup"}
+        {isCompleted ? completedText : inCompletedText}
       </Text>
     );
 

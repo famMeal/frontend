@@ -60,7 +60,7 @@ const RestaurantOrdersScreen: FC<Props> = ({
             fontSize: 14,
           },
         }}
-        name="Previous">
+        name="Completed">
         {props => (
           <RestaurantPreviousOrdersTab {...props} restaurantID={restaurantID} />
         )}

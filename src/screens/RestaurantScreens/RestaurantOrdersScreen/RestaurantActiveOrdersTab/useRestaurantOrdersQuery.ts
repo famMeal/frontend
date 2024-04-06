@@ -15,6 +15,7 @@ export const RESTAURANT_ORDERS_QUERY = gql`
         status
         subtotal
         total
+
         meal {
           __typename
           active
@@ -36,6 +37,8 @@ export const RESTAURANT_ORDERS_QUERY = gql`
   }
 `;
 
+type RestaurantSplinter = Pick<Restaurant, "__typename" | "id" | "name">;
+
 type OrderSplinter = Pick<
   Order,
   "__typename" | "id" | "quantity" | "status" | "subtotal" | "total"
@@ -56,11 +59,9 @@ type OrderMealSplinter = Pick<
 type UserSplinter = Pick<User, "__typename" | "id" | "firstName" | "lastName">;
 
 export interface OrderData extends OrderSplinter {
-  meal: OrderMealSplinter;
-  user: UserSplinter;
+  meal?: OrderMealSplinter;
+  user?: UserSplinter;
 }
-
-type RestaurantSplinter = Pick<Restaurant, "id" | "__typename" | "name">;
 
 interface RestaurantData extends RestaurantSplinter {
   orders: OrderData[];

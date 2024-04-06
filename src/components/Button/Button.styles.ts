@@ -47,7 +47,7 @@ export const getCSS = ({
   };
 
   const paddingStyles = classnames(
-    padding("pb-1", disabled ? "pt-3" : isOutlined ? "pt-2" : "pt-2")
+    padding("pb-1", disabled ? "pt-2" : isOutlined ? "pt-2" : "pt-2")
   );
 
   const androidPadding = classnames(
@@ -76,8 +76,16 @@ export const getCSS = ({
   );
 
   const themeTextCSS = {
-    primary: classnames(textColor(isOutlined ? "text-primary" : "text-white")),
-    accent: classnames(textColor(isOutlined ? "text-accent" : "text-white")),
+    primary: classnames(
+      textColor(
+        disabled ? "text-white" : isOutlined ? "text-primary" : "text-white"
+      )
+    ),
+    accent: classnames(
+      textColor(
+        disabled ? "text-white" : isOutlined ? "text-accent" : "text-white"
+      )
+    ),
   };
 
   const textCSS = classnames(

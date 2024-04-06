@@ -57,7 +57,10 @@ const Button: FC<Props> = ({
     );
 
   return (
-    <TouchableOpacity className={buttonCSS} disabled={disabled} {...rest}>
+    <TouchableOpacity
+      className={buttonCSS}
+      disabled={disabled || isLoading}
+      {...rest}>
       {renderContent()}
       <View className={spinnerCSS}>
         <ActivityIndicator

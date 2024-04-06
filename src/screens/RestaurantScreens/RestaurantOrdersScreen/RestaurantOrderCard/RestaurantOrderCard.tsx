@@ -1,37 +1,32 @@
 import { Box, Chip, Column, Columns, Typography } from "components";
-import { COLOURS } from "constants/colours";
 import { STATUS } from "constants/status";
 import { type FC } from "react";
-import { Switch, View } from "react-native";
-import type { OrderData } from "screens/RestaurantScreens/useRestaurantOrdersQuery";
+import { View } from "react-native";
+
+import { ThumbSlideButton } from "components/ThumbSlideButton";
 import { useUpdateOrderStatus } from "shared/useUpdateOrderStatusMutation";
 import { formatTime } from "utilities/formatTime";
+import type { OrderData } from "../RestaurantActiveOrdersTab/useRestaurantOrdersQuery";
 
 interface Props {
   order: OrderData;
 }
 
 const RestaurantOrderCard: FC<Props> = ({
-  order: {
-    id,
-    status,
-    subtotal,
-    quantity,
-    meal: { pickupEndTime, pickupStartTime, name },
-    user: { firstName, lastName },
-  },
+  order: { id, status, subtotal, quantity, meal, user },
 }) => {
-  const [updateStatus] = useUpdateOrderStatus();
+  const { pickupEndTime, pickupStartTime, name } = meal ?? {};
+  const { firstName, lastName } = user ?? {};
+  const [updateStatus, { loading }] = useUpdateOrderStatus();
 
-  const chipType = status === STATUS.PICKED_UP ? "primary" : "success";
+  const chipType = status === STATUS?.COMPLETED ? "success" : "warning";
+
   const chipStatus =
     status === STATUS.COMPLETED
       ? "Completed"
       : status === STATUS.PICKED_UP
       ? "Picked Up"
       : "In Progress";
-
-  const switchValue = status === STATUS.COMPLETED ? true : false;
 
   const toggleSwitch = () => {
     updateStatus({
@@ -46,23 +41,13 @@ const RestaurantOrderCard: FC<Props> = ({
 
   return (
     <Box key={id}>
-      <Columns className="border-b border-accent pb-4">
+      <Columns>
         <Column>
           <View>
             <Chip type={chipType} isStatic>
               {chipStatus}
             </Chip>
           </View>
-        </Column>
-        <Column alignItems="flex-end" justifyContent="flex-end">
-          <Switch
-            disabled={status === STATUS.COMPLETED}
-            trackColor={{ false: COLOURS.primary, true: COLOURS.accent }}
-            thumbColor={COLOURS.light}
-            ios_backgroundColor={COLOURS.light}
-            onValueChange={toggleSwitch}
-            value={switchValue}
-          />
         </Column>
       </Columns>
       <Columns isMarginless>
@@ -102,6 +87,17 @@ const RestaurantOrderCard: FC<Props> = ({
               {formatTime(pickupStartTime)} and {formatTime(pickupEndTime)}
             </Typography>
           </Typography>
+        </Column>
+      </Columns>
+      <Columns>
+        <Column columnWidth="fullWidth">
+          <ThumbSlideButton
+            inCompletedText="Slide to confirm pickup"
+            completedText="Order Completed"
+            isCompleted={status === STATUS.COMPLETED}
+            onSlideComplete={toggleSwitch}
+            loading={loading}
+          />
         </Column>
       </Columns>
     </Box>

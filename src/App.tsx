@@ -1,6 +1,7 @@
 import { ApolloProvider } from "@apollo/client";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
+import { AppToast } from "components";
 import { COLOURS } from "constants/colours";
 import type { FC } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -116,6 +117,7 @@ const App: FC = () => {
               }}
             />
           </Navigator>
+          <AppToast />
         </NavigationContainer>
       </ApolloProvider>
     </GestureHandlerRootView>

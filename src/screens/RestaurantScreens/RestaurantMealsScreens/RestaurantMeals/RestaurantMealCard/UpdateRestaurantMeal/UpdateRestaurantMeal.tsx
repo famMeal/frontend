@@ -1,5 +1,6 @@
 import { Box, Button, Column, Columns, Input, Typography } from "components";
 import { useState, type FC } from "react";
+import Toast from "react-native-toast-message";
 import type { RestaurantMealsQueryData } from "../../useRestaurantMealsQuery";
 import { useMealUpdateMutation } from "./useMealUpdateMutation";
 
@@ -35,7 +36,13 @@ const UpdateRestaurantMeal: FC<Props> = ({
           active,
         },
       },
-      onCompleted: toggleEditing,
+      onCompleted: () => {
+        Toast.show({
+          type: "primary",
+          text1: "Meal updated!",
+        });
+        toggleEditing();
+      },
     });
 
   const onPressCancel = () => {

@@ -11,7 +11,8 @@ import {
   Typography,
 } from "components";
 import type { ChipTypes } from "components/Chip/Chip";
-import { STATUS } from "constants/status";
+import type { Status } from "constants/status";
+import { READ_STATUS_NAME, STATUS } from "constants/status";
 import React, { type FC } from "react";
 import { Linking } from "react-native";
 import { formatTime } from "utilities/formatTime";
@@ -40,8 +41,8 @@ const OrderCard: FC<Props> = ({ order }) => {
   const STATUS_CHIP_MAP = {
     [STATUS.COMPLETED]: "success",
     [STATUS.PICKED_UP]: "success",
-    [STATUS.PREPARING]: "primary",
-    [STATUS.READY]: "primary",
+    [STATUS.PREPARING]: "warning",
+    [STATUS.READY]: "warning",
   };
 
   const chipStatus =
@@ -72,7 +73,9 @@ const OrderCard: FC<Props> = ({ order }) => {
   return (
     <Box key={id}>
       <Accordion>
-        <Chip type={chipStatus as ChipTypes}>{status}</Chip>
+        <Chip type={chipStatus as ChipTypes}>
+          {READ_STATUS_NAME[status as Status]}
+        </Chip>
         <AccordionHeader>
           <Columns isMarginless className="mt-12">
             <Column columnWidth="fullWidth">

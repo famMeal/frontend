@@ -11,9 +11,19 @@ interface Props extends PropsWithChildren {
 const BottomDrawer: FC<Props> = ({ children, isVisible, onClose }) => {
   const { container, content, overlay } = getCSS();
   return (
-    <Modal animationType="slide" transparent={true} visible={isVisible}>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={isVisible}
+      onRequestClose={onClose}>
       <View className={container}>
-        <TouchableOpacity className={overlay} onPress={onClose} />
+        <TouchableOpacity
+          className={overlay}
+          onPress={onClose}
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          }}
+        />
         <View className={content}>{children}</View>
       </View>
     </Modal>

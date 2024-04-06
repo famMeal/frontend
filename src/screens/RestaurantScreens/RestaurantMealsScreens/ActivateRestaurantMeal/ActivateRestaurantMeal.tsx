@@ -15,8 +15,12 @@ import {
   TimePicker,
   Typography,
 } from "components";
+import { COLOURS } from "constants/colours";
+import { InfoIcon } from "lucide-react-native";
 import React, { useState, type FC } from "react";
-import { Alert, Platform } from "react-native";
+import { Alert, Platform, TouchableOpacity } from "react-native";
+import Toast from "react-native-toast-message";
+import Tooltip from "react-native-walkthrough-tooltip";
 import { RESTAURANT_QUERY } from "screens/RestaurantScreens/RestaurantHomeScreens/RestaurantDashboardScreen/useRestaurantQuery";
 import { useActivateMealMutation } from "shared";
 import type { RootStackParamList } from "types/navigation.types";
@@ -139,7 +143,13 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
                 quantityAvailable: Number(quantity),
               },
             },
-            onCompleted: () => navigate("RestaurantMeals", { restaurantID }),
+            onCompleted: () => {
+              Toast.show({
+                type: "accent",
+                text1: "Meal Activated!",
+              });
+              navigate("RestaurantMeals", { restaurantID });
+            },
             refetchQueries: [RESTAURANT_MEALS_QUERY, RESTAURANT_QUERY],
           });
         },
@@ -175,11 +185,72 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
     );
   };
 
+  const [toolTipThatsVisible, setToolTipThatsVisibile] =
+    useState<keyof typeof tooltipContents>("closed");
+
+  const isToolTipOpen = (tooltipKey: keyof typeof tooltipContents) =>
+    toolTipThatsVisible === tooltipKey;
+
+  const tooltipContents = {
+    orderStartTime: "Start Time for users to reserve orders",
+    orderCutoffTime: "Cutoff Time for users to reserve orders",
+    pickupStartTime: "Start Time for users to pick up their orders",
+    pickupEndTime: "End Time for users to pick up their orders",
+    closed: null,
+  } as const;
+
+  const renderToolTip = (tooltip: keyof typeof tooltipContents) => (
+    <Tooltip
+      arrowStyle={{
+        width: 0,
+        height: 0,
+        backgroundColor: "transparent",
+        borderLeftWidth: 10,
+        borderRightWidth: 10,
+        borderTopWidth: 20,
+        borderStyle: "solid",
+        borderLeftColor: "transparent",
+        borderRightColor: "transparent",
+        borderTopColor: "white",
+      }}
+      tooltipStyle={{
+        backgroundColor: "white",
+        borderRadius: 5,
+        maxWidth: 200,
+        marginTop: -15,
+      }}
+      onClose={() => setToolTipThatsVisibile("closed")}
+      isVisible={isToolTipOpen(tooltip)}
+      content={
+        <Typography weigth="bold" type="S">
+          {tooltipContents[tooltip]}
+        </Typography>
+      }
+      placement="top">
+      <TouchableOpacity
+        className="ml-1"
+        onPress={() => setToolTipThatsVisibile(tooltip)}>
+        <InfoIcon color={COLOURS.accent} />
+      </TouchableOpacity>
+    </Tooltip>
+  );
+
   return (
     <Container>
       <Box>
         <Columns>
           <Column columnWidth="half">
+            <Typography weigth="bold" type="S">
+              Meal
+            </Typography>
+            <Typography className="mt-2" type="P">
+              {meal?.name}
+            </Typography>
+          </Column>
+          <Column columnWidth="half">
+            <Typography weigth="bold" type="S">
+              Order Date:
+            </Typography>
             <DatePicker
               disabled
               minimumDate={new Date()}
@@ -188,21 +259,24 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
               value={orderStartTime}
             />
           </Column>
-          <Column columnWidth="half" direction="column" justifyContent="center">
-            <Typography colour="accent" weigth="bold" type="P">
-              {meal?.name}
+        </Columns>
+        <Columns>
+          <Column columnWidth="half" direction="row">
+            <Typography weigth="bold" type="S">
+              Order Start:
             </Typography>
+            {renderToolTip("orderStartTime")}
+          </Column>
+          <Column columnWidth="half" direction="row">
+            <Typography weigth="bold" type="S">
+              Order End:
+            </Typography>
+            {renderToolTip("orderCutoffTime")}
           </Column>
         </Columns>
         <Columns>
           <Column columnWidth="half">
-            <Typography weigth="bold" type="S">
-              Order Start Time:
-            </Typography>
-            <Button
-              theme="accent"
-              isOutlined
-              onPress={() => setDrawer("orderStartTime")}>
+            <Button onPress={() => setDrawer("orderStartTime")}>
               {orderStartTime.toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -211,19 +285,27 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
             </Button>
           </Column>
           <Column columnWidth="half">
-            <Typography weigth="bold" type="S">
-              Order Cutoff Time:
-            </Typography>
-            <Button
-              theme="accent"
-              isOutlined
-              onPress={() => setDrawer("orderCutoffTime")}>
+            <Button onPress={() => setDrawer("orderCutoffTime")}>
               {orderCutoffTime.toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",
                 hour12: true,
               })}
             </Button>
+          </Column>
+        </Columns>
+        <Columns>
+          <Column columnWidth="half" direction="row">
+            <Typography weigth="bold" type="S">
+              Pickup Start:
+            </Typography>
+            {renderToolTip("pickupStartTime")}
+          </Column>
+          <Column columnWidth="half" direction="row">
+            <Typography weigth="bold" type="S">
+              Pickup End:
+            </Typography>
+            {renderToolTip("pickupEndTime")}
           </Column>
         </Columns>
         {/* <Columns>
@@ -237,16 +319,9 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
             />
           </Column>
         </Columns> */}
-
         <Columns>
           <Column columnWidth="half">
-            <Typography weigth="bold" type="S">
-              Pickup Start Time:
-            </Typography>
-            <Button
-              theme="accent"
-              isOutlined
-              onPress={() => setDrawer("pickupStartTime")}>
+            <Button onPress={() => setDrawer("pickupStartTime")}>
               {pickupStartTime.toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -255,13 +330,7 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
             </Button>
           </Column>
           <Column columnWidth="half">
-            <Typography weigth="bold" type="S">
-              Pickup Cutoff Time:
-            </Typography>
-            <Button
-              theme="accent"
-              isOutlined
-              onPress={() => setDrawer("pickupEndTime")}>
+            <Button onPress={() => setDrawer("pickupEndTime")}>
               {pickupEndTime.toLocaleTimeString("en-US", {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -271,7 +340,7 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
           </Column>
         </Columns>
         <Columns>
-          <Column>
+          <Column columnWidth="fullWidth">
             <Typography weigth="bold" type="S">
               Quantity:
             </Typography>
@@ -282,7 +351,9 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
               value={quantity ?? ""}
             />
           </Column>
-          <Column justifyContent="flex-end">
+        </Columns>
+        <Columns className="mt-4">
+          <Column columnWidth="fullWidth">
             <Button
               disabled={!quantity}
               isLoading={isestaurantSettingLoading || isActivateLoading}

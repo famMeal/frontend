@@ -92,9 +92,19 @@ const RestaurantMeals: FC<Props> = ({ route }) => {
 
   const renderMeals = () => (loading ? renderSkeletons() : renderMealCards());
 
+  const addMealCTA = () =>
+    hasMeals ? (
+      <Box className="mb-0">
+        <Button onPress={() => setIsModalOpen(true)} theme="accent">
+          Add Meal
+        </Button>
+      </Box>
+    ) : null;
+
   return (
     <Container>
       <ScrollView>{renderMeals()}</ScrollView>
+      {addMealCTA()}
       <RestaurantCreateMealModal
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}

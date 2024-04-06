@@ -2,10 +2,11 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Box, Button, Chip, Column, Columns, Typography } from "components";
 import { COLOURS } from "constants/colours";
-import { useState, type FC } from "react";
-import { Alert, View } from "react-native";
+import React, { useState, type FC } from "react";
+import { View } from "react-native";
 
 import { Trash2Icon } from "lucide-react-native";
+import Toast from "react-native-toast-message";
 import { ActionBottomDrawer } from "screens/components";
 import { useActivateMealMutation } from "shared/useActivateMealMutation";
 import type { RootStackParamList } from "types/navigation.types";
@@ -33,6 +34,7 @@ const RestaurantMealCard: FC<Props> = ({
   restaurantID,
   hasActiveMeal,
 }) => {
+  const [isToolTipOpen, setIsToolTipOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [deleteMeal, { loading: isDeleteLoading }] = useMealDeleteMutation();
@@ -46,6 +48,14 @@ const RestaurantMealCard: FC<Props> = ({
   const toggleEditing = () => setIsEditing(prev => !prev);
   const toggleDrawer = () => setIsVisible(prev => !prev);
 
+  const onDeleteComplete = () => {
+    toggleDrawer();
+    Toast.show({
+      type: "primary",
+      text1: "Meal removed!",
+    });
+  };
+
   const handleOnDelete = () =>
     deleteMeal({
       variables: {
@@ -53,7 +63,7 @@ const RestaurantMealCard: FC<Props> = ({
           mealId: id,
         },
       },
-      onCompleted: toggleDrawer,
+      onCompleted: onDeleteComplete,
       update: cache => {
         const data = cache.readQuery<
           RestaurantMealsQueryData,
@@ -88,7 +98,10 @@ const RestaurantMealCard: FC<Props> = ({
 
   const handleOnPressActivate = () => {
     if (hasActiveMeal) {
-      Alert.alert("You can only have 1 active meal at the time");
+      Toast.show({
+        type: "primary",
+        text1: "You can only have 1 active meal",
+      });
     } else {
       navigate("ActivateRestaurantMeal", { meal, restaurantID });
     }
@@ -102,6 +115,11 @@ const RestaurantMealCard: FC<Props> = ({
           active: false,
         },
       },
+      onCompleted: () =>
+        Toast.show({
+          type: "primary",
+          text1: "Meal Deactivated!",
+        }),
     });
 
   const renderCTA = () =>
@@ -113,6 +131,13 @@ const RestaurantMealCard: FC<Props> = ({
       <Button onPress={handleOnPressActivate}>Activate</Button>
     );
 
+  const renderChip = () =>
+    active ? (
+      <Chip isStatic type="success">
+        Active
+      </Chip>
+    ) : null;
+
   const renderContent = () =>
     isEditing ? (
       <UpdateRestaurantMeal
@@ -122,13 +147,9 @@ const RestaurantMealCard: FC<Props> = ({
       />
     ) : (
       <Box>
-        <Columns className="border-b border-accent pb-4">
+        <Columns className={active ? "pb-4" : "pb-2"}>
           <Column columnWidth="twoThird">
-            <View>
-              <Chip isStatic type={active ? "success" : "primary"}>
-                {active ? "Active" : "Disabled"}
-              </Chip>
-            </View>
+            <View>{renderChip()}</View>
           </Column>
           <Column
             columnWidth="oneThird"
@@ -155,32 +176,33 @@ const RestaurantMealCard: FC<Props> = ({
           </Column>
         </Columns>
         <Columns isMarginless>
-          <Column>
+          <Column columnWidth="fullWidth">
             <Typography isMarginless type="S">
-              Price:
-            </Typography>
-          </Column>
-          <Column alignItems="flex-end">
-            <Typography isMarginless type="S">
-              {price}
+              Price:{" "}
+              <Typography weigth="bold" type="S">
+                {price}
+              </Typography>
             </Typography>
           </Column>
         </Columns>
         <Columns>
-          <Column>
+          <Column columnWidth="fullWidth">
             <Typography isMarginless type="S">
               Quantity:
-            </Typography>
-          </Column>
-          <Column alignItems="flex-end">
-            <Typography isMarginless type="S">
-              {quantityAvailable ?? 0} Available
+              <Typography weigth="bold" type="S">
+                {" "}
+                {quantityAvailable ?? 0} Available
+              </Typography>
             </Typography>
           </Column>
         </Columns>
         <Columns isMarginless>
           <Column>
-            <Button theme="accent" isOutlined onPress={toggleEditing}>
+            <Button
+              disabled={active}
+              theme="accent"
+              isOutlined
+              onPress={toggleEditing}>
               Edit
             </Button>
           </Column>

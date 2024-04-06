@@ -17,21 +17,22 @@ interface Props {
 
 const EmptyCart: FC<Props> = ({ onPress }) => {
   return (
-    <Container className="justify-center">
+    <Container>
       <Box>
         <Columns>
           <Column
             columnWidth="fullWidth"
             alignItems="center"
             justifyContent="center">
-            <Typography weigth="bold" type="H3" className="text-center">
+            <Typography weigth="bold" type="H3" className="text-center mb-6">
               Your cart is empty
             </Typography>
             <ShoppingCartIcon size={100} color={COLOURS.accent} />
           </Column>
         </Columns>
-
-        <Button onPress={onPress}>View Meals</Button>
+        <Button className="mt-6" onPress={onPress}>
+          View Meals
+        </Button>
       </Box>
     </Container>
   );

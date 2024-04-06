@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Box, Button, Column, Columns, Typography } from "components";
+import { Box, Button, Chip, Column, Columns, Typography } from "components";
 import type { FC } from "react";
 import React from "react";
 import type { Order, User } from "schema";
@@ -32,6 +32,7 @@ const MealCard: FC<Props> = ({ meal, userID }) => {
     orderCutoffTime,
     pickupEndTime,
     pickupStartTime,
+    quantityAvailable,
   } = meal ?? {};
 
   const { navigate } = useNavigation<MealScreenNavigationProp>();
@@ -61,6 +62,9 @@ const MealCard: FC<Props> = ({ meal, userID }) => {
 
   return (
     <Box>
+      <Chip type="accent" icon={null} position="topRight">
+        {quantityAvailable} Left
+      </Chip>
       <Columns>
         <Column columnWidth="fullWidth">
           <Typography isMarginless type="H3" weigth="semiBold">

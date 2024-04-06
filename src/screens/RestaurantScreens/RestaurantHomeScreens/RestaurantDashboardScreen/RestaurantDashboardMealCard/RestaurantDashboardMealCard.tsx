@@ -66,7 +66,7 @@ const RestaurantDashboardMealCard: FC<Props> = ({
 
   return (
     <Box>
-      <Chip type={active ? "success" : "primary"}>
+      <Chip type={active ? "success" : "warning"}>
         {active ? "Active" : "Disabled"}
       </Chip>
       <Accordion>
