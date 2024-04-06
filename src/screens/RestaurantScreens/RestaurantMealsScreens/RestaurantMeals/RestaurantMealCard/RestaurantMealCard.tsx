@@ -34,7 +34,6 @@ const RestaurantMealCard: FC<Props> = ({
   restaurantID,
   hasActiveMeal,
 }) => {
-  const [isToolTipOpen, setIsToolTipOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [deleteMeal, { loading: isDeleteLoading }] = useMealDeleteMutation();

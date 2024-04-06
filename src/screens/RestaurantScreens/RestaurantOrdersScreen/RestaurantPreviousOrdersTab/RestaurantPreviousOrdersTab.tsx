@@ -1,7 +1,12 @@
-import type { ParamListBase, RouteProp } from "@react-navigation/native";
+import {
+  useIsFocused,
+  type ParamListBase,
+  type RouteProp,
+} from "@react-navigation/native";
 import {
   Box,
   Button,
+  Chip,
   Column,
   Columns,
   Container,
@@ -10,7 +15,7 @@ import {
 } from "components";
 import { COLOURS } from "constants/colours";
 import { useDebounce } from "hooks/useDebounce";
-import { SearchIcon } from "lucide-react-native";
+import { OctagonAlertIcon, SearchIcon } from "lucide-react-native";
 import React, { useState, type FC } from "react";
 import { ScrollView, View } from "react-native";
 import { OrderStatusField, type Restaurant } from "schema";
@@ -29,26 +34,11 @@ interface Props {
 }
 
 const RestaurantPreviousOrdersTab: FC<Props> = ({ restaurantID }) => {
+  const isActive = useIsFocused();
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [searchOrder, { data: orderData, loading: orderLoading }] =
-    useLazyRestaurantOrderQuery({
-      variables: {
-        id: searchTerm,
-      },
-    });
-
-  const debouncedSearch = useDebounce(searchOrder, 2000);
-
-  const handleSetSearchTerm = (value: string) => {
-    setSearchTerm(value);
-    if (value.length) {
-      debouncedSearch();
-    }
-  };
-
   const { data, loading } = useRestaurantOrdersQuery({
-    skip: !restaurantID,
+    skip: !restaurantID || !isActive,
     variables: {
       id: restaurantID,
       filters: {
@@ -57,59 +47,67 @@ const RestaurantPreviousOrdersTab: FC<Props> = ({ restaurantID }) => {
     },
   });
 
-  console.log(orderData?.order?.restaurant);
+  const [searchOrder, { data: searchedOrder, loading: orderLoading, called }] =
+    useLazyRestaurantOrderQuery();
 
-  const renderNothingFound = (
+  const debouncedHandleSearch = useDebounce((id: string) => {
+    if (id.length) {
+      searchOrder({
+        fetchPolicy: "network-only",
+        notifyOnNetworkStatusChange: true,
+        variables: { id },
+      });
+    }
+  }, 1000);
+
+  const handleChange = (id: string) => {
+    setSearchTerm(id);
+    debouncedHandleSearch(id);
+  };
+
+  const renderSkeletons = () =>
+    createList(3).map((_, index) => (
+      <SkeletonRestaurantOrderCard key={index} />
+    ));
+
+  const renderNothingFound = () => (
     <Box>
+      <Chip position="topRight" icon={null} type="info">
+        <OctagonAlertIcon color={COLOURS.white} />
+      </Chip>
       <Columns>
-        <Column className="items-center">
-          <Typography weigth="semiBold">No orders found</Typography>
+        <Column columnWidth="fullWidth">
+          <Typography type="H3" weigth="semiBold">
+            Nothing found
+          </Typography>
+          <Typography type="S">No order found with id: {searchTerm}</Typography>
         </Column>
       </Columns>
     </Box>
   );
 
-  const renderSkeleton = (index: number) => (
-    <SkeletonRestaurantOrderCard key={index} />
-  );
-
-  const renderSearchResults = () => {
-    if (
-      !orderData?.order ||
-      orderData?.order?.restaurant?.id !== restaurantID
-    ) {
-      return renderNothingFound;
-    }
-
-    return (
-      <RestaurantOrderCard
-        order={orderData?.order}
-        key={orderData?.order?.id}
-      />
-    );
-  };
-
-  const renderLoadingSkeleton = () =>
-    createList(1).map((_, index) => renderSkeleton(index));
-
-  const renderLoadingSkeletons = () =>
-    createList(3).map((_, index) => renderSkeleton(index));
-
-  const renderAllOrders = () => {
-    return loading
-      ? renderLoadingSkeletons()
-      : data?.restaurant?.orders?.map(order => (
-          <RestaurantOrderCard order={order} key={order.id} />
-        ));
-  };
-
   const renderContent = () => {
-    if (searchTerm && orderLoading) {
-      return renderLoadingSkeleton();
-    } else if (searchTerm && orderData) {
-      return renderSearchResults();
+    if (loading || orderLoading || !isActive) {
+      return renderSkeletons();
     }
-    return renderAllOrders();
+
+    if (searchTerm && called && !searchedOrder?.order) {
+      return renderNothingFound();
+    }
+
+    if (
+      searchTerm &&
+      searchedOrder?.order &&
+      searchedOrder?.order?.restaurant?.id === restaurantID
+    ) {
+      return <RestaurantOrderCard order={searchedOrder.order} />;
+    }
+
+    return data?.restaurant?.orders?.length
+      ? data.restaurant.orders.map(order => (
+          <RestaurantOrderCard order={order} key={order.id} />
+        ))
+      : renderNothingFound();
   };
 
   return (
@@ -124,14 +122,14 @@ const RestaurantPreviousOrdersTab: FC<Props> = ({ restaurantID }) => {
               theme="accent"
               placeholder="123"
               value={searchTerm}
-              onChangeText={handleSetSearchTerm}
+              onChangeText={handleChange}
             />
-            <View className="absolute right-0 bottom-0">
-              <Button theme="accent" className="rounded-l-none">
-                <SearchIcon color={COLOURS.white} />
-              </Button>
-            </View>
           </Column>
+          <View className="absolute right-0 bottom-0">
+            <Button theme="accent" className="rounded-l-none">
+              <SearchIcon color={COLOURS.white} />
+            </Button>
+          </View>
         </Columns>
       </Box>
       <Container>

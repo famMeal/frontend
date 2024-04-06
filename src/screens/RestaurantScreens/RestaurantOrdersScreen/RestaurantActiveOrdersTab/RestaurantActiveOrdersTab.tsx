@@ -2,6 +2,7 @@ import type { ParamListBase, RouteProp } from "@react-navigation/native";
 import {
   Box,
   Button,
+  Chip,
   Column,
   Columns,
   Container,
@@ -10,7 +11,7 @@ import {
 } from "components";
 import { COLOURS } from "constants/colours";
 import { useDebounce } from "hooks/useDebounce";
-import { SearchIcon } from "lucide-react-native";
+import { OctagonAlertIcon, SearchIcon } from "lucide-react-native";
 import React, { useState, type FC } from "react";
 import { ScrollView, View } from "react-native";
 import { OrderStatusField, type Restaurant } from "schema";
@@ -36,9 +37,11 @@ const RestaurantActiveOrdersTab: FC<Props> = ({ restaurantID }) => {
       variables: {
         id: searchTerm,
       },
+      fetchPolicy: "network-only",
+      notifyOnNetworkStatusChange: true,
     });
 
-  const debouncedSearch = useDebounce(searchOrder, 2000);
+  const debouncedSearch = useDebounce(searchOrder, 1000);
 
   const handleSetSearchTerm = (value: string) => {
     setSearchTerm(value);
@@ -63,9 +66,15 @@ const RestaurantActiveOrdersTab: FC<Props> = ({ restaurantID }) => {
 
   const renderNothingFound = (
     <Box>
+      <Chip position="topRight" icon={null} type="info">
+        <OctagonAlertIcon color={COLOURS.white} />
+      </Chip>
       <Columns>
-        <Column className="items-center">
-          <Typography weigth="semiBold">No orders found</Typography>
+        <Column columnWidth="fullWidth">
+          <Typography type="H3" weigth="semiBold">
+            Nothing found
+          </Typography>
+          <Typography type="S">No order found with id: {searchTerm}</Typography>
         </Column>
       </Columns>
     </Box>

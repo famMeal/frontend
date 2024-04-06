@@ -1,8 +1,8 @@
-import type { FC } from "react";
-import type { TextInputProps } from "react-native";
 import type { ColourTheme } from "constants/colours";
-import { TextInput } from "react-native";
+import type { FC } from "react";
 import { useMemo } from "react";
+import type { TextInputProps } from "react-native";
+import { TextInput } from "react-native";
 import { getCSS } from "./Input.styles";
 
 export interface InputProps {

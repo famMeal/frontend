@@ -5,29 +5,23 @@ const SkeletonRestaurantOrderCard: FC = () => {
   return (
     <Box>
       <Columns>
-        <Column isPaddingless>
-          <Skeleton size="small" />
-          <Skeleton size="medium" />
+        <Column columnWidth="fullWidth">
+          <Box isPaddingLess>
+            <Skeleton size="large" width="full" />
+            <Skeleton size="large" width="full" />
+          </Box>
         </Column>
       </Columns>
-      <Columns>
-        <Column isPaddingless>
-          <Skeleton width="full" size="small" />
+      <Columns isMarginless>
+        <Column>
+          <Box isPaddingLess>
+            <Skeleton size="large" width="full" />
+          </Box>
         </Column>
-      </Columns>
-      <Columns>
-        <Column isPaddingless>
-          <Skeleton size="large" />
-        </Column>
-      </Columns>
-      <Columns>
-        <Column isPaddingless>
-          <Skeleton size="small" />
-          <Skeleton size="medium" />
-        </Column>
-        <Column isPaddingless className="items-end">
-          <Skeleton size="medium" />
-          <Skeleton size="small" />
+        <Column alignItems="flex-end">
+          <Box isPaddingLess>
+            <Skeleton size="large" width="full" />
+          </Box>
         </Column>
       </Columns>
     </Box>
