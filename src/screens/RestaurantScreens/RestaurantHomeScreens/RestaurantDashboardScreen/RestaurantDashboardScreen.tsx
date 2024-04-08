@@ -15,7 +15,7 @@ import { COLOURS } from "constants/colours";
 import { ArrowRightCircle, BadgeCheck } from "lucide-react-native";
 import React, { useState, type FC } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
-import type { Meal } from "schema";
+import { DateRangeField, type Meal } from "schema";
 import { RestaurantCreateMealModal } from "screens/RestaurantScreens/RestaurantCreateMealModal";
 import type { RootStackParamList } from "types/navigation.types";
 import { formatCurrency } from "utilities/formatCurrency";
@@ -56,6 +56,9 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
   const { data, loading } = useRestaurantQuery({
     variables: {
       id: restaurantID,
+      filters: {
+        dateRange: DateRangeField.Today,
+      },
     },
     skip: !restaurantID,
   });
@@ -70,6 +73,8 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
     (sum, order) => sum + order?.quantity!,
     0
   );
+
+  console.log();
 
   const totalRevenue = formatCurrency(
     totalQuantityOrdered! * parseCurrency(price!)
@@ -90,8 +95,8 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
 
   const renderCheckMark = (active: boolean) =>
     active ? (
-      <View className="ml-2 mt-0.5">
-        <BadgeCheck size={20} color={COLOURS.accent} />
+      <View className="ml-2 mt-0.5 bg-accent rounded-full">
+        <BadgeCheck size={20} color={COLOURS.white} />
       </View>
     ) : null;
 

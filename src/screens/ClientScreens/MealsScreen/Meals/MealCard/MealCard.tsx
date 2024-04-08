@@ -7,7 +7,7 @@ import type { Order, User } from "schema";
 import type { MealsData } from "screens/ClientScreens/MealsScreen/Meals/useGetMealsQuery";
 import type { RootStackParamList } from "types/navigation.types";
 import {
-  formatDate,
+  formatReadableDate,
   formatTimeRange,
 } from "utilities/formatTimeToReadableTime";
 import { useAddToCartMutation } from "./useAddToCartMutation";
@@ -60,6 +60,15 @@ const MealCard: FC<Props> = ({ meal, userID }) => {
         onCompletedNavigateToMealScreen(addToCart?.order?.id),
     });
 
+  const renderCTA = () =>
+    !quantityAvailable ? (
+      <Typography weigth="bold">Sold Out</Typography>
+    ) : (
+      <Button isLoading={loading} onPress={handleOnPressReserve}>
+        Reserve
+      </Button>
+    );
+
   return (
     <Box>
       <Chip type="accent" icon={null} position="topRight">
@@ -82,7 +91,7 @@ const MealCard: FC<Props> = ({ meal, userID }) => {
             Order By:{" "}
           </Typography>
           <Typography isMarginless type="S" weigth="bold" colour="accent">
-            {formatDate(orderCutoffTime)}
+            {formatReadableDate(orderCutoffTime)}
           </Typography>
         </Column>
         <Column columnWidth="fullWidth" direction="row">
@@ -94,7 +103,6 @@ const MealCard: FC<Props> = ({ meal, userID }) => {
           </Typography>
         </Column>
       </Columns>
-
       <Columns isMarginless>
         <Column
           alignItems="center"
@@ -105,9 +113,7 @@ const MealCard: FC<Props> = ({ meal, userID }) => {
           </Typography>
         </Column>
         <Column columnWidth="twoThird" alignItems="center">
-          <Button isLoading={loading} onPress={handleOnPressReserve}>
-            Reserve
-          </Button>
+          {renderCTA()}
         </Column>
       </Columns>
     </Box>

@@ -4,15 +4,24 @@ import {
   Column,
   Columns,
   Container,
+  RadioGroup,
   Typography,
 } from "components";
-import type { FC } from "react";
+import { useState, type FC } from "react";
 import { ScrollView } from "react-native";
 import { OrderStatusField, type User } from "schema";
+import { GET_MEALS_QUERY } from "screens/ClientScreens/MealsScreen/Meals/useGetMealsQuery";
 import { GET_USER_0RDERS_QUERY } from "screens/ClientScreens/OrdersScreen/useGetUserOrdersQuery";
 import type { GetOrderQueryData } from "shared/useGetOrderQuery";
-import { formatTime } from "utilities/formatTime";
+import type { PlaceOrderMutationData } from "./usePlaceOrderMutation";
 import { usePlaceOrderMutation } from "./usePlaceOrderMutation";
+
+const tipOptions = [
+  { label: "10%", value: "10" },
+  { label: "15%", value: "15" },
+  { label: "18%", value: "18" },
+  { label: "20%", value: "20" },
+];
 
 const sumCurrency = (currency: string, quantity = 0) => {
   const numericCurrency = currency.replace(/[^0-9.]/g, "");
@@ -32,7 +41,7 @@ interface Props {
   cart: GetOrderQueryData["order"];
   onPressGoBack: () => void;
   onPressDelete: () => void;
-  onCompleted: () => void;
+  onCompleted: (data: PlaceOrderMutationData) => void;
   userID: User["id"];
 }
 
@@ -45,6 +54,7 @@ const Cart: FC<Props> = ({
   onCompleted,
 }) => {
   const [placeOrder, { loading }] = usePlaceOrderMutation();
+  const [selectedTip, setSelectedTip] = useState("0");
 
   const onPressPlaceOrder = () => {
     placeOrder({
@@ -57,6 +67,7 @@ const Cart: FC<Props> = ({
         },
       },
       refetchQueries: [
+        GET_MEALS_QUERY,
         {
           query: GET_USER_0RDERS_QUERY,
           variables: {
@@ -83,7 +94,7 @@ const Cart: FC<Props> = ({
             columnWidth="fullWidth"
             justifyContent="center"
             alignItems="center">
-            <Box>
+            {/* <Box>
               <Typography type="H3" weigth="bold" className="mt-4">
                 Pick up Location
               </Typography>
@@ -109,7 +120,7 @@ const Cart: FC<Props> = ({
                   </Typography>
                 </Column>
               </Columns>
-            </Box>
+            </Box> */}
 
             <Box>
               <Typography className="mt-4" type="H3" weigth="bold">
@@ -183,6 +194,23 @@ const Cart: FC<Props> = ({
                   </Button>
                 </Column>
               </Columns>
+            </Box>
+          </Column>
+        </Columns>
+        <Columns>
+          <Column columnWidth="fullWidth">
+            <Box>
+              <Typography isMarginless className="mt-4" type="H3" weigth="bold">
+                Tip
+              </Typography>
+              <Typography className="mb-4" type="S">
+                All tips goes to the restaurant
+              </Typography>
+              <RadioGroup
+                options={tipOptions}
+                selectedValue={selectedTip}
+                onValueChange={setSelectedTip}
+              />
             </Box>
           </Column>
         </Columns>

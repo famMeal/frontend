@@ -1,10 +1,12 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { Dispatch, FC, SetStateAction } from "react";
 import { useEffect, useState } from "react";
+import Toast from "react-native-toast-message";
 import { useDeleteOrderMutation } from "shared/useDeleteOrderMutation";
 import type { GetOrderQueryData } from "shared/useGetOrderQuery";
 import type { RootStackParamList } from "types/navigation.types";
 import { Cart } from "./Cart";
+import type { PlaceOrderMutationData } from "./Cart/usePlaceOrderMutation";
 import { EmptyCart } from "./EmptyCart";
 
 type ConfirmationStackProps = NativeStackScreenProps<
@@ -42,12 +44,28 @@ const ConfirmationScreen: FC<Props> = ({
 
   const onPressNavigateToMeals = () => {
     setCart(undefined);
+
     navigation.navigate("Meals", { userID });
   };
 
-  const onCompleted = () => {
-    setCart(undefined);
-    navigation.navigate("Orders", { userID });
+  const onCompleted = ({ placeOrder: { errors } }: PlaceOrderMutationData) => {
+    if (errors?.length) {
+      Toast.show({
+        type: "error",
+        text1: errors?.[0],
+      });
+    } else {
+      setCart(undefined);
+      Toast.show({
+        type: "accent",
+        text1: "Order Placed",
+      });
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Main" }],
+      });
+      navigation.navigate("Orders", { userID });
+    }
   };
 
   const handleOnPressDelete = () =>

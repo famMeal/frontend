@@ -16,6 +16,7 @@ import { READ_STATUS_NAME, STATUS } from "constants/status";
 import React, { type FC } from "react";
 import { Linking } from "react-native";
 import { formatTime } from "utilities/formatTime";
+import { formatReadableDate } from "utilities/formatTimeToReadableTime";
 import { type UserOrderQueryData } from "../useGetUserOrdersQuery";
 import { OrderCardSliderButton } from "./OrderCardSliderButton";
 
@@ -33,6 +34,7 @@ const OrderCard: FC<Props> = ({ order }) => {
     pickupStartTime,
     total,
     status,
+    createdAt,
   } = order;
 
   const { latitude, longitude, addressLine1, postalCode, city } =
@@ -88,8 +90,14 @@ const OrderCard: FC<Props> = ({ order }) => {
               </Typography>
               <Typography isMarginless type="S">
                 Order ID:{" "}
-                <Typography isMarginless type="S">
+                <Typography isMarginless type="S" weigth="semiBold">
                   #{id}
+                </Typography>
+              </Typography>
+              <Typography isMarginless type="S">
+                Order Date:{" "}
+                <Typography isMarginless type="S" weigth="semiBold">
+                  {formatReadableDate(createdAt!)}
                 </Typography>
               </Typography>
             </Column>

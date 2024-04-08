@@ -1,11 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Box, Button, Container, GoogleMap, Skeleton } from "components";
-import { STATUS } from "constants/status";
 import type { FC } from "react";
 import { useCallback, useRef, useState } from "react";
 import { ScrollView, View } from "react-native";
 import type MapView from "react-native-maps";
+import { OrderStatusField } from "schema";
 import type {
   GetOrderQueryData,
   GetOrderQueryVariables,
@@ -52,7 +52,7 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
           pickupStartTime,
           pickupEndTime,
           quantity,
-          status: STATUS.CART,
+          status: OrderStatusField.Cart,
         },
       },
       update: (cache, { data }) => {

@@ -63,7 +63,7 @@ export const getCSS = ({
     isStatic ? null : positionCSS[chipPosition],
     whitespace("whitespace-nowrap"),
     borderRadius("rounded-full"),
-    padding("p-1.5", "py-0.5"),
+    padding("px-2", "py-0.5"),
     lineHeight("leading-none")
   );
 

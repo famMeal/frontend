@@ -38,9 +38,6 @@ const RestaurantSettingsHeader: FC<Props> = ({ restaurantID }) => {
           console.error("Logout failed:", error);
         }
       },
-      onError: error => {
-        console.error("Logout error:", error);
-      },
     });
   };
 
@@ -48,7 +45,6 @@ const RestaurantSettingsHeader: FC<Props> = ({ restaurantID }) => {
     Alert.alert("Logout", "Are you sure you want to logout?", [
       {
         text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
         style: "cancel",
       },
       { text: "Logout", onPress },

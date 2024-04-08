@@ -4,6 +4,8 @@ import { type FC } from "react";
 import { View } from "react-native";
 
 import { ThumbSlideButton } from "components/ThumbSlideButton";
+import Toast from "react-native-toast-message";
+import { OrderStatusField } from "schema";
 import { useUpdateOrderStatus } from "shared/useUpdateOrderStatusMutation";
 import { formatTime } from "utilities/formatTime";
 import type { OrderData } from "../RestaurantActiveOrdersTab/useRestaurantOrdersQuery";
@@ -33,9 +35,14 @@ const RestaurantOrderCard: FC<Props> = ({
       variables: {
         input: {
           orderId: id,
-          status: STATUS.COMPLETED,
+          status: OrderStatusField.Completed,
         },
       },
+      onCompleted: () =>
+        Toast.show({
+          type: "accent",
+          text1: "Order Completed!",
+        }),
     });
   };
 

@@ -12,13 +12,13 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1A8121861AF542EF836638FD /* Khula-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48C7DC64B03B4AFDB6B4EADD /* Khula-SemiBold.ttf */; };
+		1B1139C8BCF294BD7771B2E9 /* libPods-famMeal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE1B48828136B3A3589BB67 /* libPods-famMeal.a */; };
 		52FB2AB6439C4309B5F52876 /* Khula-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4D67002187884480B8E63F2B /* Khula-Light.ttf */; };
 		6757F617F07444468AF15477 /* Khula-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F485418EAF72402D8D3A4EC8 /* Khula-Regular.ttf */; };
 		6A18B30BD62B4E2987AE326C /* Khula-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 51B798D4DE244350A58F15C3 /* Khula-Bold.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8351A2CFC38643768A1B09E3 /* Khula-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CCC6AC02AEF042AEA29E1CA6 /* Khula-ExtraBold.ttf */; };
-		835B09E22E7F790D8DFC6D96 /* libPods-famMeal-famMealTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BD1603DAF97B78FE4F81D43 /* libPods-famMeal-famMealTests.a */; };
-		A5FF2FF542B5DF9DD16FD8E5 /* libPods-famMeal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B4827D1D0E4E9922954C1A9 /* libPods-famMeal.a */; };
+		F235A88FACDC4AC930AB532E /* libPods-famMeal-famMealTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FDA7FAEE28F30BA01584288 /* libPods-famMeal-famMealTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,9 +35,7 @@
 		00E356EE1AD99517003FC87E /* famMealTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = famMealTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* famMealTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = famMealTests.m; sourceTree = "<group>"; };
-		09596C1FD675EF687EE85688 /* Pods-famMeal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-famMeal.release.xcconfig"; path = "Target Support Files/Pods-famMeal/Pods-famMeal.release.xcconfig"; sourceTree = "<group>"; };
-		0DC140D1784B0F19BEF2C820 /* Pods-famMeal-famMealTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-famMeal-famMealTests.debug.xcconfig"; path = "Target Support Files/Pods-famMeal-famMealTests/Pods-famMeal-famMealTests.debug.xcconfig"; sourceTree = "<group>"; };
-		0F57B9FBBE0EC8F18A726065 /* Pods-famMeal-famMealTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-famMeal-famMealTests.release.xcconfig"; path = "Target Support Files/Pods-famMeal-famMealTests/Pods-famMeal-famMealTests.release.xcconfig"; sourceTree = "<group>"; };
+		0CE1B48828136B3A3589BB67 /* libPods-famMeal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-famMeal.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* famMeal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = famMeal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = famMeal/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = famMeal/AppDelegate.mm; sourceTree = "<group>"; };
@@ -47,11 +45,13 @@
 		48C7DC64B03B4AFDB6B4EADD /* Khula-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Khula-SemiBold.ttf"; path = "../src/assets/fonts/Khula-SemiBold.ttf"; sourceTree = "<group>"; };
 		4D67002187884480B8E63F2B /* Khula-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Khula-Light.ttf"; path = "../src/assets/fonts/Khula-Light.ttf"; sourceTree = "<group>"; };
 		51B798D4DE244350A58F15C3 /* Khula-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Khula-Bold.ttf"; path = "../src/assets/fonts/Khula-Bold.ttf"; sourceTree = "<group>"; };
-		6B4827D1D0E4E9922954C1A9 /* libPods-famMeal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-famMeal.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7BD1603DAF97B78FE4F81D43 /* libPods-famMeal-famMealTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-famMeal-famMealTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		59A6032A7F65473131A9F2BF /* Pods-famMeal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-famMeal.release.xcconfig"; path = "Target Support Files/Pods-famMeal/Pods-famMeal.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = famMeal/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9064F8EF8859E5D28AA53657 /* Pods-famMeal-famMealTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-famMeal-famMealTests.release.xcconfig"; path = "Target Support Files/Pods-famMeal-famMealTests/Pods-famMeal-famMealTests.release.xcconfig"; sourceTree = "<group>"; };
+		9D55D8F0C2355D49554DB51B /* Pods-famMeal-famMealTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-famMeal-famMealTests.debug.xcconfig"; path = "Target Support Files/Pods-famMeal-famMealTests/Pods-famMeal-famMealTests.debug.xcconfig"; sourceTree = "<group>"; };
+		9FDA7FAEE28F30BA01584288 /* libPods-famMeal-famMealTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-famMeal-famMealTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCC6AC02AEF042AEA29E1CA6 /* Khula-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Khula-ExtraBold.ttf"; path = "../src/assets/fonts/Khula-ExtraBold.ttf"; sourceTree = "<group>"; };
-		E0F574B2C195C07C7143759A /* Pods-famMeal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-famMeal.debug.xcconfig"; path = "Target Support Files/Pods-famMeal/Pods-famMeal.debug.xcconfig"; sourceTree = "<group>"; };
+		CFF831D1C877014966C7F757 /* Pods-famMeal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-famMeal.debug.xcconfig"; path = "Target Support Files/Pods-famMeal/Pods-famMeal.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F485418EAF72402D8D3A4EC8 /* Khula-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Khula-Regular.ttf"; path = "../src/assets/fonts/Khula-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -61,7 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				835B09E22E7F790D8DFC6D96 /* libPods-famMeal-famMealTests.a in Frameworks */,
+				F235A88FACDC4AC930AB532E /* libPods-famMeal-famMealTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,7 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A5FF2FF542B5DF9DD16FD8E5 /* libPods-famMeal.a in Frameworks */,
+				1B1139C8BCF294BD7771B2E9 /* libPods-famMeal.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,8 +110,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				6B4827D1D0E4E9922954C1A9 /* libPods-famMeal.a */,
-				7BD1603DAF97B78FE4F81D43 /* libPods-famMeal-famMealTests.a */,
+				0CE1B48828136B3A3589BB67 /* libPods-famMeal.a */,
+				9FDA7FAEE28F30BA01584288 /* libPods-famMeal-famMealTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -164,10 +164,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				E0F574B2C195C07C7143759A /* Pods-famMeal.debug.xcconfig */,
-				09596C1FD675EF687EE85688 /* Pods-famMeal.release.xcconfig */,
-				0DC140D1784B0F19BEF2C820 /* Pods-famMeal-famMealTests.debug.xcconfig */,
-				0F57B9FBBE0EC8F18A726065 /* Pods-famMeal-famMealTests.release.xcconfig */,
+				CFF831D1C877014966C7F757 /* Pods-famMeal.debug.xcconfig */,
+				59A6032A7F65473131A9F2BF /* Pods-famMeal.release.xcconfig */,
+				9D55D8F0C2355D49554DB51B /* Pods-famMeal-famMealTests.debug.xcconfig */,
+				9064F8EF8859E5D28AA53657 /* Pods-famMeal-famMealTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -179,12 +179,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "famMealTests" */;
 			buildPhases = (
-				9293BB668D0073108B906B9E /* [CP] Check Pods Manifest.lock */,
+				C51306D8592F1BE2A15861C7 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				91A531E339C5224EA8C748D8 /* [CP] Embed Pods Frameworks */,
-				7E739BE588CC2C96B8114239 /* [CP] Copy Pods Resources */,
+				C9FD5C31079AD8FDA21E7CE1 /* [CP] Embed Pods Frameworks */,
+				641CD187AC80509BB5916F34 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -200,14 +200,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "famMeal" */;
 			buildPhases = (
-				22EAEAAA9B8FEBD51F642FFF /* [CP] Check Pods Manifest.lock */,
+				A72EF96E7B57B80DADCAFA61 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				91A533556E1DB11A25453252 /* [CP] Embed Pods Frameworks */,
-				47D2EB1F17B0D4B72DBBBBD9 /* [CP] Copy Pods Resources */,
+				0D8709783A9FED0C2C4BD109 /* [CP] Embed Pods Frameworks */,
+				FE8B80ABF7326122A9977A20 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -295,7 +295,41 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		22EAEAAA9B8FEBD51F642FFF /* [CP] Check Pods Manifest.lock */ = {
+		0D8709783A9FED0C2C4BD109 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-famMeal/Pods-famMeal-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-famMeal/Pods-famMeal-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-famMeal/Pods-famMeal-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		641CD187AC80509BB5916F34 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-famMeal-famMealTests/Pods-famMeal-famMealTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-famMeal-famMealTests/Pods-famMeal-famMealTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-famMeal-famMealTests/Pods-famMeal-famMealTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A72EF96E7B57B80DADCAFA61 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -317,75 +351,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		47D2EB1F17B0D4B72DBBBBD9 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-famMeal/Pods-famMeal-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-famMeal/Pods-famMeal-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-famMeal/Pods-famMeal-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7E739BE588CC2C96B8114239 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-famMeal-famMealTests/Pods-famMeal-famMealTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-famMeal-famMealTests/Pods-famMeal-famMealTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-famMeal-famMealTests/Pods-famMeal-famMealTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		91A531E339C5224EA8C748D8 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-famMeal-famMealTests/Pods-famMeal-famMealTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-famMeal-famMealTests/Pods-famMeal-famMealTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-famMeal-famMealTests/Pods-famMeal-famMealTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		91A533556E1DB11A25453252 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-famMeal/Pods-famMeal-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-famMeal/Pods-famMeal-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-famMeal/Pods-famMeal-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9293BB668D0073108B906B9E /* [CP] Check Pods Manifest.lock */ = {
+		C51306D8592F1BE2A15861C7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -407,6 +373,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		C9FD5C31079AD8FDA21E7CE1 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-famMeal-famMealTests/Pods-famMeal-famMealTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-famMeal-famMealTests/Pods-famMeal-famMealTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-famMeal-famMealTests/Pods-famMeal-famMealTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -424,6 +407,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		FE8B80ABF7326122A9977A20 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-famMeal/Pods-famMeal-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-famMeal/Pods-famMeal-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-famMeal/Pods-famMeal-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -459,7 +459,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0DC140D1784B0F19BEF2C820 /* Pods-famMeal-famMealTests.debug.xcconfig */;
+			baseConfigurationReference = 9D55D8F0C2355D49554DB51B /* Pods-famMeal-famMealTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -486,7 +486,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0F57B9FBBE0EC8F18A726065 /* Pods-famMeal-famMealTests.release.xcconfig */;
+			baseConfigurationReference = 9064F8EF8859E5D28AA53657 /* Pods-famMeal-famMealTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -510,7 +510,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E0F574B2C195C07C7143759A /* Pods-famMeal.debug.xcconfig */;
+			baseConfigurationReference = CFF831D1C877014966C7F757 /* Pods-famMeal.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -537,7 +537,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 09596C1FD675EF687EE85688 /* Pods-famMeal.release.xcconfig */;
+			baseConfigurationReference = 59A6032A7F65473131A9F2BF /* Pods-famMeal.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

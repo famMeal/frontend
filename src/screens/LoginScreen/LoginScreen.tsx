@@ -15,6 +15,7 @@ import { EyeIcon, EyeOffIcon } from "lucide-react-native";
 import type { FC } from "react";
 import React, { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
+import Toast from "react-native-toast-message";
 import type { LoginNavigationProps } from "types/navigation.types";
 import { useLoginMutation } from "./useLogInMutation";
 
@@ -44,7 +45,10 @@ const LoginScreen: FC = () => {
       }
     },
     onError: error => {
-      console.error("Login error:", error.message);
+      Toast.show({
+        text1: error.message,
+        type: "error",
+      });
     },
   });
 

@@ -18,7 +18,7 @@ import {
 import { COLOURS } from "constants/colours";
 import { InfoIcon } from "lucide-react-native";
 import React, { useState, type FC } from "react";
-import { Alert, Platform, TouchableOpacity } from "react-native";
+import { Platform, TouchableOpacity } from "react-native";
 import Toast from "react-native-toast-message";
 import Tooltip from "react-native-walkthrough-tooltip";
 import { RESTAURANT_QUERY } from "screens/RestaurantScreens/RestaurantHomeScreens/RestaurantDashboardScreen/useRestaurantQuery";
@@ -46,6 +46,12 @@ type Drawers =
   | "orderStartTime"
   | "closed";
 
+const addHoursToDate = (hours: number) => {
+  const date = new Date();
+  date.setHours(date.getHours() + hours);
+  return date;
+};
+
 const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
   const { navigate } = useNavigation<RestaurantMealsNavigationProp>();
   const [activateMeal, { loading: isActivateLoading }] =
@@ -55,16 +61,13 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
   const { meal, restaurantID } = route?.params;
 
   const [drawer, setDrawer] = useState<Drawers>("closed");
+
   const [orderStartTime, setOrderStartTime] = useState(new Date());
-  const [orderCutoffTime, setOrderCutoffTime] = useState(
-    new Date(new Date().setHours(new Date().getHours() + 2))
-  );
-  const [pickupStartTime, setPickupStartTime] = useState(
-    new Date(new Date().setHours(new Date().getHours() + 4))
-  );
-  const [pickupEndTime, setPickupEndTime] = useState(
-    new Date(new Date().setHours(new Date().getHours() + 6))
-  );
+  const [orderCutoffTime, setOrderCutoffTime] = useState(addHoursToDate(1));
+  const [pickupStartTime, setPickupStartTime] = useState(addHoursToDate(2));
+  const [pickupEndTime, setPickupEndTime] = useState(addHoursToDate(3));
+
+  console.log("pickup", pickupStartTime);
 
   const [quantity, setQuantity] = useState("");
 
@@ -114,7 +117,7 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
     updateTimeState(drawer, date!);
   };
 
-  const areMinimumDatesValid = (): boolean => {
+  const areMinimumDatesValid = () => {
     return (
       orderCutoffTime > orderStartTime &&
       pickupStartTime > orderCutoffTime &&
@@ -155,10 +158,10 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
         },
       });
     } else {
-      Alert.alert(
-        "Dates/Times are not valid",
-        "Time travelling is not possible"
-      );
+      Toast.show({
+        type: "error",
+        text1: "Times are invalid!",
+      });
     }
   };
 
@@ -363,7 +366,6 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
           </Column>
         </Columns>
       </Box>
-
       {renderTimePicker()}
     </Container>
   );

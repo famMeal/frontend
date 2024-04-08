@@ -1,7 +1,8 @@
 import { ThumbSlideButton } from "components/ThumbSlideButton";
 import { STATUS } from "constants/status";
 import { type FC } from "react";
-import type { Order } from "schema";
+import Toast from "react-native-toast-message";
+import { OrderStatusField, type Order } from "schema";
 import { useUpdateOrderStatus } from "shared/useUpdateOrderStatusMutation";
 
 interface Props {
@@ -18,8 +19,14 @@ const OrderCardSliderButton: FC<Props> = ({ orderId, status }) => {
         variables: {
           input: {
             orderId,
-            status: STATUS.PICKED_UP,
+            status: OrderStatusField.PickedUp,
           },
+        },
+        onCompleted: () => {
+          Toast.show({
+            type: "accent",
+            text1: "Enjoy your meal!",
+          });
         },
       });
     }
@@ -27,7 +34,7 @@ const OrderCardSliderButton: FC<Props> = ({ orderId, status }) => {
 
   return (
     <ThumbSlideButton
-      inCompletedText="Slide tp pickup"
+      inCompletedText="Slide to pickup"
       completedText="Picked Up!"
       isCompleted={status === STATUS.PICKED_UP}
       onSlideComplete={handleOnSlideComplete}

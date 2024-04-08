@@ -3,6 +3,7 @@ import classnames, {
   borderRadius,
   flex,
   justifyContent,
+  margin,
   padding,
 } from "tailwindcss-classnames";
 
@@ -12,6 +13,7 @@ export const getCSS = () => {
   const content = classnames(
     backgroundColor("bg-white"),
     padding("p-4"),
+    margin("mb-2"),
     borderRadius("rounded-tl-2xl", "rounded-tr-2xl")
   );
   return {

@@ -69,7 +69,7 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
 
   return (
     <>
-      <View className="h-52">{renderMap()}</View>
+      <View className="h-64">{renderMap()}</View>
       <Container>
         <ScrollView ref={setScrollViewRef} onContentSizeChange={handleMapReady}>
           <Meals userID={userID} />

@@ -77,33 +77,7 @@ const RestaurantDashboardMealCard: FC<Props> = ({
           <Columns isMarginless>
             <Column>
               <Typography type="S" weigth="bold">
-                Available:{" "}
-                <Typography colour="accent" type="S">
-                  {" "}
-                  {quantityAvailable}
-                </Typography>
-              </Typography>
-            </Column>
-            <Column>
-              <Typography type="S" weigth="bold">
-                Reserved:{" "}
-                <Typography colour="accent" type="S">
-                  {" "}
-                  {totalQuantityOrdered}
-                </Typography>
-              </Typography>
-            </Column>
-          </Columns>
-        </AccordionHeader>
-        <AccordionContent>
-          <Columns>
-            <Column>
-              <Typography type="S" weigth="bold">
-                Remaining:{" "}
-                <Typography type="S">
-                  {" "}
-                  {quantityAvailable! - totalQuantityOrdered!}
-                </Typography>
+                Remaining: <Typography type="S">{quantityAvailable}</Typography>
               </Typography>
             </Column>
             <Column>
@@ -112,6 +86,21 @@ const RestaurantDashboardMealCard: FC<Props> = ({
               </Typography>
             </Column>
           </Columns>
+          <Columns>
+            <Column>
+              <Column>
+                <Typography type="S" weigth="bold">
+                  Reserved:{" "}
+                  <Typography colour="accent" type="S">
+                    {" "}
+                    {totalQuantityOrdered}
+                  </Typography>
+                </Typography>
+              </Column>
+            </Column>
+          </Columns>
+        </AccordionHeader>
+        <AccordionContent>
           <Columns direction="column">
             <Column columnWidth="fullWidth">
               <Typography type="S" isMarginless weigth="bold">
