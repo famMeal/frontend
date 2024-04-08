@@ -13,11 +13,12 @@ interface Props {
 const RadioButton: FC<Props> = ({ label, value, isSelected, onSelect }) => {
   return (
     <TouchableOpacity
-      className={`p-2 border rounded-lg mr-2 ${
+      className={`p-2 border-2 rounded-lg mr-2 ${
         isSelected ? "bg-accent border-accent" : "border-gray-400"
       }`}
       onPress={() => onSelect(value)}>
       <Typography
+        isMarginless
         weigth="bold"
         className={`${isSelected ? "text-white" : "text-gray-700"}`}>
         {label}

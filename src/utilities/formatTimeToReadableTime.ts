@@ -50,7 +50,7 @@ export const formatTimeRange = (
   pickupEndTime: string
 ): string => {
   const parseTime = (timeString: string) => {
-    const [_, time] = timeString.split(" ");
+    const [unused, time] = timeString.split(" ");
     return time;
   };
 

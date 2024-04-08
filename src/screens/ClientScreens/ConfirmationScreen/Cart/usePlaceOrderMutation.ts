@@ -101,4 +101,3 @@ const usePlaceOrderMutation = (options?: Options) =>
 
 export { usePlaceOrderMutation };
 export type { Data as PlaceOrderMutationData };
-

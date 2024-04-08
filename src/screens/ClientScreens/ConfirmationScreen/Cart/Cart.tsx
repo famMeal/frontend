@@ -153,10 +153,22 @@ const Cart: FC<Props> = ({
                   </Typography>
                 </Column>
               </Columns>
-              <Columns>
+              <Columns isMarginless>
                 <Column>
                   <Typography type="S" isMarginless weigth="semiBold">
                     Taxes
+                  </Typography>
+                </Column>
+                <Column alignItems="flex-end">
+                  <Typography type="S" isMarginless className="mr-4">
+                    {cart?.taxes}
+                  </Typography>
+                </Column>
+              </Columns>
+              <Columns>
+                <Column>
+                  <Typography type="S" isMarginless weigth="semiBold">
+                    Tip
                   </Typography>
                 </Column>
                 <Column alignItems="flex-end">
