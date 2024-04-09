@@ -2870,6 +2870,11 @@
   resolved "https://registry.yarnpkg.com/@types/json-stable-stringify/-/json-stable-stringify-1.0.36.tgz#fe6c6001a69ff8160a772da08779448a333c7ddd"
   integrity sha512-b7bq23s4fgBB76n34m2b3RBf6M369B0Z9uRR8aHTMd8kZISRkmDEpPD8hhpYvDFzr3bJCPES96cm3Q6qRNDbQw==
 
+"@types/luxon@^3.4.2":
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/@types/luxon/-/luxon-3.4.2.tgz#e4fc7214a420173cea47739c33cdf10874694db7"
+  integrity sha512-TifLZlFudklWlMBfhubvgqTXRzLDI5pCbGa4P8a3wPyUQSW+1xQ5eDsreP9DWHX3tjq1ke96uYG/nwundroWcA==
+
 "@types/node@*":
   version "20.12.5"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.12.5.tgz#74c4f31ab17955d0b5808cdc8fd2839526ad00b3"
@@ -6721,6 +6726,11 @@ lucide-react-native@^0.363.0:
   version "0.363.0"
   resolved "https://registry.yarnpkg.com/lucide-react-native/-/lucide-react-native-0.363.0.tgz#31ed750c98d3dc8dd676f82cbd8611b0898f8005"
   integrity sha512-PvKtX6vhaES+IcIwYHL7qCCJwcUAnbHtvwfuVhYRYHPpnslksdr0ay1UMf35Fhx8Ky6c9Wp2ieOD1AxfiuHyGw==
+
+luxon@^3.4.4:
+  version "3.4.4"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-3.4.4.tgz#cf20dc27dc532ba41a169c43fdcc0063601577af"
+  integrity sha512-zobTr7akeGHnv7eBOXcRgMeCP6+uyYsczwmeRCauvpvaAltgNyTbLH/+VaEAPUeWBT+1GuNmz4wC/6jtQzbbVA==
 
 make-dir@^2.0.0, make-dir@^2.1.0:
   version "2.1.0"

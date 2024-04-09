@@ -15,6 +15,7 @@ import type {
   ConfirmationNavigationProps,
   RootStackParamList,
 } from "types/navigation.types";
+import { formatTimeToUTC } from "utilities/time";
 import {
   RestaurantMealCard,
   SkeletonRestaurantMealCard,
@@ -49,8 +50,8 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
       variables: {
         input: {
           orderId: orderID,
-          pickupStartTime,
-          pickupEndTime,
+          pickupStartTime: formatTimeToUTC(pickupStartTime!),
+          pickupEndTime: formatTimeToUTC(pickupEndTime!),
           quantity,
           status: OrderStatusField.Cart,
         },

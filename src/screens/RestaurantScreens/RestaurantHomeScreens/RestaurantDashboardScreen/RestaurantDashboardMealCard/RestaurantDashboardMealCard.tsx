@@ -11,11 +11,13 @@ import {
 } from "components";
 import { COLOURS } from "constants/colours";
 import { Clock10Icon } from "lucide-react-native";
-import { type FC } from "react";
+import React, { type FC } from "react";
 import type { Meal, Restaurant } from "schema";
 import { useActivateMealMutation } from "shared/useActivateMealMutation";
-import { formatTime } from "utilities/formatTime";
-import { returnDateInWeekday } from "utilities/returnDateInWeekday";
+import {
+  formatStringToReadableTime,
+  getDateInReadableFormat,
+} from "utilities/time";
 
 interface MealSplinter
   extends Pick<
@@ -104,13 +106,14 @@ const RestaurantDashboardMealCard: FC<Props> = ({
           <Columns direction="column">
             <Column columnWidth="fullWidth">
               <Typography type="S" isMarginless weigth="bold">
-                Pickup {returnDateInWeekday(pickupStartTime!)} between:
+                Pickup {getDateInReadableFormat(pickupStartTime!)} Between
               </Typography>
             </Column>
             <Column columnWidth="fullWidth" direction="row">
               <Clock10Icon color={COLOURS.accent} className="mr-2" />
               <Typography isMarginless type="S">
-                {formatTime(pickupStartTime)} and {formatTime(pickupEndTime)}
+                {formatStringToReadableTime(pickupStartTime!)} and{" "}
+                {formatStringToReadableTime(pickupEndTime!)}
               </Typography>
             </Column>
           </Columns>

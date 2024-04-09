@@ -2,6 +2,7 @@ import DateTimePicker, {
   DateTimePickerAndroid,
   type AndroidNativeProps,
 } from "@react-native-community/datetimepicker";
+import { DateTime } from "luxon";
 import type { FC } from "react";
 import React, { useEffect } from "react";
 import { Platform } from "react-native";
@@ -19,29 +20,23 @@ const TimePicker: FC<Props> = ({
   minimumDate,
   isClosed,
 }) => {
+  // Convert Date to Luxon DateTime in Toronto timezone
+  const toTorontoDateTime = (date: Date) => {
+    return DateTime.fromJSDate(date).setZone("America/Toronto");
+  };
+
   const handleAndroidTimeChange = (selectedTime: Date | undefined) => {
     if (selectedTime) {
-      // Convert local time to UTC
-      const utcTime = new Date(
-        Date.UTC(
-          selectedTime.getFullYear(),
-          selectedTime.getMonth(),
-          selectedTime.getDate(),
-          selectedTime.getHours(),
-          selectedTime.getMinutes()
-        )
-      );
-
-      console.log(utcTime);
-      onTimeChange(utcTime);
+      const torontoTime = toTorontoDateTime(selectedTime).toJSDate();
+      onTimeChange(torontoTime);
     }
   };
 
   const params: AndroidNativeProps = {
-    value,
+    value: toTorontoDateTime(value).toJSDate(),
     onChange: (_, time) => handleAndroidTimeChange(time),
     mode: "time",
-    minimumDate,
+    minimumDate: toTorontoDateTime(minimumDate).toJSDate(),
   };
 
   useEffect(() => {
@@ -52,16 +47,8 @@ const TimePicker: FC<Props> = ({
 
   const handleChange = (_: any, date: Date | undefined) => {
     if (date) {
-      const utcTime = new Date(
-        Date.UTC(
-          date.getFullYear(),
-          date.getMonth(),
-          date.getDate(),
-          date.getHours(),
-          date.getMinutes()
-        )
-      );
-      onTimeChange(utcTime);
+      const torontoTime = toTorontoDateTime(date).toJSDate();
+      onTimeChange(torontoTime);
     }
   };
 
@@ -70,8 +57,8 @@ const TimePicker: FC<Props> = ({
   } else {
     return (
       <DateTimePicker
-        minimumDate={minimumDate}
-        value={value}
+        minimumDate={toTorontoDateTime(minimumDate).toJSDate()}
+        value={toTorontoDateTime(value).toJSDate()}
         mode="time"
         display={Platform.OS === "ios" ? "spinner" : "default"}
         onChange={handleChange}

@@ -24,6 +24,12 @@ import Tooltip from "react-native-walkthrough-tooltip";
 import { RESTAURANT_QUERY } from "screens/RestaurantScreens/RestaurantHomeScreens/RestaurantDashboardScreen/useRestaurantQuery";
 import { useActivateMealMutation } from "shared";
 import type { RootStackParamList } from "types/navigation.types";
+import {
+  addHoursToLocalTime,
+  formatTimeForDisplay,
+  formatTimeStampToUTCString,
+  getLocalTime,
+} from "utilities/time";
 import { RESTAURANT_MEALS_QUERY } from "../RestaurantMeals/useRestaurantMealsQuery";
 import { useUpdateRestaurantSetting } from "./useUpdateRestaurantSettingsMutation";
 
@@ -31,14 +37,11 @@ type ActiveRestaurantMealStackProps = NativeStackScreenProps<
   RootStackParamList,
   "ActivateRestaurantMeal"
 >;
-
 type Props = ActiveRestaurantMealStackProps;
-
 type RestaurantMealsNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "RestaurantMeals"
 >;
-
 type Drawers =
   | "pickupStartTime"
   | "pickupEndTime"
@@ -46,29 +49,23 @@ type Drawers =
   | "orderStartTime"
   | "closed";
 
-const addHoursToDate = (hours: number) => {
-  const date = new Date();
-  date.setHours(date.getHours() + hours);
-  return date;
-};
-
 const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
   const { navigate } = useNavigation<RestaurantMealsNavigationProp>();
   const [activateMeal, { loading: isActivateLoading }] =
     useActivateMealMutation();
-  const [updateRestaurantSetting, { loading: isestaurantSettingLoading }] =
+  const [updateRestaurantSetting, { loading: isRestaurantSettingLoading }] =
     useUpdateRestaurantSetting();
   const { meal, restaurantID } = route?.params;
 
   const [drawer, setDrawer] = useState<Drawers>("closed");
-
-  const [orderStartTime, setOrderStartTime] = useState(new Date());
-  const [orderCutoffTime, setOrderCutoffTime] = useState(addHoursToDate(1));
-  const [pickupStartTime, setPickupStartTime] = useState(addHoursToDate(2));
-  const [pickupEndTime, setPickupEndTime] = useState(addHoursToDate(3));
-
-  console.log("pickup", pickupStartTime);
-
+  const [orderStartTime, setOrderStartTime] = useState(getLocalTime());
+  const [orderCutoffTime, setOrderCutoffTime] = useState(
+    addHoursToLocalTime(1)
+  );
+  const [pickupStartTime, setPickupStartTime] = useState(
+    addHoursToLocalTime(2)
+  );
+  const [pickupEndTime, setPickupEndTime] = useState(addHoursToLocalTime(3));
   const [quantity, setQuantity] = useState("");
 
   const minimumDate = {
@@ -139,10 +136,10 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
             variables: {
               input: {
                 restaurantId: restaurantID,
-                orderCutoffTime: orderCutoffTime.toUTCString(),
-                orderStartTime: orderStartTime.toUTCString(),
-                pickupStartTime: pickupStartTime.toUTCString(),
-                pickupEndTime: pickupEndTime.toUTCString(),
+                orderCutoffTime: formatTimeStampToUTCString(orderStartTime),
+                orderStartTime: formatTimeStampToUTCString(orderStartTime),
+                pickupStartTime: formatTimeStampToUTCString(pickupStartTime),
+                pickupEndTime: formatTimeStampToUTCString(pickupEndTime),
                 quantityAvailable: Number(quantity),
               },
             },
@@ -188,7 +185,7 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
     );
   };
 
-  const [toolTipThatsVisible, setToolTipThatsVisibile] =
+  const [toolTipThatsVisible, setToolTipThatsVisible] =
     useState<keyof typeof tooltipContents>("closed");
 
   const isToolTipOpen = (tooltipKey: keyof typeof tooltipContents) =>
@@ -222,7 +219,7 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
         maxWidth: 200,
         marginTop: -15,
       }}
-      onClose={() => setToolTipThatsVisibile("closed")}
+      onClose={() => setToolTipThatsVisible("closed")}
       isVisible={isToolTipOpen(tooltip)}
       content={
         <Typography weigth="bold" type="S">
@@ -230,9 +227,7 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
         </Typography>
       }
       placement="top">
-      <TouchableOpacity
-        className="ml-1"
-        onPress={() => setToolTipThatsVisibile(tooltip)}>
+      <TouchableOpacity onPress={() => setToolTipThatsVisible(tooltip)}>
         <InfoIcon color={COLOURS.accent} />
       </TouchableOpacity>
     </Tooltip>
@@ -280,20 +275,12 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
         <Columns>
           <Column columnWidth="half">
             <Button onPress={() => setDrawer("orderStartTime")}>
-              {orderStartTime.toLocaleTimeString("en-US", {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-              })}
+              {formatTimeForDisplay(orderStartTime)}
             </Button>
           </Column>
           <Column columnWidth="half">
             <Button onPress={() => setDrawer("orderCutoffTime")}>
-              {orderCutoffTime.toLocaleTimeString("en-US", {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-              })}
+              {formatTimeForDisplay(orderCutoffTime)}
             </Button>
           </Column>
         </Columns>
@@ -325,20 +312,12 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
         <Columns>
           <Column columnWidth="half">
             <Button onPress={() => setDrawer("pickupStartTime")}>
-              {pickupStartTime.toLocaleTimeString("en-US", {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-              })}
+              {formatTimeForDisplay(pickupStartTime)}
             </Button>
           </Column>
           <Column columnWidth="half">
             <Button onPress={() => setDrawer("pickupEndTime")}>
-              {pickupEndTime.toLocaleTimeString("en-US", {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-              })}
+              {formatTimeForDisplay(pickupEndTime)}
             </Button>
           </Column>
         </Columns>
@@ -359,7 +338,7 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
           <Column columnWidth="fullWidth">
             <Button
               disabled={!quantity}
-              isLoading={isestaurantSettingLoading || isActivateLoading}
+              isLoading={isRestaurantSettingLoading || isActivateLoading}
               onPress={handleOnPressActivate}>
               Activate
             </Button>

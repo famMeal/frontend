@@ -74,8 +74,6 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
     0
   );
 
-  console.log();
-
   const totalRevenue = formatCurrency(
     totalQuantityOrdered! * parseCurrency(price!)
   );

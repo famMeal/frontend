@@ -53,7 +53,8 @@ const RestaurantMealCard: FC<Props> = ({
   const [selectedStartTime, selectedEndTime] = selectedTime;
   const { name, description, pickupEndTime, pickupStartTime } = meal ?? {};
   const { navigate } = useNavigation<ConfirmationNavigationProps>();
-  const timeIntervals = createTimeArray(pickupStartTime, pickupEndTime);
+
+  const timeIntervals = createTimeArray(pickupStartTime!, pickupEndTime!);
   const [deleteOrder, { loading }] = useDeleteOrderMutation();
 
   const handleSetSelectedTime = (time: { value: string }) => {

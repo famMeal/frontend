@@ -7,9 +7,9 @@ import type { Order, User } from "schema";
 import type { MealsData } from "screens/ClientScreens/MealsScreen/Meals/useGetMealsQuery";
 import type { RootStackParamList } from "types/navigation.types";
 import {
-  formatReadableDate,
-  formatTimeRange,
-} from "utilities/formatTimeToReadableTime";
+  formatStringToReadableTime,
+  getDateInReadableFormat,
+} from "utilities/time";
 import { useAddToCartMutation } from "./useAddToCartMutation";
 
 interface Props {
@@ -91,7 +91,8 @@ const MealCard: FC<Props> = ({ meal, userID }) => {
             Order By:{" "}
           </Typography>
           <Typography isMarginless type="S" weigth="bold" colour="accent">
-            {formatReadableDate(orderCutoffTime)}
+            {getDateInReadableFormat(orderCutoffTime)}, {""}
+            {formatStringToReadableTime(orderCutoffTime)}
           </Typography>
         </Column>
         <Column columnWidth="fullWidth" direction="row">
@@ -99,7 +100,10 @@ const MealCard: FC<Props> = ({ meal, userID }) => {
             Pickup:{" "}
           </Typography>
           <Typography isMarginless type="S" weigth="bold" colour="accent">
-            {formatTimeRange(pickupStartTime, pickupEndTime)}
+            <Typography isMarginless type="S">
+              {formatStringToReadableTime(pickupStartTime!)} and{" "}
+              {formatStringToReadableTime(pickupEndTime!)}
+            </Typography>
           </Typography>
         </Column>
       </Columns>

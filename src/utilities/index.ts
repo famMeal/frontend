@@ -8,3 +8,4 @@ export { formatTimeFromUTC } from "./formatTimeFromUTC";
 export { formatTimeIntervals } from "./formatTimeIntervals";
 export { parseCurrency } from "./parseCurrency";
 export { returnDateInWeekday } from "./returnDateInWeekday";
+export * from "./time";

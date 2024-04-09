@@ -15,8 +15,10 @@ import type { Status } from "constants/status";
 import { READ_STATUS_NAME, STATUS } from "constants/status";
 import React, { type FC } from "react";
 import { Linking } from "react-native";
-import { formatTime } from "utilities/formatTime";
-import { formatReadableDate } from "utilities/formatTimeToReadableTime";
+import {
+  formatStringToReadableTime,
+  getDateInReadableFormat,
+} from "utilities/time";
 import { type UserOrderQueryData } from "../useGetUserOrdersQuery";
 import { OrderCardSliderButton } from "./OrderCardSliderButton";
 
@@ -97,7 +99,8 @@ const OrderCard: FC<Props> = ({ order }) => {
               <Typography isMarginless type="S">
                 Order Date:{" "}
                 <Typography isMarginless type="S" weigth="semiBold">
-                  {formatReadableDate(createdAt!)}
+                  {getDateInReadableFormat(createdAt!)}{" "}
+                  {formatStringToReadableTime(createdAt!)}
                 </Typography>
               </Typography>
             </Column>
@@ -125,13 +128,12 @@ const OrderCard: FC<Props> = ({ order }) => {
                 {addressLine1} {postalCode} {city}
               </Typography>
               <Typography isMarginless type="S">
-                Pickup between:
+                Pickup {getDateInReadableFormat(createdAt!)} between:
                 <Typography isMarginless type="S" weigth="semiBold">
-                  {" "}
-                  {formatTime(pickupStartTime)} and{" "}
+                  {formatStringToReadableTime(pickupStartTime!)} and{" "}
                 </Typography>
                 <Typography isMarginless type="S" weigth="semiBold">
-                  {formatTime(pickupEndTime)}
+                  {formatStringToReadableTime(pickupEndTime!)}
                 </Typography>
               </Typography>
             </Column>
