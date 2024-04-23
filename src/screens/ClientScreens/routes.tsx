@@ -1,10 +1,10 @@
 import type { RouteProp } from "@react-navigation/native";
 import type { Dispatch, SetStateAction } from "react";
-import { ConfirmationScreen } from "screens/ClientScreens/ConfirmationScreen";
 import { MainScreen } from "screens/ClientScreens/MainScreen";
 import { OrdersScreen } from "screens/ClientScreens/OrdersScreen";
 import { ProfileScreen } from "screens/ClientScreens/ProfileScreen";
 import type { RootStackParamList } from "types/navigation.types";
+import { CartScreen } from "./CartScreen";
 
 export interface ClientRouteProps<T extends keyof RootStackParamList> {
   route: RouteProp<RootStackParamList, T>;
@@ -12,7 +12,7 @@ export interface ClientRouteProps<T extends keyof RootStackParamList> {
 }
 
 type ClientRoutes = ClientRouteProps<
-  "Main" | "Confirmation" | "Profile" | "Orders"
+  "Main" | "CartScreen" | "Profile" | "Orders"
 >;
 
 const clientRoutes = (setActiveScreen: Dispatch<SetStateAction<string>>) =>
@@ -29,19 +29,19 @@ const clientRoutes = (setActiveScreen: Dispatch<SetStateAction<string>>) =>
       ),
     },
     {
-      name: "Confirmation",
-      iconName: "calenderCheck",
-      tabBarLabel: "Confirmation",
+      name: "CartScreen",
+      iconName: "shopping",
+      tabBarLabel: "Cart",
       renderComponent: (props: ClientRoutes) => (
-        <ConfirmationScreen
+        <CartScreen
           setActiveScreen={setActiveScreen}
-          {...(props as ClientRouteProps<"Confirmation">)}
+          {...(props as ClientRouteProps<"CartScreen">)}
         />
       ),
     },
     {
       name: "Orders",
-      iconName: "shopping",
+      iconName: "list",
       tabBarLabel: "Orders",
       renderComponent: (props: ClientRoutes) => (
         <OrdersScreen

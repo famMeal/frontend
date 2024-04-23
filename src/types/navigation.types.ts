@@ -49,7 +49,7 @@ export type RootStackParamList = {
     userID: User["id"];
     orderID: Order["id"];
   };
-  Confirmation: {
+  CartScreen: {
     userID: User["id"];
     orderID: Order["id"];
     cart: GetOrderQueryData["order"];
@@ -70,7 +70,7 @@ export type MainNavigationProps = NativeStackNavigationProp<
 
 export type ConfirmationNavigationProps = NativeStackNavigationProp<
   RootStackParamList,
-  "Confirmation"
+  "Cart"
 >;
 
 export type ProfileNavigationProps = NativeStackNavigationProp<

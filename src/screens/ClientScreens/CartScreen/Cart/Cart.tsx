@@ -7,14 +7,21 @@ import {
   RadioGroup,
   Typography,
 } from "components";
+import { RadioButton } from "components/RadioGroup/RadioButton";
 import { useState, type FC } from "react";
 import { ScrollView } from "react-native";
-import { OrderStatusField, type User } from "schema";
+import type { Order, User } from "schema";
+import { OrderStatusField } from "schema";
 import { GET_MEALS_QUERY } from "screens/ClientScreens/MealsScreen/Meals/useGetMealsQuery";
 import { GET_USER_0RDERS_QUERY } from "screens/ClientScreens/OrdersScreen/useGetUserOrdersQuery";
-import type { GetOrderQueryData } from "shared/useGetOrderQuery";
+import type { GetOrderQueryVariables } from "shared/useGetOrderQuery";
+import {
+  GET_ORDER_QUERY,
+  type GetOrderQueryData,
+} from "shared/useGetOrderQuery";
 import type { PlaceOrderMutationData } from "./usePlaceOrderMutation";
 import { usePlaceOrderMutation } from "./usePlaceOrderMutation";
+import { useUpdateOrderTipMutation } from "./useUpdateOrderTipMutation";
 
 const tipOptions = [
   { label: "10%", value: "10" },
@@ -53,17 +60,69 @@ const Cart: FC<Props> = ({
   userID,
   onCompleted,
 }) => {
+  const {
+    meal,
+    taxes,
+    tipAmount,
+    tipPercentage,
+    total,
+    quantity,
+    id,
+    pickupEndTime,
+    pickupStartTime,
+  } = cart ?? {};
   const [placeOrder, { loading }] = usePlaceOrderMutation();
   const [selectedTip, setSelectedTip] = useState("0");
+  const [updateTip] = useUpdateOrderTipMutation();
+
+  const handleUpdateTip = (tipPercentage: Order["tipPercentage"]) => {
+    updateTip({
+      variables: {
+        input: {
+          tipPercentage,
+          orderId: cart?.id!,
+        },
+      },
+
+      update: (cache, { data }) => {
+        const cacheData = cache?.readQuery<
+          GetOrderQueryData,
+          GetOrderQueryVariables
+        >({
+          query: GET_ORDER_QUERY,
+          variables: {
+            id: id!,
+          },
+        });
+
+        if (cacheData?.order) {
+          cache.writeQuery<GetOrderQueryData, GetOrderQueryVariables>({
+            query: GET_ORDER_QUERY,
+            variables: {
+              id: id!,
+            },
+            data: {
+              ...cacheData,
+              order: {
+                ...cacheData?.order,
+                ...data?.updateOrder?.order,
+              },
+            },
+          });
+        }
+      },
+      onCompleted: () => setSelectedTip(String(tipPercentage)),
+    });
+  };
 
   const onPressPlaceOrder = () => {
     placeOrder({
       variables: {
         input: {
-          orderId: cart?.id!,
-          pickupEndTime: cart?.pickupEndTime,
-          pickupStartTime: cart?.pickupStartTime,
-          quantity: cart?.quantity,
+          orderId: id!,
+          pickupEndTime: pickupEndTime,
+          pickupStartTime: pickupStartTime,
+          quantity: quantity,
         },
       },
       refetchQueries: [
@@ -129,15 +188,15 @@ const Cart: FC<Props> = ({
               <Columns isMarginless>
                 <Column>
                   <Typography isMarginless type="S" weigth="bold">
-                    ({cart?.quantity}x){" "}
+                    ({quantity}x){" "}
                     <Typography type="S" isMarginless>
-                      {cart?.meal?.name}
+                      {meal?.name}
                     </Typography>
                   </Typography>
                 </Column>
                 <Column alignItems="flex-end">
                   <Typography type="S" className="mr-4">
-                    {sumCurrency(cart?.meal?.price!, cart?.quantity!)}
+                    {sumCurrency(meal?.price!, quantity!)}
                   </Typography>
                 </Column>
               </Columns>
@@ -161,7 +220,7 @@ const Cart: FC<Props> = ({
                 </Column>
                 <Column alignItems="flex-end">
                   <Typography type="S" isMarginless className="mr-4">
-                    {cart?.taxes}
+                    {taxes}
                   </Typography>
                 </Column>
               </Columns>
@@ -173,7 +232,7 @@ const Cart: FC<Props> = ({
                 </Column>
                 <Column alignItems="flex-end">
                   <Typography type="S" isMarginless className="mr-4">
-                    {cart?.taxes}
+                    {tipPercentage}% {tipAmount}
                   </Typography>
                 </Column>
               </Columns>
@@ -185,7 +244,7 @@ const Cart: FC<Props> = ({
                 </Column>
                 <Column alignItems="flex-end">
                   <Typography isMarginless className="mr-4">
-                    {cart?.total}
+                    {total}
                   </Typography>
                 </Column>
               </Columns>
@@ -219,10 +278,16 @@ const Cart: FC<Props> = ({
                 All tips goes to the restaurant
               </Typography>
               <RadioGroup
-                options={tipOptions}
                 selectedValue={selectedTip}
-                onValueChange={setSelectedTip}
-              />
+                onValueChange={value => handleUpdateTip(Number(value))}>
+                {tipOptions.map(option => (
+                  <RadioButton
+                    key={option.value}
+                    label={option.label}
+                    value={option.value}
+                  />
+                ))}
+              </RadioGroup>
             </Box>
           </Column>
         </Columns>

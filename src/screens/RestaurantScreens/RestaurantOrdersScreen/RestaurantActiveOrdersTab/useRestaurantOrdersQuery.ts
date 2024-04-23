@@ -15,13 +15,13 @@ export const RESTAURANT_ORDERS_QUERY = gql`
         status
         subtotal
         total
+        pickupStartTime
+        pickupEndTime
         meal {
           __typename
           active
           id
           name
-          pickupStartTime
-          pickupEndTime
           price
           quantityAvailable
         }
@@ -40,19 +40,19 @@ type RestaurantSplinter = Pick<Restaurant, "__typename" | "id" | "name">;
 
 type OrderSplinter = Pick<
   Order,
-  "__typename" | "id" | "quantity" | "status" | "subtotal" | "total"
+  | "__typename"
+  | "id"
+  | "quantity"
+  | "status"
+  | "subtotal"
+  | "total"
+  | "pickupStartTime"
+  | "pickupEndTime"
 >;
 
 type OrderMealSplinter = Pick<
   Meal,
-  | "__typename"
-  | "id"
-  | "name"
-  | "active"
-  | "pickupStartTime"
-  | "pickupEndTime"
-  | "price"
-  | "quantityAvailable"
+  "__typename" | "id" | "name" | "active" | "price" | "quantityAvailable"
 >;
 
 type UserSplinter = Pick<User, "__typename" | "id" | "firstName" | "lastName">;

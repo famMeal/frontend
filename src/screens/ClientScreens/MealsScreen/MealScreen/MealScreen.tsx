@@ -84,7 +84,7 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
       },
       onCompleted: ({ updateOrder }) => {
         if (updateOrder?.order) {
-          navigate("Confirmation", {
+          navigate("CartScreen", {
             userID,
             orderID: updateOrder?.order?.id,
             cart: updateOrder?.order,

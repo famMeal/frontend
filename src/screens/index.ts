@@ -1,6 +1,6 @@
 export { AppSplashScreen } from "./AppSplashScreen";
 export { ClientScreens } from "./ClientScreens";
-export { ConfirmationScreen } from "./ClientScreens/ConfirmationScreen";
+export { CartScreen } from "./ClientScreens/CartScreen";
 export { MainScreen } from "./ClientScreens/MainScreen";
 export { MealScreen } from "./ClientScreens/MealsScreen/MealScreen";
 export { OrdersScreen } from "./ClientScreens/OrdersScreen";

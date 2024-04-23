@@ -11,18 +11,14 @@ import { EmptyCart } from "./EmptyCart";
 
 type ConfirmationStackProps = NativeStackScreenProps<
   RootStackParamList,
-  "Confirmation"
+  "CartScreen"
 >;
 
 interface Props extends ConfirmationStackProps {
   setActiveScreen: Dispatch<SetStateAction<string>>;
 }
 
-const ConfirmationScreen: FC<Props> = ({
-  route,
-  navigation,
-  setActiveScreen,
-}) => {
+const CartScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
   const { params } = route;
   const { userID, orderID, cart: cartOrder } = params;
   const [cart, setCart] = useState<GetOrderQueryData["order"]>();
@@ -99,4 +95,4 @@ const ConfirmationScreen: FC<Props> = ({
   return <EmptyCart onPress={onPressNavigateToMeals} />;
 };
 
-export { ConfirmationScreen };
+export { CartScreen };

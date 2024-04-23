@@ -11,13 +11,13 @@ export const LAZY_RESTAURANT_ORDER_QUERY = gql`
       status
       subtotal
       total
+      pickupStartTime
+      pickupEndTime
       meal {
         __typename
         active
         id
         name
-        pickupStartTime
-        pickupEndTime
         price
         quantityAvailable
       }
@@ -40,21 +40,21 @@ type RestaurantSplinter = Pick<Restaurant, "__typename" | "id" | "name">;
 
 type OrderSplinter = Pick<
   Order,
-  "__typename" | "id" | "quantity" | "status" | "subtotal" | "total"
+  | "__typename"
+  | "id"
+  | "quantity"
+  | "status"
+  | "subtotal"
+  | "total"
+  | "pickupStartTime"
+  | "pickupEndTime"
 >;
 
 type UserSplinter = Pick<User, "__typename" | "id" | "firstName" | "lastName">;
 
 type MealSplinter = Pick<
   Meal,
-  | "__typename"
-  | "id"
-  | "active"
-  | "pickupStartTime"
-  | "pickupEndTime"
-  | "name"
-  | "price"
-  | "quantityAvailable"
+  "__typename" | "id" | "active" | "name" | "price" | "quantityAvailable"
 >;
 
 interface OrderData extends OrderSplinter {

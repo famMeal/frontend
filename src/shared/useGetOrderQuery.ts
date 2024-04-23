@@ -12,6 +12,8 @@ export const GET_ORDER_QUERY = gql`
       total
       status
       subtotal
+      tipAmount
+      tipPercentage
       taxes
       pickupEndTime
       pickupStartTime
@@ -74,6 +76,8 @@ interface OrderSplinter
     | "pickupEndTime"
     | "pickupStartTime"
     | "taxes"
+    | "tipAmount"
+    | "tipPercentage"
   > {
   meal?: MealSplinter;
   restaurant?: RestaurantSplinter;
@@ -93,5 +97,6 @@ const useGetOrderQuery = (options?: Options) =>
 export {
   useGetOrderQuery,
   type Data as GetOrderQueryData,
-  type Variables as GetOrderQueryVariables,
+  type Variables as GetOrderQueryVariables
 };
+

@@ -15,11 +15,22 @@ interface Props {
 }
 
 const RestaurantOrderCard: FC<Props> = ({
-  order: { id, status, subtotal, quantity, meal, user },
+  order: {
+    id,
+    status,
+    subtotal,
+    quantity,
+    meal,
+    user,
+    pickupEndTime,
+    pickupStartTime,
+  },
 }) => {
-  const { pickupEndTime, pickupStartTime, name } = meal ?? {};
+  const { name } = meal ?? {};
   const { firstName, lastName } = user ?? {};
-  const [updateStatus, { loading }] = useUpdateOrderStatus();
+  const [updateStatus, { data, loading }] = useUpdateOrderStatus();
+
+  console.log(data);
 
   const chipType = status === STATUS?.COMPLETED ? "success" : "warning";
 

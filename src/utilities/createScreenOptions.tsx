@@ -1,7 +1,7 @@
 import type { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
 import { COLOURS } from "constants/colours";
 import {
-  CalendarCheck2Icon,
+  ListOrderedIcon,
   ShoppingCartIcon,
   UserCogIcon,
   UtensilsIcon,
@@ -16,8 +16,8 @@ export const iconMap = (isScreenActive: boolean) =>
         color={isScreenActive ? COLOURS.primary : COLOURS.accent}
       />
     ),
-    calenderCheck: (
-      <CalendarCheck2Icon
+    list: (
+      <ListOrderedIcon
         size={20}
         color={isScreenActive ? COLOURS.primary : COLOURS.accent}
       />
