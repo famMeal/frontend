@@ -8,7 +8,10 @@ import {
   Typography,
 } from "components";
 import { RadioButton } from "components/RadioGroup/RadioButton";
-import { useState, type FC } from "react";
+import { COLOURS } from "constants/colours";
+import { TrashIcon } from "lucide-react-native";
+import type { Dispatch, SetStateAction } from "react";
+import React, { useEffect, useState, type FC } from "react";
 import { ScrollView } from "react-native";
 import type { Order, User } from "schema";
 import { OrderStatusField } from "schema";
@@ -49,6 +52,7 @@ interface Props {
   onPressGoBack: () => void;
   onPressDelete: () => void;
   onCompleted: (data: PlaceOrderMutationData) => void;
+  setCart: Dispatch<SetStateAction<GetOrderQueryData["order"]>>;
   userID: User["id"];
 }
 
@@ -59,6 +63,7 @@ const Cart: FC<Props> = ({
   onPressGoBack,
   userID,
   onCompleted,
+  setCart,
 }) => {
   const {
     meal,
@@ -74,6 +79,12 @@ const Cart: FC<Props> = ({
   const [placeOrder, { loading }] = usePlaceOrderMutation();
   const [selectedTip, setSelectedTip] = useState("0");
   const [updateTip] = useUpdateOrderTipMutation();
+
+  useEffect(() => {
+    if (tipPercentage && tipPercentage > 0) {
+      setSelectedTip(String(tipPercentage));
+    }
+  }, [tipPercentage]);
 
   const handleUpdateTip = (tipPercentage: Order["tipPercentage"]) => {
     updateTip({
@@ -105,13 +116,16 @@ const Cart: FC<Props> = ({
               ...cacheData,
               order: {
                 ...cacheData?.order,
-                ...data?.updateOrder?.order,
+                ...data?.updateOrder,
               },
             },
           });
         }
       },
-      onCompleted: () => setSelectedTip(String(tipPercentage)),
+      onCompleted: ({ updateOrder }) => {
+        setCart(updateOrder?.order);
+        setSelectedTip(String(tipPercentage));
+      },
     });
   };
 
@@ -144,6 +158,29 @@ const Cart: FC<Props> = ({
       onCompleted,
     });
   };
+
+  const renderTip = () =>
+    tipPercentage && tipPercentage > 0 ? (
+      <Columns>
+        <Column justifyContent="flex-end">
+          <Typography type="S" isMarginless weigth="semiBold">
+            Tip
+          </Typography>
+        </Column>
+        <Column alignItems="flex-end" justifyContent="flex-end">
+          <Typography type="S" isMarginless className="mr-4 ml-2">
+            <Button
+              onPress={() => handleUpdateTip(0)}
+              isClean
+              isOutlined
+              isIcon>
+              <TrashIcon color={COLOURS.error} size={20} />
+            </Button>
+            {tipAmount}
+          </Typography>
+        </Column>
+      </Columns>
+    ) : null;
 
   return (
     <Container className="flex flex-col justify-between">
@@ -224,18 +261,7 @@ const Cart: FC<Props> = ({
                   </Typography>
                 </Column>
               </Columns>
-              <Columns>
-                <Column>
-                  <Typography type="S" isMarginless weigth="semiBold">
-                    Tip
-                  </Typography>
-                </Column>
-                <Column alignItems="flex-end">
-                  <Typography type="S" isMarginless className="mr-4">
-                    {tipPercentage}% {tipAmount}
-                  </Typography>
-                </Column>
-              </Columns>
+              {renderTip()}
               <Columns className="border-t pt-2">
                 <Column>
                   <Typography isMarginless weigth="semiBold">

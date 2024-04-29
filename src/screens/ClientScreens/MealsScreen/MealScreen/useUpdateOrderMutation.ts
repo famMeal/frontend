@@ -16,6 +16,8 @@ const UPDATE_ORDER = gql`
         taxes
         pickupEndTime
         pickupStartTime
+        tipAmount
+        tipPercentage
         meal {
           __typename
           id
@@ -76,6 +78,8 @@ interface OrderSplinter
     | "pickupEndTime"
     | "pickupStartTime"
     | "taxes"
+    | "tipAmount"
+    | "tipPercentage"
   > {
   meal?: MealSplinter;
   restaurant?: RestaurantSplinter;

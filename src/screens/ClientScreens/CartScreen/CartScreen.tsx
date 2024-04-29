@@ -83,6 +83,7 @@ const CartScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
   if (cart) {
     return (
       <Cart
+        setCart={setCart}
         isLoading={loading}
         userID={userID}
         cart={cart}

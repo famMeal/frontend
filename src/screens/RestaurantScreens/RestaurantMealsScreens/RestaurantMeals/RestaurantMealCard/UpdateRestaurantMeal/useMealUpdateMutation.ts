@@ -43,6 +43,6 @@ type Variables = {
 type Options = MutationHookOptions<Data, Variables>;
 
 const useMealUpdateMutation = (options?: Options) =>
-  useMutation(MEAL_UPDATE, options);
+  useMutation<Data, Variables>(MEAL_UPDATE, options);
 
 export { useMealUpdateMutation };
