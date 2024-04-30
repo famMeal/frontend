@@ -15,7 +15,7 @@ import React, { useEffect, useState, type FC } from "react";
 import { ScrollView } from "react-native";
 import type { Order, User } from "schema";
 import { OrderStatusField } from "schema";
-import { GET_MEALS_QUERY } from "screens/ClientScreens/MealsScreen/Meals/useGetMealsQuery";
+import { GET_MEALS_QUERY } from "screens/ClientScreens/MealsScreen/useGetMealsQuery";
 import { GET_USER_0RDERS_QUERY } from "screens/ClientScreens/OrdersScreen/useGetUserOrdersQuery";
 import type { GetOrderQueryVariables } from "shared/useGetOrderQuery";
 import {

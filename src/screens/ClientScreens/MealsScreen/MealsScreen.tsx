@@ -1,79 +1,108 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Container, GoogleMap, Skeleton } from "components";
 import type { FC } from "react";
-import { useRef, useState } from "react";
-import { ScrollView, View } from "react-native";
+import React, { useCallback, useRef, useState } from "react";
+import { FlatList, View } from "react-native";
 import type MapView from "react-native-maps";
 import type { RootStackParamList } from "types/navigation.types";
-import { Meals } from "./Meals";
+import { createList } from "utilities/createList";
+import { MealCard, SkeletonMealCard } from "./MealCard";
 import { useGetMealsLocationQuery } from "./useGetMealsLocationQuery";
+import type { MealsData } from "./useGetMealsQuery";
+import { useGetMealsQuery } from "./useGetMealsQuery";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Meals">;
 
 const MealsScreen: FC<Props> = ({ route: { params } }) => {
   const { userID } = params;
   const mapRef = useRef<MapView>(null);
-  const [scrollViewRef, setScrollViewRef] = useState<ScrollView | null>(null);
-  const { data, loading } = useGetMealsLocationQuery();
+  const [refreshing, setRefreshing] = useState(false);
+  const flatListRef = useRef<FlatList<MealsData>>(null);
+  const { data, loading, refetch } = useGetMealsLocationQuery();
   const { meals } = data ?? {};
+  const { data: mealsData } = useGetMealsQuery();
 
   const locations = meals
-    ?.map(({ restaurant }) => {
-      return {
-        latitude: restaurant.latitude,
-        longitude: restaurant.longitude,
-        name: restaurant.name,
-        id: restaurant.meals.find(({ active }) => active)?.id,
-      };
-    })
-    .filter(location => location.latitude && location.longitude && location.id);
+    ?.map(({ restaurant }) => ({
+      latitude: restaurant.latitude,
+      longitude: restaurant.longitude,
+      name: restaurant.name,
+      id: restaurant.meals.find(({ active }) => active)?.id,
+    }))
+    .filter(loc => loc.id && loc.latitude && loc.longitude);
 
-  const handleMapReady = () => {
-    const coordinates = locations?.map(({ latitude, longitude }) => {
-      return { latitude: latitude!, longitude: longitude! };
-    });
-
+  const handleMapReady = useCallback(() => {
+    const coordinates = locations?.map(({ latitude, longitude }) => ({
+      latitude: latitude!,
+      longitude: longitude!,
+    }));
     mapRef.current?.fitToCoordinates(coordinates, {
       edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
       animated: true,
     });
-  };
+  }, [locations]);
 
-  const handleOnPressMarker = (restaurantId: string) => {
-    const restaurantIndex = meals?.findIndex(({ id }) => id === restaurantId);
-    if (restaurantIndex !== undefined && restaurantIndex !== -1) {
-      scrollViewRef?.scrollTo({
-        y: restaurantIndex * 400,
-        animated: true,
-      });
-    }
-  };
+  const handleOnPressMarker = useCallback(
+    (restaurantId: string) => {
+      const index = mealsData?.meals.findIndex(
+        meal => meal.restaurant.id === restaurantId
+      );
+      if (
+        index !== -1 &&
+        index !== undefined &&
+        mealsData &&
+        index < mealsData.meals.length
+      ) {
+        flatListRef.current?.scrollToIndex({ index, animated: true });
+      }
+    },
+    [mealsData]
+  );
 
-  const coordinates = locations?.map(({ latitude, longitude, name, id }) => {
-    return {
-      coordinate: {
-        latitude: latitude!,
-        longitude: longitude!,
-      },
-      title: name,
-      onPress: () => handleOnPressMarker(id!),
-    };
-  });
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  }, [refetch]);
 
-  const renderMap = () => {
-    if (loading) {
-      return <Skeleton width="full" />;
-    }
-    return <GoogleMap ref={mapRef} coordinates={coordinates} />;
-  };
+  const renderSkeleton = (index: number) => <SkeletonMealCard key={index} />;
 
+  const renderSkeletons = useCallback(
+    () => createList(3).map(renderSkeleton),
+    []
+  );
   return (
     <>
-      <View className="h-64">{renderMap()}</View>
+      <View className="h-64">
+        {loading ? (
+          <Skeleton width="full" />
+        ) : (
+          <GoogleMap
+            ref={mapRef}
+            coordinates={locations?.map(loc => ({
+              coordinate: {
+                latitude: loc.latitude!,
+                longitude: loc.longitude!,
+              },
+              title: loc.name,
+              onPress: () => handleOnPressMarker(loc.id!),
+            }))}
+          />
+        )}
+      </View>
       <Container>
-        <ScrollView ref={setScrollViewRef} onContentSizeChange={handleMapReady}>
-          <Meals userID={userID} />
-        </ScrollView>
+        <FlatList
+          ref={flatListRef}
+          data={mealsData?.meals.filter(meal => meal.active) || []}
+          renderItem={({ item }) => (
+            <MealCard userID={userID} key={item.id} meal={item} />
+          )}
+          keyExtractor={item => item.id.toString()}
+          ListEmptyComponent={renderSkeletons}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          onContentSizeChange={handleMapReady}
+        />
       </Container>
     </>
   );
