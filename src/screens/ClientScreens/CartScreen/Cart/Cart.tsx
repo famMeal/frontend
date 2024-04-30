@@ -192,34 +192,6 @@ const Cart: FC<Props> = ({
             justifyContent="center"
             alignItems="center">
             <Box>
-              <Typography type="H3" weigth="bold" className="mt-4">
-                Pick up Location
-              </Typography>
-              <Columns isMarginless>
-                <Column>
-                  <Typography isMarginless weigth="bold">
-                    {cart?.restaurant?.name}
-                  </Typography>
-                  <Typography type="S" isMarginless>
-                    {cart?.restaurant?.addressLine1}
-                  </Typography>
-                  <Typography isMarginless type="S">
-                    {cart?.restaurant?.postalCode} {cart?.restaurant?.city}
-                  </Typography>
-                </Column>
-                <Column>
-                  <Typography isMarginless weigth="bold">
-                    Pick up window:
-                  </Typography>
-                  <Typography type="S">
-                    {formatTime(cart?.pickupStartTime)} and{" "}
-                    {formatTime(cart?.pickupEndTime)}
-                  </Typography>
-                </Column>
-              </Columns>
-            </Box>
-
-            <Box>
               <Typography className="mt-4" type="H3" weigth="bold">
                 Summary
               </Typography>
@@ -321,6 +293,33 @@ const Cart: FC<Props> = ({
                   />
                 ))}
               </RadioGroup>
+            </Box>
+            <Box>
+              <Typography type="H3" weigth="bold" className="mt-4">
+                Pick up Location
+              </Typography>
+              <Columns isMarginless>
+                <Column>
+                  <Typography isMarginless weigth="bold">
+                    {cart?.restaurant?.name}
+                  </Typography>
+                  <Typography type="S" isMarginless>
+                    {cart?.restaurant?.addressLine1}
+                  </Typography>
+                  <Typography isMarginless type="S">
+                    {cart?.restaurant?.postalCode} {cart?.restaurant?.city}
+                  </Typography>
+                </Column>
+                <Column>
+                  <Typography isMarginless weigth="bold">
+                    Pick up window:
+                  </Typography>
+                  <Typography type="S">
+                    {formatTime(cart?.pickupStartTime)} and{" "}
+                    {formatTime(cart?.pickupEndTime)}
+                  </Typography>
+                </Column>
+              </Columns>
             </Box>
           </Column>
         </Columns>
