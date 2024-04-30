@@ -22,6 +22,7 @@ import {
   GET_ORDER_QUERY,
   type GetOrderQueryData,
 } from "shared/useGetOrderQuery";
+import { formatTime } from "utilities/formatTime";
 import type { PlaceOrderMutationData } from "./usePlaceOrderMutation";
 import { usePlaceOrderMutation } from "./usePlaceOrderMutation";
 import { useUpdateOrderTipMutation } from "./useUpdateOrderTipMutation";
@@ -163,7 +164,7 @@ const Cart: FC<Props> = ({
     tipPercentage && tipPercentage > 0 ? (
       <Columns>
         <Column justifyContent="flex-end">
-          <Typography type="S" isMarginless weigth="semiBold">
+          <Typography type="S" isMarginless>
             Tip
           </Typography>
         </Column>
@@ -190,7 +191,7 @@ const Cart: FC<Props> = ({
             columnWidth="fullWidth"
             justifyContent="center"
             alignItems="center">
-            {/* <Box>
+            <Box>
               <Typography type="H3" weigth="bold" className="mt-4">
                 Pick up Location
               </Typography>
@@ -216,7 +217,7 @@ const Cart: FC<Props> = ({
                   </Typography>
                 </Column>
               </Columns>
-            </Box> */}
+            </Box>
 
             <Box>
               <Typography className="mt-4" type="H3" weigth="bold">
@@ -237,21 +238,28 @@ const Cart: FC<Props> = ({
                   </Typography>
                 </Column>
               </Columns>
-              <Columns isMarginless>
+              <Columns isMarginless className="border-t mt-2 pb-2 border-b">
                 <Column>
-                  <Typography type="S" isMarginless weigth="semiBold">
+                  <Typography
+                    type="S"
+                    isMarginless
+                    weigth="semiBold"
+                    className="mt-4">
                     Subtotal
                   </Typography>
                 </Column>
                 <Column alignItems="flex-end">
-                  <Typography type="S" isMarginless className="mr-4">
+                  <Typography type="S" isMarginless className="mr-4 mt-4">
                     {cart?.subtotal}
                   </Typography>
                 </Column>
               </Columns>
-              <Columns isMarginless>
+              {renderTip()}
+              <Columns
+                isMarginless
+                className={tipPercentage ? "-mt-4" : "mt-2"}>
                 <Column>
-                  <Typography type="S" isMarginless weigth="semiBold">
+                  <Typography type="S" isMarginless>
                     Taxes
                   </Typography>
                 </Column>
@@ -261,15 +269,14 @@ const Cart: FC<Props> = ({
                   </Typography>
                 </Column>
               </Columns>
-              {renderTip()}
-              <Columns className="border-t pt-2">
+              <Columns className="border-t mt-2">
                 <Column>
-                  <Typography isMarginless weigth="semiBold">
+                  <Typography isMarginless weigth="bold" className="mt-4">
                     Total
                   </Typography>
                 </Column>
                 <Column alignItems="flex-end">
-                  <Typography isMarginless className="mr-4">
+                  <Typography weigth="bold" isMarginless className="mr-4 mt-4">
                     {total}
                   </Typography>
                 </Column>

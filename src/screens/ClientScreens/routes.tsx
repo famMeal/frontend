@@ -1,19 +1,17 @@
 import type { RouteProp } from "@react-navigation/native";
 import type { Dispatch, SetStateAction } from "react";
+import { CartScreen } from "screens/ClientScreens/CartScreen";
 import { MainScreen } from "screens/ClientScreens/MainScreen";
 import { OrdersScreen } from "screens/ClientScreens/OrdersScreen";
 import { ProfileScreen } from "screens/ClientScreens/ProfileScreen";
 import type { RootStackParamList } from "types/navigation.types";
-import { CartScreen } from "./CartScreen";
 
 export interface ClientRouteProps<T extends keyof RootStackParamList> {
   route: RouteProp<RootStackParamList, T>;
   navigation: any;
 }
 
-type ClientRoutes = ClientRouteProps<
-  "Main" | "CartScreen" | "Profile" | "Orders"
->;
+type ClientRoutes = ClientRouteProps<"Main" | "Cart" | "Profile" | "Orders">;
 
 const clientRoutes = (setActiveScreen: Dispatch<SetStateAction<string>>) =>
   [
@@ -29,13 +27,13 @@ const clientRoutes = (setActiveScreen: Dispatch<SetStateAction<string>>) =>
       ),
     },
     {
-      name: "CartScreen",
+      name: "Cart",
       iconName: "shopping",
       tabBarLabel: "Cart",
       renderComponent: (props: ClientRoutes) => (
         <CartScreen
           setActiveScreen={setActiveScreen}
-          {...(props as ClientRouteProps<"CartScreen">)}
+          {...(props as ClientRouteProps<"Cart">)}
         />
       ),
     },

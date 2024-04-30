@@ -49,7 +49,7 @@ export type RootStackParamList = {
     userID: User["id"];
     orderID: Order["id"];
   };
-  CartScreen: {
+  Cart: {
     userID: User["id"];
     orderID: Order["id"];
     cart: GetOrderQueryData["order"];

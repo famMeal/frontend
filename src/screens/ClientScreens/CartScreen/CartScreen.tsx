@@ -11,7 +11,7 @@ import { EmptyCart } from "./EmptyCart";
 
 type ConfirmationStackProps = NativeStackScreenProps<
   RootStackParamList,
-  "CartScreen"
+  "Cart"
 >;
 
 interface Props extends ConfirmationStackProps {
