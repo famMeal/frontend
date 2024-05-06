@@ -13,6 +13,7 @@ const RESTAURANT_SETTINGS_QUERY = gql`
       city
       postalCode
       province
+      hasStripeAccount
       restaurantSetting {
         __typename
         id
@@ -46,6 +47,7 @@ interface RestaurantSplinter
     | "city"
     | "postalCode"
     | "province"
+    | "hasStripeAccount"
   > {
   restaurantSetting?: RestaurantSettingSplinter;
 }

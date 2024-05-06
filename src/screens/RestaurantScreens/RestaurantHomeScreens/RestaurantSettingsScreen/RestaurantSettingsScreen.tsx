@@ -27,7 +27,7 @@ const RestaurantSettingsScreen: FC<Props> = ({ route }) => {
 
   const [createOrUpdateStripeAccount, { loading: isStripeLoading }] =
     useCreateOrUpdateStripeAccount();
-  const { data } = useRestaurantSettingsQuery({
+  const { data, loading: restaurantLoading } = useRestaurantSettingsQuery({
     skip: !restaurantID,
     variables: {
       id: restaurantID,
@@ -125,9 +125,11 @@ const RestaurantSettingsScreen: FC<Props> = ({ route }) => {
             className="mt-4"
             theme="primary"
             isClean
-            isLoading={isStripeLoading}
+            isLoading={isStripeLoading || restaurantLoading}
             onPress={setupPayments()}>
-            Setup payments
+            {data?.restaurant.hasStripeAccount
+              ? "Update payments account"
+              : "Setup payments account"}
           </Button>
         </Columns>
       </Box>

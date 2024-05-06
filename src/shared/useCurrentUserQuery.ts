@@ -7,6 +7,7 @@ const GET_CURRENT_USER_QUERY = gql`
     currentUser {
       id
       __typename
+      isStoreOwner
       restaurant {
         __typename
         id
