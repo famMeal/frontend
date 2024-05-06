@@ -1,9 +1,18 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Box, Column, Columns, Container, Typography } from "components";
+import {
+  Box,
+  Button,
+  Column,
+  Columns,
+  Container,
+  Typography,
+} from "components";
 import type { FC } from "react";
+import { Linking } from "react-native";
 import type { RootStackParamList } from "types/navigation.types";
 import { formatTime } from "utilities/formatTime";
 import { useRestaurantSettingsQuery } from "./useRestaurantSettingsQuery";
+import { useCreateOrUpdateStripeAccount } from "./useCreateOrUpdateStripeAccountMutation";
 
 type RestaurantStackProps = NativeStackScreenProps<
   RootStackParamList,
@@ -16,12 +25,23 @@ const RestaurantSettingsScreen: FC<Props> = ({ route }) => {
   const { params } = route ?? {};
   const { restaurantID } = params;
 
+  const [createOrUpdateStripeAccount, { loading: isStripeLoading }] =
+    useCreateOrUpdateStripeAccount();
   const { data } = useRestaurantSettingsQuery({
     skip: !restaurantID,
     variables: {
       id: restaurantID,
     },
   });
+
+  const setupPayments = () => () => {
+    createOrUpdateStripeAccount({
+      variables: {},
+      onCompleted: data => {
+        Linking.openURL(data.createOrUpdateStripeAccount.redirectLink);
+      },
+    });
+  };
 
   const renderSecondAddress = () =>
     data?.restaurant?.addressLine2 ? (
@@ -95,6 +115,20 @@ const RestaurantSettingsScreen: FC<Props> = ({ route }) => {
               {formatTime(data?.restaurant?.restaurantSetting?.pickupEndTime)}
             </Typography>
           </Column>
+        </Columns>
+      </Box>
+
+      <Box>
+        <Typography weigth="bold">Payment settings</Typography>
+        <Columns isMarginless>
+          <Button
+            className="mt-4"
+            theme="primary"
+            isClean
+            isLoading={isStripeLoading}
+            onPress={setupPayments()}>
+            Setup payments
+          </Button>
         </Columns>
       </Box>
     </Container>

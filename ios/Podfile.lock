@@ -1153,6 +1153,42 @@ PODS:
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
   - SocketRocket (0.6.1)
+  - Stripe (23.27.1):
+    - StripeApplePay (= 23.27.1)
+    - StripeCore (= 23.27.1)
+    - StripePayments (= 23.27.1)
+    - StripePaymentsUI (= 23.27.1)
+    - StripeUICore (= 23.27.1)
+  - stripe-react-native (0.37.3):
+    - React-Core
+    - Stripe (~> 23.27.0)
+    - StripeApplePay (~> 23.27.0)
+    - StripeFinancialConnections (~> 23.27.0)
+    - StripePayments (~> 23.27.0)
+    - StripePaymentSheet (~> 23.27.0)
+    - StripePaymentsUI (~> 23.27.0)
+  - StripeApplePay (23.27.1):
+    - StripeCore (= 23.27.1)
+  - StripeCore (23.27.1)
+  - StripeFinancialConnections (23.27.1):
+    - StripeCore (= 23.27.1)
+    - StripeUICore (= 23.27.1)
+  - StripePayments (23.27.1):
+    - StripeCore (= 23.27.1)
+    - StripePayments/Stripe3DS2 (= 23.27.1)
+  - StripePayments/Stripe3DS2 (23.27.1):
+    - StripeCore (= 23.27.1)
+  - StripePaymentSheet (23.27.1):
+    - StripeApplePay (= 23.27.1)
+    - StripeCore (= 23.27.1)
+    - StripePayments (= 23.27.1)
+    - StripePaymentsUI (= 23.27.1)
+  - StripePaymentsUI (23.27.1):
+    - StripeCore (= 23.27.1)
+    - StripePayments (= 23.27.1)
+    - StripeUICore (= 23.27.1)
+  - StripeUICore (23.27.1):
+    - StripeCore (= 23.27.1)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -1241,6 +1277,7 @@ DEPENDENCIES:
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - "stripe-react-native (from `../node_modules/@stripe/stripe-react-native`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -1258,6 +1295,14 @@ SPEC REPOS:
     - libevent
     - OpenSSL-Universal
     - SocketRocket
+    - Stripe
+    - StripeApplePay
+    - StripeCore
+    - StripeFinancialConnections
+    - StripePayments
+    - StripePaymentSheet
+    - StripePaymentsUI
+    - StripeUICore
 
 EXTERNAL SOURCES:
   boost:
@@ -1381,13 +1426,15 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
+  stripe-react-native:
+    :path: "../node_modules/@stripe/stripe-react-native"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
+  DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   FBLazyVector: f64d1e2ea739b4d8f7e4740cde18089cd97fe864
   FBReactNativeSpec: 9f2b8b243131565335437dba74923a8d3015e780
   Flipper: c7a0093234c4bdd456e363f2f19b2e4b27652d44
@@ -1399,7 +1446,7 @@ SPEC CHECKSUMS:
   Flipper-PeerTalk: 116d8f857dc6ef55c7a5a75ea3ceaafe878aadc9
   FlipperKit: 37525a5d056ef9b93d1578e04bc3ea1de940094f
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
+  glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: 9cecf9953a681df7556b8cc9c74905de8f3293c0
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
@@ -1458,8 +1505,17 @@ SPEC CHECKSUMS:
   RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
   RNVectorIcons: 73ab573085f65a572d3b6233e68996d4707fd505
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
+  Stripe: f2bde666c4d38f32237145fd1f703ceec0a75c15
+  stripe-react-native: 184a46a36ed449ff9f0ac5938ce65b20fc7bf0a2
+  StripeApplePay: 89943feba80f78c84b3a2741913fc19f8cb534cd
+  StripeCore: acb607d9f1bab7b8b57dd271f37353aae9e5e803
+  StripeFinancialConnections: 225c96e226cc4797f31112304dc4e3eba99921ab
+  StripePayments: 6516caea144600b2dbcb953b53b5a534e080340c
+  StripePaymentSheet: dd98d76f204c55aee31c0b8fc8d8917cdf762e0e
+  StripePaymentsUI: 15645d3ab6f140efda33b69d94607e8a813f8951
+  StripeUICore: c60c85edb5e87ffc0cab05f4c808ca370dfde31c
   Yoga: 805bf71192903b20fc14babe48080582fee65a80
 
 PODFILE CHECKSUM: 83c8c825d230fc884d7da97154d5e05ae51433b7
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.14.3
