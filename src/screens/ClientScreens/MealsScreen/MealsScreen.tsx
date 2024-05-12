@@ -18,9 +18,11 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
   const mapRef = useRef<MapView>(null);
   const [refreshing, setRefreshing] = useState(false);
   const flatListRef = useRef<FlatList<MealsData>>(null);
-  const { data, loading, refetch } = useGetMealsLocationQuery();
+  const { data, loading: isMealsLocationLoading } = useGetMealsLocationQuery();
   const { meals } = data ?? {};
-  const { data: mealsData } = useGetMealsQuery();
+  const { data: mealsData, refetch } = useGetMealsQuery({
+    notifyOnNetworkStatusChange: true,
+  });
 
   const locations = meals
     ?.map(({ restaurant }) => ({
@@ -71,33 +73,35 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
     () => createList(3).map(renderSkeleton),
     []
   );
+
+  const batchedMeals = mealsData?.meals.filter(meal => meal.active) || [];
+  const renderMap = () =>
+    isMealsLocationLoading ? (
+      <Skeleton width="full" />
+    ) : (
+      <GoogleMap
+        ref={mapRef}
+        coordinates={locations?.map(loc => ({
+          coordinate: {
+            latitude: loc.latitude!,
+            longitude: loc.longitude!,
+          },
+          title: loc.name,
+          onPress: () => handleOnPressMarker(loc.id!),
+        }))}
+      />
+    );
   return (
     <>
-      <View className="h-64">
-        {loading ? (
-          <Skeleton width="full" />
-        ) : (
-          <GoogleMap
-            ref={mapRef}
-            coordinates={locations?.map(loc => ({
-              coordinate: {
-                latitude: loc.latitude!,
-                longitude: loc.longitude!,
-              },
-              title: loc.name,
-              onPress: () => handleOnPressMarker(loc.id!),
-            }))}
-          />
-        )}
-      </View>
+      <View className="h-64">{renderMap()}</View>
       <Container>
         <FlatList
           ref={flatListRef}
-          data={mealsData?.meals.filter(meal => meal.active) || []}
+          data={batchedMeals}
           renderItem={({ item }) => (
             <MealCard userID={userID} key={item.id} meal={item} />
           )}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={({ id }) => id}
           ListEmptyComponent={renderSkeletons}
           refreshing={refreshing}
           onRefresh={onRefresh}

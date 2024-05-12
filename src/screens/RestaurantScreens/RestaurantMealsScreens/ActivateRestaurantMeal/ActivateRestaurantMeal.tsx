@@ -49,6 +49,8 @@ type Drawers =
   | "orderStartTime"
   | "closed";
 
+const validNumberRegex = /^\d*\.?\d*$/;
+
 const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
   const { navigate } = useNavigation<RestaurantMealsNavigationProp>();
   const [activateMeal, { loading: isActivateLoading }] =
@@ -67,6 +69,8 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
   );
   const [pickupEndTime, setPickupEndTime] = useState(addHoursToLocalTime(3));
   const [quantity, setQuantity] = useState("");
+
+  const isQuantityValid = !!quantity.length && validNumberRegex.test(quantity);
 
   const minimumDate = {
     orderStartTime: new Date(),
@@ -227,8 +231,10 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
         </Typography>
       }
       placement="top">
-      <TouchableOpacity onPress={() => setToolTipThatsVisible(tooltip)}>
-        <InfoIcon color={COLOURS.accent} />
+      <TouchableOpacity
+        className="ml-2 mt-1"
+        onPress={() => setToolTipThatsVisible(tooltip)}>
+        <InfoIcon size={17} color={COLOURS.accent} />
       </TouchableOpacity>
     </Tooltip>
   );
@@ -337,7 +343,7 @@ const ActivateRestaurantMeal: FC<Props> = ({ route }) => {
         <Columns className="mt-4">
           <Column columnWidth="fullWidth">
             <Button
-              disabled={!quantity}
+              disabled={!isQuantityValid}
               isLoading={isRestaurantSettingLoading || isActivateLoading}
               onPress={handleOnPressActivate}>
               Activate

@@ -19,6 +19,8 @@ const form = {
 
 type FormValues = keyof typeof form;
 
+const validNumberRegex = /^\d*\.?\d*$/;
+
 interface Props {
   restaurantID: Restaurant["id"];
   isOpen: boolean;
@@ -103,10 +105,18 @@ const RestaurantCreateMealModal: FC<Props> = ({
         }
       },
       onCompleted: showMealCreatedAlert,
+      onError: () =>
+        Toast.show({
+          type: "error",
+          text1: "error",
+        }),
     });
 
   const isFormValid =
-    !!state.description?.length && !!state.name.length && !!state.price.length;
+    !!state.description?.length &&
+    !!state.name.length &&
+    !!state.price.length &&
+    validNumberRegex.test(state.price);
 
   return (
     <Modal isModalVisible={isOpen} setModalVisible={setIsOpen}>

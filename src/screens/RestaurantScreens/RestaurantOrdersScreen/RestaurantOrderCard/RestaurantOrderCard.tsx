@@ -28,9 +28,7 @@ const RestaurantOrderCard: FC<Props> = ({
 }) => {
   const { name } = meal ?? {};
   const { firstName, lastName } = user ?? {};
-  const [updateStatus, { data, loading }] = useUpdateOrderStatus();
-
-  console.log(data);
+  const [updateStatus, { loading }] = useUpdateOrderStatus();
 
   const chipType = status === STATUS?.COMPLETED ? "success" : "warning";
 
