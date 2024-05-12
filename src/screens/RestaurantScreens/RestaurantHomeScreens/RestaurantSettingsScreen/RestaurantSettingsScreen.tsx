@@ -11,8 +11,10 @@ import type { FC } from "react";
 import { Linking } from "react-native";
 import type { RootStackParamList } from "types/navigation.types";
 import { formatTime } from "utilities/formatTime";
+import { useCurrentUserQuery } from "shared";
 import { useRestaurantSettingsQuery } from "./useRestaurantSettingsQuery";
 import { useCreateOrUpdateStripeAccount } from "./useCreateOrUpdateStripeAccountMutation";
+import Toast from "react-native-toast-message";
 
 type RestaurantStackProps = NativeStackScreenProps<
   RootStackParamList,
@@ -33,15 +35,25 @@ const RestaurantSettingsScreen: FC<Props> = ({ route }) => {
       id: restaurantID,
     },
   });
+  const { data: userData, loading: userLoading } = useCurrentUserQuery();
 
   const setupPayments = () => () => {
     createOrUpdateStripeAccount({
       variables: {},
       onCompleted: data => {
-        Linking.openURL(data.createOrUpdateStripeAccount.redirectLink);
+        if (data.createOrUpdateStripeAccount?.redirectLink) {
+          Linking.openURL(data.createOrUpdateStripeAccount.redirectLink);
+        }
+        if (data.createOrUpdateStripeAccount?.errorMessage) {
+          Toast.show({
+            type: "error",
+            text1: data.createOrUpdateStripeAccount.errorMessage,
+          });
+        }
       },
     });
   };
+  if (userLoading || restaurantLoading) return null;
 
   const renderSecondAddress = () =>
     data?.restaurant?.addressLine2 ? (
@@ -118,21 +130,23 @@ const RestaurantSettingsScreen: FC<Props> = ({ route }) => {
         </Columns>
       </Box>
 
-      <Box>
-        <Typography weigth="bold">Payment settings</Typography>
-        <Columns isMarginless>
-          <Button
-            className="mt-4"
-            theme="primary"
-            isClean
-            isLoading={isStripeLoading || restaurantLoading}
-            onPress={setupPayments()}>
-            {data?.restaurant.hasStripeAccount
-              ? "Update payments account"
-              : "Setup payments account"}
-          </Button>
-        </Columns>
-      </Box>
+      {userData?.currentUser?.isStoreOwner && (
+        <Box>
+          <Typography weigth="bold">Payment settings</Typography>
+          <Columns isMarginless>
+            <Button
+              className="mt-4"
+              theme="primary"
+              isClean
+              isLoading={isStripeLoading || restaurantLoading || userLoading}
+              onPress={setupPayments()}>
+              {data?.restaurant.hasStripeAccount
+                ? "Update payments account"
+                : "Setup payments account"}
+            </Button>
+          </Columns>
+        </Box>
+      )}
     </Container>
   );
 };

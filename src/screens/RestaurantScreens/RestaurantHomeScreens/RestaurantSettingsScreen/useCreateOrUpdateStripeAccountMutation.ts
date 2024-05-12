@@ -6,7 +6,7 @@ const CREATE_OR_UPDATE_STRIPE_ACCOUNT = gql`
     createOrUpdateStripeAccount(input: {}) {
       __typename
       redirectLink
-      errors
+      errorMessage
     }
   }
 `;
@@ -14,6 +14,7 @@ const CREATE_OR_UPDATE_STRIPE_ACCOUNT = gql`
 interface Data {
   createOrUpdateStripeAccount: {
     redirectLink: String;
+    errorMessage: String;
   };
 }
 

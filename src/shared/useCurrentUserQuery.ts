@@ -18,7 +18,8 @@ const GET_CURRENT_USER_QUERY = gql`
 
 type RestaurantSplinter = Pick<Restaurant, "__typename" | "id">;
 
-interface UserSplinter extends Pick<User, "id" | "__typename"> {
+interface UserSplinter
+  extends Pick<User, "id" | "__typename" | "isStoreOwner"> {
   restaurant?: RestaurantSplinter;
 }
 
