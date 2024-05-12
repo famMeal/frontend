@@ -13,8 +13,7 @@ import { TrashIcon } from "lucide-react-native";
 import type { Dispatch, SetStateAction } from "react";
 import React, { useEffect, useState, type FC } from "react";
 import { ScrollView } from "react-native";
-import type { Order, User } from "schema";
-import { OrderStatusField } from "schema";
+import { OrderStatusField, type Order, type User } from "schema";
 import { GET_MEALS_QUERY } from "screens/ClientScreens/MealsScreen/useGetMealsQuery";
 import { GET_USER_0RDERS_QUERY } from "screens/ClientScreens/OrdersScreen/useGetUserOrdersQuery";
 import type { GetOrderQueryVariables } from "shared/useGetOrderQuery";
@@ -23,6 +22,7 @@ import {
   type GetOrderQueryData,
 } from "shared/useGetOrderQuery";
 import { formatTime } from "utilities/formatTime";
+import { PaymentDrawer } from "./PaymentDrawer";
 import type { PlaceOrderMutationData } from "./usePlaceOrderMutation";
 import { usePlaceOrderMutation } from "./usePlaceOrderMutation";
 import { useUpdateOrderTipMutation } from "./useUpdateOrderTipMutation";
@@ -54,6 +54,8 @@ interface Props {
   onPressDelete: () => void;
   onCompleted: (data: PlaceOrderMutationData) => void;
   setCart: Dispatch<SetStateAction<GetOrderQueryData["order"]>>;
+  setIsPaymentDrawerOpen: Dispatch<SetStateAction<boolean>>;
+  isPaymentDrawerOpen: boolean;
   userID: User["id"];
 }
 
@@ -65,6 +67,8 @@ const Cart: FC<Props> = ({
   userID,
   onCompleted,
   setCart,
+  setIsPaymentDrawerOpen,
+  isPaymentDrawerOpen,
 }) => {
   const {
     meal,
@@ -77,9 +81,11 @@ const Cart: FC<Props> = ({
     pickupEndTime,
     pickupStartTime,
   } = cart ?? {};
-  const [placeOrder, { loading }] = usePlaceOrderMutation();
+  const [placeOrder, { loading, data }] = usePlaceOrderMutation();
   const [selectedTip, setSelectedTip] = useState("0");
   const [updateTip] = useUpdateOrderTipMutation();
+
+  const onClosePaymentDrawert = () => setIsPaymentDrawerOpen(false);
 
   useEffect(() => {
     if (tipPercentage && tipPercentage > 0) {
@@ -333,6 +339,11 @@ const Cart: FC<Props> = ({
           </Box>
         </Column>
       </Columns>
+      <PaymentDrawer
+        order={data?.placeOrder.order}
+        isVisible={isPaymentDrawerOpen}
+        onClose={onClosePaymentDrawert}
+      />
     </Container>
   );
 };

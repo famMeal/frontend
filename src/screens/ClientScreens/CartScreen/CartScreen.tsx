@@ -22,6 +22,7 @@ const CartScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
   const { params } = route;
   const { userID, orderID, cart: cartOrder } = params;
   const [cart, setCart] = useState<GetOrderQueryData["order"]>();
+  const [isPaymentDrawerOpen, setIsPaymentDrawerOpen] = useState(false);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () =>
@@ -44,6 +45,20 @@ const CartScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
     navigation.navigate("Meals", { userID });
   };
 
+  const resetOrderOnCompleted = () => {
+    setCart(undefined);
+    Toast.show({
+      type: "accent",
+      text1: "Order Placed",
+    });
+
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Main" }],
+    });
+    navigation.navigate("Orders", { userID });
+  };
+
   const onCompleted = ({ placeOrder: { errors } }: PlaceOrderMutationData) => {
     if (errors?.length) {
       Toast.show({
@@ -51,16 +66,7 @@ const CartScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
         text1: errors?.[0],
       });
     } else {
-      setCart(undefined);
-      Toast.show({
-        type: "accent",
-        text1: "Order Placed",
-      });
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Main" }],
-      });
-      navigation.navigate("Orders", { userID });
+      setIsPaymentDrawerOpen(true);
     }
   };
 
@@ -83,6 +89,8 @@ const CartScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
   if (cart) {
     return (
       <Cart
+        isPaymentDrawerOpen={isPaymentDrawerOpen}
+        setIsPaymentDrawerOpen={setIsPaymentDrawerOpen}
         setCart={setCart}
         isLoading={loading}
         userID={userID}
