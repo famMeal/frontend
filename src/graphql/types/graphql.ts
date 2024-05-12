@@ -57,7 +57,7 @@ export type CreateOrUpdateStripeAccountPayload = {
   __typename?: 'CreateOrUpdateStripeAccountPayload';
   /** A unique identifier for the client performing the mutation. */
   clientMutationId?: Maybe<Scalars['String']['output']>;
-  errors: Array<Scalars['String']['output']>;
+  errorMessage?: Maybe<Scalars['String']['output']>;
   redirectLink?: Maybe<Scalars['String']['output']>;
 };
 
@@ -318,8 +318,11 @@ export type PlaceOrderPayload = {
   __typename?: 'PlaceOrderPayload';
   /** A unique identifier for the client performing the mutation. */
   clientMutationId?: Maybe<Scalars['String']['output']>;
+  customerId?: Maybe<Scalars['String']['output']>;
+  ephemeralKey?: Maybe<Scalars['String']['output']>;
   errors: Array<Scalars['String']['output']>;
   order?: Maybe<Order>;
+  paymentIntent?: Maybe<Scalars['String']['output']>;
 };
 
 export type Query = {
@@ -369,6 +372,7 @@ export type Restaurant = {
   postalCode?: Maybe<Scalars['String']['output']>;
   province?: Maybe<Scalars['String']['output']>;
   restaurantSetting?: Maybe<RestaurantSetting>;
+  stripeAccountId?: Maybe<Scalars['String']['output']>;
   users: Array<User>;
 };
 

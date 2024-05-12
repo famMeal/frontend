@@ -22,10 +22,11 @@ import {
   type GetOrderQueryData,
 } from "shared/useGetOrderQuery";
 import { formatTime } from "utilities/formatTime";
-import { PaymentDrawer } from "./PaymentDrawer";
 import type { PlaceOrderMutationData } from "./usePlaceOrderMutation";
 import { usePlaceOrderMutation } from "./usePlaceOrderMutation";
 import { useUpdateOrderTipMutation } from "./useUpdateOrderTipMutation";
+import { StripeProvider } from "@stripe/stripe-react-native";
+import { STRIPE_PUBLISHABLE_KEY } from "react-native-dotenv";
 
 const tipOptions = [
   { label: "10%", value: "10" },
@@ -57,6 +58,7 @@ interface Props {
   setIsPaymentDrawerOpen: Dispatch<SetStateAction<boolean>>;
   isPaymentDrawerOpen: boolean;
   userID: User["id"];
+  stripeAccountId: string;
 }
 
 const Cart: FC<Props> = ({
@@ -69,6 +71,7 @@ const Cart: FC<Props> = ({
   setCart,
   setIsPaymentDrawerOpen,
   isPaymentDrawerOpen,
+  stripeAccountId,
 }) => {
   const {
     meal,
@@ -84,8 +87,7 @@ const Cart: FC<Props> = ({
   const [placeOrder, { loading, data }] = usePlaceOrderMutation();
   const [selectedTip, setSelectedTip] = useState("0");
   const [updateTip] = useUpdateOrderTipMutation();
-
-  const onClosePaymentDrawert = () => setIsPaymentDrawerOpen(false);
+  const onClosePaymentDrawer = () => setIsPaymentDrawerOpen(false);
 
   useEffect(() => {
     if (tipPercentage && tipPercentage > 0) {
@@ -190,161 +192,167 @@ const Cart: FC<Props> = ({
     ) : null;
 
   return (
-    <Container className="flex flex-col justify-between">
-      <ScrollView>
-        <Columns isMarginless>
-          <Column
-            columnWidth="fullWidth"
-            justifyContent="center"
-            alignItems="center">
-            <Box>
-              <Typography className="mt-4" type="H3" weigth="bold">
-                Summary
-              </Typography>
-              <Columns isMarginless>
-                <Column>
-                  <Typography isMarginless type="S" weigth="bold">
-                    ({quantity}x){" "}
-                    <Typography type="S" isMarginless>
-                      {meal?.name}
+    <StripeProvider
+      publishableKey={STRIPE_PUBLISHABLE_KEY}
+      stripeAccountId={stripeAccountId}>
+      <Container className="flex flex-col justify-between">
+        <ScrollView>
+          <Columns isMarginless>
+            <Column
+              columnWidth="fullWidth"
+              justifyContent="center"
+              alignItems="center">
+              <Box>
+                <Typography className="mt-4" type="H3" weigth="bold">
+                  Summary
+                </Typography>
+                <Columns isMarginless>
+                  <Column>
+                    <Typography isMarginless type="S" weigth="bold">
+                      ({quantity}x){" "}
+                      <Typography type="S" isMarginless>
+                        {meal?.name}
+                      </Typography>
                     </Typography>
-                  </Typography>
-                </Column>
-                <Column alignItems="flex-end">
-                  <Typography type="S" className="mr-4">
-                    {sumCurrency(meal?.price!, quantity!)}
-                  </Typography>
-                </Column>
-              </Columns>
-              <Columns isMarginless className="border-t mt-2 pb-2 border-b">
-                <Column>
-                  <Typography
-                    type="S"
-                    isMarginless
-                    weigth="semiBold"
-                    className="mt-4">
-                    Subtotal
-                  </Typography>
-                </Column>
-                <Column alignItems="flex-end">
-                  <Typography type="S" isMarginless className="mr-4 mt-4">
-                    {cart?.subtotal}
-                  </Typography>
-                </Column>
-              </Columns>
-              {renderTip()}
-              <Columns
-                isMarginless
-                className={tipPercentage ? "-mt-4" : "mt-2"}>
-                <Column>
-                  <Typography type="S" isMarginless>
-                    Taxes
-                  </Typography>
-                </Column>
-                <Column alignItems="flex-end">
-                  <Typography type="S" isMarginless className="mr-4">
-                    {taxes}
-                  </Typography>
-                </Column>
-              </Columns>
-              <Columns className="border-t mt-2">
-                <Column>
-                  <Typography isMarginless weigth="bold" className="mt-4">
-                    Total
-                  </Typography>
-                </Column>
-                <Column alignItems="flex-end">
-                  <Typography weigth="bold" isMarginless className="mr-4 mt-4">
-                    {total}
-                  </Typography>
-                </Column>
-              </Columns>
-              <Columns isMarginless>
-                <Column>
-                  <Button
-                    isOutlined
-                    isClean
-                    isLoading={isLoading}
-                    onPress={onPressDelete}
-                    theme="accent">
-                    Remove
-                  </Button>
-                </Column>
-                <Column>
-                  <Button onPress={onPressGoBack} isOutlined theme="accent">
-                    Edit
-                  </Button>
-                </Column>
-              </Columns>
-            </Box>
-          </Column>
-        </Columns>
-        <Columns>
+                  </Column>
+                  <Column alignItems="flex-end">
+                    <Typography type="S" className="mr-4">
+                      {sumCurrency(meal?.price!, quantity!)}
+                    </Typography>
+                  </Column>
+                </Columns>
+                <Columns isMarginless className="border-t mt-2 pb-2 border-b">
+                  <Column>
+                    <Typography
+                      type="S"
+                      isMarginless
+                      weigth="semiBold"
+                      className="mt-4">
+                      Subtotal
+                    </Typography>
+                  </Column>
+                  <Column alignItems="flex-end">
+                    <Typography type="S" isMarginless className="mr-4 mt-4">
+                      {cart?.subtotal}
+                    </Typography>
+                  </Column>
+                </Columns>
+                {renderTip()}
+                <Columns
+                  isMarginless
+                  className={tipPercentage ? "-mt-4" : "mt-2"}>
+                  <Column>
+                    <Typography type="S" isMarginless>
+                      Taxes
+                    </Typography>
+                  </Column>
+                  <Column alignItems="flex-end">
+                    <Typography type="S" isMarginless className="mr-4">
+                      {taxes}
+                    </Typography>
+                  </Column>
+                </Columns>
+                <Columns className="border-t mt-2">
+                  <Column>
+                    <Typography isMarginless weigth="bold" className="mt-4">
+                      Total
+                    </Typography>
+                  </Column>
+                  <Column alignItems="flex-end">
+                    <Typography
+                      weigth="bold"
+                      isMarginless
+                      className="mr-4 mt-4">
+                      {total}
+                    </Typography>
+                  </Column>
+                </Columns>
+                <Columns isMarginless>
+                  <Column>
+                    <Button
+                      isOutlined
+                      isClean
+                      isLoading={isLoading}
+                      onPress={onPressDelete}
+                      theme="accent">
+                      Remove
+                    </Button>
+                  </Column>
+                  <Column>
+                    <Button onPress={onPressGoBack} isOutlined theme="accent">
+                      Edit
+                    </Button>
+                  </Column>
+                </Columns>
+              </Box>
+            </Column>
+          </Columns>
+          <Columns>
+            <Column columnWidth="fullWidth">
+              <Box>
+                <Typography
+                  isMarginless
+                  className="mt-4"
+                  type="H3"
+                  weigth="bold">
+                  Tip
+                </Typography>
+                <Typography className="mb-4" type="S">
+                  All tips goes to the restaurant
+                </Typography>
+                <RadioGroup
+                  selectedValue={selectedTip}
+                  onValueChange={value => handleUpdateTip(Number(value))}>
+                  {tipOptions.map(option => (
+                    <RadioButton
+                      key={option.value}
+                      label={option.label}
+                      value={option.value}
+                    />
+                  ))}
+                </RadioGroup>
+              </Box>
+              <Box>
+                <Typography type="H3" weigth="bold" className="mt-4">
+                  Pick up Location
+                </Typography>
+                <Columns isMarginless>
+                  <Column>
+                    <Typography isMarginless weigth="bold">
+                      {cart?.restaurant?.name}
+                    </Typography>
+                    <Typography type="S" isMarginless>
+                      {cart?.restaurant?.addressLine1}
+                    </Typography>
+                    <Typography isMarginless type="S">
+                      {cart?.restaurant?.postalCode} {cart?.restaurant?.city}
+                    </Typography>
+                  </Column>
+                  <Column>
+                    <Typography isMarginless weigth="bold">
+                      Pick up window:
+                    </Typography>
+                    <Typography type="S">
+                      {formatTime(cart?.pickupStartTime)} and{" "}
+                      {formatTime(cart?.pickupEndTime)}
+                    </Typography>
+                  </Column>
+                </Columns>
+              </Box>
+            </Column>
+          </Columns>
+        </ScrollView>
+        <Columns isMarginless>
           <Column columnWidth="fullWidth">
             <Box>
-              <Typography isMarginless className="mt-4" type="H3" weigth="bold">
-                Tip
-              </Typography>
-              <Typography className="mb-4" type="S">
-                All tips goes to the restaurant
-              </Typography>
-              <RadioGroup
-                selectedValue={selectedTip}
-                onValueChange={value => handleUpdateTip(Number(value))}>
-                {tipOptions.map(option => (
-                  <RadioButton
-                    key={option.value}
-                    label={option.label}
-                    value={option.value}
-                  />
-                ))}
-              </RadioGroup>
-            </Box>
-            <Box>
-              <Typography type="H3" weigth="bold" className="mt-4">
-                Pick up Location
-              </Typography>
-              <Columns isMarginless>
-                <Column>
-                  <Typography isMarginless weigth="bold">
-                    {cart?.restaurant?.name}
-                  </Typography>
-                  <Typography type="S" isMarginless>
-                    {cart?.restaurant?.addressLine1}
-                  </Typography>
-                  <Typography isMarginless type="S">
-                    {cart?.restaurant?.postalCode} {cart?.restaurant?.city}
-                  </Typography>
-                </Column>
-                <Column>
-                  <Typography isMarginless weigth="bold">
-                    Pick up window:
-                  </Typography>
-                  <Typography type="S">
-                    {formatTime(cart?.pickupStartTime)} and{" "}
-                    {formatTime(cart?.pickupEndTime)}
-                  </Typography>
-                </Column>
-              </Columns>
+              <Button onPress={onPressPlaceOrder} isLoading={loading}>
+                Continue
+              </Button>
             </Box>
           </Column>
         </Columns>
-      </ScrollView>
-      <Columns isMarginless>
-        <Column columnWidth="fullWidth">
-          <Box>
-            <Button onPress={onPressPlaceOrder} isLoading={loading}>
-              Place order
-            </Button>
-          </Box>
-        </Column>
-      </Columns>
-      <PaymentDrawer
-        order={data?.placeOrder.order}
-        isVisible={isPaymentDrawerOpen}
-        onClose={onClosePaymentDrawert}
-      />
-    </Container>
+      </Container>
+    </StripeProvider>
   );
 };
 

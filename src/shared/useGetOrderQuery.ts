@@ -35,6 +35,7 @@ export const GET_ORDER_QUERY = gql`
         latitude
         longitude
         city
+        stripeAccountId
       }
     }
   }
@@ -50,6 +51,7 @@ type RestaurantSplinter = Pick<
   | "latitude"
   | "longitude"
   | "city"
+  | "stripeAccountId"
 >;
 
 type MealSplinter = Pick<
@@ -97,6 +99,5 @@ const useGetOrderQuery = (options?: Options) =>
 export {
   useGetOrderQuery,
   type Data as GetOrderQueryData,
-  type Variables as GetOrderQueryVariables
+  type Variables as GetOrderQueryVariables,
 };
-

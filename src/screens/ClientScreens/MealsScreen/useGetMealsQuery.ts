@@ -22,7 +22,6 @@ export const GET_MEALS_QUERY = gql`
         city
         addressLine1
         addressLine2
-        stripeAccountId
         id
         postalCode
         orders {

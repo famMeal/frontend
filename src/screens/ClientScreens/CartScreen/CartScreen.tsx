@@ -8,6 +8,10 @@ import type { RootStackParamList } from "types/navigation.types";
 import { Cart } from "./Cart";
 import type { PlaceOrderMutationData } from "./Cart/usePlaceOrderMutation";
 import { EmptyCart } from "./EmptyCart";
+import {
+  initPaymentSheet,
+  presentPaymentSheet,
+} from "@stripe/stripe-react-native";
 
 type ConfirmationStackProps = NativeStackScreenProps<
   RootStackParamList,
@@ -59,14 +63,53 @@ const CartScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
     navigation.navigate("Orders", { userID });
   };
 
-  const onCompleted = ({ placeOrder: { errors } }: PlaceOrderMutationData) => {
+  const initializePaymentSheet = async (
+    paymentIntent: string,
+    ephemeralKey: string,
+    customerId: string
+  ) => {
+    const { error } = await initPaymentSheet({
+      merchantDisplayName: "Batch App",
+      customerId: customerId,
+      customerEphemeralKeySecret: ephemeralKey,
+      paymentIntentClientSecret: paymentIntent,
+      returnURL: "https://batch-app.info/",
+      // Set `allowsDelayedPaymentMethods` to true if your business can handle payment
+      //methods that complete payment after a delay, like SEPA Debit and Sofort.
+      allowsDelayedPaymentMethods: true,
+      defaultBillingDetails: {
+        name: "Jane Doe",
+      },
+    });
+
+    if (!error) {
+      openPaymentSheet();
+    }
+  };
+
+  const openPaymentSheet = async () => {
+    const { error } = await presentPaymentSheet();
+
+    if (error) {
+      Toast.show({
+        type: "error",
+        text1: `Error code: ${error.code}, ${error.message}`,
+      });
+    } else {
+      resetOrderOnCompleted();
+    }
+  };
+
+  const onCompleted = ({
+    placeOrder: { errors, paymentIntent, ephemeralKey, customerId },
+  }: PlaceOrderMutationData) => {
     if (errors?.length) {
       Toast.show({
         type: "error",
         text1: errors?.[0],
       });
     } else {
-      setIsPaymentDrawerOpen(true);
+      initializePaymentSheet(paymentIntent, ephemeralKey, customerId);
     }
   };
 
@@ -87,6 +130,7 @@ const CartScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
     });
 
   if (cart) {
+    const stripeAccountId = cart.restaurant?.stripeAccountId || "";
     return (
       <Cart
         isPaymentDrawerOpen={isPaymentDrawerOpen}
@@ -95,6 +139,7 @@ const CartScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
         isLoading={loading}
         userID={userID}
         cart={cart}
+        stripeAccountId={stripeAccountId}
         onCompleted={onCompleted}
         onPressDelete={handleOnPressDelete}
         onPressGoBack={onPressGoBack}

@@ -36,6 +36,7 @@ const UPDATE_ORDER_TIP = gql`
           latitude
           longitude
           city
+          stripeAccountId
         }
       }
     }
@@ -52,6 +53,7 @@ type RestaurantSplinter = Pick<
   | "latitude"
   | "longitude"
   | "city"
+  | "stripeAccountId"
 >;
 
 type MealSplinter = Pick<

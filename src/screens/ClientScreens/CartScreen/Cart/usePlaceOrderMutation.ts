@@ -14,6 +14,9 @@ const PLACE_ORDER = gql`
       __typename
       clientMutationId
       errors
+      paymentIntent
+      ephemeralKey
+      customerId
       order {
         __typename
         id
@@ -41,6 +44,7 @@ const PLACE_ORDER = gql`
           longitude
           postalCode
           name
+          stripeAccountId
         }
       }
     }
@@ -80,10 +84,14 @@ type RestaurantSplinter = Pick<
   | "longitude"
   | "postalCode"
   | "name"
+  | "stripeAccountId"
 >;
 
 interface PlaceOrder extends Omit<PlaceOrderPayload, "order"> {
   order: OrderSplinter;
+  paymentIntent: string;
+  ephemeralKey: string;
+  customerId: string;
 }
 
 interface Data {
