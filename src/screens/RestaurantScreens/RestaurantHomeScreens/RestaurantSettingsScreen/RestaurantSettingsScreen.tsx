@@ -9,17 +9,12 @@ import {
 } from "components";
 import type { FC } from "react";
 import { Linking } from "react-native";
+import Toast from "react-native-toast-message";
+import { useCurrentUserQuery } from "shared";
 import type { RootStackParamList } from "types/navigation.types";
 import { formatTime } from "utilities/formatTime";
-<<<<<<< Updated upstream
-import { useCurrentUserQuery } from "shared";
-import { useRestaurantSettingsQuery } from "./useRestaurantSettingsQuery";
-import { useCreateOrUpdateStripeAccount } from "./useCreateOrUpdateStripeAccountMutation";
-import Toast from "react-native-toast-message";
-=======
 import { useCreateOrUpdateStripeAccount } from "./useCreateOrUpdateStripeAccountMutation";
 import { useRestaurantSettingsQuery } from "./useRestaurantSettingsQuery";
->>>>>>> Stashed changes
 
 type RestaurantStackProps = NativeStackScreenProps<
   RootStackParamList,
@@ -35,19 +30,13 @@ const RestaurantSettingsScreen: FC<Props> = ({ route }) => {
   const [createOrUpdateStripeAccount, { loading: isStripeLoading }] =
     useCreateOrUpdateStripeAccount();
 
-  const {
-    data,
-    loading: restaurantLoading,
-    error,
-  } = useRestaurantSettingsQuery({
+  const { data, loading: restaurantLoading } = useRestaurantSettingsQuery({
     skip: !restaurantID,
     variables: {
       id: restaurantID,
     },
   });
   const { data: userData, loading: userLoading } = useCurrentUserQuery();
-
-  console.log(error);
 
   const setupPayments = () => () => {
     createOrUpdateStripeAccount({
@@ -65,7 +54,9 @@ const RestaurantSettingsScreen: FC<Props> = ({ route }) => {
       },
     });
   };
-  if (userLoading || restaurantLoading) return null;
+  if (userLoading || restaurantLoading) {
+    return null;
+  }
 
   const renderSecondAddress = () =>
     data?.restaurant?.addressLine2 ? (
