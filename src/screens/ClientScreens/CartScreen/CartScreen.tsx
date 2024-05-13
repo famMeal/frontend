@@ -1,4 +1,8 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import {
+  initPaymentSheet,
+  presentPaymentSheet,
+} from "@stripe/stripe-react-native";
 import type { Dispatch, FC, SetStateAction } from "react";
 import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
@@ -8,10 +12,6 @@ import type { RootStackParamList } from "types/navigation.types";
 import { Cart } from "./Cart";
 import type { PlaceOrderMutationData } from "./Cart/usePlaceOrderMutation";
 import { EmptyCart } from "./EmptyCart";
-import {
-  initPaymentSheet,
-  presentPaymentSheet,
-} from "@stripe/stripe-react-native";
 
 type ConfirmationStackProps = NativeStackScreenProps<
   RootStackParamList,
@@ -26,7 +26,6 @@ const CartScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
   const { params } = route;
   const { userID, orderID, cart: cartOrder } = params;
   const [cart, setCart] = useState<GetOrderQueryData["order"]>();
-  const [isPaymentDrawerOpen, setIsPaymentDrawerOpen] = useState(false);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () =>
@@ -133,8 +132,6 @@ const CartScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
     const stripeAccountId = cart.restaurant?.stripeAccountId || "";
     return (
       <Cart
-        isPaymentDrawerOpen={isPaymentDrawerOpen}
-        setIsPaymentDrawerOpen={setIsPaymentDrawerOpen}
         setCart={setCart}
         isLoading={loading}
         userID={userID}

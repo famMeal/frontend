@@ -40,4 +40,3 @@ const RadioButton: FC<Props> = ({
 
 export { RadioButton };
 export type { Props as RadioButtonProps };
-

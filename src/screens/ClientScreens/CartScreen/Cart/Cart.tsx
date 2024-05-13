@@ -1,3 +1,4 @@
+import { StripeProvider } from "@stripe/stripe-react-native";
 import {
   Box,
   Button,
@@ -13,6 +14,7 @@ import { TrashIcon } from "lucide-react-native";
 import type { Dispatch, SetStateAction } from "react";
 import React, { useEffect, useState, type FC } from "react";
 import { ScrollView } from "react-native";
+import { STRIPE_PUBLISHABLE_KEY } from "react-native-dotenv";
 import { OrderStatusField, type Order, type User } from "schema";
 import { GET_MEALS_QUERY } from "screens/ClientScreens/MealsScreen/useGetMealsQuery";
 import { GET_USER_0RDERS_QUERY } from "screens/ClientScreens/OrdersScreen/useGetUserOrdersQuery";
@@ -25,8 +27,6 @@ import { formatTime } from "utilities/formatTime";
 import type { PlaceOrderMutationData } from "./usePlaceOrderMutation";
 import { usePlaceOrderMutation } from "./usePlaceOrderMutation";
 import { useUpdateOrderTipMutation } from "./useUpdateOrderTipMutation";
-import { StripeProvider } from "@stripe/stripe-react-native";
-import { STRIPE_PUBLISHABLE_KEY } from "react-native-dotenv";
 
 const tipOptions = [
   { label: "10%", value: "10" },
@@ -55,8 +55,6 @@ interface Props {
   onPressDelete: () => void;
   onCompleted: (data: PlaceOrderMutationData) => void;
   setCart: Dispatch<SetStateAction<GetOrderQueryData["order"]>>;
-  setIsPaymentDrawerOpen: Dispatch<SetStateAction<boolean>>;
-  isPaymentDrawerOpen: boolean;
   userID: User["id"];
   stripeAccountId: string;
 }
@@ -69,8 +67,7 @@ const Cart: FC<Props> = ({
   userID,
   onCompleted,
   setCart,
-  setIsPaymentDrawerOpen,
-  isPaymentDrawerOpen,
+
   stripeAccountId,
 }) => {
   const {
@@ -84,10 +81,9 @@ const Cart: FC<Props> = ({
     pickupEndTime,
     pickupStartTime,
   } = cart ?? {};
-  const [placeOrder, { loading, data }] = usePlaceOrderMutation();
+  const [placeOrder, { loading }] = usePlaceOrderMutation();
   const [selectedTip, setSelectedTip] = useState("0");
   const [updateTip] = useUpdateOrderTipMutation();
-  const onClosePaymentDrawer = () => setIsPaymentDrawerOpen(false);
 
   useEffect(() => {
     if (tipPercentage && tipPercentage > 0) {
