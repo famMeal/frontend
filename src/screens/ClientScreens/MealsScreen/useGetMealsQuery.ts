@@ -24,6 +24,7 @@ export const GET_MEALS_QUERY = gql`
         addressLine2
         id
         postalCode
+        stripeOnboardingComplete
         orders {
           __typename
           id
@@ -60,6 +61,7 @@ interface RestaurantSplinter
     | "city"
     | "id"
     | "postalCode"
+    | "stripeOnboardingComplete"
   > {
   orders?: OrderSplinter[];
 }

@@ -7,12 +7,14 @@ const GET_MEALS_LOCATION_QUERY = gql`
     meals {
       __typename
       id
+      active
       restaurant {
         __typename
         name
         id
         longitude
         latitude
+        stripeOnboardingComplete
         meals {
           __typename
           active
@@ -23,10 +25,15 @@ const GET_MEALS_LOCATION_QUERY = gql`
   }
 `;
 
-type MealSplinter = Pick<Meal, "__typename" | "id">;
+type MealSplinter = Pick<Meal, "__typename" | "id" | "active">;
 type RestaurantLocationSplinter = Pick<
   Restaurant,
-  "__typename" | "longitude" | "latitude" | "id" | "name"
+  | "__typename"
+  | "longitude"
+  | "latitude"
+  | "id"
+  | "name"
+  | "stripeOnboardingComplete"
 >;
 
 type RestaurantMealsSplinter = Pick<Meal, "active" | "id" | "__typename">;

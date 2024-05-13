@@ -4,6 +4,7 @@ import classnames, {
   flexBox,
   flexDirection,
   margin,
+  position,
 } from "tailwindcss-classnames";
 import type { ColumnProps } from "./Column";
 
@@ -72,7 +73,8 @@ export const getCSS = ({
     flexDirection(direction === "column" ? "flex-col" : "flex-row"),
     alignClass[alignItems],
     justifyClass[justifyContent],
-    marginClass
+    marginClass,
+    position("relative")
   );
 
   return { columnCSS, width };

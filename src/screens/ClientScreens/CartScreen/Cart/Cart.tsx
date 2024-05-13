@@ -13,7 +13,7 @@ import { COLOURS } from "constants/colours";
 import { TrashIcon } from "lucide-react-native";
 import type { Dispatch, SetStateAction } from "react";
 import React, { useEffect, useState, type FC } from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, View } from "react-native";
 import { STRIPE_PUBLISHABLE_KEY } from "react-native-dotenv";
 import { OrderStatusField, type Order, type User } from "schema";
 import { GET_MEALS_QUERY } from "screens/ClientScreens/MealsScreen/useGetMealsQuery";
@@ -166,24 +166,22 @@ const Cart: FC<Props> = ({
 
   const renderTip = () =>
     tipPercentage && tipPercentage > 0 ? (
-      <Columns>
+      <Columns className="mt-2">
         <Column justifyContent="flex-end">
           <Typography type="S" isMarginless>
             Tip
           </Typography>
         </Column>
-        <Column alignItems="flex-end" justifyContent="flex-end">
+        <Column alignItems="flex-end" justifyContent="center">
           <Typography type="S" isMarginless className="mr-4 ml-2">
-            <Button
-              onPress={() => handleUpdateTip(0)}
-              isClean
-              isOutlined
-              isIcon>
-              <TrashIcon color={COLOURS.error} size={20} />
-            </Button>
             {tipAmount}
           </Typography>
         </Column>
+        <View className="absolute right-14">
+          <Button onPress={() => handleUpdateTip(0)} isClean isOutlined isIcon>
+            <TrashIcon color={COLOURS.error} size={15} />
+          </Button>
+        </View>
       </Columns>
     ) : null;
 

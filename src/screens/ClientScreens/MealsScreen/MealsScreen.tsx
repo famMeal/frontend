@@ -25,6 +25,7 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
   });
 
   const locations = meals
+    ?.filter(meal => meal.restaurant?.stripeOnboardingComplete && meal.active)
     ?.map(({ restaurant }) => ({
       latitude: restaurant.latitude,
       longitude: restaurant.longitude,
@@ -74,7 +75,10 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
     []
   );
 
-  const batchedMeals = mealsData?.meals.filter(meal => meal.active) || [];
+  const batchedMeals =
+    mealsData?.meals.filter(
+      meal => meal.active && meal?.restaurant?.stripeOnboardingComplete
+    ) || [];
   const renderMap = () =>
     isMealsLocationLoading ? (
       <Skeleton width="full" />

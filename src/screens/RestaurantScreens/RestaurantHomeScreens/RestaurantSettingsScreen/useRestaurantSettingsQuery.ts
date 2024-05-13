@@ -14,6 +14,7 @@ const RESTAURANT_SETTINGS_QUERY = gql`
       postalCode
       province
       hasStripeAccount
+      stripeOnboardingComplete
       restaurantSetting {
         __typename
         id
@@ -48,6 +49,7 @@ interface RestaurantSplinter
     | "postalCode"
     | "province"
     | "hasStripeAccount"
+    | "stripeOnboardingComplete"
   > {
   restaurantSetting?: RestaurantSettingSplinter;
 }

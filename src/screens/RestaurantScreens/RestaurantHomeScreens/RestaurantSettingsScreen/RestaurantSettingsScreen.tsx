@@ -2,6 +2,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
   Box,
   Button,
+  Chip,
   Column,
   Columns,
   Container,
@@ -136,6 +137,24 @@ const RestaurantSettingsScreen: FC<Props> = ({ route }) => {
       {userData?.currentUser?.isStoreOwner && (
         <Box>
           <Typography weigth="bold">Payment settings</Typography>
+          <Columns isMarginless>
+            <Column>
+              <Typography>Stripe</Typography>
+            </Column>
+            <Column>
+              <Chip
+                isStatic
+                type={
+                  data?.restaurant?.stripeOnboardingComplete
+                    ? "success"
+                    : "error"
+                }>
+                {data?.restaurant?.stripeOnboardingComplete
+                  ? "Completed"
+                  : "Needs Attention"}
+              </Chip>
+            </Column>
+          </Columns>
           <Columns isMarginless>
             <Button
               className="mt-4"

@@ -373,6 +373,7 @@ export type Restaurant = {
   province?: Maybe<Scalars['String']['output']>;
   restaurantSetting?: Maybe<RestaurantSetting>;
   stripeAccountId?: Maybe<Scalars['String']['output']>;
+  stripeOnboardingComplete: Scalars['Boolean']['output'];
   users: Array<User>;
 };
 
