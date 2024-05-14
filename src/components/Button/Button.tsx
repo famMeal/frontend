@@ -7,7 +7,7 @@ import { ActivityIndicator, TouchableOpacity, View } from "react-native";
 import { getCSS } from "./Button.styles";
 
 type PrimaryAccentTheme<T> = T extends keyof typeof COLOURS
-  ? T extends "primary" | "accent"
+  ? T extends "primary" | "accent" | "error"
     ? T
     : never
   : never;

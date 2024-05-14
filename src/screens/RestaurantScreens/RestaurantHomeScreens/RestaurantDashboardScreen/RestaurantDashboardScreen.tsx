@@ -12,7 +12,11 @@ import {
   Typography,
 } from "components";
 import { COLOURS } from "constants/colours";
-import { ArrowRightCircle, BadgeCheck } from "lucide-react-native";
+import {
+  ArrowRightCircle,
+  BadgeCheck,
+  ShieldAlertIcon,
+} from "lucide-react-native";
 import React, { useState, type FC } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { DateRangeField, type Meal } from "schema";
@@ -171,6 +175,18 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
     );
   };
 
+  const renderSettingsText = () =>
+    data?.restaurant?.stripeOnboardingComplete ? (
+      <Typography type="S">
+        Update your restaurant information and payment details
+      </Typography>
+    ) : (
+      <Typography type="S">
+        Your stripe account needs attention, You can not activate a meal without
+        a valid stripe account
+      </Typography>
+    );
+
   return (
     <Container>
       <ScrollView>
@@ -182,16 +198,24 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
               <Typography weigth="bold" type="H3">
                 Settings
               </Typography>
-              <Typography type="S">
-                Update your restaurant information and payment details
-              </Typography>
+              {renderSettingsText()}
             </Column>
             <Column columnWidth="fullWidth">
               <Button
+                isOutlined={!data?.restaurant?.stripeOnboardingComplete}
                 className="mt-4"
                 onPress={OnPressNavigateToSettings}
-                theme="primary">
-                View Settings
+                theme={
+                  data?.restaurant?.stripeOnboardingComplete
+                    ? "primary"
+                    : "error"
+                }>
+                {data?.restaurant?.stripeOnboardingComplete
+                  ? "View Settings"
+                  : "Update Stripe Account"}
+                {!data?.restaurant?.stripeOnboardingComplete ? (
+                  <ShieldAlertIcon color={COLOURS.error} className="ml-2 " />
+                ) : null}
               </Button>
             </Column>
           </Columns>

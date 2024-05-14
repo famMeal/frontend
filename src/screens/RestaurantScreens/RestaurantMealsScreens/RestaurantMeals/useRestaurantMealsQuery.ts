@@ -8,6 +8,7 @@ export const RESTAURANT_MEALS_QUERY = gql`
       id
       __typename
       name
+      stripeOnboardingComplete
       meals {
         active
         __typename
@@ -32,7 +33,10 @@ type RestaurantMealData = Pick<
   | "quantityAvailable"
 >;
 
-type RestaurantSplinter = Pick<Restaurant, "id" | "__typename" | "name">;
+type RestaurantSplinter = Pick<
+  Restaurant,
+  "id" | "__typename" | "name" | "stripeOnboardingComplete"
+>;
 
 interface RestaurantData extends RestaurantSplinter {
   meals: RestaurantMealData[];
@@ -54,5 +58,6 @@ const useRestaurantMealsQuery = (options?: Options) =>
 export { useRestaurantMealsQuery };
 export type {
   Data as RestaurantMealsQueryData,
-  Variables as RestaurantMealsQueryVariables,
+  Variables as RestaurantMealsQueryVariables
 };
+

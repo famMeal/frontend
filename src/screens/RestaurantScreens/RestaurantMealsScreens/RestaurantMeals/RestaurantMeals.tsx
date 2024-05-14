@@ -2,11 +2,14 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
   Box,
   Button,
+  Chip,
   Column,
   Columns,
   Container,
   Typography,
 } from "components";
+import { COLOURS } from "constants/colours";
+import { ArrowRightCircleIcon } from "lucide-react-native";
 import { useState, type FC } from "react";
 import { ScrollView } from "react-native";
 import { RestaurantCreateMealModal } from "screens/RestaurantScreens/RestaurantCreateMealModal";
@@ -26,7 +29,7 @@ type RestaurantMealsStackProps = NativeStackScreenProps<
 
 type Props = RestaurantMealsStackProps;
 
-const RestaurantMeals: FC<Props> = ({ route }) => {
+const RestaurantMeals: FC<Props> = ({ route, navigation }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { params } = route ?? {};
   const { restaurantID } = params;
@@ -46,6 +49,7 @@ const RestaurantMeals: FC<Props> = ({ route }) => {
     meal: RestaurantMealsQueryData["restaurant"]["meals"][number]
   ) => (
     <RestaurantMealCard
+      isStripeOnBoardingComplete={data?.restaurant?.stripeOnboardingComplete}
       hasActiveMeal={!!activeMealID}
       key={meal.id}
       meal={meal}
@@ -92,6 +96,9 @@ const RestaurantMeals: FC<Props> = ({ route }) => {
 
   const renderMeals = () => (loading ? renderSkeletons() : renderMealCards());
 
+  const onPressNavigateToSettings = () =>
+    navigation.navigate("RestaurantSettingsScreen", { restaurantID });
+
   const addMealCTA = () =>
     hasMeals ? (
       <Box className="mb-0">
@@ -101,8 +108,36 @@ const RestaurantMeals: FC<Props> = ({ route }) => {
       </Box>
     ) : null;
 
+  const renderStripeCTA = () =>
+    data?.restaurant?.stripeOnboardingComplete ? null : (
+      <Box>
+        <Chip position="topRight" type="error">
+          Needs Attention
+        </Chip>
+        <Columns>
+          <Column columnWidth="fullWidth">
+            <Typography weigth="bold" type="H3" className="mb-2">
+              Setup Stripe
+            </Typography>
+          </Column>
+        </Columns>
+        <Columns>
+          <Column columnWidth="fullWidth">
+            <Typography type="S">
+              Without a valid Stripe account, you can not active meals
+            </Typography>
+          </Column>
+        </Columns>
+        <Button isOutlined theme="error" onPress={onPressNavigateToSettings}>
+          Setup Stripe
+          <ArrowRightCircleIcon color={COLOURS.error} className="ml-4" />
+        </Button>
+      </Box>
+    );
+
   return (
     <Container>
+      {renderStripeCTA()}
       <ScrollView>{renderMeals()}</ScrollView>
       {addMealCTA()}
       <RestaurantCreateMealModal

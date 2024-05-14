@@ -44,6 +44,12 @@ export const getCSS = ({
         disabled ? "bg-gray-400" : isOutlined ? "bg-white" : "bg-accent"
       )
     ),
+    error: classnames(
+      borderColor(disabled ? "border-gray-400" : "border-red-700"),
+      backgroundColor(
+        disabled ? "bg-gray-400" : isOutlined ? "bg-white" : "bg-red-700"
+      )
+    ),
   };
 
   const paddingStyles = classnames(
@@ -84,6 +90,11 @@ export const getCSS = ({
     accent: classnames(
       textColor(
         disabled ? "text-white" : isOutlined ? "text-accent" : "text-white"
+      )
+    ),
+    error: classnames(
+      textColor(
+        disabled ? "text-white" : isOutlined ? "text-red-700" : "text-white"
       )
     ),
   };

@@ -14,6 +14,7 @@ import Toast from "react-native-toast-message";
 import { useCurrentUserQuery } from "shared";
 import type { RootStackParamList } from "types/navigation.types";
 import { formatTime } from "utilities/formatTime";
+import { SkeletonRestaurantSettingsScreens } from "./SkeletonRestaurantSettingsScreen";
 import { useCreateOrUpdateStripeAccount } from "./useCreateOrUpdateStripeAccountMutation";
 import { useRestaurantSettingsQuery } from "./useRestaurantSettingsQuery";
 
@@ -28,8 +29,7 @@ const RestaurantSettingsScreen: FC<Props> = ({ route }) => {
   const { params } = route ?? {};
   const { restaurantID } = params;
 
-  const [createOrUpdateStripeAccount, { loading: isStripeLoading }] =
-    useCreateOrUpdateStripeAccount();
+  const [createStripeAccount, { loading }] = useCreateOrUpdateStripeAccount();
 
   const { data, loading: restaurantLoading } = useRestaurantSettingsQuery({
     skip: !restaurantID,
@@ -39,24 +39,24 @@ const RestaurantSettingsScreen: FC<Props> = ({ route }) => {
   });
   const { data: userData, loading: userLoading } = useCurrentUserQuery();
 
-  const setupPayments = () => () => {
-    createOrUpdateStripeAccount({
-      variables: {},
+  const onPressSetupPayment = () =>
+    createStripeAccount({
       onCompleted: data => {
-        if (data.createOrUpdateStripeAccount?.redirectLink) {
-          Linking.openURL(data.createOrUpdateStripeAccount.redirectLink);
+        const { createOrUpdateStripeAccount } = data ?? {};
+        if (createOrUpdateStripeAccount?.redirectLink) {
+          Linking.openURL(createOrUpdateStripeAccount?.redirectLink);
         }
-        if (data.createOrUpdateStripeAccount?.errorMessage) {
+        if (createOrUpdateStripeAccount?.errorMessage) {
           Toast.show({
             type: "error",
-            text1: data.createOrUpdateStripeAccount.errorMessage,
+            text1: createOrUpdateStripeAccount?.errorMessage,
           });
         }
       },
     });
-  };
+
   if (userLoading || restaurantLoading) {
-    return null;
+    return <SkeletonRestaurantSettingsScreens />;
   }
 
   const renderSecondAddress = () =>
@@ -65,6 +65,42 @@ const RestaurantSettingsScreen: FC<Props> = ({ route }) => {
         {data?.restaurant?.addressLine2}
       </Typography>
     ) : null;
+
+  const renderPaymentBox = () =>
+    userData?.currentUser?.isStoreOwner ? (
+      <Box>
+        <Typography weigth="bold">Payment Providers</Typography>
+        <Columns isMarginless>
+          <Column>
+            <Typography>Stripe</Typography>
+          </Column>
+          <Column>
+            <Chip
+              isStatic
+              type={
+                data?.restaurant?.stripeOnboardingComplete ? "success" : "error"
+              }>
+              {data?.restaurant?.stripeOnboardingComplete
+                ? "Completed"
+                : "Needs Attention"}
+            </Chip>
+          </Column>
+        </Columns>
+        <Columns isMarginless>
+          <Button
+            isLoading={loading}
+            className="mt-4"
+            theme="primary"
+            isClean
+            onPress={onPressSetupPayment}>
+            {data?.restaurant.hasStripeAccount
+              ? "Update payments account"
+              : "Setup payments account"}
+          </Button>
+        </Columns>
+      </Box>
+    ) : null;
+
   return (
     <Container>
       <Box>
@@ -133,42 +169,7 @@ const RestaurantSettingsScreen: FC<Props> = ({ route }) => {
           </Column>
         </Columns>
       </Box>
-
-      {userData?.currentUser?.isStoreOwner && (
-        <Box>
-          <Typography weigth="bold">Payment settings</Typography>
-          <Columns isMarginless>
-            <Column>
-              <Typography>Stripe</Typography>
-            </Column>
-            <Column>
-              <Chip
-                isStatic
-                type={
-                  data?.restaurant?.stripeOnboardingComplete
-                    ? "success"
-                    : "error"
-                }>
-                {data?.restaurant?.stripeOnboardingComplete
-                  ? "Completed"
-                  : "Needs Attention"}
-              </Chip>
-            </Column>
-          </Columns>
-          <Columns isMarginless>
-            <Button
-              className="mt-4"
-              theme="primary"
-              isClean
-              isLoading={isStripeLoading || restaurantLoading || userLoading}
-              onPress={setupPayments()}>
-              {data?.restaurant.hasStripeAccount
-                ? "Update payments account"
-                : "Setup payments account"}
-            </Button>
-          </Columns>
-        </Box>
-      )}
+      {renderPaymentBox()}
     </Container>
   );
 };

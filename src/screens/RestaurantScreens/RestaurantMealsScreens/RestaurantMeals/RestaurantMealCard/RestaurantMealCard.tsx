@@ -19,6 +19,7 @@ import { UpdateRestaurantMeal } from "./UpdateRestaurantMeal";
 import { useMealDeleteMutation } from "./useMealDeleteMutation";
 
 interface Props {
+  isStripeOnBoardingComplete?: RestaurantMealsQueryData["restaurant"]["stripeOnboardingComplete"];
   meal: RestaurantMealsQueryData["restaurant"]["meals"][number];
   restaurantID: string;
   hasActiveMeal: boolean;
@@ -33,6 +34,7 @@ const RestaurantMealCard: FC<Props> = ({
   meal,
   restaurantID,
   hasActiveMeal,
+  isStripeOnBoardingComplete,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -96,14 +98,21 @@ const RestaurantMealCard: FC<Props> = ({
     });
 
   const handleOnPressActivate = () => {
+    if (!isStripeOnBoardingComplete) {
+      return Toast.show({
+        type: "error",
+        text1: "Please setup Stripe before activating meals",
+      });
+    }
+
     if (hasActiveMeal) {
-      Toast.show({
+      return Toast.show({
         type: "primary",
         text1: "You can only have 1 active meal",
       });
-    } else {
-      navigate("ActivateRestaurantMeal", { meal, restaurantID });
     }
+
+    navigate("ActivateRestaurantMeal", { meal, restaurantID });
   };
 
   const handleOnPressDeactivate = () =>

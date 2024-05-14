@@ -1,5 +1,6 @@
 import type { MutationHookOptions } from "@apollo/client";
 import { gql, useMutation } from "@apollo/client";
+import type { CreateOrUpdateStripeAccountPayload } from "schema";
 
 const CREATE_OR_UPDATE_STRIPE_ACCOUNT = gql`
   mutation CreateOrUpdateStripeAccount {
@@ -12,15 +13,15 @@ const CREATE_OR_UPDATE_STRIPE_ACCOUNT = gql`
 `;
 
 interface Data {
-  createOrUpdateStripeAccount: {
-    redirectLink: String;
-    errorMessage: String;
-  };
+  createOrUpdateStripeAccount: Pick<
+    CreateOrUpdateStripeAccountPayload,
+    "__typename" | "errorMessage" | "redirectLink"
+  >;
 }
 
 type Options = MutationHookOptions<Data>;
 
 const useCreateOrUpdateStripeAccount = (options?: Options) =>
-  useMutation(CREATE_OR_UPDATE_STRIPE_ACCOUNT, options);
+  useMutation<Data, {}>(CREATE_OR_UPDATE_STRIPE_ACCOUNT, options);
 
 export { useCreateOrUpdateStripeAccount };
