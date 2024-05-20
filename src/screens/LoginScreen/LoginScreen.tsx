@@ -168,4 +168,4 @@ const LoginScreen: FC<Props> = ({ route }) => {
   );
 };
 
-export { LoginScreen };
+export default LoginScreen;

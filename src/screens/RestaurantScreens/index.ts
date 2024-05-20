@@ -1,1 +1,1 @@
-export { RestaurantScreens } from "./RestaurantScreens";
+export * from "./RestaurantScreens";

@@ -1,1 +1,1 @@
-export { VerifyAccountScreen } from "./VerifyAccountScreen";
+export * from "./VerifyAccountScreen";

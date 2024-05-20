@@ -1,1 +1,1 @@
-export { AppSplashScreen } from "./AppSplashScreen";
+export * from "./AppSplashScreen";

@@ -40,4 +40,4 @@ const SignUpScreen: FC = () => {
   );
 };
 
-export { SignUpScreen };
+export default SignUpScreen;

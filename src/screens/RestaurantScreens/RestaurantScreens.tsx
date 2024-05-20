@@ -162,4 +162,4 @@ const RestaurantScreens: FC<Props> = ({ navigation }) => {
   );
 };
 
-export { RestaurantScreens };
+export default RestaurantScreens;

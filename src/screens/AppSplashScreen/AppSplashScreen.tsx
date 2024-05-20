@@ -3,8 +3,9 @@ import Logo from "assets/svgs/logo.svg";
 import { Column } from "components/Column";
 import { Columns } from "components/Columns";
 import { Container } from "components/Container";
+import { COLOURS } from "constants/colours";
 import React, { useEffect } from "react";
-import { View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import AppSplashScreenRN from "react-native-splash-screen";
 import { useCurrentUserQuery } from "shared";
 import type { RootStackParamList } from "types/navigation.types";
@@ -27,7 +28,7 @@ const AppSplashScreen: React.FC<Props> = ({ navigation }) => {
 
       if (data?.currentUser) {
         const isRestaurant = !!data?.currentUser?.restaurant;
-        navigate(isRestaurant ? Screens.Restaurants : Screens.Clients);
+        navigate(isRestaurant ? Screens.Clients : Screens.Clients);
       }
     }
   }, [loading, data, navigation]);
@@ -39,10 +40,13 @@ const AppSplashScreen: React.FC<Props> = ({ navigation }) => {
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
           <Columns>
             <Column
-              alignItems="center"
-              columnWidth="fullWidth"
+              alignItems="flex-end"
+              columnWidth="twoThird"
               justifyContent="center">
               <Logo />
+            </Column>
+            <Column columnWidth="oneThird">
+              <ActivityIndicator size="large" color={COLOURS.accent} />
             </Column>
           </Columns>
         </View>
@@ -53,4 +57,4 @@ const AppSplashScreen: React.FC<Props> = ({ navigation }) => {
   return null;
 };
 
-export { AppSplashScreen };
+export default AppSplashScreen;

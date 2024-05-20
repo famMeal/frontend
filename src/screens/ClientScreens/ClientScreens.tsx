@@ -88,4 +88,4 @@ const ClientScreens: FC<Props> = ({ navigation }) => {
   );
 };
 
-export { ClientScreens };
+export default ClientScreens;

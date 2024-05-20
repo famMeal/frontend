@@ -1,22 +1,32 @@
 import { ApolloProvider } from "@apollo/client";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import type { LinkingOptions } from "@react-navigation/native";
-import { NavigationContainer } from "@react-navigation/native";
-import { AppToast, Header } from "components";
-import { COLOURS } from "constants/colours";
-import { useEffect, type FC } from "react";
-import { Linking } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
-  AppSplashScreen,
-  ClientScreens,
-  LoginScreen,
-  RestaurantScreens,
-} from "screens";
-import { SignUpScreen } from "screens/SignupScreen";
-import { VerifyAccountScreen } from "screens/VerifyAccountScreen";
+  NavigationContainer,
+  type LinkingOptions,
+} from "@react-navigation/native";
+import Logo from "assets/svgs/logo.svg";
+import { client } from "client";
+import { AppToast, Column, Columns, Header } from "components";
+import { COLOURS } from "constants/colours";
+import React, { Suspense, useEffect, type FC } from "react";
+import { ActivityIndicator, Linking, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import AppSplashScreen from "screens/AppSplashScreen/AppSplashScreen";
+import LoginScreen from "screens/LoginScreen/LoginScreen";
 import type { RootStackParamList } from "types/navigation.types";
-import { client } from "./client";
+
+const ClientScreens = React.lazy(
+  () => import("screens/ClientScreens/ClientScreens")
+);
+const RestaurantScreens = React.lazy(
+  () => import("screens/RestaurantScreens/RestaurantScreens")
+);
+const SignUpScreen = React.lazy(
+  () => import("screens/SignupScreen/SignupScreen")
+);
+const VerifyAccountScreen = React.lazy(
+  () => import("screens/VerifyAccountScreen/VerifyAccountScreen")
+);
 
 const { Navigator, Screen } = createBottomTabNavigator<RootStackParamList>();
 
@@ -35,6 +45,22 @@ const linking: LinkingOptions<RootStackParamList> = {
   },
 };
 
+const Loader = () => (
+  <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <Columns>
+      <Column
+        alignItems="flex-end"
+        columnWidth="twoThird"
+        justifyContent="center">
+        <Logo />
+      </Column>
+      <Column columnWidth="oneThird">
+        <ActivityIndicator size="large" color={COLOURS.accent} />
+      </Column>
+    </Columns>
+  </View>
+);
+
 const App: FC = () => {
   useEffect(() => {
     const handleInitialURL = async () => {
@@ -46,14 +72,15 @@ const App: FC = () => {
 
     handleInitialURL();
   }, []);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ApolloProvider client={client}>
         <NavigationContainer linking={linking}>
-          <Navigator initialRouteName="VerifyAccount">
+          <Navigator initialRouteName="Login">
             <Screen
-              name="Login"
               component={LoginScreen}
+              name="Login"
               options={{
                 headerShown: false,
                 headerBackground: () => null,
@@ -68,8 +95,8 @@ const App: FC = () => {
               }}
             />
             <Screen
-              name="Splash"
               component={AppSplashScreen}
+              name="Splash"
               options={{
                 headerShown: false,
                 tabBarStyle: {
@@ -79,7 +106,6 @@ const App: FC = () => {
             />
             <Screen
               name="SignUp"
-              component={SignUpScreen}
               options={{
                 headerBackground: () => <Header title="Sign Up" />,
                 tabBarStyle: {
@@ -91,12 +117,15 @@ const App: FC = () => {
                   fontFamily: "Khula-Bold",
                   fontSize: 18,
                 },
-              }}
-            />
-
+              }}>
+              {() => (
+                <Suspense fallback={<Loader />}>
+                  <SignUpScreen />
+                </Suspense>
+              )}
+            </Screen>
             <Screen
               name="VerifyAccount"
-              component={VerifyAccountScreen}
               options={{
                 headerBackground: () => <Header title="Verify Email" />,
                 tabBarStyle: {
@@ -108,28 +137,41 @@ const App: FC = () => {
                   fontFamily: "Khula-Bold",
                   fontSize: 18,
                 },
-              }}
-            />
+              }}>
+              {props => (
+                <Suspense fallback={<Loader />}>
+                  <VerifyAccountScreen {...props} />
+                </Suspense>
+              )}
+            </Screen>
             <Screen
               name="Clients"
-              component={ClientScreens}
               options={{
                 headerShown: false,
                 tabBarStyle: {
                   display: "none",
                 },
-              }}
-            />
+              }}>
+              {props => (
+                <Suspense fallback={<Loader />}>
+                  <ClientScreens {...props} />
+                </Suspense>
+              )}
+            </Screen>
             <Screen
               name="Restaurants"
-              component={RestaurantScreens}
               options={{
                 headerShown: false,
                 tabBarStyle: {
                   display: "none",
                 },
-              }}
-            />
+              }}>
+              {props => (
+                <Suspense fallback={<Loader />}>
+                  <RestaurantScreens {...props} />
+                </Suspense>
+              )}
+            </Screen>
           </Navigator>
           <AppToast />
         </NavigationContainer>

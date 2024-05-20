@@ -219,4 +219,4 @@ const VerifyAccountScreen: FC<Props> = ({ route }) => {
   );
 };
 
-export { VerifyAccountScreen };
+export default VerifyAccountScreen;
