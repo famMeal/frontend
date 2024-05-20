@@ -7,11 +7,6 @@ import { RestaurantSignUpTab } from "./RestaurantSignUpTab";
 const { Navigator, Screen } = createMaterialTopTabNavigator();
 
 const SignUpScreen: FC = () => {
-  // const { navigate } = useNavigation<EmailSignUpNavigationProps>();
-
-  // const handleOnPressLogin = () => navigate("Login");
-  // const handleContinueWithEmail = () => navigate("EmailSignUp");
-
   return (
     <Navigator>
       <Screen

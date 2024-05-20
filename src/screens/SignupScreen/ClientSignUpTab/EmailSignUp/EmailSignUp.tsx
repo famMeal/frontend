@@ -10,9 +10,13 @@ import { useSignUpMutation } from "./useSignUpMutation";
 
 const EmailSignUp: FC = () => {
   const { navigate } = useNavigation<SignUpNavigationProps>();
-  const [email, setEmail] = useState("shahynkamali@gmail.com");
-  const [password, setPassword] = useState("password");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("password");
+  const [user, setUser] = useState({
+    first: "",
+    last: "",
+    email: "",
+    password: "",
+    passwordConfirmation: "",
+  });
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const toggleSecureTextEntry = () =>
@@ -29,7 +33,7 @@ const EmailSignUp: FC = () => {
 
   const [signUp, { loading }] = useSignUpMutation({
     onCompleted: () => {
-      navigate("VerifyAccount", { email });
+      navigate("VerifyAccount", { email: user.email });
     },
     onError: error => {
       Toast.show({
@@ -40,6 +44,50 @@ const EmailSignUp: FC = () => {
   });
 
   const handleOnPresSignUp = () => {
+    const nameRegex = /^[A-Za-z]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!nameRegex.test(user.first)) {
+      Toast.show({
+        text1: "Invalid first name. Only letters are allowed.",
+        type: "error",
+      });
+      return;
+    }
+
+    if (!nameRegex.test(user.last)) {
+      Toast.show({
+        text1: "Invalid last name. Only letters are allowed.",
+        type: "error",
+      });
+      return;
+    }
+
+    if (!emailRegex.test(user.email)) {
+      Toast.show({
+        text1: "Invalid email address.",
+        type: "error",
+      });
+      return;
+    }
+
+    if (user.password.length === 0) {
+      Toast.show({
+        text1: "Password cannot be empty.",
+        type: "error",
+      });
+      return;
+    }
+
+    if (user.password !== user.passwordConfirmation) {
+      Toast.show({
+        text1: "Passwords do not match.",
+        type: "error",
+      });
+      return;
+    }
+
+    const { email, password, passwordConfirmation } = user;
     signUp({
       variables: {
         email,
@@ -53,13 +101,46 @@ const EmailSignUp: FC = () => {
     <Box>
       <Columns>
         <Column columnWidth="fullWidth">
+          <Typography type="S">
+            To sign up, we only require your full name, email and a password.
+            This information helps us create your account and provide you with
+            secure access to our App.
+          </Typography>
+        </Column>
+      </Columns>
+      <Columns>
+        <Column>
+          <Typography weigth="semiBold" type="S">
+            First Name
+          </Typography>
+          <Input
+            keyboardType="default"
+            onChangeText={first => setUser(prev => ({ ...prev, first }))}
+            value={user.first}
+            theme="accent"
+          />
+        </Column>
+        <Column>
+          <Typography weigth="semiBold" type="S">
+            Last Name
+          </Typography>
+          <Input
+            keyboardType="default"
+            onChangeText={last => setUser(prev => ({ ...prev, last }))}
+            value={user.last}
+            theme="accent"
+          />
+        </Column>
+      </Columns>
+      <Columns>
+        <Column columnWidth="fullWidth">
           <Typography weigth="semiBold" type="S">
             Email
           </Typography>
           <Input
             keyboardType="email-address"
-            onChangeText={newText => setEmail(newText)}
-            value={email}
+            onChangeText={email => setUser(prev => ({ ...prev, email }))}
+            value={user.email}
             theme="accent"
           />
         </Column>
@@ -70,10 +151,9 @@ const EmailSignUp: FC = () => {
             Password
           </Typography>
           <Input
-            className="relative"
             secureTextEntry={secureTextEntry}
-            onChangeText={newText => setPassword(newText)}
-            value={password}
+            onChangeText={password => setUser(prev => ({ ...prev, password }))}
+            value={user.password}
             theme="accent"
           />
           <View className="absolute right-2 top-11">
@@ -93,8 +173,13 @@ const EmailSignUp: FC = () => {
           <Input
             className="relative"
             secureTextEntry={secureTextEntry}
-            onChangeText={newText => setPasswordConfirmation(newText)}
-            value={passwordConfirmation}
+            onChangeText={passwordConfirmation =>
+              setUser(prev => ({
+                ...prev,
+                passwordConfirmation,
+              }))
+            }
+            value={user.passwordConfirmation}
             theme="accent"
           />
           <View className="absolute right-2 top-11">

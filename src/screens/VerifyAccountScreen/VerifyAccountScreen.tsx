@@ -9,7 +9,7 @@ import {
   Input,
   Typography,
 } from "components";
-import React, { useRef, useState, type FC } from "react";
+import React, { useEffect, useRef, useState, type FC } from "react";
 import Toast from "react-native-toast-message";
 import type {
   RootStackParamList,
@@ -48,10 +48,16 @@ const VerifyAccountScreen: FC<Props> = ({ route }) => {
     useRef<TextInput>(null),
   ];
 
-  const handleOnPressLogin = () => navigate("Login");
+  const handleOnPressLogin = () => navigate("Login", { email });
 
   const [verifyAccount, { loading }] = useVerifyAccountMutation({
-    onCompleted: handleOnPressLogin,
+    onCompleted: () => {
+      Toast.show({
+        text1: "Account Verified",
+        type: "accent",
+      });
+      handleOnPressLogin();
+    },
     onError: error => {
       Toast.show({
         text1: error.message,
@@ -86,8 +92,20 @@ const VerifyAccountScreen: FC<Props> = ({ route }) => {
   const manageTheme = (index: number) =>
     confirmationToken[index] ? "primary" : "accent";
 
+  useEffect(() => {
+    return () => setConfirmationToken(["", "", "", "", "", ""]);
+  }, []);
+
   return (
     <Container>
+      <Box>
+        <Typography type="S">
+          We have sent a verification code to the following address: {email}.
+          Please check your inbox and locate the email from us. The email
+          contains a 6-digit code that you will need to enter below to verify
+          your account.
+        </Typography>
+      </Box>
       <Box>
         <Columns>
           <Column columnWidth="fullWidth">

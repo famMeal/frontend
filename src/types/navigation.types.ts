@@ -4,7 +4,9 @@ import type { RestaurantMealsQueryData } from "screens/RestaurantScreens/Restaur
 import type { GetOrderQueryData } from "shared/useGetOrderQuery";
 
 export type RootStackParamList = {
-  Login: undefined;
+  Login?: {
+    email: string;
+  };
   SignUp: undefined;
   EmailSignUp: undefined;
   VerifyAccount: {

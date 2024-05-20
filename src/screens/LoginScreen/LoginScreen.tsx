@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import Logo from "assets/svgs/logo.svg";
 import {
   Box,
@@ -13,10 +14,13 @@ import {
 import { COLOURS } from "constants/colours";
 import { EyeIcon, EyeOffIcon } from "lucide-react-native";
 import type { FC } from "react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import Toast from "react-native-toast-message";
-import type { LoginNavigationProps } from "types/navigation.types";
+import type {
+  LoginNavigationProps,
+  RootStackParamList,
+} from "types/navigation.types";
 import { useLoginMutation } from "./useLogInMutation";
 
 const Screens = {
@@ -26,11 +30,27 @@ const Screens = {
   Splash: "Splash",
 } as const;
 
-const LoginScreen: FC = () => {
+type VerifyAccountStackProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Login"
+>;
+
+interface Props extends VerifyAccountStackProps {}
+
+const LoginScreen: FC<Props> = ({ route }) => {
+  const { params } = route ?? {};
+  const { email: forwardedEmail } = params ?? {};
+
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [email, setEmail] = useState("shahynkamali@gmail.com");
   const [password, setPassword] = useState("password");
   const { navigate } = useNavigation<LoginNavigationProps>();
+
+  useEffect(() => {
+    if (forwardedEmail) {
+      setEmail(forwardedEmail);
+    }
+  }, [forwardedEmail]);
 
   const [userLogin, { loading }] = useLoginMutation({
     onCompleted: ({ userLogin: { credentials } }) => {
