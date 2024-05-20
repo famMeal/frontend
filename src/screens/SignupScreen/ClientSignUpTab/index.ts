@@ -1,0 +1,1 @@
+export { ClientSignUpTab } from "./ClientSignUpTab";

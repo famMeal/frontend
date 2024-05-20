@@ -67,7 +67,6 @@ const Cart: FC<Props> = ({
   userID,
   onCompleted,
   setCart,
-
   stripeAccountId,
 }) => {
   const {
@@ -81,6 +80,7 @@ const Cart: FC<Props> = ({
     pickupEndTime,
     pickupStartTime,
   } = cart ?? {};
+
   const [placeOrder, { loading }] = usePlaceOrderMutation();
   const [selectedTip, setSelectedTip] = useState("0");
   const [updateTip] = useUpdateOrderTipMutation();
@@ -297,7 +297,7 @@ const Cart: FC<Props> = ({
                 <RadioGroup
                   selectedValue={selectedTip}
                   onValueChange={value => handleUpdateTip(Number(value))}>
-                  {tipOptions.map(option => (
+                  {tipOptions?.map(option => (
                     <RadioButton
                       key={option.value}
                       label={option.label}

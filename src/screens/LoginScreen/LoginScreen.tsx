@@ -35,6 +35,7 @@ const LoginScreen: FC = () => {
   const [userLogin, { loading }] = useLoginMutation({
     onCompleted: ({ userLogin: { credentials } }) => {
       if (credentials) {
+        console.log(credentials);
         Promise.all(
           Object.entries(credentials).map(([key, value]) =>
             AsyncStorage.setItem(key, String(value))

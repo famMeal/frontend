@@ -15,7 +15,7 @@ import { useCurrentUserQuery } from "shared";
 import type { RootStackParamList } from "types/navigation.types";
 import { formatTime } from "utilities/formatTime";
 import { SkeletonRestaurantSettingsScreens } from "./SkeletonRestaurantSettingsScreen";
-import { useCreateOrUpdateStripeAccount } from "./useCreateOrUpdateStripeAccountMutation";
+import { useCreateOrUpdateStripeAccountMutation } from "./useCreateOrUpdateStripeAccountMutation";
 import { useRestaurantSettingsQuery } from "./useRestaurantSettingsQuery";
 
 type RestaurantStackProps = NativeStackScreenProps<
@@ -26,30 +26,29 @@ type RestaurantStackProps = NativeStackScreenProps<
 interface Props extends RestaurantStackProps {}
 
 const RestaurantSettingsScreen: FC<Props> = ({ route }) => {
-  const { params } = route ?? {};
-  const { restaurantID } = params;
-
-  const [createStripeAccount, { loading }] = useCreateOrUpdateStripeAccount();
-
+  const { restaurantID } = route?.params ?? {};
+  const { data: userData, loading: userLoading } = useCurrentUserQuery();
   const { data, loading: restaurantLoading } = useRestaurantSettingsQuery({
     skip: !restaurantID,
     variables: {
       id: restaurantID,
     },
   });
-  const { data: userData, loading: userLoading } = useCurrentUserQuery();
+  const [createStripeAccount, { loading }] =
+    useCreateOrUpdateStripeAccountMutation();
 
   const onPressSetupPayment = () =>
     createStripeAccount({
       onCompleted: data => {
-        const { createOrUpdateStripeAccount } = data ?? {};
-        if (createOrUpdateStripeAccount?.redirectLink) {
-          Linking.openURL(createOrUpdateStripeAccount?.redirectLink);
+        const { redirectLink, errorMessage } =
+          data?.createOrUpdateStripeAccount ?? {};
+        if (redirectLink) {
+          Linking.openURL(redirectLink);
         }
-        if (createOrUpdateStripeAccount?.errorMessage) {
+        if (errorMessage) {
           Toast.show({
             type: "error",
-            text1: createOrUpdateStripeAccount?.errorMessage,
+            text1: errorMessage,
           });
         }
       },
@@ -70,7 +69,7 @@ const RestaurantSettingsScreen: FC<Props> = ({ route }) => {
     userData?.currentUser?.isStoreOwner ? (
       <Box>
         <Typography weigth="bold">Payment Providers</Typography>
-        <Columns isMarginless>
+        <Columns>
           <Column>
             <Typography>Stripe</Typography>
           </Column>
@@ -90,7 +89,9 @@ const RestaurantSettingsScreen: FC<Props> = ({ route }) => {
           <Button
             isLoading={loading}
             className="mt-4"
-            theme="primary"
+            theme={
+              data?.restaurant?.stripeOnboardingComplete ? "primary" : "error"
+            }
             isClean
             onPress={onPressSetupPayment}>
             {data?.restaurant.hasStripeAccount

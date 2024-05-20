@@ -1,0 +1,1 @@
+export { RestaurantSignUpTab } from "./RestaurantSignUpTab";

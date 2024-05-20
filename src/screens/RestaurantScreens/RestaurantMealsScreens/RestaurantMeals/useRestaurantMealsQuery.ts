@@ -58,6 +58,5 @@ const useRestaurantMealsQuery = (options?: Options) =>
 export { useRestaurantMealsQuery };
 export type {
   Data as RestaurantMealsQueryData,
-  Variables as RestaurantMealsQueryVariables
+  Variables as RestaurantMealsQueryVariables,
 };
-

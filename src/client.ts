@@ -35,18 +35,18 @@ const cache = new InMemoryCache({
 });
 
 const authLink = setContext(async (_, { headers }) => {
-  const accessToken = await AsyncStorage.getItem("accessToken");
-  const client = await AsyncStorage.getItem("client");
-  const uid = await AsyncStorage.getItem("uid");
+  const accessToken = (await AsyncStorage.getItem("accessToken")) ?? "";
+  const client = (await AsyncStorage.getItem("client")) ?? "";
+  const uid = (await AsyncStorage.getItem("uid")) ?? "";
 
   return {
     headers: {
       ...headers,
       Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.",
       "Content-Type": "application/json; charset=utf-8",
-      accessToken: accessToken || "",
-      client: client || "",
-      uid: uid || "",
+      accessToken,
+      client,
+      uid,
     },
   };
 });

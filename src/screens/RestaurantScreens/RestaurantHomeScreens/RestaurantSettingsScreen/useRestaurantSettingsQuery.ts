@@ -2,7 +2,7 @@ import type { QueryHookOptions } from "@apollo/client";
 import { gql, useQuery } from "@apollo/client";
 import type { Restaurant, RestaurantSetting } from "schema";
 
-const RESTAURANT_SETTINGS_QUERY = gql`
+export const RESTAURANT_SETTINGS_QUERY = gql`
   query RestaurantSettings($id: ID!) {
     restaurant(id: $id) {
       id
