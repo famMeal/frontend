@@ -11,8 +11,8 @@ import { useSignUpMutation } from "./useSignUpMutation";
 const EmailSignUp: FC = () => {
   const { navigate } = useNavigation<SignUpNavigationProps>();
   const [user, setUser] = useState({
-    first: "",
-    last: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     passwordConfirmation: "",
@@ -47,7 +47,7 @@ const EmailSignUp: FC = () => {
     const nameRegex = /^[A-Za-z]+$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!nameRegex.test(user.first)) {
+    if (!nameRegex.test(user.firstName)) {
       Toast.show({
         text1: "Invalid first name. Only letters are allowed.",
         type: "error",
@@ -55,7 +55,7 @@ const EmailSignUp: FC = () => {
       return;
     }
 
-    if (!nameRegex.test(user.last)) {
+    if (!nameRegex.test(user.lastName)) {
       Toast.show({
         text1: "Invalid last name. Only letters are allowed.",
         type: "error",
@@ -87,9 +87,11 @@ const EmailSignUp: FC = () => {
       return;
     }
 
-    const { email, password, passwordConfirmation } = user;
+    const { email, password, passwordConfirmation, firstName, lastName } = user;
     signUp({
       variables: {
+        firstName,
+        lastName,
         email,
         password,
         passwordConfirmation,
@@ -115,8 +117,10 @@ const EmailSignUp: FC = () => {
           </Typography>
           <Input
             keyboardType="default"
-            onChangeText={first => setUser(prev => ({ ...prev, first }))}
-            value={user.first}
+            onChangeText={firstName =>
+              setUser(prev => ({ ...prev, firstName }))
+            }
+            value={user.firstName}
             theme="accent"
           />
         </Column>
@@ -126,8 +130,8 @@ const EmailSignUp: FC = () => {
           </Typography>
           <Input
             keyboardType="default"
-            onChangeText={last => setUser(prev => ({ ...prev, last }))}
-            value={user.last}
+            onChangeText={lastName => setUser(prev => ({ ...prev, lastName }))}
+            value={user.lastName}
             theme="accent"
           />
         </Column>

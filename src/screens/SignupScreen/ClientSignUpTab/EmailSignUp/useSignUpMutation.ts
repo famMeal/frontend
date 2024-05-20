@@ -6,8 +6,12 @@ const SIGN_UP = gql`
     $email: String!
     $password: String!
     $passwordConfirmation: String!
+    $firstName: String!
+    $lastName: String!
   ) {
     signUp(
+      firstName: $firstName
+      lastName: $lastName
       email: $email
       password: $password
       passwordConfirmation: $passwordConfirmation
@@ -24,6 +28,8 @@ interface SignUp {
 }
 
 interface SignUpInput {
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   passwordConfirmation: string;
