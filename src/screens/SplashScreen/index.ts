@@ -1,1 +1,1 @@
-export * from "./AppSplashScreen";
+export * from "./SplashScreen";
