@@ -1,5 +1,7 @@
-import { BottomDrawer, Button, Column, Columns } from "components";
-import type { BottomDrawerProps } from "components/BottomDrawer";
+import { BottomDrawer, type BottomDrawerProps } from "components/BottomDrawer";
+import { Button } from "components/Button";
+import { Column } from "components/Column";
+import { Columns } from "components/Columns";
 import type { FC, PropsWithChildren } from "react";
 import type { TouchableOpacityProps } from "react-native";
 

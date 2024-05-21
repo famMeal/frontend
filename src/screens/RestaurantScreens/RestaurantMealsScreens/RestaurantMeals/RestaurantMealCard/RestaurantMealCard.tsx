@@ -1,13 +1,19 @@
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Box, Button, Chip, Column, Columns, Typography } from "components";
+import {
+  ActionBottomDrawer,
+  Box,
+  Button,
+  Chip,
+  Column,
+  Columns,
+  Typography,
+} from "components";
 import { COLOURS } from "constants/colours";
+import { Trash2Icon } from "lucide-react-native";
 import React, { useState, type FC } from "react";
 import { View } from "react-native";
-
-import { Trash2Icon } from "lucide-react-native";
 import Toast from "react-native-toast-message";
-import { ActionBottomDrawer } from "screens/components";
 import { useActivateMealMutation } from "shared/useActivateMealMutation";
 import type { RootStackParamList } from "types/navigation.types";
 import type {

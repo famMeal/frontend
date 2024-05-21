@@ -55,7 +55,6 @@ const LoginScreen: FC<Props> = ({ route }) => {
   const [userLogin, { loading }] = useLoginMutation({
     onCompleted: ({ userLogin: { credentials } }) => {
       if (credentials) {
-        console.log(credentials);
         Promise.all(
           Object.entries(credentials).map(([key, value]) =>
             AsyncStorage.setItem(key, String(value))
@@ -93,6 +92,23 @@ const LoginScreen: FC<Props> = ({ route }) => {
     );
 
   const handleOnSignUpPress = () => navigate(Screens.SignUp);
+
+  // const onPressNavigateToValidate = () => navigate("VerifyAccount", { email });
+
+  const renderCTA = () => {
+    // if (needsToValidate && email.length) {
+    //   return (
+    //     <Button theme="error" onPress={onPressNavigateToValidate}>
+    //       Validate
+    //     </Button>
+    //   );
+    // }
+    return (
+      <Button isLoading={loading} onPress={handleOnPressLogin}>
+        Login
+      </Button>
+    );
+  };
 
   return (
     <Container className="flex flex-col justify-center items-center">
@@ -140,11 +156,7 @@ const LoginScreen: FC<Props> = ({ route }) => {
           </Column>
         </Columns>
         <Columns className="mt-4">
-          <Column columnWidth="fullWidth">
-            <Button isLoading={loading} onPress={handleOnPressLogin}>
-              Login
-            </Button>
-          </Column>
+          <Column columnWidth="fullWidth">{renderCTA()}</Column>
         </Columns>
         <Columns className="mt-8">
           <Column
@@ -168,4 +180,4 @@ const LoginScreen: FC<Props> = ({ route }) => {
   );
 };
 
-export default LoginScreen;
+export { LoginScreen };

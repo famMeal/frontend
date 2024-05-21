@@ -1,11 +1,6 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import Logo from "assets/svgs/logo.svg";
-import { Column } from "components/Column";
-import { Columns } from "components/Columns";
-import { Container } from "components/Container";
-import { COLOURS } from "constants/colours";
+import { Container, Loader } from "components";
 import React, { useEffect } from "react";
-import { ActivityIndicator, View } from "react-native";
 import AppSplashScreenRN from "react-native-splash-screen";
 import { useCurrentUserQuery } from "shared";
 import type { RootStackParamList } from "types/navigation.types";
@@ -18,7 +13,7 @@ const Screens = {
   Login: "Login",
 } as const;
 
-const AppSplashScreen: React.FC<Props> = ({ navigation }) => {
+const SplashScreen: React.FC<Props> = ({ navigation }) => {
   const { navigate } = navigation;
   const { data, loading } = useCurrentUserQuery();
 
@@ -36,20 +31,7 @@ const AppSplashScreen: React.FC<Props> = ({ navigation }) => {
   if (loading) {
     return (
       <Container>
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-          <Columns>
-            <Column
-              alignItems="flex-end"
-              columnWidth="twoThird"
-              justifyContent="center">
-              <Logo />
-            </Column>
-            <Column columnWidth="oneThird">
-              <ActivityIndicator size="large" color={COLOURS.accent} />
-            </Column>
-          </Columns>
-        </View>
+        <Loader />
       </Container>
     );
   }
@@ -57,4 +39,4 @@ const AppSplashScreen: React.FC<Props> = ({ navigation }) => {
   return null;
 };
 
-export default AppSplashScreen;
+export { SplashScreen };

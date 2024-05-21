@@ -1,1 +1,2 @@
-export * from "./RestaurantScreens";
+import RestaurantScreens from "./RestaurantScreens";
+export default RestaurantScreens;

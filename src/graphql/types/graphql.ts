@@ -196,6 +196,8 @@ export type MutationPlaceOrderArgs = {
 export type MutationSignUpArgs = {
   confirmUrl?: InputMaybe<Scalars['String']['input']>;
   email: Scalars['String']['input'];
+  firstName: Scalars['String']['input'];
+  lastName: Scalars['String']['input'];
   password: Scalars['String']['input'];
   passwordConfirmation: Scalars['String']['input'];
   restaurantName?: InputMaybe<Scalars['String']['input']>;

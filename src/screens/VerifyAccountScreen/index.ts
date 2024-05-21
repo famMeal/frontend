@@ -1,1 +1,2 @@
-export * from "./VerifyAccountScreen";
+import VerifyAccountScreen from "./VerifyAccountScreen";
+export default VerifyAccountScreen;

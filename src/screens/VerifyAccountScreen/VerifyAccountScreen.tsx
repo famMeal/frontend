@@ -80,7 +80,7 @@ const VerifyAccountScreen: FC<Props> = ({ route }) => {
     }
   };
 
-  const handleOnPresSignUp = () => {
+  const handleOnPressVerify = () => {
     verifyAccount({
       variables: {
         email,
@@ -100,8 +100,13 @@ const VerifyAccountScreen: FC<Props> = ({ route }) => {
     <Container>
       <Box>
         <Typography type="S">
-          We have sent a verification code to the following address: {email}.
-          Please check your inbox and locate the email from us. The email
+          We have sent a verification code to the following address:{" "}
+          {
+            <Typography type="S" weigth="bold">
+              {email}
+            </Typography>
+          }
+          . Please check your inbox and locate the email from us. The email
           contains a 6-digit code that you will need to enter below to verify
           your account.
         </Typography>
@@ -120,6 +125,7 @@ const VerifyAccountScreen: FC<Props> = ({ route }) => {
               <Column direction="row" className="px-0">
                 <Column columnWidth="oneThird" className="p-0">
                   <Input
+                    keyboardType="number-pad"
                     theme={manageTheme(0)}
                     ref={inputRefs[0]}
                     inputWidth="fixed"
@@ -130,6 +136,7 @@ const VerifyAccountScreen: FC<Props> = ({ route }) => {
                 </Column>
                 <Column columnWidth="oneThird" className="p-0">
                   <Input
+                    keyboardType="number-pad"
                     theme={manageTheme(1)}
                     ref={inputRefs[1]}
                     inputWidth="fixed"
@@ -140,6 +147,7 @@ const VerifyAccountScreen: FC<Props> = ({ route }) => {
                 </Column>
                 <Column columnWidth="oneThird" className="mr-0 p-0">
                   <Input
+                    keyboardType="number-pad"
                     theme={manageTheme(2)}
                     ref={inputRefs[2]}
                     inputWidth="fixed"
@@ -155,6 +163,7 @@ const VerifyAccountScreen: FC<Props> = ({ route }) => {
                 className="px-0">
                 <Column columnWidth="oneThird">
                   <Input
+                    keyboardType="number-pad"
                     theme={manageTheme(3)}
                     ref={inputRefs[3]}
                     inputWidth="fixed"
@@ -165,6 +174,7 @@ const VerifyAccountScreen: FC<Props> = ({ route }) => {
                 </Column>
                 <Column columnWidth="oneThird">
                   <Input
+                    keyboardType="number-pad"
                     theme={manageTheme(4)}
                     ref={inputRefs[4]}
                     inputWidth="fixed"
@@ -175,6 +185,7 @@ const VerifyAccountScreen: FC<Props> = ({ route }) => {
                 </Column>
                 <Column columnWidth="oneThird" className="mr-0">
                   <Input
+                    keyboardType="number-pad"
                     theme={manageTheme(5)}
                     ref={inputRefs[5]}
                     inputWidth="fixed"
@@ -192,7 +203,7 @@ const VerifyAccountScreen: FC<Props> = ({ route }) => {
             <Button
               disabled={!isValid}
               isLoading={loading}
-              onPress={handleOnPresSignUp}>
+              onPress={handleOnPressVerify}>
               Verify Account
             </Button>
           </Column>

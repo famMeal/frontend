@@ -4,29 +4,19 @@ import {
   NavigationContainer,
   type LinkingOptions,
 } from "@react-navigation/native";
-import Logo from "assets/svgs/logo.svg";
 import { client } from "client";
-import { AppToast, Column, Columns, Header } from "components";
+import { AppToast, Header, Loader } from "components";
 import { COLOURS } from "constants/colours";
-import React, { Suspense, useEffect, type FC } from "react";
-import { ActivityIndicator, Linking, View } from "react-native";
+import React, { Suspense, lazy, useEffect, type FC } from "react";
+import { Linking } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import AppSplashScreen from "screens/AppSplashScreen/AppSplashScreen";
-import LoginScreen from "screens/LoginScreen/LoginScreen";
+import { LoginScreen, SplashScreen } from "screens";
 import type { RootStackParamList } from "types/navigation.types";
 
-const ClientScreens = React.lazy(
-  () => import("screens/ClientScreens/ClientScreens")
-);
-const RestaurantScreens = React.lazy(
-  () => import("screens/RestaurantScreens/RestaurantScreens")
-);
-const SignUpScreen = React.lazy(
-  () => import("screens/SignupScreen/SignupScreen")
-);
-const VerifyAccountScreen = React.lazy(
-  () => import("screens/VerifyAccountScreen/VerifyAccountScreen")
-);
+const ClientScreens = lazy(() => import("screens/ClientScreens"));
+const RestaurantScreens = lazy(() => import("screens/RestaurantScreens"));
+const SignUpScreen = lazy(() => import("screens/SignupScreen"));
+const VerifyAccountScreen = lazy(() => import("screens/VerifyAccountScreen"));
 
 const { Navigator, Screen } = createBottomTabNavigator<RootStackParamList>();
 
@@ -45,32 +35,27 @@ const linking: LinkingOptions<RootStackParamList> = {
   },
 };
 
-const Loader = () => (
-  <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-    <Columns>
-      <Column
-        alignItems="flex-end"
-        columnWidth="twoThird"
-        justifyContent="center">
-        <Logo />
-      </Column>
-      <Column columnWidth="oneThird">
-        <ActivityIndicator size="large" color={COLOURS.accent} />
-      </Column>
-    </Columns>
-  </View>
-);
-
 const App: FC = () => {
   useEffect(() => {
     const handleInitialURL = async () => {
       const initialUrl = await Linking.getInitialURL();
+
       if (initialUrl) {
         console.log(`App opened with URL: ${initialUrl}`);
       }
     };
 
+    const onURLChange = ({ url }: { url: string }) => {
+      console.log("URL Changed:", url);
+    };
+
+    const unsubscribe = Linking.addEventListener("url", onURLChange);
+
     handleInitialURL();
+
+    return () => {
+      unsubscribe.remove();
+    };
   }, []);
 
   return (
@@ -95,7 +80,7 @@ const App: FC = () => {
               }}
             />
             <Screen
-              component={AppSplashScreen}
+              component={SplashScreen}
               name="Splash"
               options={{
                 headerShown: false,

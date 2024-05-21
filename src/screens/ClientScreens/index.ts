@@ -1,1 +1,2 @@
-export * from "./ClientScreens";
+import ClientScreens from "./ClientScreens";
+export default ClientScreens;
