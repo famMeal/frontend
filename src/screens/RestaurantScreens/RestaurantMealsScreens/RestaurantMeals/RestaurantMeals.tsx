@@ -8,8 +8,6 @@ import {
   Container,
   Typography,
 } from "components";
-import { COLOURS } from "constants/colours";
-import { ArrowRightCircleIcon } from "lucide-react-native";
 import { useState, type FC } from "react";
 import { ScrollView } from "react-native";
 import { RestaurantCreateMealModal } from "screens/RestaurantScreens/RestaurantCreateMealModal";
@@ -130,7 +128,6 @@ const RestaurantMeals: FC<Props> = ({ route, navigation }) => {
         </Columns>
         <Button isOutlined theme="error" onPress={onPressNavigateToSettings}>
           Setup Stripe
-          <ArrowRightCircleIcon color={COLOURS.error} className="ml-4" />
         </Button>
       </Box>
     );

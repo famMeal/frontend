@@ -12,11 +12,8 @@ import {
   Typography,
 } from "components";
 import { COLOURS } from "constants/colours";
-import {
-  ArrowRightCircle,
-  BadgeCheck,
-  ShieldAlertIcon,
-} from "lucide-react-native";
+
+import { ArrowRightCircle, BadgeCheck } from "lucide-react-native";
 import React, { useState, type FC } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { DateRangeField, type Meal } from "schema";
@@ -212,10 +209,7 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
                 }>
                 {data?.restaurant?.stripeOnboardingComplete
                   ? "View Settings"
-                  : "Update Stripe Account"}
-                {!data?.restaurant?.stripeOnboardingComplete ? (
-                  <ShieldAlertIcon color={COLOURS.error} className="ml-2 " />
-                ) : null}
+                  : "Update Payments Account"}
               </Button>
             </Column>
           </Columns>
