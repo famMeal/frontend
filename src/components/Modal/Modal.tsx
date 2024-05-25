@@ -5,7 +5,12 @@ import { COLOURS } from "constants/colours";
 import { XIcon } from "lucide-react-native";
 import type { ReactNode } from "react";
 import React, { type FC } from "react";
-import { Modal as ReactModal, StyleSheet, View } from "react-native";
+import {
+  Modal as ReactModal,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
 
 interface ModalProps {
   isModalVisible: boolean;
@@ -26,15 +31,17 @@ const Modal: FC<ModalProps> = ({
       onRequestClose={() => setModalVisible(false)}>
       <View style={styles.centeredView}>
         <View style={styles.modalView} className="mx-4 p-4 mt-12">
-          <Columns isMarginless>
-            <Column
-              isPaddingless
-              justifyContent="center"
-              alignItems="center"
-              columnWidth="fullWidth">
-              {children}
-            </Column>
-          </Columns>
+          <ScrollView>
+            <Columns isMarginless>
+              <Column
+                isPaddingless
+                justifyContent="center"
+                alignItems="center"
+                columnWidth="fullWidth">
+                {children}
+              </Column>
+            </Columns>
+          </ScrollView>
           <View className="top-4 absolute right-4">
             <Button
               isOutlined

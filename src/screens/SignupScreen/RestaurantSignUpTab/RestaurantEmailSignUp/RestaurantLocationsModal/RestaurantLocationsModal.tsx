@@ -19,17 +19,45 @@ const RestaurantsLocationsModal: FC<Props> = ({
   const [selectedTip, setSelectedTip] = useState("0");
   const { data, loading, error } = useRestaurantLocations(restaurantName, city);
 
+  const renderRestaurantLocation = (location: string) =>
+    location ? (
+      <Typography type="S" weigth="bold">
+        {location}
+      </Typography>
+    ) : null;
+
+  const renderName = (name: string) => {
+    const [restaurantName, restaurantLocation] = name.split("-");
+    return (
+      <>
+        <Typography type="S" weigth="bold">
+          {restaurantName}
+        </Typography>
+        {renderRestaurantLocation(restaurantLocation)}
+      </>
+    );
+  };
+
+  const renderAddress = (address: string) => {
+    const [addressLine, city, postalCode] = address.split(",");
+
+    return (
+      <>
+        <Typography type="S">{addressLine}</Typography>
+        <Typography type="S">
+          {postalCode} {city}
+        </Typography>
+      </>
+    );
+  };
+
   const renderLocations = () =>
     data?.map(location => (
       <RadioField key={location.id} value={location.id}>
         <Columns direction="column">
+          <Column columnWidth="fullWidth">{renderName(location.name)}</Column>
           <Column columnWidth="fullWidth">
-            <Typography type="S" weigth="bold">
-              {location.name}
-            </Typography>
-          </Column>
-          <Column columnWidth="fullWidth">
-            <Typography type="S">{location.address}</Typography>
+            {renderAddress(location.address)}
           </Column>
         </Columns>
       </RadioField>
@@ -37,15 +65,16 @@ const RestaurantsLocationsModal: FC<Props> = ({
 
   return (
     <Modal isModalVisible={isOpen} setModalVisible={setIsOpen}>
-      <Columns>
+      <Columns isMarginless>
         <Column columnWidth="fullWidth">
-          <Typography>Select Your Restaurant</Typography>
+          <Typography className="mt-2" type="H3" weigth="bold">
+            Select Your Restaurant
+          </Typography>
         </Column>
       </Columns>
       <Columns>
         <Column columnWidth="fullWidth" direction="column">
           <RadioGroup
-            scrollEnabled
             direction="column"
             selectedValue={selectedTip}
             onValueChange={value => setSelectedTip(value)}>

@@ -1,6 +1,6 @@
 import type { FC, PropsWithChildren } from "react";
 import React, { Children, cloneElement, isValidElement } from "react";
-import { ScrollView, View } from "react-native";
+import { View } from "react-native";
 import classnames from "tailwindcss-classnames";
 import type { RadioButtonProps } from "./RadioButton";
 import { getRadioGroupStyles } from "./RadioGroup.styles";
@@ -21,7 +21,6 @@ export interface Props extends PropsWithChildren {
   alignItems?: AlignItems;
   selectedValue: string;
   onValueChange: (value: string) => void;
-  scrollEnabled?: boolean; // New prop to enable/disable scroll
 }
 
 const RadioGroup: FC<Props> = ({
@@ -31,7 +30,6 @@ const RadioGroup: FC<Props> = ({
   direction = "row",
   alignItems = "flex-start",
   justifyContent = "flex-start",
-  scrollEnabled = true, // Default to true to enable scrolling
 }) => {
   const styles = getRadioGroupStyles({ direction, justifyContent, alignItems });
   const classNames = classnames(styles);
@@ -45,11 +43,7 @@ const RadioGroup: FC<Props> = ({
       : child;
   });
 
-  return scrollEnabled ? (
-    <ScrollView>{childrenWithProps}</ScrollView>
-  ) : (
-    <View className={classNames}>{childrenWithProps}</View>
-  );
+  return <View className={classNames}>{childrenWithProps}</View>;
 };
 
 export { RadioGroup };

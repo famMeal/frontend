@@ -12,18 +12,16 @@ import { useRestaurantSignUpMutation } from "./useRestaurantSignUpMutation";
 const nameRegex = /^[A-Za-z]+$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const textRegex = /^[A-Za-z0-9\s]+$/;
-const certificateNumberRegex = /^[A-Z0-9]{6,10}$/;
 const cityRegex = /^[A-Za-z\s\-']{1,50}$/;
 
 const RestaurantEmailSignUp: FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { navigate } = useNavigation<SignUpNavigationProps>();
   const [user, setUser] = useState({
     firstName: "Beschumi",
     lastName: "Steve",
     restaurantName: "The Keg",
     city: "Toronto",
-    foodhandlersCertificate: "ABC123456",
     email: "shahynkamali+1@gmail.com",
     password: "password",
     passwordConfirmation: "password",
@@ -59,7 +57,6 @@ const RestaurantEmailSignUp: FC = () => {
       firstName: user.firstName.trim(),
       lastName: user.lastName.trim(),
       restaurantName: user.restaurantName,
-      foodhandlersCertificate: user.foodhandlersCertificate.trim(),
       city: user.city,
       email: user.email.trim(),
       password: user.password.trim(),
@@ -99,14 +96,6 @@ const RestaurantEmailSignUp: FC = () => {
       return;
     }
 
-    if (!certificateNumberRegex.test(trimmedUser.foodhandlersCertificate)) {
-      Toast.show({
-        text1: "Invalid food handlers certificate number.",
-        type: "error",
-      });
-      return;
-    }
-
     if (!emailRegex.test(trimmedUser.email)) {
       Toast.show({
         text1: "Invalid email address.",
@@ -130,6 +119,7 @@ const RestaurantEmailSignUp: FC = () => {
       });
       return;
     }
+    setIsModalOpen(true);
 
     // signUp({
     //   variables: {
@@ -200,21 +190,6 @@ const RestaurantEmailSignUp: FC = () => {
               keyboardType="default"
               onChangeText={city => setUser(prev => ({ ...prev, city }))}
               value={user.city}
-              theme="accent"
-            />
-          </Column>
-        </Columns>
-        <Columns>
-          <Column columnWidth="fullWidth">
-            <Typography weigth="semiBold" type="S">
-              Food Handler Certificate Number
-            </Typography>
-            <Input
-              keyboardType="default"
-              onChangeText={foodhandlersCertificate =>
-                setUser(prev => ({ ...prev, foodhandlersCertificate }))
-              }
-              value={user.foodhandlersCertificate}
               theme="accent"
             />
           </Column>

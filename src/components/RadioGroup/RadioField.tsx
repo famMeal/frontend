@@ -18,7 +18,7 @@ const StyledRadioField: FC<Props> = ({
   return (
     <TouchableOpacity
       onPress={() => onSelect?.(value)}
-      className={`my-2 w-full flex flex-row items-center p-4 border rounded-md  ${
+      className={`my-2 flex flex-row items-center p-4 border rounded-md w-full ${
         isSelected ? "border-accent border-2" : "border-gray-300 bg-white"
       }`}>
       <View
