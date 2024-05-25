@@ -1,27 +1,54 @@
-import type { FC, ReactElement } from "react";
-import React, { Children, cloneElement } from "react";
-import { View } from "react-native";
+import type { FC, PropsWithChildren } from "react";
+import React, { Children, cloneElement, isValidElement } from "react";
+import { ScrollView, View } from "react-native";
+import classnames from "tailwindcss-classnames";
+import type { RadioButtonProps } from "./RadioButton";
+import { getRadioGroupStyles } from "./RadioGroup.styles";
 
-interface RadioGroupProps {
-  children: ReactElement[];
+export type JustifyContent =
+  | "flex-start"
+  | "flex-end"
+  | "center"
+  | "space-between"
+  | "space-around"
+  | "space-evenly";
+
+export type AlignItems = "flex-start" | "flex-end" | "center" | "stretch";
+
+export interface Props extends PropsWithChildren {
+  direction?: "row" | "column";
+  justifyContent?: JustifyContent;
+  alignItems?: AlignItems;
   selectedValue: string;
   onValueChange: (value: string) => void;
+  scrollEnabled?: boolean; // New prop to enable/disable scroll
 }
 
-const RadioGroup: FC<RadioGroupProps> = ({
+const RadioGroup: FC<Props> = ({
   children,
   selectedValue,
   onValueChange,
+  direction = "row",
+  alignItems = "flex-start",
+  justifyContent = "flex-start",
+  scrollEnabled = true, // Default to true to enable scrolling
 }) => {
-  return (
-    <View className="flex-row justify-evenly items-center">
-      {Children.map(children, child =>
-        cloneElement(child, {
+  const styles = getRadioGroupStyles({ direction, justifyContent, alignItems });
+  const classNames = classnames(styles);
+
+  const childrenWithProps = Children.map(children, child => {
+    return isValidElement<RadioButtonProps>(child)
+      ? cloneElement(child, {
           isSelected: child.props.value === selectedValue,
           onSelect: onValueChange,
         })
-      )}
-    </View>
+      : child;
+  });
+
+  return scrollEnabled ? (
+    <ScrollView>{childrenWithProps}</ScrollView>
+  ) : (
+    <View className={classNames}>{childrenWithProps}</View>
   );
 };
 

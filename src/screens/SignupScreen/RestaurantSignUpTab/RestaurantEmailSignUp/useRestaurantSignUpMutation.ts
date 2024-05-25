@@ -8,6 +8,7 @@ const SIGN_UP = gql`
     $passwordConfirmation: String!
     $firstName: String!
     $lastName: String!
+    $restaurantName: String!
   ) {
     signUp(
       firstName: $firstName
@@ -15,6 +16,7 @@ const SIGN_UP = gql`
       email: $email
       password: $password
       passwordConfirmation: $passwordConfirmation
+      restaurantName: $restaurantName
     ) {
       __typename
     }
@@ -33,11 +35,12 @@ interface SignUpInput {
   email: string;
   password: string;
   passwordConfirmation: string;
+  restaurantName: string;
 }
 
 type Options = MutationHookOptions<SignUp, SignUpInput>;
 
-const useSignUpMutation = (options?: Options) =>
+const useRestaurantSignUpMutation = (options?: Options) =>
   useMutation<SignUp, SignUpInput>(SIGN_UP, options);
 
-export { useSignUpMutation };
+export { useRestaurantSignUpMutation };

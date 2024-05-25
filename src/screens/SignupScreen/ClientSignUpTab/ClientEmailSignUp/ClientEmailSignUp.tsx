@@ -6,9 +6,9 @@ import { useState, type FC } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import Toast from "react-native-toast-message";
 import type { SignUpNavigationProps } from "types/navigation.types";
-import { useSignUpMutation } from "./useSignUpMutation";
+import { useClientSignUpMutation } from "./useClientSignUpMutation";
 
-const EmailSignUp: FC = () => {
+const ClientEmailSignUp: FC = () => {
   const { navigate } = useNavigation<SignUpNavigationProps>();
   const [user, setUser] = useState({
     firstName: "",
@@ -31,7 +31,7 @@ const EmailSignUp: FC = () => {
 
   const handleOnPressLogin = () => navigate("Login");
 
-  const [signUp, { loading }] = useSignUpMutation({
+  const [signUp, { loading }] = useClientSignUpMutation({
     onCompleted: () => {
       navigate("VerifyAccount", { email: user.email.trim() });
     },
@@ -236,4 +236,4 @@ const EmailSignUp: FC = () => {
   );
 };
 
-export { EmailSignUp };
+export { ClientEmailSignUp };

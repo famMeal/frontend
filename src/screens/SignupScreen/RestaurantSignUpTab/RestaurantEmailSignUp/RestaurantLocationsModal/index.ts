@@ -1,0 +1,1 @@
+export { RestaurantsLocationsModal } from "./RestaurantLocationsModal";

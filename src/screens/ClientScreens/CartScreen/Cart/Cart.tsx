@@ -177,7 +177,7 @@ const Cart: FC<Props> = ({
             {tipAmount}
           </Typography>
         </Column>
-        <View className="absolute right-14">
+        <View className="absolute right-16">
           <Button onPress={() => handleUpdateTip(0)} isClean isOutlined isIcon>
             <TrashIcon color={COLOURS.error} size={15} />
           </Button>
@@ -295,6 +295,8 @@ const Cart: FC<Props> = ({
                   All tips goes to the restaurant
                 </Typography>
                 <RadioGroup
+                  justifyContent="space-evenly"
+                  alignItems="center"
                   selectedValue={selectedTip}
                   onValueChange={value => handleUpdateTip(Number(value))}>
                   {tipOptions?.map(option => (
