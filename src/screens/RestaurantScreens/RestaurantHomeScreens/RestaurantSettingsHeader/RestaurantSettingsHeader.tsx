@@ -23,7 +23,7 @@ const RestaurantSettingsHeader: FC<Props> = ({ restaurantID }) => {
   const navigation = useNavigation<MainNavigationProps>();
   const { navigate } = navigation;
 
-  const [logout] = useLogoutMutation();
+  const [logout, { loading: isLoggingOut }] = useLogoutMutation();
 
   const onPress = () => {
     logout({
@@ -56,7 +56,12 @@ const RestaurantSettingsHeader: FC<Props> = ({ restaurantID }) => {
 
   return (
     <Header title="Settings" onBackButtonPress={onBackButtonPress}>
-      <Button isOutlined isClean onPress={showAlert} isFullyRounded>
+      <Button
+        isOutlined
+        isClean
+        onPress={showAlert}
+        isFullyRounded
+        isLoading={isLoggingOut}>
         <LogOutIcon color={COLOURS.accent} size={30} />
       </Button>
     </Header>

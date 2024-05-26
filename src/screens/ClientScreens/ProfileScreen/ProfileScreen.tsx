@@ -18,7 +18,7 @@ interface Props extends ProfileStackProps {
 const ProfileScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
   const [logout, { loading: isSignOutLoading }] = useLogoutMutation();
   const { userID } = route?.params ?? {};
-  const { data, loading } = useGetUserQuery({
+  const { data, loading, refetch } = useGetUserQuery({
     skip: !userID,
     variables: {
       id: userID,
@@ -28,9 +28,10 @@ const ProfileScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       setActiveScreen(route.name);
+      refetch();
     });
     return unsubscribe;
-  }, [navigation, setActiveScreen, route.name]);
+  }, [navigation, setActiveScreen, route.name, refetch]);
 
   const {
     id: unusedId,

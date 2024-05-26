@@ -15,18 +15,22 @@ const Screens = {
 
 const SplashScreen: React.FC<Props> = ({ navigation }) => {
   const { navigate } = navigation;
-  const { data, loading } = useCurrentUserQuery();
+  const { data, loading } = useCurrentUserQuery({
+    fetchPolicy: "network-only",
+  });
 
   useEffect(() => {
     if (!loading) {
       AppSplashScreenRN.hide();
 
       if (data?.currentUser) {
-        const isRestaurant = !!data?.currentUser?.restaurant;
+        const isRestaurant = !!data.currentUser.restaurant;
         navigate(isRestaurant ? Screens.Restaurants : Screens.Clients);
+      } else {
+        navigate(Screens.Login);
       }
     }
-  }, [loading, data, navigation]);
+  }, [loading, data, navigate]);
 
   if (loading) {
     return (
