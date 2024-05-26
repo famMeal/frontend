@@ -1,6 +1,17 @@
-import { Column, Columns, Modal, RadioGroup, Typography } from "components";
-import { RadioField } from "components/RadioGroup/RadioField";
-import { useState, type FC } from "react";
+import {
+  Box,
+  Column,
+  Columns,
+  Modal,
+  RadioField,
+  RadioGroup,
+  Skeleton,
+  Typography,
+} from "components";
+import { useEffect, useState, type FC } from "react";
+import Toast from "react-native-toast-message";
+import { createList } from "utilities/createList";
+import type { RestaurantLocation } from "./useRestaurantLocations";
 import { useRestaurantLocations } from "./useRestaurantLocations";
 
 interface Props {
@@ -8,6 +19,7 @@ interface Props {
   setIsOpen: (isOpen: boolean) => void;
   restaurantName: string;
   city: string;
+  onSucces?: (restaurant?: RestaurantLocation) => void;
 }
 
 const RestaurantsLocationsModal: FC<Props> = ({
@@ -15,13 +27,27 @@ const RestaurantsLocationsModal: FC<Props> = ({
   setIsOpen,
   restaurantName,
   city,
+  onSucces,
 }) => {
-  const [selectedTip, setSelectedTip] = useState("0");
+  const [selectedRestaurantId, setSelectedRestaurantId] = useState("");
   const { data, loading, error } = useRestaurantLocations(restaurantName, city);
+  const selectedRestaurant = data?.find(
+    restaurant => restaurant.id === selectedRestaurantId
+  );
+
+  useEffect(() => {
+    if (error) {
+      Toast.show({
+        type: "error",
+        text1: "Something went wrong try again later",
+      });
+      setIsOpen(false);
+    }
+  }, [error]);
 
   const renderRestaurantLocation = (location: string) =>
     location ? (
-      <Typography type="S" weigth="bold">
+      <Typography isMarginless type="S" weigth="bold">
         {location}
       </Typography>
     ) : null;
@@ -30,7 +56,7 @@ const RestaurantsLocationsModal: FC<Props> = ({
     const [restaurantName, restaurantLocation] = name.split("-");
     return (
       <>
-        <Typography type="S" weigth="bold">
+        <Typography isMarginless type="S" weigth="bold">
           {restaurantName}
         </Typography>
         {renderRestaurantLocation(restaurantLocation)}
@@ -43,8 +69,10 @@ const RestaurantsLocationsModal: FC<Props> = ({
 
     return (
       <>
-        <Typography type="S">{addressLine}</Typography>
-        <Typography type="S">
+        <Typography isMarginless type="S">
+          {addressLine}
+        </Typography>
+        <Typography isMarginless type="S">
           {postalCode} {city}
         </Typography>
       </>
@@ -63,8 +91,44 @@ const RestaurantsLocationsModal: FC<Props> = ({
       </RadioField>
     ));
 
+  const renderSkeletons = () =>
+    createList(3).map(num => (
+      <RadioField key={num} value={String(num)}>
+        <Box>
+          <Columns direction="column">
+            <Column columnWidth="fullWidth">
+              <Skeleton size="large" width="full" />
+              <Skeleton size="medium" width="full" />
+            </Column>
+            <Column columnWidth="fullWidth">
+              <Skeleton size="large" width="full" />
+              <Skeleton size="medium" width="full" />
+            </Column>
+          </Columns>
+        </Box>
+      </RadioField>
+    ));
+
+  const renderContent = () => (loading ? renderSkeletons() : renderLocations());
+
+  const handleOnPressCTA = () => {
+    if (selectedRestaurant) {
+      onSucces?.(selectedRestaurant);
+      setIsOpen(false);
+    } else {
+      Toast.show({
+        type: "error",
+        text1: "You need to select your restaurant",
+      });
+    }
+  };
+
   return (
-    <Modal isModalVisible={isOpen} setModalVisible={setIsOpen}>
+    <Modal
+      isModalVisible={isOpen}
+      setModalVisible={setIsOpen}
+      onPressToActionLabel="Sign Up"
+      onPressToAction={handleOnPressCTA}>
       <Columns isMarginless>
         <Column columnWidth="fullWidth">
           <Typography className="mt-2" type="H3" weigth="bold">
@@ -76,9 +140,9 @@ const RestaurantsLocationsModal: FC<Props> = ({
         <Column columnWidth="fullWidth" direction="column">
           <RadioGroup
             direction="column"
-            selectedValue={selectedTip}
-            onValueChange={value => setSelectedTip(value)}>
-            {renderLocations()}
+            selectedValue={selectedRestaurantId}
+            onValueChange={id => setSelectedRestaurantId(id)}>
+            {renderContent()}
           </RadioGroup>
         </Column>
       </Columns>

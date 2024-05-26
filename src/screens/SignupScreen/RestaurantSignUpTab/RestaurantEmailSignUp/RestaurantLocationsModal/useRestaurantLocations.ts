@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { GOOGLE_API_KEY } from "react-native-dotenv";
 
-interface Location {
+export interface RestaurantLocation {
   id: string;
   name: string;
   address: string;
@@ -11,7 +11,7 @@ interface Location {
 }
 
 interface UseRestaurantLocationsResult {
-  data: Location[] | null;
+  data: RestaurantLocation[] | null;
   loading: boolean;
   error: string | null;
 }
@@ -20,7 +20,7 @@ const useRestaurantLocations = (
   restaurantName: string,
   city: string
 ): UseRestaurantLocationsResult => {
-  const [data, setData] = useState<Location[] | null>(null);
+  const [data, setData] = useState<RestaurantLocation[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 

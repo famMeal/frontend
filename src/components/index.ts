@@ -16,7 +16,7 @@ export { Input } from "./Input";
 export { Loader } from "./Loader";
 export { Modal } from "./Modal";
 export { QuantitySelector } from "./QuantitySelector";
-export { RadioGroup } from "./RadioGroup";
+export { RadioButton, RadioField, RadioGroup } from "./RadioGroup";
 export { Skeleton } from "./Skeleton";
 export { TimePicker } from "./TimePicker";
 export { Typography } from "./Typography";

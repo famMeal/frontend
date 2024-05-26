@@ -7,6 +7,7 @@ import { ScrollView, TouchableOpacity, View } from "react-native";
 import Toast from "react-native-toast-message";
 import type { SignUpNavigationProps } from "types/navigation.types";
 import { RestaurantsLocationsModal } from "./RestaurantLocationsModal";
+import type { RestaurantLocation } from "./RestaurantLocationsModal/useRestaurantLocations";
 import { useRestaurantSignUpMutation } from "./useRestaurantSignUpMutation";
 
 const nameRegex = /^[A-Za-z]+$/;
@@ -26,6 +27,7 @@ const RestaurantEmailSignUp: FC = () => {
     password: "password",
     passwordConfirmation: "password",
   });
+
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const toggleSecureTextEntry = () =>
@@ -51,18 +53,17 @@ const RestaurantEmailSignUp: FC = () => {
       });
     },
   });
+  const trimmedUser = {
+    firstName: user.firstName.trim(),
+    lastName: user.lastName.trim(),
+    restaurantName: user.restaurantName,
+    city: user.city,
+    email: user.email.trim(),
+    password: user.password.trim(),
+    passwordConfirmation: user.passwordConfirmation.trim(),
+  };
 
-  const handleOnPressSignUp = async () => {
-    const trimmedUser = {
-      firstName: user.firstName.trim(),
-      lastName: user.lastName.trim(),
-      restaurantName: user.restaurantName,
-      city: user.city,
-      email: user.email.trim(),
-      password: user.password.trim(),
-      passwordConfirmation: user.passwordConfirmation.trim(),
-    };
-
+  const handleOnPressValidate = async () => {
     if (!nameRegex.test(trimmedUser.firstName)) {
       Toast.show({
         text1: "Invalid first name. Only letters are allowed.",
@@ -120,12 +121,15 @@ const RestaurantEmailSignUp: FC = () => {
       return;
     }
     setIsModalOpen(true);
+  };
 
-    // signUp({
-    //   variables: {
-    //     ...trimmedUser,
-    //   },
-    // });
+  const handleSignUp = (location: RestaurantLocation | undefined) => {
+    signUp({
+      variables: {
+        ...trimmedUser,
+        ...location,
+      },
+    });
   };
 
   return (
@@ -187,6 +191,7 @@ const RestaurantEmailSignUp: FC = () => {
               City
             </Typography>
             <Input
+              readOnly
               keyboardType="default"
               onChangeText={city => setUser(prev => ({ ...prev, city }))}
               value={user.city}
@@ -257,7 +262,7 @@ const RestaurantEmailSignUp: FC = () => {
         </Columns>
         <Columns className="mt-4">
           <Column columnWidth="fullWidth">
-            <Button isLoading={loading} onPress={handleOnPressSignUp}>
+            <Button isLoading={loading} onPress={handleOnPressValidate}>
               Sign up
             </Button>
           </Column>
@@ -281,6 +286,7 @@ const RestaurantEmailSignUp: FC = () => {
         </Columns>
       </ScrollView>
       <RestaurantsLocationsModal
+        onSucces={handleSignUp}
         restaurantName={user.restaurantName}
         city={user.city}
         isOpen={isModalOpen}

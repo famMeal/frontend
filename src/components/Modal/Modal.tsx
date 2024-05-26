@@ -16,13 +16,33 @@ interface ModalProps {
   isModalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
   children: ReactNode;
+  onPressToAction?: () => void;
+  onPressToActionLabel?: string;
 }
 
 const Modal: FC<ModalProps> = ({
   isModalVisible,
   setModalVisible,
   children,
+  onPressToAction,
+  onPressToActionLabel,
 }) => {
+  const renderButton = () => {
+    if (onPressToAction && onPressToActionLabel) {
+      return (
+        <Columns>
+          <Column
+            isPaddingless
+            justifyContent="center"
+            alignItems="center"
+            columnWidth="fullWidth">
+            <Button onPress={onPressToAction}>{onPressToActionLabel}</Button>
+          </Column>
+        </Columns>
+      );
+    }
+    return null;
+  };
   return (
     <ReactModal
       animationType="slide"
@@ -42,6 +62,7 @@ const Modal: FC<ModalProps> = ({
               </Column>
             </Columns>
           </ScrollView>
+          {renderButton()}
           <View className="top-4 absolute right-4">
             <Button
               isOutlined
