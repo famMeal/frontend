@@ -95,7 +95,7 @@ const Cart: FC<Props> = ({
     updateTip({
       variables: {
         input: {
-          tipPercentage,
+          tipPercentage: tipPercentage ?? 0,
           orderId: cart?.id!,
         },
       },
@@ -133,6 +133,10 @@ const Cart: FC<Props> = ({
       },
     });
   };
+
+  useEffect(() => {
+    handleUpdateTip(0);
+  }, []);
 
   const onPressPlaceOrder = () => {
     placeOrder({
