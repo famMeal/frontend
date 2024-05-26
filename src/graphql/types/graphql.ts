@@ -194,12 +194,20 @@ export type MutationPlaceOrderArgs = {
 
 
 export type MutationSignUpArgs = {
+  addressLine1?: InputMaybe<Scalars['String']['input']>;
+  addressLine2?: InputMaybe<Scalars['String']['input']>;
+  certificateNumber?: InputMaybe<Scalars['String']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
   confirmUrl?: InputMaybe<Scalars['String']['input']>;
   email: Scalars['String']['input'];
   firstName: Scalars['String']['input'];
   lastName: Scalars['String']['input'];
+  latitude?: InputMaybe<Scalars['String']['input']>;
+  longitude?: InputMaybe<Scalars['String']['input']>;
   password: Scalars['String']['input'];
   passwordConfirmation: Scalars['String']['input'];
+  postalCode?: InputMaybe<Scalars['String']['input']>;
+  province?: InputMaybe<Scalars['String']['input']>;
   restaurantName?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -325,6 +333,7 @@ export type PlaceOrderPayload = {
   errors: Array<Scalars['String']['output']>;
   order?: Maybe<Order>;
   paymentIntent?: Maybe<Scalars['String']['output']>;
+  setupIntent?: Maybe<Scalars['String']['output']>;
 };
 
 export type Query = {

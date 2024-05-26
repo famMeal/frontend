@@ -3,6 +3,7 @@ import { gql, useMutation } from "@apollo/client";
 import type {
   Meal,
   Order,
+  User,
   PlaceOrderInput,
   PlaceOrderPayload,
   Restaurant,
@@ -17,6 +18,7 @@ const PLACE_ORDER = gql`
       paymentIntent
       ephemeralKey
       customerId
+      setupIntent
       order {
         __typename
         id
@@ -26,6 +28,10 @@ const PLACE_ORDER = gql`
         subtotal
         taxes
         total
+        user {
+          firstName
+          lastName
+        }
         meal {
           __typename
           description
@@ -65,12 +71,15 @@ interface OrderSplinter
   > {
   meal: MealSplinter;
   restaurant: RestaurantSplinter;
+  user: UserSplinter;
 }
 
 type MealSplinter = Pick<
   Meal,
   "__typename" | "description" | "id" | "name" | "price"
 >;
+
+type UserSplinter = Pick<User, "__typename" | "firstName" | "lastName">;
 
 type RestaurantSplinter = Pick<
   Restaurant,
@@ -92,6 +101,7 @@ interface PlaceOrder extends Omit<PlaceOrderPayload, "order"> {
   paymentIntent: string;
   ephemeralKey: string;
   customerId: string;
+  setupIntent: string;
 }
 
 interface Data {
