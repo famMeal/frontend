@@ -6,6 +6,7 @@ import type {
 import {
   Box,
   Button,
+  Chip,
   Column,
   Columns,
   Container,
@@ -13,9 +14,10 @@ import {
 } from "components";
 import { COLOURS } from "constants/colours";
 
-import { ArrowRightCircle, BadgeCheck } from "lucide-react-native";
+import { ArrowRightCircle } from "lucide-react-native";
 import React, { useState, type FC } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
+
 import { DateRangeField, type Meal } from "schema";
 import { RestaurantCreateMealModal } from "screens/RestaurantScreens/RestaurantCreateMealModal";
 import type { RootStackParamList } from "types/navigation.types";
@@ -23,6 +25,7 @@ import { formatCurrency } from "utilities/formatCurrency";
 import { parseCurrency } from "utilities/parseCurrency";
 import { RestaurantDashboardMealCard } from "./RestaurantDashboardMealCard";
 import { SkeletonRestaurantDashboardScreens } from "./SkeletonRestaurantDashboardScreen";
+import type { OrderSplinter } from "./useRestaurantQuery";
 import { useRestaurantQuery } from "./useRestaurantQuery";
 
 type RestaurantStackProps = NativeStackScreenProps<
@@ -64,39 +67,83 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
     skip: !restaurantID,
   });
 
-  const activeMeal = data?.restaurant?.meals?.find(({ active }) => active);
+  const activeMealId = data?.restaurant?.meals?.find(
+    ({ active }) => active
+  )?.id;
 
   const hasMeals = data?.restaurant?.meals.length!!;
 
-  const { price } = activeMeal ?? {};
+  const mealsWithOrders =
+    data?.restaurant?.orders?.reduce((acc, order) => {
+      const mealName = order.meal.name;
+      if (!acc[mealName]) {
+        acc[mealName] = [];
+      }
+      acc[mealName].push(order);
+      return acc;
+    }, {} as { [key: string]: OrderSplinter[] }) ?? {};
 
-  const totalQuantityOrdered = data?.restaurant?.orders.reduce(
-    (sum, order) => sum + order?.quantity!,
-    0
-  );
+  const ordersByMeal = Object.keys(mealsWithOrders).map(key => ({
+    [key]: mealsWithOrders[key],
+  }));
 
-  const totalRevenue = formatCurrency(
-    totalQuantityOrdered! * parseCurrency(price!)
-  );
+  const renderOrderMeals = () => {
+    if (ordersByMeal.length) {
+      return (
+        <Box>
+          <Typography type="H3" weigth="bold" className=" mb-4">
+            Orders
+          </Typography>
+          {ordersByMeal?.map((order, index) => {
+            const mealName = Object.keys(order)[0];
+            const mealOrders = order[mealName];
+
+            const totalQuantityOrdered = mealOrders.reduce(
+              (sum, order) => sum + order?.quantity!,
+              0
+            );
+
+            const totalRevenue = formatCurrency(
+              totalQuantityOrdered! * parseCurrency(mealOrders[0].meal.price!)
+            );
+
+            const meal = {
+              ...mealOrders[0].meal,
+              totalRevenue,
+              totalQuantityOrdered: Number(totalQuantityOrdered),
+            };
+
+            return (
+              <RestaurantDashboardMealCard
+                activeMealId={activeMealId}
+                key={Object.keys(order)[0] + index}
+                restaurantID={restaurantID}
+                onPressNavigateToOrders={onPressNavigateToOrders}
+                meal={meal}
+              />
+            );
+          })}
+        </Box>
+      );
+    }
+    return (
+      <Box>
+        <Typography type="H3" weigth="bold" className=" mb-4">
+          No Placed Orders
+        </Typography>
+      </Box>
+    );
+  };
 
   if (loading) {
     return <SkeletonRestaurantDashboardScreens />;
   }
 
-  const renderActiveMeal = () =>
-    activeMeal ? (
-      <RestaurantDashboardMealCard
-        restaurantID={restaurantID}
-        onPressNavigateToOrders={onPressNavigateToOrders}
-        meal={{ ...activeMeal, totalQuantityOrdered, totalRevenue }}
-      />
-    ) : null;
-
   const renderCheckMark = (active: boolean) =>
     active ? (
-      <View className="ml-2 mt-0.5 bg-accent rounded-full">
-        <BadgeCheck size={20} color={COLOURS.white} />
-      </View>
+      <Chip isStatic type="success">
+        Active
+      </Chip>
     ) : null;
 
   const renderNonActiveMeals = () =>
@@ -106,7 +153,9 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
         onPress={() => onPressNavigateToActivateMeal(id)}>
         <Columns className="border-b border-accent pb-2 ">
           <Column columnWidth="twoThird" direction="row">
-            <Typography isMarginless>{name}</Typography>
+            <Typography type="S" isMarginless className="mr-2">
+              {name}
+            </Typography>
             {renderCheckMark(active)}
           </Column>
           <Column
@@ -114,7 +163,7 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
             direction="row"
             justifyContent="flex-end">
             <Typography weigth="semiBold" isMarginless type="S">
-              {activeMeal ? "View" : "View"}
+              View
             </Typography>
             <View className="ml-4">
               <ArrowRightCircle size={25} color={COLOURS.primary} />
@@ -187,7 +236,7 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
   return (
     <Container>
       <ScrollView>
-        {renderActiveMeal()}
+        {renderOrderMeals()}
         {renderAllMeals()}
         <Box>
           <Columns direction="column" isMarginless>

@@ -8,7 +8,7 @@ import {
   Container,
   Typography,
 } from "components";
-import { useState, type FC } from "react";
+import React, { useState, type FC } from "react";
 import { ScrollView } from "react-native";
 import { RestaurantCreateMealModal } from "screens/RestaurantScreens/RestaurantCreateMealModal";
 import type { RootStackParamList } from "types/navigation.types";
@@ -107,7 +107,9 @@ const RestaurantMeals: FC<Props> = ({ route, navigation }) => {
     ) : null;
 
   const renderStripeCTA = () =>
-    data?.restaurant?.stripeOnboardingComplete ? null : (
+    loading ? (
+      <SkeletonRestaurantMealCard key={1} />
+    ) : !data?.restaurant?.stripeOnboardingComplete ? (
       <Box>
         <Chip position="topRight" type="error">
           Needs Attention
@@ -130,7 +132,7 @@ const RestaurantMeals: FC<Props> = ({ route, navigation }) => {
           Setup Stripe
         </Button>
       </Box>
-    );
+    ) : null;
 
   return (
     <Container>

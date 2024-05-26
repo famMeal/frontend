@@ -12,6 +12,7 @@ import {
 import { COLOURS } from "constants/colours";
 import { Clock10Icon } from "lucide-react-native";
 import React, { type FC } from "react";
+import Toast from "react-native-toast-message";
 import type { Meal, Restaurant } from "schema";
 import { useActivateMealMutation } from "shared/useActivateMealMutation";
 import {
@@ -37,9 +38,11 @@ interface Props {
   meal: Partial<MealSplinter>;
   onPressNavigateToOrders: () => void;
   restaurantID: Restaurant["id"];
+  activeMealId: string | undefined;
 }
 
 const RestaurantDashboardMealCard: FC<Props> = ({
+  activeMealId,
   meal,
   onPressNavigateToOrders,
 }) => {
@@ -56,19 +59,27 @@ const RestaurantDashboardMealCard: FC<Props> = ({
 
   const [toggleActiveStateMeal, { loading }] = useActivateMealMutation();
 
-  const onPressToggleActiveStateMeal = () =>
-    toggleActiveStateMeal({
-      variables: {
-        input: {
-          mealId: id!,
-          active: !active,
+  const onPressToggleActiveStateMeal = () => {
+    if (activeMealId && !active) {
+      Toast.show({
+        type: "error",
+        text1: "You can only have 1 active meal",
+      });
+    } else {
+      toggleActiveStateMeal({
+        variables: {
+          input: {
+            mealId: id!,
+            active: !active,
+          },
         },
-      },
-    });
+      });
+    }
+  };
 
   return (
-    <Box>
-      <Chip type={active ? "success" : "warning"}>
+    <Box isPaddingLess>
+      <Chip type={active ? "success" : "warning"} className="top-0 left-0">
         {active ? "Active" : "Disabled"}
       </Chip>
       <Accordion>
@@ -76,6 +87,7 @@ const RestaurantDashboardMealCard: FC<Props> = ({
           <Typography className="mt-12" colour="accent" weigth="bold">
             {name}
           </Typography>
+
           <Columns isMarginless>
             <Column>
               <Typography type="S" weigth="bold">

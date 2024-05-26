@@ -50,7 +50,6 @@ type MealSplinter = Pick<
   | "active"
   | "price"
 >;
-
 type OrderMealSplinter = Pick<
   Meal,
   | "__typename"
@@ -62,7 +61,7 @@ type OrderMealSplinter = Pick<
   | "pickupEndTime"
   | "price"
 >;
-interface OrderSplinter
+export interface OrderSplinter
   extends Pick<Order, "__typename" | "id" | "status" | "quantity"> {
   meal: OrderMealSplinter;
 }
@@ -93,5 +92,6 @@ const useRestaurantQuery = (options?: Options) =>
 export { useRestaurantQuery };
 export type {
   Data as RestaurantQueryData,
-  Variables as RestaurantQueryVariables,
+  Variables as RestaurantQueryVariables
 };
+
