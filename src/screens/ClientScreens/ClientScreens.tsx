@@ -21,7 +21,7 @@ type RestaurantStackProps = NativeStackScreenProps<
 interface Props extends RestaurantStackProps {}
 
 const ClientScreens: FC<Props> = ({ navigation }) => {
-  const [activeScreen, setActiveScreen] = useState("");
+  const [activeScreen, setActiveScreen] = useState("Main");
 
   const clientScreens = useMemo(() => clientRoutes(setActiveScreen), []);
   const { data } = useCurrentUserQuery();
@@ -31,7 +31,6 @@ const ClientScreens: FC<Props> = ({ navigation }) => {
     useCallback(() => {
       const { name } =
         navigation.getState().routes[navigation.getState().index];
-
       setActiveScreen(name);
     }, [navigation])
   );
@@ -62,9 +61,7 @@ const ClientScreens: FC<Props> = ({ navigation }) => {
     <Screen
       key={name}
       name={name}
-      initialParams={{
-        userID: id,
-      }}
+      initialParams={{ userID: id }}
       options={getOptions(tabBarLabel, name, iconName)}
       {...rest}>
       {renderComponent}

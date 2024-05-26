@@ -12,20 +12,20 @@ import { useRestaurantSignUpMutation } from "./useRestaurantSignUpMutation";
 
 const nameRegex = /^[A-Za-z]+$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const textRegex = /^[A-Za-z0-9\s]+$/;
+const textRegex = /^[A-Za-z0-9\s'’-]+$/;
 const cityRegex = /^[A-Za-z\s\-']{1,50}$/;
 
 const RestaurantEmailSignUp: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { navigate } = useNavigation<SignUpNavigationProps>();
   const [user, setUser] = useState({
-    firstName: "Beschumi",
-    lastName: "Steve",
-    restaurantName: "The Keg",
+    firstName: "",
+    lastName: "",
+    restaurantName: "",
     city: "Toronto",
-    email: "shahynkamali+1@gmail.com",
-    password: "password",
-    passwordConfirmation: "password",
+    email: "",
+    password: "",
+    passwordConfirmation: "",
   });
 
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -105,9 +105,9 @@ const RestaurantEmailSignUp: FC = () => {
       return;
     }
 
-    if (trimmedUser.password.length === 0) {
+    if (trimmedUser.password.length < 6) {
       Toast.show({
-        text1: "Password cannot be empty.",
+        text1: "Password must be at least 6 characters long.",
         type: "error",
       });
       return;
@@ -138,9 +138,9 @@ const RestaurantEmailSignUp: FC = () => {
         <Columns>
           <Column columnWidth="fullWidth">
             <Typography type="S">
-              To sign up, we only require your full name, email and a password.
-              This information helps us create your account and provide you with
-              secure access to our App.
+              To sign up, we only require your full name, email and a password
+              and restaurant information. For now we are only accepting
+              restaurants in Toronto
             </Typography>
           </Column>
         </Columns>
@@ -150,6 +150,7 @@ const RestaurantEmailSignUp: FC = () => {
               First Name
             </Typography>
             <Input
+              readOnly={loading}
               keyboardType="default"
               onChangeText={firstName =>
                 setUser(prev => ({ ...prev, firstName }))
@@ -163,6 +164,7 @@ const RestaurantEmailSignUp: FC = () => {
               Last Name
             </Typography>
             <Input
+              readOnly={loading}
               keyboardType="default"
               onChangeText={lastName =>
                 setUser(prev => ({ ...prev, lastName }))
@@ -178,6 +180,7 @@ const RestaurantEmailSignUp: FC = () => {
               Restaurant Name
             </Typography>
             <Input
+              readOnly={loading}
               keyboardType="default"
               onChangeText={restaurantName =>
                 setUser(prev => ({ ...prev, restaurantName }))
@@ -205,6 +208,7 @@ const RestaurantEmailSignUp: FC = () => {
               Email
             </Typography>
             <Input
+              readOnly={loading}
               keyboardType="email-address"
               onChangeText={email => setUser(prev => ({ ...prev, email }))}
               value={user.email}
@@ -218,6 +222,7 @@ const RestaurantEmailSignUp: FC = () => {
               Password
             </Typography>
             <Input
+              readOnly={loading}
               secureTextEntry={secureTextEntry}
               onChangeText={password =>
                 setUser(prev => ({ ...prev, password }))
@@ -240,6 +245,7 @@ const RestaurantEmailSignUp: FC = () => {
               Confirm password
             </Typography>
             <Input
+              readOnly={loading}
               className="relative"
               secureTextEntry={secureTextEntry}
               onChangeText={passwordConfirmation =>

@@ -117,19 +117,20 @@ const RestaurantMeals: FC<Props> = ({ route, navigation }) => {
         <Columns>
           <Column columnWidth="fullWidth">
             <Typography weigth="bold" type="H3" className="mb-2">
-              Setup Stripe
+              Setup Payment Account
             </Typography>
           </Column>
         </Columns>
         <Columns>
           <Column columnWidth="fullWidth">
             <Typography type="S">
-              Without a valid Stripe account, you can not active meals
+              Your payment account needs attention. You cannot activate a meal
+              without a valid payment account.
             </Typography>
           </Column>
         </Columns>
         <Button isOutlined theme="error" onPress={onPressNavigateToSettings}>
-          Setup Stripe
+          Setup Payment Account
         </Button>
       </Box>
     ) : null;

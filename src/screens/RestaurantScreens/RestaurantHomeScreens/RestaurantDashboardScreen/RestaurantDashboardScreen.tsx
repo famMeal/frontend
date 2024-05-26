@@ -40,6 +40,10 @@ type RestaurantMealsNavigationProp = NativeStackNavigationProp<
 
 interface Props extends RestaurantStackProps {}
 
+type Order = {
+  [x: string]: OrderSplinter[];
+};
+
 const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
   const { navigate } = useNavigation<RestaurantMealsNavigationProp>();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -87,6 +91,38 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
     [key]: mealsWithOrders[key],
   }));
 
+  const renderOrderByMeal = (order: Order, index: number) => {
+    const mealName = Object.keys(order)[0];
+    const mealOrders = order[mealName];
+
+    const totalQuantityOrdered = mealOrders.reduce(
+      (sum, order) => sum + order?.quantity!,
+      0
+    );
+
+    const totalRevenue = formatCurrency(
+      totalQuantityOrdered! * parseCurrency(mealOrders[0].meal.price!)
+    );
+
+    const meal = {
+      ...mealOrders[0].meal,
+      totalRevenue,
+      totalQuantityOrdered: Number(totalQuantityOrdered),
+    };
+
+    return (
+      <RestaurantDashboardMealCard
+        activeMealId={activeMealId}
+        key={Object.keys(order)[0] + index}
+        restaurantID={restaurantID}
+        onPressNavigateToOrders={onPressNavigateToOrders}
+        meal={meal}
+      />
+    );
+  };
+
+  const renderOrders = () => ordersByMeal?.map(renderOrderByMeal);
+
   const renderOrderMeals = () => {
     if (ordersByMeal.length) {
       return (
@@ -94,35 +130,7 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
           <Typography type="H3" weigth="bold" className=" mb-4">
             Orders
           </Typography>
-          {ordersByMeal?.map((order, index) => {
-            const mealName = Object.keys(order)[0];
-            const mealOrders = order[mealName];
-
-            const totalQuantityOrdered = mealOrders.reduce(
-              (sum, order) => sum + order?.quantity!,
-              0
-            );
-
-            const totalRevenue = formatCurrency(
-              totalQuantityOrdered! * parseCurrency(mealOrders[0].meal.price!)
-            );
-
-            const meal = {
-              ...mealOrders[0].meal,
-              totalRevenue,
-              totalQuantityOrdered: Number(totalQuantityOrdered),
-            };
-
-            return (
-              <RestaurantDashboardMealCard
-                activeMealId={activeMealId}
-                key={Object.keys(order)[0] + index}
-                restaurantID={restaurantID}
-                onPressNavigateToOrders={onPressNavigateToOrders}
-                meal={meal}
-              />
-            );
-          })}
+          {renderOrders()}
         </Box>
       );
     }
@@ -228,8 +236,8 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
       </Typography>
     ) : (
       <Typography type="S">
-        Your stripe account needs attention, You can not activate a meal without
-        a valid stripe account
+        Your payment account needs attention. You cannot activate a meal without
+        a valid payment account.
       </Typography>
     );
 

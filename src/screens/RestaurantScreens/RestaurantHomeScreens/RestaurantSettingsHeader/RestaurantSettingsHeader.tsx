@@ -7,8 +7,8 @@ import { LogOutIcon } from "lucide-react-native";
 import { type FC } from "react";
 import { Alert } from "react-native";
 import type { Restaurant } from "schema";
+import { useLogoutMutation } from "shared";
 import type { RootStackParamList } from "types/navigation.types";
-import { useLogoutMutation } from "./useLogoutMutation";
 
 interface Props {
   restaurantID: Restaurant["id"];

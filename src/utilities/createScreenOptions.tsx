@@ -8,33 +8,32 @@ import {
 } from "lucide-react-native";
 import React from "react";
 
-export const iconMap = (isScreenActive: boolean) =>
-  ({
-    utensils: (
-      <UtensilsIcon
-        size={20}
-        color={isScreenActive ? COLOURS.primary : COLOURS.accent}
-      />
-    ),
-    list: (
-      <ListOrderedIcon
-        size={20}
-        color={isScreenActive ? COLOURS.primary : COLOURS.accent}
-      />
-    ),
-    shopping: (
-      <ShoppingCartIcon
-        size={20}
-        color={isScreenActive ? COLOURS.primary : COLOURS.accent}
-      />
-    ),
-    user: (
-      <UserCogIcon
-        size={20}
-        color={isScreenActive ? COLOURS.primary : COLOURS.accent}
-      />
-    ),
-  } as const);
+export const iconMap = (isScreenActive: boolean) => ({
+  utensils: (
+    <UtensilsIcon
+      size={20}
+      color={isScreenActive ? COLOURS.primary : COLOURS.accent}
+    />
+  ),
+  list: (
+    <ListOrderedIcon
+      size={20}
+      color={isScreenActive ? COLOURS.primary : COLOURS.accent}
+    />
+  ),
+  shopping: (
+    <ShoppingCartIcon
+      size={20}
+      color={isScreenActive ? COLOURS.primary : COLOURS.accent}
+    />
+  ),
+  user: (
+    <UserCogIcon
+      size={20}
+      color={isScreenActive ? COLOURS.primary : COLOURS.accent}
+    />
+  ),
+});
 
 interface AdditionalScreenProps {
   isScreenActive: boolean;

@@ -14,7 +14,7 @@ import {
 import { COLOURS } from "constants/colours";
 import { EyeIcon, EyeOffIcon } from "lucide-react-native";
 import type { FC } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import Toast from "react-native-toast-message";
 import type {
@@ -40,17 +40,12 @@ interface Props extends VerifyAccountStackProps {}
 const LoginScreen: FC<Props> = ({ route }) => {
   const { params } = route ?? {};
   const { email: forwardedEmail } = params ?? {};
-
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [email, setEmail] = useState("shahynkamali@gmail.com");
+  const [email, setEmail] = useState(
+    forwardedEmail ?? "shahynkamali@gmail.com"
+  );
   const [password, setPassword] = useState("password");
   const { navigate } = useNavigation<LoginNavigationProps>();
-
-  useEffect(() => {
-    if (forwardedEmail) {
-      setEmail(forwardedEmail);
-    }
-  }, [forwardedEmail]);
 
   const [userLogin, { loading }] = useLoginMutation({
     onCompleted: ({ userLogin: { credentials } }) => {
@@ -81,34 +76,16 @@ const LoginScreen: FC<Props> = ({ route }) => {
     });
   };
 
-  const toggleSecureTextEntry = () =>
-    setSecureTextEntry(prevState => !prevState);
+  const toggleSecureTextEntry = () => setSecureTextEntry(prev => !prev);
 
   const renderEyeIcon = () =>
     secureTextEntry ? (
-      <EyeIcon color={COLOURS.accent} />
-    ) : (
       <EyeOffIcon color={COLOURS.accent} />
+    ) : (
+      <EyeIcon color={COLOURS.accent} />
     );
 
   const handleOnSignUpPress = () => navigate(Screens.SignUp);
-
-  // const onPressNavigateToValidate = () => navigate("VerifyAccount", { email });
-
-  const renderCTA = () => {
-    // if (needsToValidate && email.length) {
-    //   return (
-    //     <Button theme="error" onPress={onPressNavigateToValidate}>
-    //       Validate
-    //     </Button>
-    //   );
-    // }
-    return (
-      <Button isLoading={loading} onPress={handleOnPressLogin}>
-        Login
-      </Button>
-    );
-  };
 
   return (
     <Container className="flex flex-col justify-center items-center">
@@ -128,7 +105,7 @@ const LoginScreen: FC<Props> = ({ route }) => {
             </Typography>
             <Input
               keyboardType="email-address"
-              onChangeText={newText => setEmail(newText)}
+              onChangeText={setEmail}
               value={email}
               theme="accent"
             />
@@ -140,23 +117,24 @@ const LoginScreen: FC<Props> = ({ route }) => {
               Password
             </Typography>
             <Input
-              className="relative"
               secureTextEntry={secureTextEntry}
-              onChangeText={newText => setPassword(newText)}
+              onChangeText={setPassword}
               value={password}
               theme="accent"
             />
             <View className="absolute right-2 top-11">
-              <Column>
-                <TouchableOpacity onPress={toggleSecureTextEntry}>
-                  {renderEyeIcon()}
-                </TouchableOpacity>
-              </Column>
+              <TouchableOpacity onPress={toggleSecureTextEntry}>
+                {renderEyeIcon()}
+              </TouchableOpacity>
             </View>
           </Column>
         </Columns>
         <Columns className="mt-4">
-          <Column columnWidth="fullWidth">{renderCTA()}</Column>
+          <Column columnWidth="fullWidth">
+            <Button isLoading={loading} onPress={handleOnPressLogin}>
+              Login
+            </Button>
+          </Column>
         </Columns>
         <Columns className="mt-8">
           <Column
