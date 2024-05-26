@@ -112,6 +112,7 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
 
     return (
       <RestaurantDashboardMealCard
+        index={index}
         activeMealId={activeMealId}
         key={Object.keys(order)[0] + index}
         restaurantID={restaurantID}

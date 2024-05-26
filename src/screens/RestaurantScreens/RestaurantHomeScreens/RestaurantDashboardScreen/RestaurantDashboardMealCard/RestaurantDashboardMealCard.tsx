@@ -39,9 +39,11 @@ interface Props {
   onPressNavigateToOrders: () => void;
   restaurantID: Restaurant["id"];
   activeMealId: string | undefined;
+  index: number;
 }
 
 const RestaurantDashboardMealCard: FC<Props> = ({
+  index,
   activeMealId,
   meal,
   onPressNavigateToOrders,
@@ -78,7 +80,7 @@ const RestaurantDashboardMealCard: FC<Props> = ({
   };
 
   return (
-    <Box isPaddingLess>
+    <Box isPaddingLess className={index === 0 ? "" : "mt-4"}>
       <Chip type={active ? "success" : "warning"} className="top-0 left-0">
         {active ? "Active" : "Disabled"}
       </Chip>
