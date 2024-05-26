@@ -65,7 +65,9 @@ const CartScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
   const initializePaymentSheet = async (
     paymentIntent: string,
     ephemeralKey: string,
-    customerId: string
+    customerId: string,
+    firstName: string,
+    lastName: string
   ) => {
     const { error } = await initPaymentSheet({
       merchantDisplayName: "Batch App",
@@ -77,7 +79,7 @@ const CartScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
       //methods that complete payment after a delay, like SEPA Debit and Sofort.
       allowsDelayedPaymentMethods: true,
       defaultBillingDetails: {
-        name: "Jane Doe",
+        name: `${firstName} ${lastName}`,
       },
     });
 
@@ -100,7 +102,7 @@ const CartScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
   };
 
   const onCompleted = ({
-    placeOrder: { errors, paymentIntent, ephemeralKey, customerId },
+    placeOrder: { errors, paymentIntent, ephemeralKey, customerId, order },
   }: PlaceOrderMutationData) => {
     if (errors?.length) {
       Toast.show({
@@ -108,7 +110,13 @@ const CartScreen: FC<Props> = ({ route, navigation, setActiveScreen }) => {
         text1: errors?.[0],
       });
     } else {
-      initializePaymentSheet(paymentIntent, ephemeralKey, customerId);
+      initializePaymentSheet(
+        paymentIntent,
+        ephemeralKey,
+        customerId,
+        order.user.firstName ?? "",
+        order.user.lastName ?? ""
+      );
     }
   };
 

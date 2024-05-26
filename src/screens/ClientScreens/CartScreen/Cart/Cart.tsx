@@ -33,6 +33,7 @@ const tipOptions = [
   { label: "15%", value: "15" },
   { label: "18%", value: "18" },
   { label: "20%", value: "20" },
+  { label: "No tip", value: "0" },
 ];
 
 const sumCurrency = (currency: string, quantity = 0) => {
