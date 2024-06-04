@@ -12,8 +12,9 @@ import {
 import { COLOURS } from "constants/colours";
 import { useDebounce } from "hooks/useDebounce";
 import { OctagonAlertIcon, SearchIcon } from "lucide-react-native";
-import React, { useState, type FC } from "react";
-import { ScrollView, View } from "react-native";
+import type { FC } from "react";
+import React, { useCallback, useState } from "react";
+import { RefreshControl, ScrollView, View } from "react-native";
 import { DateRangeField, OrderStatusField, type Restaurant } from "schema";
 import { useLazyRestaurantOrderQuery } from "shared/useLazyRestaurantOrderQuery";
 import { createList } from "utilities/createList";
@@ -31,12 +32,11 @@ interface Props {
 
 const RestaurantActiveOrdersTab: FC<Props> = ({ restaurantID }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
 
   const [searchOrder, { data: orderData, loading: orderLoading }] =
     useLazyRestaurantOrderQuery({
-      variables: {
-        id: searchTerm,
-      },
+      variables: { id: searchTerm },
       fetchPolicy: "network-only",
       notifyOnNetworkStatusChange: true,
     });
@@ -50,7 +50,7 @@ const RestaurantActiveOrdersTab: FC<Props> = ({ restaurantID }) => {
     }
   };
 
-  const { data, loading } = useRestaurantOrdersQuery({
+  const { data, loading, refetch } = useRestaurantOrdersQuery({
     skip: !restaurantID,
     variables: {
       id: restaurantID,
@@ -64,6 +64,11 @@ const RestaurantActiveOrdersTab: FC<Props> = ({ restaurantID }) => {
       },
     },
   });
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    refetch().finally(() => setRefreshing(false));
+  }, [refetch]);
 
   const renderNothingFound = (
     <Box>
@@ -165,7 +170,12 @@ const RestaurantActiveOrdersTab: FC<Props> = ({ restaurantID }) => {
         </Columns>
       </Box>
       <Container>
-        <ScrollView>{renderContent()}</ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
+          {renderContent()}
+        </ScrollView>
       </Container>
     </>
   );

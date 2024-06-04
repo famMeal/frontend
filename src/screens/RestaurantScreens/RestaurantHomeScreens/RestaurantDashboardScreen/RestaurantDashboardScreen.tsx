@@ -15,9 +15,15 @@ import {
 import { COLOURS } from "constants/colours";
 
 import { ArrowRightCircle } from "lucide-react-native";
-import React, { useState, type FC } from "react";
-import { ScrollView, TouchableOpacity, View } from "react-native";
+import React, { useCallback, useState, type FC } from "react";
+import {
+  RefreshControl,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
+import { STATUS } from "constants/status";
 import { DateRangeField, type Meal } from "schema";
 import { RestaurantCreateMealModal } from "screens/RestaurantScreens/RestaurantCreateMealModal";
 import type { RootStackParamList } from "types/navigation.types";
@@ -47,6 +53,7 @@ type Order = {
 const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
   const { navigate } = useNavigation<RestaurantMealsNavigationProp>();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const { params } = route ?? {};
   const { restaurantID } = params;
 
@@ -58,10 +65,10 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
 
   const onPressNavigateToCreateMeal = () => setIsModalOpen(true);
 
-  const OnPressNavigateToSettings = () =>
+  const onPressNavigateToSettings = () =>
     navigate("RestaurantSettingsScreen", { restaurantID });
 
-  const { data, loading } = useRestaurantQuery({
+  const { data, loading, refetch } = useRestaurantQuery({
     variables: {
       id: restaurantID,
       filters: {
@@ -71,11 +78,16 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
     skip: !restaurantID,
   });
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    refetch().finally(() => setRefreshing(false));
+  }, [refetch]);
+
   const activeMealId = data?.restaurant?.meals?.find(
     ({ active }) => active
   )?.id;
 
-  const hasMeals = data?.restaurant?.meals.length!!;
+  const hasMeals = data?.restaurant?.meals.length!;
 
   const mealsWithOrders =
     data?.restaurant?.orders?.reduce((acc, order) => {
@@ -95,6 +107,10 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
     const mealName = Object.keys(order)[0];
     const mealOrders = order[mealName];
 
+    const totalNumOfPickedUp = mealOrders.reduce((acc, order) => {
+      return order.status === STATUS.COMPLETED ? acc + order.quantity! : acc;
+    }, 0);
+
     const totalQuantityOrdered = mealOrders.reduce(
       (sum, order) => sum + order?.quantity!,
       0
@@ -112,6 +128,7 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
 
     return (
       <RestaurantDashboardMealCard
+        totalNumOfPickedUp={totalNumOfPickedUp}
         index={index}
         activeMealId={activeMealId}
         key={Object.keys(order)[0] + index}
@@ -144,7 +161,7 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
     );
   };
 
-  if (loading) {
+  if (loading && !refreshing) {
     return <SkeletonRestaurantDashboardScreens />;
   }
 
@@ -244,7 +261,10 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
 
   return (
     <Container>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         {renderOrderMeals()}
         {renderAllMeals()}
         <Box>
@@ -259,7 +279,7 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
               <Button
                 isOutlined={!data?.restaurant?.stripeOnboardingComplete}
                 className="mt-4"
-                onPress={OnPressNavigateToSettings}
+                onPress={onPressNavigateToSettings}
                 theme={
                   data?.restaurant?.stripeOnboardingComplete
                     ? "primary"

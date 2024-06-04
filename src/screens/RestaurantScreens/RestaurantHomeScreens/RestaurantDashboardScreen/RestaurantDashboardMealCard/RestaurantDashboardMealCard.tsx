@@ -40,6 +40,7 @@ interface Props {
   restaurantID: Restaurant["id"];
   activeMealId: string | undefined;
   index: number;
+  totalNumOfPickedUp: number;
 }
 
 const RestaurantDashboardMealCard: FC<Props> = ({
@@ -47,6 +48,7 @@ const RestaurantDashboardMealCard: FC<Props> = ({
   activeMealId,
   meal,
   onPressNavigateToOrders,
+  totalNumOfPickedUp,
 }) => {
   const {
     active,
@@ -104,15 +106,22 @@ const RestaurantDashboardMealCard: FC<Props> = ({
           </Columns>
           <Columns>
             <Column>
-              <Column>
-                <Typography type="S" weigth="bold">
-                  Reserved:{" "}
-                  <Typography colour="accent" type="S">
-                    {" "}
-                    {totalQuantityOrdered}
-                  </Typography>
+              <Typography type="S" weigth="bold">
+                Reserved:{" "}
+                <Typography colour="accent" type="S">
+                  {" "}
+                  {(totalQuantityOrdered ?? 0) - totalNumOfPickedUp}
                 </Typography>
-              </Column>
+              </Typography>
+            </Column>
+            <Column>
+              <Typography type="S" weigth="bold">
+                Picked Up:{" "}
+                <Typography colour="accent" type="S">
+                  {" "}
+                  {totalNumOfPickedUp}
+                </Typography>
+              </Typography>
             </Column>
           </Columns>
         </AccordionHeader>
