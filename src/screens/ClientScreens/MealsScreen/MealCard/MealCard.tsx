@@ -1,20 +1,24 @@
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Box, Button, Chip, Column, Columns, Typography } from "components";
+import { COLOURS } from "constants/colours";
+import { Footprints } from "lucide-react-native";
 import type { FC } from "react";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { GOOGLE_API_KEY } from "react-native-dotenv";
 import type { Order, User } from "schema";
-import type { MealsData } from "screens/ClientScreens/MealsScreen/Meals/useGetMealsQuery";
 import type { RootStackParamList } from "types/navigation.types";
 import {
   formatStringToReadableTime,
   getDateInReadableFormat,
 } from "utilities/time";
+import type { MealsData } from "../useGetMealsQuery";
 import { useAddToCartMutation } from "./useAddToCartMutation";
 
 interface Props {
   meal: MealsData;
   userID: User["id"];
+  userLocation: { latitude: number; longitude: number } | null;
 }
 
 type MealScreenNavigationProp = NativeStackNavigationProp<
@@ -22,7 +26,7 @@ type MealScreenNavigationProp = NativeStackNavigationProp<
   "Meal"
 >;
 
-const MealCard: FC<Props> = ({ meal, userID }) => {
+const MealCard: FC<Props> = ({ meal, userID, userLocation }) => {
   const {
     id,
     restaurant,
@@ -34,6 +38,10 @@ const MealCard: FC<Props> = ({ meal, userID }) => {
     pickupStartTime,
     quantityAvailable,
   } = meal ?? {};
+
+  const [distance, setDistance] = useState<number | null>(null);
+  const [walkingTime, setWalkingTime] = useState<number | null>(null);
+  const fetchCalledRef = useRef(false);
 
   const { navigate } = useNavigation<MealScreenNavigationProp>();
   const [addToCart, { loading }] = useAddToCartMutation();
@@ -60,6 +68,42 @@ const MealCard: FC<Props> = ({ meal, userID }) => {
         onCompletedNavigateToMealScreen(addToCart?.order?.id),
     });
 
+  useEffect(() => {
+    const fetchDistanceAndTime = async () => {
+      if (!userLocation || fetchCalledRef.current) {
+        return;
+      }
+      fetchCalledRef.current = true;
+
+      const origin = `${userLocation.latitude},${userLocation.longitude}`;
+      const destination = `${restaurant.latitude},${restaurant.longitude}`;
+
+      const url = `https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${origin}&destinations=${destination}&mode=walking&key=${GOOGLE_API_KEY}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        if (
+          data.rows &&
+          data.rows[0] &&
+          data.rows[0].elements &&
+          data.rows[0].elements[0]
+        ) {
+          const distance = data.rows[0].elements[0].distance.value;
+          const duration = data.rows[0].elements[0].duration.value;
+          setDistance(distance);
+          setWalkingTime(Math.ceil(duration / 60));
+        } else {
+          console.error("Unexpected response structure:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching distance and time:", error);
+      }
+    };
+
+    fetchDistanceAndTime();
+  }, [userLocation, restaurant.latitude, restaurant.longitude]);
+
   const renderCTA = () =>
     !quantityAvailable ? (
       <Typography weigth="bold">Sold Out</Typography>
@@ -68,6 +112,12 @@ const MealCard: FC<Props> = ({ meal, userID }) => {
         Reserve
       </Button>
     );
+
+  const renderWalkingDistance = () => {
+    return distance && walkingTime
+      ? `${walkingTime} min walk`
+      : "Calculating...";
+  };
 
   return (
     <Box>
@@ -79,9 +129,21 @@ const MealCard: FC<Props> = ({ meal, userID }) => {
           <Typography isMarginless type="H3" weigth="semiBold">
             {name}
           </Typography>
+        </Column>
+      </Columns>
+      <Columns isMarginless>
+        <Column>
           <Typography weigth="semiBold" type="P">
-            {restaurant?.name}
+            {restaurant?.name}{" "}
           </Typography>
+        </Column>
+        <Column columnWidth="fullWidth" direction="row">
+          <Footprints className="mr-2" color={COLOURS.primary} />
+          <Typography type="S">{renderWalkingDistance()}</Typography>
+        </Column>
+      </Columns>
+      <Columns>
+        <Column columnWidth="fullWidth">
           <Typography type="S">{description}</Typography>
         </Column>
       </Columns>
@@ -89,20 +151,20 @@ const MealCard: FC<Props> = ({ meal, userID }) => {
         <Column columnWidth="fullWidth" direction="row">
           <Typography isMarginless type="S">
             Order By:{" "}
-          </Typography>
-          <Typography isMarginless type="S" weigth="bold" colour="accent">
-            {getDateInReadableFormat(orderCutoffTime)}, {""}
-            {formatStringToReadableTime(orderCutoffTime)}
+            <Typography isMarginless type="S" weigth="bold" colour="accent">
+              {`${getDateInReadableFormat(
+                orderCutoffTime
+              )}, ${formatStringToReadableTime(orderCutoffTime)}`}
+            </Typography>
           </Typography>
         </Column>
         <Column columnWidth="fullWidth" direction="row">
           <Typography isMarginless type="S">
             Pickup:{" "}
-          </Typography>
-          <Typography isMarginless type="S" weigth="bold" colour="accent">
-            <Typography isMarginless type="S">
-              {formatStringToReadableTime(pickupStartTime!)} and{" "}
-              {formatStringToReadableTime(pickupEndTime!)}
+            <Typography isMarginless type="S" weigth="bold" colour="accent">
+              {`${formatStringToReadableTime(
+                pickupStartTime!
+              )} and ${formatStringToReadableTime(pickupEndTime!)}`}
             </Typography>
           </Typography>
         </Column>

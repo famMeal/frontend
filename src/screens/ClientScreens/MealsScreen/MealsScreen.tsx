@@ -1,8 +1,9 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Container, GoogleMap, Skeleton } from "components";
 import type { FC } from "react";
-import React, { useCallback, useRef, useState } from "react";
-import { FlatList, View } from "react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { FlatList, PermissionsAndroid, Platform, View } from "react-native";
+import Geolocation from "react-native-geolocation-service";
 import type MapView from "react-native-maps";
 import type { RootStackParamList } from "types/navigation.types";
 import { createList } from "utilities/createList";
@@ -23,6 +24,10 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
   const { data: mealsData, refetch } = useGetMealsQuery({
     notifyOnNetworkStatusChange: true,
   });
+  const [userLocation, setUserLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
 
   const locations = meals
     ?.filter(meal => meal.active)
@@ -92,6 +97,50 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
         }))}
       />
     );
+
+  const requestLocationPermission = async () => {
+    if (Platform.OS === "android") {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: "Location Permission",
+            message: "This app needs access to your location.",
+            buttonPositive: "OK",
+          }
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err) {
+        console.warn(err);
+        return false;
+      }
+    } else {
+      return true;
+    }
+  };
+
+  useEffect(() => {
+    const getLocation = async () => {
+      const hasPermission = await requestLocationPermission();
+      if (hasPermission) {
+        Geolocation.getCurrentPosition(
+          position => {
+            setUserLocation({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+          },
+          error => {
+            console.error("Error getting location:", error);
+          },
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        );
+      }
+    };
+
+    getLocation();
+  }, []);
+
   return (
     <>
       <View className="h-64">{renderMap()}</View>
@@ -100,7 +149,7 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
           ref={flatListRef}
           data={batchedMeals}
           renderItem={({ item }) => (
-            <MealCard userID={userID} key={item.id} meal={item} />
+            <MealCard userID={userID} meal={item} userLocation={userLocation} />
           )}
           keyExtractor={({ id }) => id}
           ListEmptyComponent={renderSkeletons}
