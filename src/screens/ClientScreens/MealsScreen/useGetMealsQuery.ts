@@ -84,3 +84,4 @@ const useGetMealsQuery = (options?: Options) =>
   useQuery<Data>(GET_MEALS_QUERY, options);
 
 export { useGetMealsQuery };
+export type { Data as MealsQueryData };

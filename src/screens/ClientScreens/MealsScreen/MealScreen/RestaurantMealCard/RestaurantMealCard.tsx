@@ -8,10 +8,11 @@ import {
   Typography,
 } from "components";
 import { COLOURS } from "constants/colours";
-import { ChevronDownIcon, Trash2Icon } from "lucide-react-native";
-import { type Dispatch, type FC, type SetStateAction } from "react";
-import { View } from "react-native";
+import { ChevronDownIcon, InfoIcon, Trash2Icon } from "lucide-react-native";
+import { useState, type Dispatch, type FC, type SetStateAction } from "react";
+import { TouchableOpacity, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
+import Tooltip from "react-native-walkthrough-tooltip";
 import type { Meal, Order } from "schema";
 import { useDeleteOrderMutation } from "shared/useDeleteOrderMutation";
 import type { ConfirmationNavigationProps } from "types/navigation.types";
@@ -50,6 +51,7 @@ const RestaurantMealCard: FC<Props> = ({
   setSelectedTime,
   selectedTime,
 }) => {
+  const [toolTipThatsVisible, setToolTipThatsVisible] = useState(false);
   const [selectedStartTime, selectedEndTime] = selectedTime;
   const { name, description, pickupEndTime, pickupStartTime } = meal ?? {};
   const { navigate } = useNavigation<ConfirmationNavigationProps>();
@@ -93,6 +95,43 @@ const RestaurantMealCard: FC<Props> = ({
     );
   }
 
+  const renderToolTip = () => (
+    <Tooltip
+      arrowStyle={{
+        width: 0,
+        height: 0,
+        backgroundColor: "transparent",
+        borderLeftWidth: 10,
+        borderRightWidth: 10,
+        borderTopWidth: 20,
+        borderStyle: "solid",
+        borderLeftColor: "transparent",
+        borderRightColor: "transparent",
+        borderTopColor: "white",
+      }}
+      tooltipStyle={{
+        backgroundColor: "white",
+        borderRadius: 5,
+        maxWidth: 200,
+        marginTop: -15,
+      }}
+      onClose={() => setToolTipThatsVisible(false)}
+      isVisible={toolTipThatsVisible}
+      content={
+        <Typography weigth="bold" type="S">
+          Select your preferred pickup time from the available options chosen by
+          the restaurant, ensuring your order is ready when you arrive.
+        </Typography>
+      }
+      placement="top">
+      <TouchableOpacity
+        className="ml-2 mt-1"
+        onPress={() => setToolTipThatsVisible(true)}>
+        <InfoIcon size={17} color={COLOURS.accent} />
+      </TouchableOpacity>
+    </Tooltip>
+  );
+
   return (
     <Box className="relative">
       <View className="absolute right-4 top-4 z-10">
@@ -115,10 +154,20 @@ const RestaurantMealCard: FC<Props> = ({
         </Column>
       </Columns>
       <Columns isMarginless>
-        <Column columnWidth="twoThird">
+        <Column columnWidth="twoThird" direction="row">
           <Typography type="S" weigth="bold" colour="accent">
             Pickup window
           </Typography>
+          {renderToolTip()}
+        </Column>
+        <Column columnWidth="oneThird">
+          <Typography className="mb-2" type="S" weigth="bold" colour="accent">
+            Quantity
+          </Typography>
+        </Column>
+      </Columns>
+      <Columns isMarginless>
+        <Column columnWidth="twoThird" justifyContent="flex-start">
           <Dropdown<{ value: string }>
             renderRightIcon={() => <ChevronDownIcon color="white" />}
             value={`${selectedStartTime} & ${selectedEndTime}`}
@@ -167,10 +216,7 @@ const RestaurantMealCard: FC<Props> = ({
         <Column
           columnWidth="oneThird"
           alignItems="center"
-          justifyContent="center">
-          <Typography className="mb-2" type="S" weigth="bold" colour="accent">
-            Quantity
-          </Typography>
+          justifyContent="flex-start">
           <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
         </Column>
       </Columns>

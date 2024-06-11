@@ -9,10 +9,22 @@ import type { RootStackParamList } from "types/navigation.types";
 import { createList } from "utilities/createList";
 import { MealCard, SkeletonMealCard } from "./MealCard";
 import { useGetMealsLocationQuery } from "./useGetMealsLocationQuery";
-import type { MealsData } from "./useGetMealsQuery";
+import type { MealsData, MealsQueryData } from "./useGetMealsQuery";
 import { useGetMealsQuery } from "./useGetMealsQuery";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Meals">;
+
+const filterMeals = (meals?: MealsQueryData["meals"]) => {
+  const currentTime = new Date();
+  return __DEV__
+    ? meals?.filter(({ active }) => active)
+    : meals?.filter(
+        ({ active, restaurant, orderCutoffTime }) =>
+          active &&
+          restaurant.stripeOnboardingComplete &&
+          new Date(orderCutoffTime) > currentTime
+      );
+};
 
 const MealsScreen: FC<Props> = ({ route: { params } }) => {
   const { userID } = params;
@@ -80,7 +92,8 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
     []
   );
 
-  const batchedMeals = mealsData?.meals.filter(meal => meal.active) || [];
+  const batchedMeals = filterMeals(mealsData?.meals) ?? [];
+
   const renderMap = () =>
     isMealsLocationLoading ? (
       <Skeleton width="full" />

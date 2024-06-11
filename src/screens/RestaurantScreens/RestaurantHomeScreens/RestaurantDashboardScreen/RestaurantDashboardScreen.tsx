@@ -13,7 +13,7 @@ import {
   Typography,
 } from "components";
 import { COLOURS } from "constants/colours";
-
+import { STATUS } from "constants/status";
 import { ArrowRightCircle } from "lucide-react-native";
 import React, { useCallback, useState, type FC } from "react";
 import {
@@ -22,8 +22,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
-import { STATUS } from "constants/status";
 import { DateRangeField, type Meal } from "schema";
 import { RestaurantCreateMealModal } from "screens/RestaurantScreens/RestaurantCreateMealModal";
 import type { RootStackParamList } from "types/navigation.types";
@@ -154,9 +152,10 @@ const RestaurantDashboardScreen: FC<Props> = ({ route }) => {
     }
     return (
       <Box>
-        <Typography type="H3" weigth="bold" className=" mb-4">
+        <Typography type="H3" weigth="bold" className="mb-2">
           No Placed Orders
         </Typography>
+        <Typography type="S">Pull down to refresh</Typography>
       </Box>
     );
   };
