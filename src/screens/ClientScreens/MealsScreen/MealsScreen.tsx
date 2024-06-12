@@ -172,6 +172,15 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
     getLocation();
   }, []);
 
+  const handleRestaurantNamePress = (latitude: number, longitude: number) => {
+    mapRef.current?.animateToRegion({
+      latitude,
+      longitude,
+      latitudeDelta: 0.01,
+      longitudeDelta: 0.01,
+    });
+  };
+
   const ListEmptyComponent = loading ? (
     <>{renderSkeletons()}</>
   ) : (
@@ -205,7 +214,12 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
           ref={flatListRef}
           data={batchedMeals}
           renderItem={({ item }) => (
-            <MealCard userID={userID} meal={item} userLocation={userLocation} />
+            <MealCard
+              onRestaurantNamePress={handleRestaurantNamePress}
+              userID={userID}
+              meal={item}
+              userLocation={userLocation}
+            />
           )}
           keyExtractor={({ id }) => id}
           ListEmptyComponent={ListEmptyComponent}

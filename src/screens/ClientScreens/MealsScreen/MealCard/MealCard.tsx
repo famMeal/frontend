@@ -20,6 +20,7 @@ interface Props {
   meal: MealsData;
   userID: User["id"];
   userLocation: { latitude: number; longitude: number } | null;
+  onRestaurantNamePress: (latitude: number, longitude: number) => void;
 }
 
 type MealScreenNavigationProp = NativeStackNavigationProp<
@@ -27,7 +28,12 @@ type MealScreenNavigationProp = NativeStackNavigationProp<
   "Meal"
 >;
 
-const MealCard: FC<Props> = ({ meal, userID, userLocation }) => {
+const MealCard: FC<Props> = ({
+  meal,
+  userID,
+  userLocation,
+  onRestaurantNamePress,
+}) => {
   const {
     id,
     restaurant,
@@ -134,7 +140,10 @@ const MealCard: FC<Props> = ({ meal, userID, userLocation }) => {
       </Columns>
       <Columns isMarginless>
         <Column>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              onRestaurantNamePress(restaurant.latitude!, restaurant.longitude!)
+            }>
             <Typography weigth="semiBold" type="P" className="underline">
               {restaurant?.name}{" "}
             </Typography>
