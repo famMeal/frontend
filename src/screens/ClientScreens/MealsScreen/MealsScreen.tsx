@@ -1,5 +1,15 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Container, GoogleMap, Skeleton } from "components";
+import {
+  Box,
+  Column,
+  Columns,
+  Container,
+  GoogleMap,
+  Skeleton,
+  Typography,
+} from "components";
+import { COLOURS } from "constants/colours";
+import { SquirrelIcon } from "lucide-react-native";
 import type { FC } from "react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FlatList, PermissionsAndroid, Platform, View } from "react-native";
@@ -19,9 +29,13 @@ const filterMeals = (meals?: MealsQueryData["meals"]) => {
   return __DEV__
     ? meals?.filter(({ active }) => active)
     : meals?.filter(
-        ({ active, restaurant, orderCutoffTime }) =>
+        ({
+          active,
+          restaurant: { stripeOnboardingComplete },
+          orderCutoffTime,
+        }) =>
           active &&
-          restaurant.stripeOnboardingComplete &&
+          stripeOnboardingComplete &&
           new Date(orderCutoffTime) > currentTime
       );
 };
@@ -33,7 +47,11 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
   const flatListRef = useRef<FlatList<MealsData>>(null);
   const { data, loading: isMealsLocationLoading } = useGetMealsLocationQuery();
   const { meals } = data ?? {};
-  const { data: mealsData, refetch } = useGetMealsQuery({
+  const {
+    data: mealsData,
+    refetch,
+    loading,
+  } = useGetMealsQuery({
     notifyOnNetworkStatusChange: true,
   });
   const [userLocation, setUserLocation] = useState<{
@@ -154,6 +172,31 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
     getLocation();
   }, []);
 
+  const ListEmptyComponent = loading ? (
+    <>{renderSkeletons()}</>
+  ) : (
+    <Box>
+      <Columns>
+        <Column
+          columnWidth="fullWidth"
+          justifyContent="center"
+          alignItems="center">
+          <Typography weigth="semiBold">
+            No meals available. Pull down to refresh.
+          </Typography>
+        </Column>
+      </Columns>
+      <Columns>
+        <Column
+          columnWidth="fullWidth"
+          justifyContent="center"
+          alignItems="center">
+          <SquirrelIcon size={50} color={COLOURS.primary} />
+        </Column>
+      </Columns>
+    </Box>
+  );
+
   return (
     <>
       <View className="h-64">{renderMap()}</View>
@@ -165,7 +208,7 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
             <MealCard userID={userID} meal={item} userLocation={userLocation} />
           )}
           keyExtractor={({ id }) => id}
-          ListEmptyComponent={renderSkeletons}
+          ListEmptyComponent={ListEmptyComponent}
           refreshing={refreshing}
           onRefresh={onRefresh}
           onContentSizeChange={handleMapReady}

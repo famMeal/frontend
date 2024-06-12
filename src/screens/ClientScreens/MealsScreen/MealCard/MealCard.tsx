@@ -6,6 +6,7 @@ import { Footprints } from "lucide-react-native";
 import type { FC } from "react";
 import React, { useEffect, useRef, useState } from "react";
 import { GOOGLE_API_KEY } from "react-native-dotenv";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import type { Order, User } from "schema";
 import type { RootStackParamList } from "types/navigation.types";
 import {
@@ -133,9 +134,11 @@ const MealCard: FC<Props> = ({ meal, userID, userLocation }) => {
       </Columns>
       <Columns isMarginless>
         <Column>
-          <Typography weigth="semiBold" type="P">
-            {restaurant?.name}{" "}
-          </Typography>
+          <TouchableOpacity>
+            <Typography weigth="semiBold" type="P" className="underline">
+              {restaurant?.name}{" "}
+            </Typography>
+          </TouchableOpacity>
         </Column>
         <Column columnWidth="fullWidth" direction="row">
           <Footprints className="mr-2" color={COLOURS.primary} />
