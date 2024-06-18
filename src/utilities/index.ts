@@ -1,6 +1,7 @@
 export { createList } from "./createList";
 export { createScreenOptions } from "./createScreenOptions";
 export { createTimeArray } from "./createTimeArray";
+export { filterMeals } from "./filterMeals";
 export { formatCurrency } from "./formatCurrency";
 export * from "./formatTime";
 export { formatTime } from "./formatTime";
@@ -9,3 +10,4 @@ export { formatTimeIntervals } from "./formatTimeIntervals";
 export { parseCurrency } from "./parseCurrency";
 export { returnDateInWeekday } from "./returnDateInWeekday";
 export * from "./time";
+

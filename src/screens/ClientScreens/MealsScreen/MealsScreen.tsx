@@ -1,5 +1,5 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import MapboxGL, { Camera, MapView, PointAnnotation } from "@rnmapbox/maps";
+import MapboxGL, { Camera, MapView, MarkerView } from "@rnmapbox/maps";
 import {
   Box,
   Column,
@@ -16,38 +16,24 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FlatList, PermissionsAndroid, Platform, View } from "react-native";
 import { MAPBOX_DOWNLOADS_TOKEN } from "react-native-dotenv";
 import Geolocation from "react-native-geolocation-service";
-import type { Region } from "react-native-maps";
 import type { RootStackParamList } from "types/navigation.types";
 import { createList } from "utilities/createList";
+
+import type { CameraRef } from "@rnmapbox/maps/lib/typescript/src/components/Camera";
+import { filterMeals } from "utilities";
 import { MealCard, SkeletonMealCard } from "./MealCard";
 import { useGetMealsLocationQuery } from "./useGetMealsLocationQuery";
-import type { MealsData, MealsQueryData } from "./useGetMealsQuery";
+import type { MealsData } from "./useGetMealsQuery";
 import { useGetMealsQuery } from "./useGetMealsQuery";
 
 MapboxGL.setAccessToken(MAPBOX_DOWNLOADS_TOKEN);
 
 type Props = NativeStackScreenProps<RootStackParamList, "Meals">;
 
-const filterMeals = (meals?: MealsQueryData["meals"]) => {
-  const currentTime = new Date();
-  return __DEV__
-    ? meals?.filter(({ active }) => active)
-    : meals?.filter(
-        ({
-          active,
-          restaurant: { stripeOnboardingComplete },
-          orderCutoffTime,
-        }) =>
-          active &&
-          stripeOnboardingComplete &&
-          new Date(orderCutoffTime) > currentTime
-      );
-};
-
 const MealsScreen: FC<Props> = ({ route: { params } }) => {
   const { userID } = params;
   const mapRef = useRef<MapView>(null);
-  const cameraRef = useRef<Camera>(null);
+  const cameraRef = useRef<CameraRef>(null);
   const [refreshing, setRefreshing] = useState(false);
   const flatListRef = useRef<FlatList<MealsData>>(null);
   const { data, loading: isMealsLocationLoading } = useGetMealsLocationQuery();
@@ -64,10 +50,11 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
     longitude: number;
   } | null>(null);
 
-  const [destination, setDestination] = useState<Region | null>(null);
-  const [restaurantName, setRestaurantName] = useState<string | undefined>(
-    undefined
-  );
+  const [selectedRestaurant, setSelectedRestaurant] = useState<{
+    latitude: number;
+    longitude: number;
+    name: string;
+  } | null>(null);
 
   const locations = meals
     ?.filter(meal => meal.active)
@@ -100,17 +87,34 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
   }, [locations]);
 
   const handleOnPressMarker = useCallback(
-    (restaurantId: string) => {
-      const index = mealsData?.meals.findIndex(
-        meal => meal.restaurant.id === restaurantId
-      );
-      if (
-        index !== -1 &&
-        index !== undefined &&
-        mealsData &&
-        index < mealsData.meals.length
-      ) {
-        flatListRef.current?.scrollToIndex({ index, animated: true });
+    (restaurantId?: string) => {
+      if (restaurantId) {
+        const { restaurant } =
+          mealsData?.meals?.find(meal => meal.restaurant.id === restaurantId) ??
+          {};
+        setSelectedRestaurant({
+          latitude: restaurant?.latitude!,
+          longitude: restaurant?.longitude!,
+          name: restaurant?.name!,
+        });
+
+        cameraRef.current?.setCamera({
+          centerCoordinate: [restaurant?.longitude!, restaurant?.latitude!],
+          zoomLevel: 15,
+          animationDuration: 1000,
+        });
+
+        const index = mealsData?.meals.findIndex(
+          meal => meal.restaurant.id === restaurantId
+        );
+        if (
+          index !== -1 &&
+          index !== undefined &&
+          mealsData &&
+          index < mealsData.meals.length
+        ) {
+          flatListRef.current?.scrollToIndex({ index, animated: true });
+        }
       }
     },
     [mealsData]
@@ -131,11 +135,67 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
 
   const batchedMeals = filterMeals(mealsData?.meals) ?? [];
 
+  const renderLocations = () =>
+    locations?.map(loc => (
+      <MarkerView
+        key={loc.id}
+        coordinate={[loc.longitude!, loc.latitude!]}
+        anchor={{ x: 0.5, y: 1 }}>
+        <GoogleMarker id={loc.id} onClick={handleOnPressMarker} />
+      </MarkerView>
+    ));
+
+  const renderUserLocation = () => {
+    if (!userLocation) {
+      return null;
+    }
+    return (
+      <MarkerView
+        key="userLocation"
+        coordinate={[userLocation.longitude, userLocation.latitude]}
+        anchor={{ x: 0.5, y: 1 }}>
+        <GoogleMarker
+          theme="primary"
+          icon={<SquirrelIcon size={20} color={COLOURS.white} />}
+        />
+      </MarkerView>
+    );
+  };
+
+  const renderSelectedRestaurant = () => {
+    if (!selectedRestaurant) {
+      return null;
+    }
+    return (
+      <MarkerView
+        key="selectedRestaurant"
+        coordinate={[selectedRestaurant.longitude, selectedRestaurant.latitude]}
+        anchor={{ x: 0.5, y: 1 }}>
+        <View style={{ alignItems: "center" }}>
+          <Typography
+            weigth="semiBold"
+            type="S"
+            style={{
+              backgroundColor: "white",
+              paddingLeft: 8,
+              paddingRight: 8,
+              paddingTop: 4,
+              borderRadius: 8,
+            }}>
+            {selectedRestaurant.name}
+          </Typography>
+          <GoogleMarker theme="primary" />
+        </View>
+      </MarkerView>
+    );
+  };
+
   const renderMap = () =>
     isMealsLocationLoading ? (
       <Skeleton width="full" />
     ) : (
       <MapView
+        scaleBarEnabled={false}
         logoEnabled={false}
         attributionEnabled={false}
         ref={mapRef}
@@ -143,15 +203,9 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
         onDidFinishLoadingMap={handleMapReady}
         styleURL={MapboxGL.StyleURL.Street}>
         <Camera ref={cameraRef} />
-        {locations?.map(loc => (
-          <PointAnnotation
-            key={loc.id}
-            id={loc.id!}
-            coordinate={[loc.longitude!, loc.latitude!]}
-            onSelected={() => handleOnPressMarker(loc.id!)}>
-            <GoogleMarker />
-          </PointAnnotation>
-        ))}
+        {renderLocations()}
+        {renderUserLocation()}
+        {renderSelectedRestaurant()}
       </MapView>
     );
 
@@ -188,7 +242,6 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
       if (hasPermission) {
         Geolocation.getCurrentPosition(
           position => {
-            console.log("User location:", position);
             setUserLocation({
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
@@ -210,15 +263,12 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
     longitude: number,
     name: string
   ) => {
-    cameraRef.current?.flyTo([longitude, latitude], 1000);
-    cameraRef.current?.zoomTo(14, 1000);
-    setDestination({
-      latitude,
-      longitude,
-      latitudeDelta: 0.01,
-      longitudeDelta: 0.01,
+    setSelectedRestaurant({ latitude, longitude, name });
+    cameraRef.current?.setCamera({
+      centerCoordinate: [longitude, latitude],
+      zoomLevel: 15,
+      animationDuration: 1000,
     });
-    setRestaurantName(name);
   };
 
   const ListEmptyComponent = loading ? (
