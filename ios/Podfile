@@ -1,29 +1,25 @@
+platform :ios, '13.4'
+
+require 'json'
+
+def get_env_variable(name)
+  env_file = File.join(__dir__, '..', '.env')
+  if File.exist?(env_file)
+    File.foreach(env_file) do |line|
+      if line.strip.start_with?("#{name}=")
+        return line.split('=', 2)[1].strip
+      end
+    end
+  end
+  return ENV[name]
+end
+
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
     "react-native/scripts/react_native_pods.rb",
     {paths: [process.argv[1]]},
   )', __dir__]).strip
-
-platform :ios, min_ios_version_supported
-prepare_react_native_project!
-
-# If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
-# because `react-native-flipper` depends on (FlipperKit,...) that will be excluded
-#
-# To fix this you can also exclude `react-native-flipper` using a `react-native.config.js`
-# ```js
-# module.exports = {
-#   dependencies: {
-#     ...(process.env.NO_FLIPPER ? { 'react-native-flipper': { platforms: { ios: null } } } : {}),
-# ```
-flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
-
-linkage = ENV['USE_FRAMEWORKS']
-if linkage != nil
-  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-  use_frameworks! :linkage => linkage.to_sym
-end
 
 target 'famMeal' do
   config = use_native_modules!
@@ -40,23 +36,32 @@ target 'famMeal' do
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
     # you should disable the next line.
-    :flipper_configuration => flipper_config,
+    :flipper_configuration => FlipperConfiguration.enabled,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'famMealTests' do
-    inherit! :complete
-    # Pods for testing
+  pod 'MapboxMaps', '~> 10.18.2'
+
+  pre_install do |installer|
+    $RNMapboxMaps.pre_install(installer)
   end
 
   post_install do |installer|
-    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
-    react_native_post_install(
-      installer,
-      config[:reactNativePath],
-      :mac_catalyst_enabled => false
-    )
-  # __apply_Xcode_12_5_M1_post_install_workaround(installer)
+    $RNMapboxMaps.post_install(installer)
+    react_native_post_install(installer)
+    
+    # Use the token to configure the Mapbox downloads URL
+    mapbox_token = get_env_variable('MAPBOX_DOWNLOADS_TOKEN')
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['MAPBOX_DOWNLOADS_TOKEN'] = mapbox_token
+      end
+    end
   end
+end
+
+target 'famMealTests' do
+  inherit! :complete
+  # Pods for testing
 end

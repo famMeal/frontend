@@ -42,7 +42,7 @@ const LoginScreen: FC<Props> = ({ route }) => {
   const { email: forwardedEmail } = params ?? {};
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [email, setEmail] = useState(
-    forwardedEmail ?? "kristinelmcbride+monty@gmail.com"
+    forwardedEmail ?? "shahynkamali+1@gmail.com"
   );
   const [password, setPassword] = useState("password");
   const { navigate } = useNavigation<LoginNavigationProps>();

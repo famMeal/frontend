@@ -18,14 +18,15 @@ import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 
 interface GoogleMapProps {
-  destination?: Region;
+  destination?: Region | null;
   restaurantName?: string;
   coordinates?: MapMarkerProps[];
+  onMapReady?: () => void;
 }
 
 const GoogleMap = memo(
   forwardRef<MapView, GoogleMapProps>(
-    ({ destination, restaurantName, coordinates }, ref) => {
+    ({ destination, restaurantName, coordinates, onMapReady }, ref) => {
       const [hasPermission, setHasPermission] = useState(false);
       const mapViewRef = useRef<MapView>(null);
       useImperativeHandle(ref, () => mapViewRef.current as MapView);
@@ -74,6 +75,21 @@ const GoogleMap = memo(
         }
       }, [coords, destination]);
 
+      useEffect(() => {
+        if (destination && mapViewRef.current) {
+          mapViewRef.current?.animateToRegion(destination, 1000);
+        }
+      }, [destination]);
+
+      const renderMarker = useCallback(
+        (markerProps: MapMarkerProps, index: number) => (
+          <Marker key={index} {...markerProps}>
+            <GoogleMarker />
+          </Marker>
+        ),
+        []
+      );
+
       return (
         <MapView
           className="flex-1"
@@ -89,7 +105,8 @@ const GoogleMap = memo(
           }
           ref={mapViewRef}
           showsUserLocation={hasPermission}
-          followsUserLocation={hasPermission}>
+          followsUserLocation={hasPermission}
+          onMapReady={onMapReady}>
           {coords && (
             <Marker coordinate={coords.coords} title="Your Location">
               <GoogleMarker
@@ -112,11 +129,7 @@ const GoogleMap = memo(
               strokeColor={COLOURS.accent}
             />
           )}
-          {coordinates?.map((markerProps, index) => (
-            <Marker key={index} {...markerProps}>
-              <GoogleMarker />
-            </Marker>
-          ))}
+          {coordinates?.map(renderMarker)}
         </MapView>
       );
     }
