@@ -11,26 +11,24 @@ interface Props {
   id?: string;
 }
 
-const GoogleMarker: FC<Props> = memo(
-  ({ theme = "accent", icon, onClick, id }) => {
-    return (
-      <TouchableOpacity onPress={() => onClick?.(id)}>
-        <View style={styles.container}>
-          <View
-            style={[
-              styles.markerIconContainer,
-              { backgroundColor: COLOURS[theme] },
-            ]}>
-            {icon ?? <UtensilsIcon size={17} color={COLOURS.white} />}
-          </View>
-          <View
-            style={[styles.markerTriangle, { borderTopColor: COLOURS[theme] }]}
-          />
+const MapMarker: FC<Props> = memo(({ theme = "accent", icon, onClick, id }) => {
+  return (
+    <TouchableOpacity onPress={() => onClick?.(id)}>
+      <View style={styles.container}>
+        <View
+          style={[
+            styles.markerIconContainer,
+            { backgroundColor: COLOURS[theme] },
+          ]}>
+          {icon ?? <UtensilsIcon size={17} color={COLOURS.white} />}
         </View>
-      </TouchableOpacity>
-    );
-  }
-);
+        <View
+          style={[styles.markerTriangle, { borderTopColor: COLOURS[theme] }]}
+        />
+      </View>
+    </TouchableOpacity>
+  );
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -57,4 +55,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { GoogleMarker };
+export { MapMarker };

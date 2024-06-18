@@ -963,8 +963,6 @@ PODS:
     - React-Core
   - react-native-geolocation-service (5.3.1):
     - React
-  - react-native-maps (1.15.6):
-    - React-Core
   - react-native-pager-view (6.3.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
@@ -1171,10 +1169,6 @@ PODS:
     - React-RCTImage
   - RNSVG (14.2.0):
     - React-Core
-  - RNVectorIcons (10.1.0):
-    - glog
-    - RCT-Folly (= 2022.05.16.00)
-    - React-Core
   - SocketRocket (0.6.1)
   - Stripe (23.27.3):
     - StripeApplePay (= 23.27.3)
@@ -1272,7 +1266,6 @@ DEPENDENCIES:
   - react-native-config (from `../node_modules/react-native-config`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
-  - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
@@ -1303,7 +1296,6 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
-  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - "stripe-react-native (from `../node_modules/@stripe/stripe-react-native`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -1398,8 +1390,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/geolocation"
   react-native-geolocation-service:
     :path: "../node_modules/react-native-geolocation-service"
-  react-native-maps:
-    :path: "../node_modules/react-native-maps"
   react-native-pager-view:
     :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
@@ -1460,8 +1450,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
-  RNVectorIcons:
-    :path: "../node_modules/react-native-vector-icons"
   stripe-react-native:
     :path: "../node_modules/@stripe/stripe-react-native"
   Yoga:
@@ -1514,7 +1502,6 @@ SPEC CHECKSUMS:
   react-native-config: 86038147314e2e6d10ea9972022aa171e6b1d4d8
   react-native-geolocation: ed9e1d132f576b9a4a503af46f9704413ea0dec1
   react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
-  react-native-maps: 7b2c2cee95271592a92ba485eea1dec66a363a6e
   react-native-pager-view: f1e72cb827406f1b49f007ab07400197d421b6e7
   react-native-safe-area-context: a240ad4b683349e48b1d51fed1611138d1bdad97
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
@@ -1545,7 +1532,6 @@ SPEC CHECKSUMS:
   RNReanimated: 6aeb85e1e17364c8069f9ee5661615b4a281bd5c
   RNScreens: 134a7511b12b8eb440b87aac21e36a71295d6024
   RNSVG: 963a95f1f5d512a13d11ffd50d351c87fb5c6890
-  RNVectorIcons: 96e8c5c45609932bb2f8347e1c709bcca0e95654
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Stripe: 962def3be8d23f21f8d0f390adc21780a7b04ec1
   stripe-react-native: 184a46a36ed449ff9f0ac5938ce65b20fc7bf0a2

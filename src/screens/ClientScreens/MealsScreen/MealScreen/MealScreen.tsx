@@ -7,7 +7,7 @@ import MapboxGL, {
   MarkerView,
   ShapeSource,
 } from "@rnmapbox/maps";
-import { Box, Button, Container, GoogleMarker, Skeleton } from "components";
+import { Box, Button, Container, MapMarker, Skeleton } from "components";
 import { COLOURS } from "constants/colours";
 import { SquirrelIcon } from "lucide-react-native";
 import type { FC } from "react";
@@ -201,12 +201,12 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
         styleURL={MapboxGL.StyleURL.Street}>
         <Camera ref={cameraRef} centerCoordinate={destination} zoomLevel={14} />
         <MarkerView coordinate={destination}>
-          <GoogleMarker />
+          <MapMarker />
         </MarkerView>
         {userLocation && (
           <MarkerView
             coordinate={[userLocation.longitude, userLocation.latitude]}>
-            <GoogleMarker
+            <MapMarker
               theme="primary"
               icon={<SquirrelIcon size={20} color={COLOURS.white} />}
             />

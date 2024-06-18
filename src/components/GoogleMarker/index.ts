@@ -1,1 +1,0 @@
-export { GoogleMarker } from "./GoogleMarker";

@@ -5,7 +5,7 @@ import {
   Column,
   Columns,
   Container,
-  GoogleMarker,
+  MapMarker,
   Skeleton,
   Typography,
 } from "components";
@@ -141,7 +141,7 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
         key={loc.id}
         coordinate={[loc.longitude!, loc.latitude!]}
         anchor={{ x: 0.5, y: 1 }}>
-        <GoogleMarker id={loc.id} onClick={handleOnPressMarker} />
+        <MapMarker id={loc.id} onClick={handleOnPressMarker} />
       </MarkerView>
     ));
 
@@ -154,7 +154,7 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
         key="userLocation"
         coordinate={[userLocation.longitude, userLocation.latitude]}
         anchor={{ x: 0.5, y: 1 }}>
-        <GoogleMarker
+        <MapMarker
           theme="primary"
           icon={<SquirrelIcon size={20} color={COLOURS.white} />}
         />
@@ -184,7 +184,7 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
             }}>
             {selectedRestaurant.name}
           </Typography>
-          <GoogleMarker theme="primary" />
+          <MapMarker theme="primary" />
         </View>
       </MarkerView>
     );
