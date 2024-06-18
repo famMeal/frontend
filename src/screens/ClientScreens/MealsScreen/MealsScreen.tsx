@@ -12,7 +12,7 @@ import {
 import { COLOURS } from "constants/colours";
 import { SquirrelIcon } from "lucide-react-native";
 import type { FC } from "react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { FlatList, PermissionsAndroid, Platform, View } from "react-native";
 import { MAPBOX_DOWNLOADS_TOKEN } from "react-native-dotenv";
 import Geolocation from "react-native-geolocation-service";
@@ -29,6 +29,8 @@ import { useGetMealsQuery } from "./useGetMealsQuery";
 MapboxGL.setAccessToken(MAPBOX_DOWNLOADS_TOKEN);
 
 type Props = NativeStackScreenProps<RootStackParamList, "Meals">;
+
+const MemoizedMealCard = memo(MealCard);
 
 const MealsScreen: FC<Props> = ({ route: { params } }) => {
   const { userID } = params;
@@ -304,7 +306,7 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
           ref={flatListRef}
           data={batchedMeals}
           renderItem={({ item }) => (
-            <MealCard
+            <MemoizedMealCard
               onRestaurantNamePress={handleRestaurantNamePress}
               userID={userID}
               meal={item}

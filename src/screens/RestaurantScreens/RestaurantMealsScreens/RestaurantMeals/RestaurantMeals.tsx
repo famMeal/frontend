@@ -111,14 +111,16 @@ const RestaurantMeals: FC<Props> = ({ route, navigation }) => {
       <SkeletonRestaurantMealCard key={1} />
     ) : !data?.restaurant?.stripeOnboardingComplete ? (
       <Box>
-        <Chip position="topRight" type="error">
-          Needs Attention
-        </Chip>
         <Columns>
-          <Column columnWidth="fullWidth">
-            <Typography weigth="bold" type="H3" className="mb-2">
-              Setup Payment Account
+          <Column columnWidth="twoThird">
+            <Typography weigth="bold" type="H3">
+              Payment Account
             </Typography>
+          </Column>
+          <Column columnWidth="oneThird" alignItems="flex-end">
+            <Chip isStatic type="error">
+              Attention
+            </Chip>
           </Column>
         </Columns>
         <Columns>

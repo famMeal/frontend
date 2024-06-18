@@ -2,7 +2,10 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Box, Button, Chip, Column, Columns, Typography } from "components";
 import { COLOURS } from "constants/colours";
-import { Footprints } from "lucide-react-native";
+import {
+  Footprints,
+  MapPinIcon
+} from "lucide-react-native";
 import type { FC } from "react";
 import React, { useEffect, useRef, useState } from "react";
 import { GOOGLE_API_KEY } from "react-native-dotenv";
@@ -145,6 +148,7 @@ const MealCard: FC<Props> = ({
       <Columns isMarginless>
         <Column>
           <TouchableOpacity
+            className="flex flex-row"
             onPress={() =>
               onRestaurantNamePress(
                 restaurant.latitude!,
@@ -152,9 +156,10 @@ const MealCard: FC<Props> = ({
                 restaurant?.name
               )
             }>
-            <Typography weigth="semiBold" type="S" className="underline">
+            <Typography weigth="semiBold" type="S">
               {restaurant?.name}{" "}
             </Typography>
+            <MapPinIcon color={COLOURS.primary} />
           </TouchableOpacity>
         </Column>
         <Column direction="row" justifyContent="flex-end">
