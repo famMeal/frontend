@@ -1,22 +1,24 @@
 import Logo from "assets/svgs/logo.svg";
 import { Column } from "components/Column";
 import { Columns } from "components/Columns";
-import { COLOURS } from "constants/colours";
 import React from "react";
-import { ActivityIndicator, View } from "react-native";
+import { View } from "react-native";
+import * as Animatable from "react-native-animatable";
 
 const Loader = () => {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Columns>
+      <Columns direction="column">
         <Column
-          alignItems="flex-end"
-          columnWidth="twoThird"
+          alignItems="center"
+          columnWidth="fullWidth"
           justifyContent="center">
-          <Logo />
-        </Column>
-        <Column columnWidth="oneThird">
-          <ActivityIndicator size="large" color={COLOURS.accent} />
+          <Animatable.View
+            animation="bounceIn"
+            iterationCount="infinite"
+            duration={3000}>
+            <Logo />
+          </Animatable.View>
         </Column>
       </Columns>
     </View>
