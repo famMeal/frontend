@@ -20,7 +20,7 @@ export const getCSS = ({ isPaddingLess }: BoxProps) => {
     backgroundColor("bg-white"),
     overflow("overflow-hidden"),
     boxShadow("2xl:shadow-xl"),
-    borderRadius("rounded-lg"),
+    borderRadius("rounded-2xl"),
     width("w-full"),
     padding(isPaddingLess ? "p-0" : "p-4"),
     margin(isPaddingLess ? "m-0" : "mb-4", "last-of-type:mb-0")

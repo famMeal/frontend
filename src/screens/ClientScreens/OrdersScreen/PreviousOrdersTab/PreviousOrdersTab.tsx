@@ -3,13 +3,22 @@ import {
   type ParamListBase,
   type RouteProp,
 } from "@react-navigation/native";
-import { Chip, Column, Columns, Container } from "components";
+import {
+  Box,
+  Button,
+  Chip,
+  Column,
+  Columns,
+  Container,
+  Typography,
+} from "components";
 import type { FC } from "react";
 import React from "react";
 import { ScrollView } from "react-native";
 import { OrderStatusField, type User } from "schema";
 
-import { CalendarCheck } from "lucide-react-native";
+import { COLOURS } from "constants/colours";
+import { CalendarCheck, SquirrelIcon } from "lucide-react-native";
 import {
   OrderCard,
   SkeletonOrderCard,
@@ -71,7 +80,7 @@ export const toReadableDate = (dateString: string): string => {
   }).format(date);
 };
 
-const PreviousOrdersTab: FC<Props> = ({ userID }) => {
+const PreviousOrdersTab: FC<Props> = ({ userID, navigation }) => {
   const isActive = useIsFocused();
 
   const { data, loading } = useGetUserOrdersQuery({
@@ -90,25 +99,60 @@ const PreviousOrdersTab: FC<Props> = ({ userID }) => {
 
   const groupedOrders = groupAndSortOrders(data?.user?.orders!);
 
-  const renderOrders = () =>
-    Object.entries(groupedOrders).map(([date, ordersForDate]) => (
-      <Columns direction="column" key={date}>
-        <Column columnWidth="fullWidth" justifyContent="center">
-          <Chip
-            type="info"
-            className="mb-4"
-            isStatic
-            icon={<CalendarCheck className="text-white mr-2" />}>
-            {toReadableDate(date)}
-          </Chip>
+  const onPressNavigateToMeals = () => {
+    navigation.navigate("Meals", { userID });
+  };
+
+  const renderNoOrdersCTA = () => (
+    <Box>
+      <Columns isMarginless direction="column">
+        <Column
+          columnWidth="fullWidth"
+          justifyContent="center"
+          alignItems="center">
+          <Typography type="H3" weigth="bold">
+            No orders yet
+          </Typography>
         </Column>
-        <Column columnWidth="fullWidth">
-          {ordersForDate.map(({ id, ...rest }) => (
-            <OrderCard key={id} order={{ id, ...rest }} />
-          ))}
+        <Column
+          columnWidth="fullWidth"
+          justifyContent="center"
+          alignItems="center">
+          <SquirrelIcon color={COLOURS.primary} size={30} />
+        </Column>
+        <Column
+          columnWidth="fullWidth"
+          justifyContent="center"
+          alignItems="center">
+          <Button onPress={onPressNavigateToMeals} className="mt-8">
+            View Meals
+          </Button>
         </Column>
       </Columns>
-    ));
+    </Box>
+  );
+
+  const renderOrders = () =>
+    !data?.user?.orders?.length
+      ? renderNoOrdersCTA()
+      : Object.entries(groupedOrders).map(([date, ordersForDate]) => (
+          <Columns direction="column" key={date}>
+            <Column columnWidth="fullWidth" justifyContent="center">
+              <Chip
+                type="info"
+                className="mb-4"
+                isStatic
+                icon={<CalendarCheck className="text-white mr-2" />}>
+                {toReadableDate(date)}
+              </Chip>
+            </Column>
+            <Column columnWidth="fullWidth">
+              {ordersForDate.map(({ id, ...rest }) => (
+                <OrderCard key={id} order={{ id, ...rest }} />
+              ))}
+            </Column>
+          </Columns>
+        ));
 
   const renderContent = () =>
     loading || !data ? renderOrderSkeletons() : renderOrders();

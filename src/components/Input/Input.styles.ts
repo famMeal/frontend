@@ -26,7 +26,7 @@ export const getCSS = ({ theme, inputWidth }: InputProps) => {
     width(inputWidth === "full" ? "w-full" : "w-10"),
     fontFamily("font-khula"),
     fontSize("text-lg"),
-    borderRadius("rounded-lg"),
+    borderRadius("rounded-md"),
     padding(
       inputWidth === "fixed" ? null : "pl-2",
       Platform.OS === "ios" ? "py-1.5" : "py-2"

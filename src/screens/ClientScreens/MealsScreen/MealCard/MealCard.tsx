@@ -2,10 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Box, Button, Chip, Column, Columns, Typography } from "components";
 import { COLOURS } from "constants/colours";
-import {
-  Footprints,
-  MapPinIcon
-} from "lucide-react-native";
+import { Footprints, MapPinIcon } from "lucide-react-native";
 import type { FC } from "react";
 import React, { useEffect, useRef, useState } from "react";
 import { GOOGLE_API_KEY } from "react-native-dotenv";

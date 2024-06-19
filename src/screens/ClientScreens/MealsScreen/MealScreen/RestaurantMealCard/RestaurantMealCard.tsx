@@ -119,8 +119,9 @@ const RestaurantMealCard: FC<Props> = ({
       isVisible={toolTipThatsVisible}
       content={
         <Typography weigth="bold" type="S">
-          Select your preferred pickup time from the available options chosen by
-          the restaurant, ensuring your order is ready when you arrive.
+          Choose your preferred 15-minute pickup window from the times
+          available, as scheduled by the restaurant, to ensure your order is
+          ready upon arrival.
         </Typography>
       }
       placement="top">
@@ -180,7 +181,7 @@ const RestaurantMealCard: FC<Props> = ({
                 width: "100%",
                 backgroundColor: COLOURS.accent,
                 borderColor: COLOURS.accent,
-                borderRadius: 8,
+                borderRadius: 4,
                 borderWidth: 2,
                 paddingLeft: 8,
                 paddingRight: 8,

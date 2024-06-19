@@ -19,7 +19,7 @@ const RadioButton: FC<Props> = ({
 }) => {
   return (
     <TouchableOpacity
-      className={`p-2 border-2 rounded-lg mr-2 ${
+      className={`p-2 border-2 rounded-md mr-2 ${
         isSelected ? "bg-accent border-accent" : "border-gray-400"
       }`}
       onPress={() => onSelect?.(value)}
@@ -40,3 +40,4 @@ const RadioButton: FC<Props> = ({
 
 export { RadioButton };
 export type { Props as RadioButtonProps };
+

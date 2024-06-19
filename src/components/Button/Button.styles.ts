@@ -66,7 +66,7 @@ export const getCSS = ({
     position("relative"),
     justifyContent("justify-center"),
     alignItems("items-center"),
-    borderRadius(isFullyRounded ? "rounded-full" : "rounded-lg"),
+    borderRadius(isFullyRounded ? "rounded-full" : "rounded-md"),
     boxShadow(isClean ? "shadow-none" : "shadow-md"),
     width("w-full"),
     display("flex"),
