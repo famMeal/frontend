@@ -40,9 +40,10 @@ interface Props extends VerifyAccountStackProps {}
 const LoginScreen: FC<Props> = ({ route }) => {
   const { params } = route ?? {};
   const { email: forwardedEmail } = params ?? {};
+  console.log(forwardedEmail);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [email, setEmail] = useState(
-    forwardedEmail ?? "shahynkamali+1@gmail.com"
+    forwardedEmail ? forwardedEmail : "shahynkamali+1@gmail.com"
   );
   const [password, setPassword] = useState("password");
   const { navigate } = useNavigation<LoginNavigationProps>();

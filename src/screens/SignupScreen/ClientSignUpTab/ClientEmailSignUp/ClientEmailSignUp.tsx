@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Box, Button, Column, Columns, Input, Typography } from "components";
 import { COLOURS } from "constants/colours";
 import { EyeIcon, EyeOffIcon } from "lucide-react-native";
-import { useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import Toast from "react-native-toast-message";
 import type { SignUpNavigationProps } from "types/navigation.types";
@@ -18,6 +18,17 @@ const ClientEmailSignUp: FC = () => {
     passwordConfirmation: "",
   });
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+
+  useEffect(() => {
+    return () =>
+      setUser({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        passwordConfirmation: "",
+      });
+  }, []);
 
   const toggleSecureTextEntry = () =>
     setSecureTextEntry(prevState => !prevState);

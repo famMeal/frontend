@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Box, Button, Column, Columns, Input, Typography } from "components";
 import { COLOURS } from "constants/colours";
 import { EyeIcon, EyeOffIcon } from "lucide-react-native";
-import { useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import Toast from "react-native-toast-message";
 import type { SignUpNavigationProps } from "types/navigation.types";
@@ -14,6 +14,12 @@ const nameRegex = /^[A-Za-z]+$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const textRegex = /^[A-Za-z0-9\s'’-]+$/;
 const cityRegex = /^[A-Za-z\s\-']{1,50}$/;
+
+const provinces = {
+  ON: "Ontario",
+} as const;
+
+type Province = keyof typeof provinces;
 
 const RestaurantEmailSignUp: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,6 +33,19 @@ const RestaurantEmailSignUp: FC = () => {
     password: "",
     passwordConfirmation: "",
   });
+
+  useEffect(() => {
+    return () =>
+      setUser({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        passwordConfirmation: "",
+        city: "",
+        restaurantName: "",
+      });
+  }, []);
 
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
@@ -43,7 +62,8 @@ const RestaurantEmailSignUp: FC = () => {
   const handleOnPressLogin = () => navigate("Login");
 
   const [signUp, { loading }] = useRestaurantSignUpMutation({
-    onCompleted: () => {
+    onCompleted: data => {
+      console.log(data);
       navigate("VerifyAccount", { email: user.email.trim() });
     },
     onError: error => {
@@ -124,10 +144,21 @@ const RestaurantEmailSignUp: FC = () => {
   };
 
   const handleSignUp = (location: RestaurantLocation | undefined) => {
+    const { lat, lng, name, address } = location ?? {};
+    const [street, city, postalCode, unusedCountry] = address?.split(",") ?? "";
+    const [unusedEmpty, province, firstPartPostalCode, secondPartPostalCode] =
+      postalCode.split(" ");
+
     signUp({
       variables: {
         ...trimmedUser,
-        ...location,
+        latitude: String(lat),
+        longitude: String(lng),
+        restaurantName: name,
+        addressLine1: street,
+        city: city,
+        postalCode: `${firstPartPostalCode}${secondPartPostalCode}`,
+        province: provinces[province as Province],
       },
     });
   };
@@ -194,7 +225,6 @@ const RestaurantEmailSignUp: FC = () => {
               City
             </Typography>
             <Input
-              readOnly
               keyboardType="default"
               onChangeText={city => setUser(prev => ({ ...prev, city }))}
               value={user.city}
