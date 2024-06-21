@@ -204,7 +204,7 @@ const MealsScreen: FC<Props> = ({ route: { params } }) => {
         style={{ flex: 1 }}
         onDidFinishLoadingMap={handleMapReady}
         styleURL={MapboxGL.StyleURL.Street}>
-        <Camera ref={cameraRef} />
+        <Camera ref={cameraRef} animationMode="none" animationDuration={0} />
         {renderLocations()}
         {renderUserLocation()}
         {renderSelectedRestaurant()}

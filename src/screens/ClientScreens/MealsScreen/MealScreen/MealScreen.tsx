@@ -61,6 +61,7 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
   const [routeCoordinates, setRouteCoordinates] = useState<number[][] | null>(
     null
   );
+  const [mapLoading, setMapLoading] = useState(true);
 
   const onContinuePress = () => {
     updateOrder({
@@ -170,7 +171,7 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
               getRoute(
                 [userCoords.longitude, userCoords.latitude],
                 [restaurant.longitude!, restaurant.latitude!]
-              );
+              ).then(() => setMapLoading(false));
             }
           },
           error => {
@@ -184,8 +185,12 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
     getLocation();
   }, [restaurant]);
 
+  const handleMapLoaded = () => {
+    setMapLoading(false);
+  };
+
   const renderMap = useCallback(() => {
-    if (loading || !restaurant || !userLocation) {
+    if (mapLoading || loading || !restaurant || !userLocation) {
       return <Skeleton size="large" />;
     }
 
@@ -198,8 +203,15 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
         attributionEnabled={false}
         ref={mapRef}
         style={{ flex: 1 }}
-        styleURL={MapboxGL.StyleURL.Street}>
-        <Camera ref={cameraRef} centerCoordinate={destination} zoomLevel={14} />
+        styleURL={MapboxGL.StyleURL.Street}
+        onDidFinishLoadingMap={handleMapLoaded}>
+        <Camera
+          ref={cameraRef}
+          centerCoordinate={destination}
+          zoomLevel={14}
+          animationMode="none"
+          animationDuration={0}
+        />
         <MarkerView coordinate={destination}>
           <MapMarker />
         </MarkerView>
@@ -231,7 +243,7 @@ const MealScreen: FC<Props> = ({ route: { params } }) => {
         )}
       </MapView>
     );
-  }, [loading, restaurant, userLocation, routeCoordinates]);
+  }, [mapLoading, loading, restaurant, userLocation, routeCoordinates]);
 
   const renderCTA = () =>
     loading ? (
