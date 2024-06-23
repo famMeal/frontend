@@ -86,3 +86,4 @@ const ClientScreens: FC<Props> = ({ navigation }) => {
 };
 
 export default ClientScreens;
+export type { Props as ClientScreenProps };

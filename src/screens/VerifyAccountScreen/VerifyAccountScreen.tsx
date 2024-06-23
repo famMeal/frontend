@@ -231,3 +231,5 @@ const VerifyAccountScreen: FC<Props> = ({ route }) => {
 };
 
 export default VerifyAccountScreen;
+
+export type { Props as VerifyAccountScreenProps };

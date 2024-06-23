@@ -163,3 +163,4 @@ const RestaurantScreens: FC<Props> = ({ navigation }) => {
 };
 
 export default RestaurantScreens;
+export type { Props as RestaurantScreenProps };

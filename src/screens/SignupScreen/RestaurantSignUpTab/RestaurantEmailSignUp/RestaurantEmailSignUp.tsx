@@ -62,8 +62,7 @@ const RestaurantEmailSignUp: FC = () => {
   const handleOnPressLogin = () => navigate("Login");
 
   const [signUp, { loading }] = useRestaurantSignUpMutation({
-    onCompleted: data => {
-      console.log(data);
+    onCompleted: () => {
       navigate("VerifyAccount", { email: user.email.trim() });
     },
     onError: error => {

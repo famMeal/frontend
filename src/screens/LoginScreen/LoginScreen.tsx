@@ -40,7 +40,6 @@ interface Props extends VerifyAccountStackProps {}
 const LoginScreen: FC<Props> = ({ route }) => {
   const { params } = route ?? {};
   const { email: forwardedEmail } = params ?? {};
-  console.log(forwardedEmail);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [email, setEmail] = useState(
     forwardedEmail ? forwardedEmail : "shahynkamali+1@gmail.com"
@@ -95,7 +94,7 @@ const LoginScreen: FC<Props> = ({ route }) => {
           alignItems="center"
           columnWidth="fullWidth"
           justifyContent="center">
-          <Logo />
+          <Logo width={300} height={100} />
         </Column>
       </Columns>
       <Box className="mt-4">

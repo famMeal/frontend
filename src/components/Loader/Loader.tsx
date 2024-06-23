@@ -17,7 +17,7 @@ const Loader = () => {
             animation="bounceIn"
             iterationCount="infinite"
             duration={3000}>
-            <Logo />
+            <Logo width={200} height={300} />
           </Animatable.View>
         </Column>
       </Columns>

@@ -1,21 +1,73 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Header, Loader } from "components";
 import { COLOURS } from "constants/colours";
+import type { FC, LazyExoticComponent } from "react";
 import React, { Suspense, lazy } from "react";
 import { LoginScreen, SplashScreen } from "screens";
+import type { ClientScreenProps } from "screens/ClientScreens";
+import type { RestaurantScreenProps } from "screens/RestaurantScreens";
+import type { SignUpScreenProps } from "screens/SignupScreen";
+import type { VerifyAccountScreenProps } from "screens/VerifyAccountScreen";
 import type { RootStackParamList } from "types/navigation.types";
 import { useAuthContext } from "./context";
 
-const ClientScreens = lazy(() => import("screens/ClientScreens"));
-const RestaurantScreens = lazy(() => import("screens/RestaurantScreens"));
-const SignUpScreen = lazy(() => import("screens/SignupScreen"));
-const VerifyAccountScreen = lazy(() => import("screens/VerifyAccountScreen"));
+const ClientScreens: LazyExoticComponent<FC<ClientScreenProps>> = lazy(
+  () => import("screens/ClientScreens")
+);
+const RestaurantScreens: LazyExoticComponent<FC<RestaurantScreenProps>> = lazy(
+  () => import("screens/RestaurantScreens")
+);
+const SignUpScreen: LazyExoticComponent<FC<SignUpScreenProps>> = lazy(
+  () => import("screens/SignupScreen")
+);
+const VerifyAccountScreen: LazyExoticComponent<FC<VerifyAccountScreenProps>> =
+  lazy(() => import("screens/VerifyAccountScreen"));
 
 const { Navigator, Screen } = createBottomTabNavigator<RootStackParamList>();
 
+const screenOptions = {
+  headerShown: false,
+};
+
+const headerStyles = {
+  color: COLOURS.white,
+  fontFamily: "Khula-Bold",
+  fontSize: 18,
+};
+
+type ScreenProps = {
+  Clients: ClientScreenProps;
+  Restaurants: RestaurantScreenProps;
+  SignUp: SignUpScreenProps;
+  VerifyAccount: VerifyAccountScreenProps;
+};
+
+type LazyProps<Name extends keyof ScreenProps> = ScreenProps[Name];
+
+const lazyScreen = <Name extends keyof ScreenProps>(
+  Component: LazyExoticComponent<FC<LazyProps<Name>>>,
+  name: Name,
+  title: string
+) => (
+  <Screen
+    name={name}
+    options={{
+      headerBackground: () => <Header title={title} />,
+      ...screenOptions,
+      tabBarStyle: {
+        display: "none",
+      },
+    }}>
+    {props => (
+      <Suspense fallback={<Loader />}>
+        <Component {...(props as any)} />
+      </Suspense>
+    )}
+  </Screen>
+);
+
 const AppNavigator = () => {
-  const context = useAuthContext();
-  const { isLoggedIn } = context ?? {};
+  const { isLoggedIn } = useAuthContext() ?? {};
 
   if (isLoggedIn === null) {
     return <Loader />;
@@ -27,15 +79,10 @@ const AppNavigator = () => {
         component={LoginScreen}
         name="Login"
         options={{
-          headerShown: false,
-          headerBackground: () => null,
+          ...screenOptions,
+          ...headerStyles,
           tabBarStyle: {
             display: "none",
-          },
-          headerTitleStyle: {
-            color: COLOURS.white,
-            fontFamily: "Khula-Bold",
-            fontSize: 18,
           },
         }}
       />
@@ -43,80 +90,17 @@ const AppNavigator = () => {
         component={SplashScreen}
         name="Splash"
         options={{
-          headerShown: false,
+          ...screenOptions,
+          ...headerStyles,
           tabBarStyle: {
             display: "none",
           },
         }}
       />
-      <Screen
-        name="SignUp"
-        options={{
-          headerBackground: () => <Header title="Sign Up" />,
-          tabBarStyle: {
-            display: "none",
-          },
-          headerTitleStyle: {
-            display: "none",
-            color: COLOURS.white,
-            fontFamily: "Khula-Bold",
-            fontSize: 18,
-          },
-        }}>
-        {() => (
-          <Suspense fallback={<Loader />}>
-            <SignUpScreen />
-          </Suspense>
-        )}
-      </Screen>
-      <Screen
-        name="VerifyAccount"
-        options={{
-          headerBackground: () => <Header title="Verify Email" />,
-          tabBarStyle: {
-            display: "none",
-          },
-          headerTitleStyle: {
-            display: "none",
-            color: COLOURS.white,
-            fontFamily: "Khula-Bold",
-            fontSize: 18,
-          },
-        }}>
-        {props => (
-          <Suspense fallback={<Loader />}>
-            <VerifyAccountScreen {...props} />
-          </Suspense>
-        )}
-      </Screen>
-      <Screen
-        name="Clients"
-        options={{
-          headerShown: false,
-          tabBarStyle: {
-            display: "none",
-          },
-        }}>
-        {props => (
-          <Suspense fallback={<Loader />}>
-            <ClientScreens {...props} />
-          </Suspense>
-        )}
-      </Screen>
-      <Screen
-        name="Restaurants"
-        options={{
-          headerShown: false,
-          tabBarStyle: {
-            display: "none",
-          },
-        }}>
-        {props => (
-          <Suspense fallback={<Loader />}>
-            <RestaurantScreens {...props} />
-          </Suspense>
-        )}
-      </Screen>
+      {lazyScreen(SignUpScreen, "SignUp", "Sign Up")}
+      {lazyScreen(VerifyAccountScreen, "VerifyAccount", "Verify Email")}
+      {lazyScreen(ClientScreens, "Clients", "Clients")}
+      {lazyScreen(RestaurantScreens, "Restaurants", "Restaurants")}
     </Navigator>
   );
 };
